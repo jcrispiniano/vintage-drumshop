@@ -219,14 +219,14 @@ export default function Home() {
       </section>
 
       {/* Marcas Oficiais - Destaque */}
-      <section className="py-20 bg-gradient-to-br from-lightBg to-white">
+      <section className="py-20 bg-primary">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <span className="text-accent font-bold text-sm tracking-wider uppercase">Marcas Oficiais</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-4">
               Revendedor Autorizado
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="text-lightBg text-lg max-w-2xl mx-auto">
               Trabalhamos apenas com marcas reconhecidas mundialmente pela qualidade e tradição
             </p>
           </div>
