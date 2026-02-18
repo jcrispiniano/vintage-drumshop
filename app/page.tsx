@@ -2,26 +2,25 @@
 
 import { products, formatPrice, categories, contactInfo } from '@/lib/products';
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
-import { useState } from 'react';
 import Link from 'next/link';
+import { useCart } from '@/contexts/CartContext';
 
 export default function Home() {
-  const [cartCount, setCartCount] = useState(0);
-  const [favorites, setFavorites] = useState<number[]>([]);
-
+  const { cartItems, favorites, addToCart, toggleFavorite } = useCart();
   const featuredProducts = products.filter(p => p.featured);
 
-  const addToCart = (productId: number) => {
-    setCartCount(prev => prev + 1);
-    alert('✅ Produto adicionado ao carrinho!');
-  };
-
-  const toggleFavorite = (productId: number) => {
-    setFavorites(prev => 
-      prev.includes(productId) 
-        ? prev.filter(id => id !== productId)
-        : [...prev, productId]
-    );
+  const handleAddToCart = (productId: number) => {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        category: product.category,
+        description: product.description,
+      });
+      alert('✅ Produto adicionado ao carrinho!');
+    }
   };
 
   return (
@@ -95,9 +94,9 @@ export default function Home() {
               <Link href="/carrinho" className="relative flex flex-col items-center hover:text-accent">
                 <ShoppingCart size={24} />
                 <span className="text-xs">Carrinho</span>
-                {cartCount > 0 && (
+                {cartItems.length > 0 && (
                   <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartCount}
+                    {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
                   </span>
                 )}
               </Link>
@@ -354,7 +353,7 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <button 
-                      onClick={() => addToCart(product.id)}
+                      onClick={() => handleAddToCart(product.id)}
                       className="w-full bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md hover:shadow-lg"
                     >
                       Adicionar ao Carrinho

@@ -1,32 +1,17 @@
 'use client';
 
 import { ShoppingCart, Trash2, Plus, Minus, ArrowLeft } from 'lucide-react';
-import { useState } from 'react';
 import Link from 'next/link';
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  category: string;
-}
+import { useCart } from '@/contexts/CartContext';
 
 export default function CarrinhoPage() {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { cartItems, updateQuantity, removeFromCart } = useCart();
 
-  const updateQuantity = (id: number, delta: number) => {
-    setCartItems(prev =>
-      prev.map(item =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
-  };
-
-  const removeItem = (id: number) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+  const handleUpdateQuantity = (id: number, delta: number) => {
+    const item = cartItems.find(i => i.id === id);
+    if (item) {
+      updateQuantity(id, item.quantity + delta);
+    }
   };
 
   const formatPrice = (price: number) => {
@@ -105,7 +90,7 @@ export default function CarrinhoPage() {
                     {/* Quantidade e Remover */}
                     <div className="flex flex-col items-end justify-between">
                       <button
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => removeFromCart(item.id)}
                         className="text-red-500 hover:text-red-700 transition p-2"
                       >
                         <Trash2 size={20} />
@@ -113,7 +98,7 @@ export default function CarrinhoPage() {
 
                       <div className="flex items-center gap-2 bg-gray-100 rounded-lg">
                         <button
-                          onClick={() => updateQuantity(item.id, -1)}
+                          onClick={() => handleUpdateQuantity(item.id, -1)}
                           className="p-2 hover:text-accent transition"
                         >
                           <Minus size={16} />
@@ -122,7 +107,7 @@ export default function CarrinhoPage() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.id, 1)}
+                          onClick={() => handleUpdateQuantity(item.id, 1)}
                           className="p-2 hover:text-accent transition"
                         >
                           <Plus size={16} />

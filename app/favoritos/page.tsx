@@ -1,35 +1,27 @@
 'use client';
 
 import { Heart, ShoppingCart, ArrowLeft, Trash2 } from 'lucide-react';
-import { useState } from 'react';
 import Link from 'next/link';
-
-interface FavoriteItem {
-  id: number;
-  name: string;
-  price: number;
-  oldPrice?: number;
-  category: string;
-  description: string;
-  badge?: string;
-}
+import { useCart } from '@/contexts/CartContext';
+import { products, formatPrice } from '@/lib/products';
 
 export default function FavoritosPage() {
-  const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
+  const { favorites, toggleFavorite, addToCart } = useCart();
+  
+  const favoriteProducts = products.filter(p => favorites.includes(p.id));
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(price);
-  };
-
-  const removeFavorite = (id: number) => {
-    setFavorites(prev => prev.filter(item => item.id !== id));
-  };
-
-  const addToCart = (id: number) => {
-    alert('✅ Produto adicionado ao carrinho!');
+  const handleAddToCart = (productId: number) => {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        category: product.category,
+        description: product.description,
+      });
+      alert('✅ Produto adicionado ao carrinho!');
+    }
   };
 
   return (
@@ -42,9 +34,9 @@ export default function FavoritosPage() {
               <ArrowLeft size={24} />
             </Link>
             <h1 className="text-2xl font-bold text-gray-900">Meus Favoritos</h1>
-            {favorites.length > 0 && (
+            {favoriteProducts.length > 0 && (
               <span className="bg-accent text-white px-3 py-1 rounded-full text-sm font-bold">
-                {favorites.length}
+                {favoriteProducts.length}
               </span>
             )}
           </div>
@@ -52,7 +44,7 @@ export default function FavoritosPage() {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        {favorites.length === 0 ? (
+        {favoriteProducts.length === 0 ? (
           /* Estado Vazio */
           <div className="max-w-md mx-auto text-center py-16">
             <div className="bg-white rounded-2xl shadow-lg p-12">
@@ -80,7 +72,7 @@ export default function FavoritosPage() {
           <div className="max-w-6xl mx-auto">
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-gray-900">
-                {favorites.length} {favorites.length === 1 ? 'produto favorito' : 'produtos favoritos'}
+                {favoriteProducts.length} {favoriteProducts.length === 1 ? 'produto favorito' : 'produtos favoritos'}
               </h2>
               <p className="text-gray-600 mt-2">
                 Produtos que você marcou como favorito
@@ -88,7 +80,7 @@ export default function FavoritosPage() {
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {favorites.map(product => (
+              {favoriteProducts.map(product => (
                 <div
                   key={product.id}
                   className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
@@ -104,7 +96,7 @@ export default function FavoritosPage() {
                       </span>
                     )}
                     <button
-                      onClick={() => removeFavorite(product.id)}
+                      onClick={() => toggleFavorite(product.id)}
                       className="absolute top-4 left-4 p-3 bg-accent text-white rounded-full hover:bg-red-600 transition shadow-lg"
                     >
                       <Heart size={18} fill="currentColor" />
@@ -132,14 +124,14 @@ export default function FavoritosPage() {
                     </div>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => addToCart(product.id)}
+                        onClick={() => handleAddToCart(product.id)}
                         className="flex-1 bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                       >
                         <ShoppingCart size={18} />
                         Adicionar
                       </button>
                       <button
-                        onClick={() => removeFavorite(product.id)}
+                        onClick={() => toggleFavorite(product.id)}
                         className="p-3 border-2 border-red-200 text-red-500 rounded-lg hover:border-red-500 hover:bg-red-50 transition"
                       >
                         <Trash2 size={18} />
