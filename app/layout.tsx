@@ -8,15 +8,15 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfa
 
 export const metadata: Metadata = {
   title: 'Vintage Drum Shop - Baterias e Acessórios Profissionais',
-  description: 'Revenda oficial Wincent e Istanbul Cymbals. A melhor seleção de baterias, pratos e acessórios musicais.',
-  keywords: 'baterias, pratos, wincent, istanbul cymbals, drum shop, instrumentos musicais',
+  description: 'Revenda oficial Wincent e Istanbul Agop. A melhor seleção de baterias, pratos e acessórios musicais.',
+  keywords: 'baterias, pratos, wincent, istanbul agop, drum shop, instrumentos musicais',
   icons: {
     icon: '/vintage-drumshop/logo.svg',
     apple: '/vintage-drumshop/logo.png',
   },
   openGraph: {
     title: 'Vintage Drum Shop',
-    description: 'Revenda oficial Wincent e Istanbul Cymbals',
+    description: 'Revenda oficial Wincent e Istanbul Agop',
     images: ['/vintage-drumshop/logo.png'],
   },
 }

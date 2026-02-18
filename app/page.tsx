@@ -134,7 +134,7 @@ export default function Home() {
                 <span className="block text-accent mt-2">Profissionais</span>
               </h2>
               <p className="text-xl text-gray-300">
-                Revenda Oficial Wincent e Istanbul Cymbals
+                Revenda Oficial Wincent e Istanbul Agop
               </p>
               <div className="flex flex-wrap gap-4">
                 <a 
@@ -262,11 +262,11 @@ export default function Home() {
                 OFICIAL
               </span>
               <div className="text-center">
-                <div className="h-24 flex items-center justify-center mx-auto mb-6">
+                <div className="h-32 flex items-center justify-center mx-auto mb-6">
                   <img 
                     src="/vintage-drumshop/istanbul-logo.png" 
                     alt="Istanbul Agop"
-                    className="h-full w-auto object-contain group-hover:scale-110 transition"
+                    className="max-h-full w-auto object-contain group-hover:scale-110 transition"
                   />
                 </div>
                 <h3 className="text-3xl font-bold text-gray-900 mb-2">ISTANBUL AGOP</h3>
@@ -414,7 +414,7 @@ export default function Home() {
                 className="h-20 w-auto mb-4"
               />
               <p className="text-sm text-gray-300">
-                Revenda oficial Wincent e Istanbul Cymbals. Qualidade e tradição em instrumentos musicais.
+                Revenda oficial Wincent e Istanbul Agop. Qualidade e tradição em instrumentos musicais.
               </p>
             </div>
             <div>
