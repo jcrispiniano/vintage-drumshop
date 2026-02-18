@@ -50,13 +50,13 @@ export default function Home() {
               <img 
                 src="/vintage-drumshop/logo-small.png" 
                 alt="Vintage Drum Shop" 
-                className="h-12 md:h-14 w-auto object-contain"
+                className="h-16 md:h-20 w-auto object-contain"
               />
               <div className="hidden md:block">
-                <h1 className="text-lg font-bold text-primary leading-tight">
+                <h1 className="text-xl font-bold text-primary leading-tight">
                   Vintage Drum Shop
                 </h1>
-                <p className="text-xs text-secondary">
+                <p className="text-sm text-secondary">
                   Wincent & Istanbul
                 </p>
               </div>
