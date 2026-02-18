@@ -236,7 +236,7 @@ export default function Home() {
               <div className="text-center">
                 <div className="h-24 flex items-center justify-center mx-auto mb-6">
                   <img 
-                    src="/vintage-drumshop/wincent-logo.jpg" 
+                    src="/vintage-drumshop/wincent-logo.png" 
                     alt="Wincent"
                     className="h-full w-auto object-contain group-hover:scale-110 transition"
                   />
@@ -257,7 +257,7 @@ export default function Home() {
               <div className="text-center">
                 <div className="h-24 flex items-center justify-center mx-auto mb-6">
                   <img 
-                    src="/vintage-drumshop/istanbul-logo.jpg" 
+                    src="/vintage-drumshop/istanbul-logo.png" 
                     alt="Istanbul Agop"
                     className="h-full w-auto object-contain group-hover:scale-110 transition"
                   />
