@@ -3,6 +3,7 @@
 import { products, formatPrice, categories, contactInfo } from '@/lib/products';
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function Home() {
   const [cartCount, setCartCount] = useState(0);
@@ -82,7 +83,7 @@ export default function Home() {
                 <Instagram size={24} />
                 <span className="text-xs">Instagram</span>
               </a>
-              <button className="relative flex flex-col items-center hover:text-accent">
+              <Link href="/favoritos" className="relative flex flex-col items-center hover:text-accent">
                 <Heart size={24} />
                 <span className="text-xs">Favoritos</span>
                 {favorites.length > 0 && (
@@ -90,8 +91,8 @@ export default function Home() {
                     {favorites.length}
                   </span>
                 )}
-              </button>
-              <button className="relative flex flex-col items-center hover:text-accent">
+              </Link>
+              <Link href="/carrinho" className="relative flex flex-col items-center hover:text-accent">
                 <ShoppingCart size={24} />
                 <span className="text-xs">Carrinho</span>
                 {cartCount > 0 && (
@@ -99,7 +100,7 @@ export default function Home() {
                     {cartCount}
                   </span>
                 )}
-              </button>
+              </Link>
             </div>
           </div>
         </div>
