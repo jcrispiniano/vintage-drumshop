@@ -1,0 +1,37 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;display=swap');
+    .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; }
+  </style>
+  
+  <!-- Drum Kit Silhouette -->
+  <g transform="translate(200, 120)">
+    <!-- Bass Drum -->
+    <circle cx="0" cy="40" r="50" fill="#8B4513" opacity="0.9"/>
+    <circle cx="0" cy="40" r="40" fill="#A0522D" opacity="0.8"/>
+    
+    <!-- Left Tom -->
+    <ellipse cx="-60" cy="0" rx="25" ry="15" fill="#8B4513" opacity="0.9"/>
+    <ellipse cx="-60" cy="0" rx="20" ry="12" fill="#A0522D" opacity="0.8"/>
+    
+    <!-- Right Tom -->
+    <ellipse cx="60" cy="0" rx="25" ry="15" fill="#8B4513" opacity="0.9"/>
+    <ellipse cx="60" cy="0" rx="20" ry="12" fill="#A0522D" opacity="0.8"/>
+    
+    <!-- Left Cymbal -->
+    <ellipse cx="-70" cy="-30" rx="35" ry="8" fill="#8B4513" opacity="0.7"/>
+    <line x1="-70" y1="-22" x2="-70" y2="10" stroke="#654321" stroke-width="2"/>
+    
+    <!-- Right Cymbal -->
+    <ellipse cx="70" cy="-30" rx="35" ry="8" fill="#8B4513" opacity="0.7"/>
+    <line x1="70" y1="-22" x2="70" y2="10" stroke="#654321" stroke-width="2"/>
+    
+    <!-- Hi-Hat -->
+    <ellipse cx="-40" cy="-20" rx="20" ry="5" fill="#8B4513" opacity="0.8"/>
+    <line x1="-40" y1="-15" x2="-40" y2="20" stroke="#654321" stroke-width="2"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="200" y="260" text-anchor="middle" class="logo-text" font-size="52" fill="#8B4513">Vintage</text>
+  <line x1="80" y1="280" x2="320" y2="280" stroke="#8B4513" stroke-width="4" stroke-linecap="round"/>
+</svg>

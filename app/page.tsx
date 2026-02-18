@@ -45,21 +45,22 @@ export default function Home() {
         {/* Main Header */}
         <div className="bg-lightBg py-4">
           <div className="container mx-auto px-4 flex items-center justify-between gap-4">
-            <div className="flex-shrink-0 flex items-center gap-3">
+            <a href="/" className="flex-shrink-0 flex items-center gap-4">
               <img 
-                src="/vintage-drumshop/logo.png" 
+                src="/vintage-drumshop/logo.svg" 
                 alt="Vintage Drum Shop Logo" 
-                className="h-20 w-auto object-contain"
+                className="h-14 w-auto object-contain"
+                style={{ maxWidth: '140px' }}
               />
               <div>
-                <h1 className="text-2xl font-bold text-primary">
+                <h1 className="text-xl md:text-2xl font-bold text-primary">
                   Vintage Drum Shop
                 </h1>
-                <p className="text-xs text-secondary">
+                <p className="text-xs text-secondary hidden md:block">
                   Revenda Oficial Wincent & Istanbul
                 </p>
               </div>
-            </div>
+            </a>
 
             <div className="flex-1 max-w-xl">
               <div className="relative">
@@ -152,13 +153,14 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div className="relative h-64 md:h-96">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <img 
-                  src="/vintage-drumshop/logo.png" 
-                  alt="Vintage Drum Shop" 
-                  className="h-full w-auto object-contain opacity-80"
-                />
+            <div className="relative h-64 md:h-96 hidden md:block">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl flex items-center justify-center">
+                <div className="text-center space-y-4 p-8">
+                  <div className="text-6xl font-bold text-primary/20">🥁</div>
+                  <p className="text-sm text-gray-600 font-semibold">
+                    Equipamentos Profissionais
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -413,9 +415,10 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <img 
-                src="/vintage-drumshop/logo.png" 
+                src="/vintage-drumshop/logo.svg" 
                 alt="Vintage Drum Shop" 
                 className="h-24 w-auto mb-4"
+                style={{ maxWidth: '180px' }}
               />
               <p className="text-sm text-gray-300">
                 Revenda oficial Wincent e Istanbul Cymbals. Qualidade e tradição em instrumentos musicais.
