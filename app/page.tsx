@@ -1,10 +1,19 @@
+'use client';
+
+import { useEffect } from 'react';
+
 export default function Home() {
+  useEffect(() => {
+    // Redireciona para o site HTML completo
+    window.location.href = '/site/index.html';
+  }, []);
+
   return (
     <main style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+      background: 'linear-gradient(135deg, #2C1810 0%, #8B4513 100%)',
       color: 'white',
-      fontFamily: 'system-ui, -apple-system, sans-serif',
+      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -13,57 +22,37 @@ export default function Home() {
       textAlign: 'center'
     }}>
       <div style={{
-        maxWidth: '800px',
-        background: 'rgba(255,255,255,0.05)',
+        maxWidth: '600px',
+        background: 'rgba(255,255,255,0.1)',
         padding: '3rem',
         borderRadius: '20px',
         backdropFilter: 'blur(10px)',
-        border: '1px solid rgba(255,255,255,0.1)'
+        border: '1px solid rgba(255,255,255,0.2)'
       }}>
         <h1 style={{
-          fontSize: '4rem',
+          fontSize: '3.5rem',
           margin: '0 0 1rem 0',
-          background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
           fontWeight: 'bold'
         }}>
           🥁 Vintage Drum Shop
         </h1>
         
         <p style={{
-          fontSize: '1.5rem',
-          margin: '1rem 0 2rem 0',
-          color: 'rgba(255,255,255,0.8)'
+          fontSize: '1.3rem',
+          margin: '1rem 0',
+          color: 'rgba(255,255,255,0.9)'
         }}>
-          Sua loja de baterias vintage
+          Carregando...
         </p>
 
         <div style={{
-          background: 'rgba(0,0,0,0.2)',
-          padding: '1.5rem',
-          borderRadius: '10px',
-          marginTop: '2rem'
-        }}>
-          <p style={{
-            fontSize: '1.1rem',
-            lineHeight: '1.8',
-            color: 'rgba(255,255,255,0.9)'
-          }}>
-            ✨ Site em construção<br/>
-            🚀 GitHub Pages configurado<br/>
-            🎵 Em breve, a melhor seleção de baterias vintage
-          </p>
-        </div>
-
-        <footer style={{
-          marginTop: '3rem',
+          marginTop: '2rem',
           fontSize: '0.9rem',
-          color: 'rgba(255,255,255,0.5)'
+          color: 'rgba(255,255,255,0.7)'
         }}>
-          © 2026 Vintage Drum Shop
-        </footer>
+          <p>Revenda Oficial Wincent & Istanbul Cymbals</p>
+        </div>
       </div>
     </main>
-  )
+  );
 }
