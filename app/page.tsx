@@ -233,7 +233,7 @@ export default function Home() {
           </div>
           
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <div className="bg-white p-12 rounded-2xl shadow-xl border-2 border-gray-100 hover:border-accent transition group relative">
+            <div className="bg-lightBg p-12 rounded-2xl shadow-xl border-2 border-gray-100 hover:border-accent transition group relative">
               <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
                 OFICIAL
               </span>
@@ -257,7 +257,7 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="bg-white p-12 rounded-2xl shadow-xl border-2 border-gray-100 hover:border-accent transition group relative">
+            <div className="bg-lightBg p-12 rounded-2xl shadow-xl border-2 border-gray-100 hover:border-accent transition group relative">
               <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
                 OFICIAL
               </span>
