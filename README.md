@@ -1,81 +1,84 @@
 # 🥁 Vintage Drum Shop
 
-Site profissional para loja de baterias e acessórios musicais.
+Site profissional Next.js com TypeScript e Tailwind CSS para loja de baterias e acessórios musicais.
 
-## 🎯 Características
+## ✨ Tecnologias
+
+- **Next.js 15** - Framework React com SSR e SSG
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Utility-first CSS
+- **Lucide React** - Ícones modernos
+- **Framer Motion** - Animações (preparado)
+- **Zustand** - State management (preparado)
+
+## 🎯 Funcionalidades
 
 - ✅ Design moderno e responsivo
-- ✅ Sistema de carrinho de compras (localStorage)
+- ✅ Sistema de carrinho React
 - ✅ Sistema de favoritos
 - ✅ Busca de produtos
-- ✅ Integração com WhatsApp para finalização de pedidos
-- ✅ Múltiplas categorias de produtos
-- ✅ Layout profissional baseado em grandes lojas do setor
-
-## 🛠️ Tecnologias
-
-- HTML5
-- CSS3 (com variáveis CSS)
-- JavaScript Vanilla (sem frameworks)
-- LocalStorage para persistência
-- Responsivo (mobile-first)
+- ✅ Integração com WhatsApp
+- ✅ Otimizado para GitHub Pages
+- ✅ TypeScript para type safety
+- ✅ Tailwind para styling rápido
+- ✅ Componentes reutilizáveis
 
 ## 📁 Estrutura
 
 ```
 vintage-drum-shop/
-├── index.html              # Página inicial
-├── categoria.html          # Página de categorias/produtos
-├── contato.html           # Página de contato
-├── css/
-│   └── style.css          # Estilos principais
-├── js/
-│   ├── products.js        # Base de produtos
-│   ├── cart.js            # Sistema de carrinho
-│   └── main.js            # Scripts principais
-└── images/                # Imagens (placeholder)
+├── app/
+│   ├── layout.tsx          # Layout principal
+│   ├── page.tsx            # Homepage
+│   └── globals.css         # Estilos globais
+├── components/             # Componentes reutilizáveis (preparado)
+├── lib/
+│   └── products.ts         # Base de dados de produtos
+├── public/                 # Assets estáticos
+└── next.config.js          # Config Next.js + GitHub Pages
 ```
 
-## 🚀 Como Usar
+## 🚀 Desenvolvimento
 
-1. Clone o repositório
-2. Abra `index.html` no navegador
-3. Navegue pelas categorias e produtos
-4. Adicione itens ao carrinho
-5. Finalize via WhatsApp
+```bash
+# Instalar dependências
+npm install
 
-## 🎨 Paleta de Cores
+# Rodar em desenvolvimento
+npm run dev
 
-- Primary: `#8B4513` (marrom)
-- Secondary: `#D2691E` (chocolate)
-- Accent: `#FF6B35` (coral)
-- Background: `#F5E6D3` (bege claro)
+# Build para produção
+npm run build
 
-## 📦 Produtos Incluídos
+# Export estático para GitHub Pages
+npm run build
+```
 
-- 🥁 Baterias completas
-- 🎵 Pratos (Istanbul Agop)
-- 🥢 Baquetas (Wincent)
-- 📦 Caixas
-- 🔧 Ferragens
-- 🎯 Peles
-- ⚙️ Acessórios
+## 📦 Deploy GitHub Pages
+
+O site está configurado para deploy automático no GitHub Pages:
+
+1. Push para main
+2. GitHub Actions faz build automaticamente
+3. Site fica disponível em: https://jcrispiniano.github.io/vintage-drumshop/
+
+## 🎨 Customização
+
+- **Cores**: Edite `tailwind.config.ts`
+- **Produtos**: Edite `lib/products.ts`
+- **Componentes**: Adicione em `components/`
 
 ## 📱 Contato
 
 - WhatsApp: (11) 96440-5519
 - E-mail: contato@vintagedrumshop.com
-- Localização: São Paulo - SP
+- São Paulo - SP
 
 ## 🏆 Marcas Oficiais
 
 - **Wincent** - Revenda Autorizada
 - **Istanbul Cymbals** - Distribuidor Oficial
 
-## 📄 Licença
-
-© 2025 Vintage Drum Shop - Todos os direitos reservados
-
 ---
 
-Desenvolvido para Daniel Xavier - Vintage Drum Shop
+Desenvolvido com ❤️ para Vintage Drum Shop
