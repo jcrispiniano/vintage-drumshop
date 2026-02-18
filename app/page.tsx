@@ -123,110 +123,232 @@ export default function Home() {
         </nav>
       </header>
 
-      {/* Hero */}
-      <section className="relative bg-gradient-to-br from-darkBg to-primary text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-5xl font-bold mb-4">
-            Bem-vindo à Vintage Drum Shop
-          </h2>
-          <p className="text-xl mb-8">
-            Revenda Oficial Wincent e Istanbul Cymbals
-          </p>
-          <a 
-            href="#produtos" 
-            className="inline-block bg-accent px-8 py-3 rounded-full font-semibold hover:bg-secondary transition"
-          >
-            Ver Produtos
-          </a>
+      {/* Hero Banner */}
+      <section className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
+        <div className="container mx-auto px-4 py-16 md:py-24">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="space-y-6">
+              <h2 className="text-5xl md:text-6xl font-bold leading-tight">
+                Baterias & Acessórios
+                <span className="block text-accent mt-2">Profissionais</span>
+              </h2>
+              <p className="text-xl text-gray-300">
+                Revenda Oficial Wincent e Istanbul Cymbals
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <a 
+                  href="#produtos" 
+                  className="bg-accent px-8 py-4 rounded-lg font-bold text-lg hover:bg-secondary transition shadow-lg"
+                >
+                  Ver Catálogo
+                </a>
+                <a 
+                  href={contactInfo.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-green-500 px-8 py-4 rounded-lg font-bold text-lg hover:bg-green-600 transition shadow-lg"
+                >
+                  Fale Conosco
+                </a>
+              </div>
+            </div>
+            <div className="relative h-64 md:h-96">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <img 
+                  src="/vintage-drumshop/logo.png" 
+                  alt="Vintage Drum Shop" 
+                  className="h-full w-auto object-contain opacity-80"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Marcas */}
-      <section className="py-16 bg-white">
+      {/* Benefits Bar */}
+      <section className="bg-white border-t border-b border-gray-200 py-6">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center text-primary mb-12">
-            Marcas Oficiais
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="bg-lightBg p-10 rounded-xl text-center hover:shadow-xl transition">
-              <h3 className="text-3xl font-bold text-primary mb-3">WINCENT</h3>
-              <p className="text-sm font-semibold mb-2">Revenda Autorizada</p>
-              <p className="text-gray-600 mb-4">
-                Baquetas profissionais suecas com qualidade excepcional
-              </p>
-              <button className="border-2 border-primary text-primary px-6 py-2 rounded-full hover:bg-primary hover:text-white transition">
-                Ver Produtos
-              </button>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="flex items-center gap-3">
+              <div className="bg-green-100 p-3 rounded-full">
+                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-bold text-sm">Frete Grátis</p>
+                <p className="text-xs text-gray-600">Acima de R$ 199</p>
+              </div>
             </div>
-            <div className="bg-lightBg p-10 rounded-xl text-center hover:shadow-xl transition">
-              <h3 className="text-3xl font-bold text-primary mb-3">ISTANBUL AGOP</h3>
-              <p className="text-sm font-semibold mb-2">Distribuidor Oficial</p>
-              <p className="text-gray-600 mb-4">
-                Pratos artesanais turcos com som único e tradicional
-              </p>
-              <button className="border-2 border-primary text-primary px-6 py-2 rounded-full hover:bg-primary hover:text-white transition">
-                Ver Produtos
-              </button>
+            <div className="flex items-center gap-3">
+              <div className="bg-blue-100 p-3 rounded-full">
+                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-bold text-sm">12x Sem Juros</p>
+                <p className="text-xs text-gray-600">No cartão</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="bg-purple-100 p-3 rounded-full">
+                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-bold text-sm">14% de Desconto</p>
+                <p className="text-xs text-gray-600">No PIX ou Boleto</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="bg-orange-100 p-3 rounded-full">
+                <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-bold text-sm">SAC Especializado</p>
+                <p className="text-xs text-gray-600">WhatsApp e Telefone</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Marcas Oficiais - Destaque */}
+      <section className="py-20 bg-gradient-to-br from-lightBg to-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="text-accent font-bold text-sm tracking-wider uppercase">Marcas Oficiais</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-4">
+              Revendedor Autorizado
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Trabalhamos apenas com marcas reconhecidas mundialmente pela qualidade e tradição
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="bg-white p-12 rounded-2xl shadow-xl border-2 border-gray-100 hover:border-accent transition group">
+              <div className="text-center">
+                <div className="bg-gradient-to-br from-accent to-secondary w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                  <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                </div>
+                <h3 className="text-4xl font-bold text-gray-900 mb-2">WINCENT</h3>
+                <p className="text-accent font-bold text-sm tracking-wide uppercase mb-3">Revenda Autorizada</p>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Baquetas profissionais suecas com madeira de primeira qualidade. 
+                  Durabilidade e equilíbrio perfeito para todos os estilos musicais.
+                </p>
+                <button className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full">
+                  Ver Baquetas Wincent →
+                </button>
+              </div>
+            </div>
+            
+            <div className="bg-white p-12 rounded-2xl shadow-xl border-2 border-gray-100 hover:border-accent transition group">
+              <div className="text-center">
+                <div className="bg-gradient-to-br from-accent to-secondary w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                  <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"/>
+                  </svg>
+                </div>
+                <h3 className="text-4xl font-bold text-gray-900 mb-2">ISTANBUL AGOP</h3>
+                <p className="text-accent font-bold text-sm tracking-wide uppercase mb-3">Distribuidor Oficial</p>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Pratos artesanais turcos feitos à mão há gerações. Som único, 
+                  rico em harmônicos e usado pelos maiores bateristas do mundo.
+                </p>
+                <button className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full">
+                  Ver Pratos Istanbul →
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Produtos */}
-      <section id="produtos" className="py-16 bg-lightBg">
+      <section id="produtos" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center text-primary mb-12">
-            Produtos em Destaque
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <span className="text-accent font-bold text-sm tracking-wider uppercase">Catálogo</span>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-1">
+                Produtos em Destaque
+              </h2>
+            </div>
+            <a href="#" className="hidden md:block text-accent font-bold hover:text-secondary transition">
+              Ver Todos os Produtos →
+            </a>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProducts.map(product => (
               <div 
                 key={product.id} 
-                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2"
+                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
               >
-                <div className="relative h-48 bg-gradient-to-br from-lightBg to-gray-200 flex items-center justify-center">
-                  <div className="text-4xl font-bold text-primary opacity-20">
-                    {product.name.substring(0, 3).toUpperCase()}
+                <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
+                  <img 
+                    src="/vintage-drumshop/logo.png"
+                    alt={product.name}
+                    className="h-32 w-auto object-contain opacity-10 group-hover:opacity-20 transition"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-5xl font-bold text-primary/10 group-hover:text-primary/20 transition">
+                      {product.name.substring(0, 2).toUpperCase()}
+                    </div>
                   </div>
                   {product.badge && (
-                    <span className="absolute top-3 right-3 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold">
+                    <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
                       {product.badge}
                     </span>
                   )}
+                  <button 
+                    onClick={() => toggleFavorite(product.id)}
+                    className={`absolute top-4 left-4 p-3 rounded-full transition shadow-lg ${
+                      favorites.includes(product.id)
+                        ? 'bg-accent text-white'
+                        : 'bg-white text-gray-400 hover:text-accent'
+                    }`}
+                  >
+                    <Heart size={18} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
+                  </button>
                 </div>
-                <div className="p-5">
-                  <p className="text-xs text-secondary uppercase font-semibold mb-1">
+                <div className="p-6">
+                  <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
                     {product.category}
                   </p>
-                  <h3 className="font-semibold text-lg mb-2 line-clamp-2">
+                  <h3 className="font-bold text-lg mb-3 line-clamp-2 text-gray-900 group-hover:text-accent transition">
                     {product.name}
                   </h3>
-                  <div className="mb-4">
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                    {product.description}
+                  </p>
+                  <div className="mb-4 flex items-baseline gap-2">
                     {product.oldPrice && (
-                      <span className="text-gray-400 line-through mr-2">
+                      <span className="text-sm text-gray-400 line-through">
                         {formatPrice(product.oldPrice)}
                       </span>
                     )}
-                    <span className="text-2xl font-bold text-accent">
+                    <span className="text-3xl font-bold text-accent">
                       {formatPrice(product.price)}
                     </span>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col gap-2">
                     <button 
                       onClick={() => addToCart(product.id)}
-                      className="flex-1 bg-accent text-white py-2 rounded-lg font-semibold hover:bg-secondary transition"
+                      className="w-full bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md hover:shadow-lg"
                     >
-                      Adicionar
+                      Adicionar ao Carrinho
                     </button>
-                    <button 
-                      onClick={() => toggleFavorite(product.id)}
-                      className={`p-2 rounded-lg border-2 transition ${
-                        favorites.includes(product.id)
-                          ? 'bg-accent border-accent text-white'
-                          : 'border-gray-300 hover:border-accent'
-                      }`}
-                    >
-                      <Heart size={20} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
+                    <button className="w-full border-2 border-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:border-accent hover:text-accent transition">
+                      Ver Detalhes
                     </button>
                   </div>
                 </div>
@@ -281,30 +403,6 @@ export default function Home() {
             >
               Ver mais no Instagram →
             </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center p-6 bg-lightBg rounded-xl">
-              <h3 className="text-lg font-bold text-primary mb-2">Entrega Rápida</h3>
-              <p className="text-gray-600">Para todo Brasil</p>
-            </div>
-            <div className="text-center p-6 bg-lightBg rounded-xl">
-              <h3 className="text-lg font-bold text-primary mb-2">Parcele em até 12x</h3>
-              <p className="text-gray-600">Sem juros no cartão</p>
-            </div>
-            <div className="text-center p-6 bg-lightBg rounded-xl">
-              <h3 className="text-lg font-bold text-primary mb-2">Compra Segura</h3>
-              <p className="text-gray-600">Site protegido</p>
-            </div>
-            <div className="text-center p-6 bg-lightBg rounded-xl">
-              <h3 className="text-lg font-bold text-primary mb-2">Atendimento</h3>
-              <p className="text-gray-600">WhatsApp e telefone</p>
-            </div>
           </div>
         </div>
       </section>
