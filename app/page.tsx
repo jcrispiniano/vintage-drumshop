@@ -45,19 +45,18 @@ export default function Home() {
         {/* Main Header */}
         <div className="bg-lightBg py-4">
           <div className="container mx-auto px-4 flex items-center justify-between gap-4">
-            <a href="/" className="flex-shrink-0 flex items-center gap-4">
+            <a href="/" className="flex-shrink-0 flex items-center gap-3">
               <img 
-                src="/vintage-drumshop/logo.svg" 
-                alt="Vintage Drum Shop Logo" 
-                className="h-14 w-auto object-contain"
-                style={{ maxWidth: '140px' }}
+                src="/vintage-drumshop/logo-small.png" 
+                alt="Vintage Drum Shop" 
+                className="h-12 md:h-14 w-auto object-contain"
               />
-              <div>
-                <h1 className="text-xl md:text-2xl font-bold text-primary">
+              <div className="hidden md:block">
+                <h1 className="text-lg font-bold text-primary leading-tight">
                   Vintage Drum Shop
                 </h1>
-                <p className="text-xs text-secondary hidden md:block">
-                  Revenda Oficial Wincent & Istanbul
+                <p className="text-xs text-secondary">
+                  Wincent & Istanbul
                 </p>
               </div>
             </a>
@@ -415,10 +414,9 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <img 
-                src="/vintage-drumshop/logo.svg" 
+                src="/vintage-drumshop/logo-small.png" 
                 alt="Vintage Drum Shop" 
-                className="h-24 w-auto mb-4"
-                style={{ maxWidth: '180px' }}
+                className="h-20 w-auto mb-4"
               />
               <p className="text-sm text-gray-300">
                 Revenda oficial Wincent e Istanbul Cymbals. Qualidade e tradição em instrumentos musicais.
