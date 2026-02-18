@@ -9,6 +9,15 @@ export const metadata: Metadata = {
   title: 'Vintage Drum Shop - Baterias e Acessórios Profissionais',
   description: 'Revenda oficial Wincent e Istanbul Cymbals. A melhor seleção de baterias, pratos e acessórios musicais.',
   keywords: 'baterias, pratos, wincent, istanbul cymbals, drum shop, instrumentos musicais',
+  icons: {
+    icon: '/vintage-drumshop/logo.jpg',
+    apple: '/vintage-drumshop/logo.jpg',
+  },
+  openGraph: {
+    title: 'Vintage Drum Shop',
+    description: 'Revenda oficial Wincent e Istanbul Cymbals',
+    images: ['/vintage-drumshop/logo.jpg'],
+  },
 }
 
 export default function RootLayout({

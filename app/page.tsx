@@ -45,13 +45,20 @@ export default function Home() {
         {/* Main Header */}
         <div className="bg-lightBg py-4">
           <div className="container mx-auto px-4 flex items-center justify-between gap-4">
-            <div className="flex-shrink-0">
-              <h1 className="text-3xl font-bold text-primary">
-                🥁 Vintage Drum Shop
-              </h1>
-              <p className="text-xs text-secondary">
-                Revenda Oficial Wincent & Istanbul
-              </p>
+            <div className="flex-shrink-0 flex items-center gap-3">
+              <img 
+                src="/vintage-drumshop/logo.jpg" 
+                alt="Vintage Drum Shop Logo" 
+                className="h-16 w-auto"
+              />
+              <div>
+                <h1 className="text-2xl font-bold text-primary">
+                  Vintage Drum Shop
+                </h1>
+                <p className="text-xs text-secondary">
+                  Revenda Oficial Wincent & Istanbul
+                </p>
+              </div>
             </div>
 
             <div className="flex-1 max-w-xl">
@@ -305,9 +312,11 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="text-xl font-bold text-accent mb-4">
-                Vintage Drum Shop
-              </h3>
+              <img 
+                src="/vintage-drumshop/logo.jpg" 
+                alt="Vintage Drum Shop" 
+                className="h-20 w-auto mb-4 bg-lightBg rounded-lg p-2"
+              />
               <p className="text-sm text-gray-300">
                 Revenda oficial Wincent e Istanbul Cymbals. Qualidade e tradição em instrumentos musicais.
               </p>
