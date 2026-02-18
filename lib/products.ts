@@ -97,3 +97,14 @@ export function formatPrice(price: number): string {
     currency: 'BRL'
   });
 }
+
+export const contactInfo = {
+  phone: '+55 11 94739-7347',
+  phoneFormatted: '(11) 94739-7347',
+  whatsapp: 'https://wa.me/5511947397347',
+  email: 'contato@vintagedrumshop.com',
+  instagram: 'https://www.instagram.com/vintage.drumshop',
+  instagramHandle: '@vintage.drumshop',
+  address: 'São Paulo - SP',
+  hours: 'Seg-Sex: 9h-18h | Sáb: 9h-13h'
+};

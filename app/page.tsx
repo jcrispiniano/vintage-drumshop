@@ -1,7 +1,7 @@
 'use client';
 
-import { products, formatPrice, categories } from '@/lib/products';
-import { ShoppingCart, Heart, Search, Menu } from 'lucide-react';
+import { products, formatPrice, categories, contactInfo } from '@/lib/products';
+import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Home() {
@@ -31,8 +31,9 @@ export default function Home() {
         <div className="bg-darkBg text-white py-2">
           <div className="container mx-auto px-4 flex justify-between text-sm">
             <div className="space-x-4">
-              <span>📱 (11) 96440-5519</span>
-              <span>📧 contato@vintagedrumshop.com</span>
+              <span>📱 {contactInfo.phoneFormatted}</span>
+              <span>📧 {contactInfo.email}</span>
+              <span>📷 {contactInfo.instagramHandle}</span>
             </div>
             <div className="space-x-4">
               <a href="#" className="hover:text-accent">🔐 Entrar</a>
@@ -65,6 +66,15 @@ export default function Home() {
             </div>
 
             <div className="flex gap-4">
+              <a 
+                href={contactInfo.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center hover:text-accent"
+              >
+                <Instagram size={24} />
+                <span className="text-xs">Instagram</span>
+              </a>
               <button className="relative flex flex-col items-center hover:text-accent">
                 <Heart size={24} />
                 <span className="text-xs">Favoritos</span>
@@ -217,6 +227,51 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Instagram */}
+      <section className="py-16 bg-gradient-to-br from-purple-50 to-pink-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-primary mb-4">
+              📷 Siga no Instagram
+            </h2>
+            <a 
+              href={contactInfo.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xl text-secondary hover:text-accent transition"
+            >
+              {contactInfo.instagramHandle}
+            </a>
+          </div>
+          
+          {/* Instagram Feed Placeholder */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+              <a
+                key={i}
+                href={contactInfo.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="aspect-square bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg overflow-hidden hover:scale-105 transition transform shadow-lg hover:shadow-xl flex items-center justify-center text-6xl"
+              >
+                {i % 4 === 0 ? '🥁' : i % 3 === 0 ? '🎵' : i % 2 === 0 ? '🥢' : '📦'}
+              </a>
+            ))}
+          </div>
+          
+          <div className="text-center mt-8">
+            <a
+              href={contactInfo.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-full font-semibold hover:from-purple-600 hover:to-pink-600 transition"
+            >
+              Ver mais no Instagram →
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -277,18 +332,30 @@ export default function Home() {
             <div>
               <h4 className="font-bold mb-4 text-accent">Contato</h4>
               <p className="text-sm space-y-2">
-                <span className="block">📱 (11) 96440-5519</span>
-                <span className="block">📧 contato@vintagedrumshop.com</span>
-                <span className="block">📍 São Paulo - SP</span>
-                <span className="block">⏰ Seg-Sex: 9h-18h | Sáb: 9h-13h</span>
+                <span className="block">📱 {contactInfo.phoneFormatted}</span>
+                <span className="block">📧 {contactInfo.email}</span>
+                <span className="block">📷 {contactInfo.instagramHandle}</span>
+                <span className="block">📍 {contactInfo.address}</span>
+                <span className="block">⏰ {contactInfo.hours}</span>
               </p>
-              <a 
-                href="https://wa.me/5511964405519" 
-                target="_blank"
-                className="inline-block mt-4 bg-green-500 px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-600 transition"
-              >
-                💬 WhatsApp
-              </a>
+              <div className="flex gap-2 mt-4">
+                <a 
+                  href={contactInfo.whatsapp} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-green-500 px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-600 transition text-center"
+                >
+                  💬 WhatsApp
+                </a>
+                <a 
+                  href={contactInfo.instagram} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 rounded-full text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition text-center"
+                >
+                  📷 Instagram
+                </a>
+              </div>
             </div>
           </div>
           <div className="border-t border-gray-700 pt-8 text-center text-sm text-gray-400">
