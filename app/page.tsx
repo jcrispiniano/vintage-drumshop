@@ -188,8 +188,8 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <p className="font-bold text-sm">12x Sem Juros</p>
-                <p className="text-xs text-gray-600">No cartão</p>
+                <p className="font-bold text-sm">Até 3x Sem Juros</p>
+                <p className="text-xs text-gray-600">No cartão de crédito</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -199,7 +199,7 @@ export default function Home() {
                 </svg>
               </div>
               <div>
-                <p className="font-bold text-sm">14% de Desconto</p>
+                <p className="font-bold text-sm">5% de Desconto</p>
                 <p className="text-xs text-gray-600">No PIX ou Boleto</p>
               </div>
             </div>
