@@ -82,13 +82,13 @@ export const products: Product[] = [
 ];
 
 export const categories = [
-  { id: 'baterias', name: 'Baterias', icon: '🥁' },
-  { id: 'pratos', name: 'Pratos', icon: '🎵' },
-  { id: 'caixas', name: 'Caixas', icon: '📦' },
-  { id: 'baquetas', name: 'Baquetas', icon: '🥢' },
-  { id: 'ferragens', name: 'Ferragens', icon: '🔧' },
-  { id: 'peles', name: 'Peles', icon: '🎯' },
-  { id: 'acessorios', name: 'Acessórios', icon: '⚙️' },
+  { id: 'baterias', name: 'Baterias' },
+  { id: 'pratos', name: 'Pratos' },
+  { id: 'caixas', name: 'Caixas' },
+  { id: 'baquetas', name: 'Baquetas' },
+  { id: 'ferragens', name: 'Ferragens' },
+  { id: 'peles', name: 'Peles' },
+  { id: 'acessorios', name: 'Acessórios' },
 ];
 
 export function formatPrice(price: number): string {
