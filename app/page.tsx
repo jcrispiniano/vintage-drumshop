@@ -46,11 +46,11 @@ export default function Home() {
         {/* Main Header */}
         <div className="bg-lightBg py-4">
           <div className="container mx-auto px-4 flex items-center justify-between gap-4">
-            <a href="/" className="flex-shrink-0 flex items-center gap-3">
+            <a href="/" className="flex-shrink-0 flex items-center gap-2 md:gap-3">
               <img 
                 src="/vintage-drumshop/logo-small.png" 
                 alt="Vintage Drum Shop" 
-                className="h-16 md:h-20 w-auto object-contain"
+                className="h-12 md:h-20 w-auto object-contain"
               />
               <div className="hidden md:block">
                 <h1 className="text-xl font-bold text-primary leading-tight">
@@ -66,26 +66,26 @@ export default function Home() {
               <div className="relative">
                 <input 
                   type="text" 
-                  placeholder="Buscar produtos..." 
-                  className="w-full px-4 py-2 rounded-full border-2 border-gray-300 focus:border-accent outline-none"
+                  placeholder="Buscar..." 
+                  className="w-full px-3 py-2 text-sm md:text-base rounded-full border-2 border-gray-300 focus:border-accent outline-none"
                 />
-                <Search className="absolute right-4 top-2.5 text-gray-400" size={20} />
+                <Search className="absolute right-3 top-2.5 text-gray-400" size={18} />
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-2 md:gap-4">
               <a 
                 href={contactInfo.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center hover:text-accent"
+                className="hidden md:flex flex-col items-center hover:text-accent"
               >
                 <Instagram size={24} />
                 <span className="text-xs">Instagram</span>
               </a>
               <Link href="/favoritos" className="relative flex flex-col items-center hover:text-accent">
-                <Heart size={24} />
-                <span className="text-xs">Favoritos</span>
+                <Heart size={20} className="md:w-6 md:h-6" />
+                <span className="text-xs hidden md:inline">Favoritos</span>
                 {favorites.length > 0 && (
                   <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {favorites.length}
@@ -93,8 +93,8 @@ export default function Home() {
                 )}
               </Link>
               <Link href="/carrinho" className="relative flex flex-col items-center hover:text-accent">
-                <ShoppingCart size={24} />
-                <span className="text-xs">Carrinho</span>
+                <ShoppingCart size={20} className="md:w-6 md:h-6" />
+                <span className="text-xs hidden md:inline">Carrinho</span>
                 {cartItems.length > 0 && (
                   <span className="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
