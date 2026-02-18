@@ -4,6 +4,7 @@ import { products, formatPrice, categories, contactInfo } from '@/lib/products';
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
+import InstagramFeed from '@/components/InstagramFeed';
 
 export default function Home() {
   const { cartItems, favorites, addToCart, toggleFavorite } = useCart();
@@ -386,24 +387,8 @@ export default function Home() {
             </a>
           </div>
           
-          {/* Instagram Feed Placeholder */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <a
-                key={i}
-                href={contactInfo.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="aspect-square bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg overflow-hidden hover:scale-105 transition transform shadow-lg hover:shadow-xl"
-              >
-                <img 
-                  src="/vintage-drumshop/logo.png" 
-                  alt="Instagram Post" 
-                  className="w-full h-full object-cover opacity-30"
-                />
-              </a>
-            ))}
-          </div>
+          {/* Instagram Feed */}
+          <InstagramFeed />
           
           <div className="text-center mt-8">
             <a
