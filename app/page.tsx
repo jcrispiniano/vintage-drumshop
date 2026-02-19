@@ -203,16 +203,53 @@ export default function Home() {
               {/* Apenas categorias principais visíveis */}
               {categories.filter(cat => 
                 ['baterias', 'pratos', 'caixas', 'peles', 'baquetas', 'acessorios'].includes(cat.id)
-              ).map(cat => (
-                <li key={cat.id}>
-                  <a 
-                    href={`#${cat.id}`}
-                    className="block px-4 py-3 hover:bg-secondary transition"
-                  >
-                    {cat.name}
-                  </a>
-                </li>
-              ))}
+              ).map(cat => {
+                // Pratos tem dropdown especial
+                if (cat.id === 'pratos') {
+                  return (
+                    <li key={cat.id} className="relative group">
+                      <a 
+                        href="#pratos"
+                        className="block px-4 py-3 hover:bg-secondary transition"
+                      >
+                        {cat.name}
+                      </a>
+                      {/* Dropdown de marcas */}
+                      <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-50">
+                        <ul className="py-2">
+                          <li>
+                            <a 
+                              href="#pratos"
+                              className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
+                            >
+                              Todos os Pratos
+                            </a>
+                          </li>
+                          <li>
+                            <a 
+                              href="#istanbul-agop"
+                              className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
+                            >
+                              Istanbul Agop
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                  );
+                }
+                
+                return (
+                  <li key={cat.id}>
+                    <a 
+                      href={`#${cat.id}`}
+                      className="block px-4 py-3 hover:bg-secondary transition"
+                    >
+                      {cat.name}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </nav>
@@ -457,6 +494,82 @@ export default function Home() {
                       Ver Detalhes
                     </button>
                   </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Istanbul Agop - Pratos */}
+      <section id="istanbul-agop" className="py-20 bg-gradient-to-br from-gray-900 to-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="text-accent font-bold text-sm tracking-wider uppercase">Marca Oficial</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-4">
+              Pratos Istanbul Agop
+            </h2>
+            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+              Pratos artesanais turcos feitos à mão há gerações. Som único e autêntico.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products.filter(p => p.category === 'pratos' && p.brand === 'istanbul').map(product => (
+              <div 
+                key={product.id} 
+                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
+              >
+                <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
+                  <img 
+                    src={product.image}
+                    alt={product.name}
+                    className="h-48 w-auto object-contain group-hover:scale-110 transition"
+                  />
+                  {product.badge && (
+                    <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
+                      {product.badge}
+                    </span>
+                  )}
+                  <button 
+                    onClick={() => toggleFavorite(product.id)}
+                    className={`absolute top-4 left-4 p-3 rounded-full transition shadow-lg ${
+                      favorites.includes(product.id)
+                        ? 'bg-accent text-white'
+                        : 'bg-white text-gray-400 hover:text-accent'
+                    }`}
+                  >
+                    <Heart size={18} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
+                  </button>
+                </div>
+                <div className="p-6">
+                  <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
+                    {product.category}
+                  </p>
+                  <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-2">
+                    {product.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                    {product.description}
+                  </p>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      {product.oldPrice && (
+                        <p className="text-gray-400 line-through text-sm">
+                          {formatPrice(product.oldPrice)}
+                        </p>
+                      )}
+                      <p className="text-2xl font-bold text-accent">
+                        {formatPrice(product.price)}
+                      </p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => handleAddToCart(product.id)}
+                    className="w-full bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md"
+                  >
+                    Adicionar ao Carrinho
+                  </button>
                 </div>
               </div>
             ))}
