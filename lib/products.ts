@@ -42,7 +42,7 @@ export const products: Product[] = [
     price: 5500.00,
     image: '/vintage-drumshop/produtos/pratos/ride-24-joey-waronker.jpg',
     badge: 'Signature',
-    description: 'Prato Ride 24" assinado por Joey Waronker, baterista conhecido por seu trabalho com Beck, R.E.M. e Atoms for Peace. Desenvolvido em colaboração direta com o artista, este ride oferece um som versátil e complexo, ideal para uma ampla gama de estilos musicais. Com acabamento tradicional e martelamento artesanal característico da Istanbul Agop, proporciona definição cristalina e sustain controlado.',
+    description: 'O Prato Istanbul Agop "Joey Waronker" Signature Ride 24" é projetado para bateristas que buscam um som distintivo e poderoso. Com design elegante e acabamento impecável, oferece um som rico e profundo, perfeito para diversos estilos musicais, desde o jazz sofisticado até o rock enérgico. Sua construção artesanal e técnicas de martelagem especializadas garantem uma resposta rápida e um ataque impressionante. Desenvolvida para atender às exigências de músicos de alto nível, a série Signature combina tradição e inovação.',
     featured: true
   },
   {
