@@ -53,6 +53,15 @@ export default function Home() {
           {/* Categorias */}
           <nav className="flex-1 overflow-y-auto">
             <ul className="py-2">
+              <li>
+                <a 
+                  href="#produtos"
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="block px-6 py-3 hover:bg-lightBg transition border-b border-gray-100 font-bold text-primary"
+                >
+                  Todos os Produtos
+                </a>
+              </li>
               {categories.map(cat => (
                 <li key={cat.id}>
                   <a 
@@ -118,9 +127,6 @@ export default function Home() {
                 <h1 className="text-xl font-bold text-primary leading-tight">
                   Vintage Drum Shop
                 </h1>
-                <p className="text-sm text-secondary">
-                  Wincent & Istanbul
-                </p>
               </div>
             </a>
 
@@ -171,6 +177,14 @@ export default function Home() {
         <nav className="bg-primary text-white hidden md:block">
           <div className="container mx-auto px-4">
             <ul className="flex justify-center flex-wrap">
+              <li>
+                <a 
+                  href="#produtos"
+                  className="block px-4 py-3 hover:bg-secondary transition font-bold"
+                >
+                  Todos os Produtos
+                </a>
+              </li>
               {categories.map(cat => (
                 <li key={cat.id}>
                   <a 
