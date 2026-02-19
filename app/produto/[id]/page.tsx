@@ -6,6 +6,12 @@ import { ArrowLeft, Heart, ShoppingCart, Share2 } from 'lucide-react';
 import { products, formatPrice, contactInfo } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 
+export async function generateStaticParams() {
+  return products.map(product => ({
+    id: product.id.toString()
+  }));
+}
+
 export default function ProdutoPage() {
   const params = useParams();
   const { addToCart, toggleFavorite, favorites } = useCart();
