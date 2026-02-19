@@ -68,6 +68,17 @@ export const products: Product[] = [
     featured: true
   },
   {
+    id: 6,
+    name: 'Prato Istanbul Agop "Special Jazz Edition" Ride 24"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 5699.00,
+    image: '/vintage-drumshop/produtos/pratos/ride-24-special-jazz.jpg',
+    badge: 'Premium',
+    description: 'O Prato Istanbul Agop "Special Jazz Edition" Ride 24" é uma edição especial desenvolvida especificamente para bateristas de jazz que buscam um som autêntico e versátil. Com suas ranhuras características e martelamento artesanal tradicional, este ride oferece um som quente, rico em harmônicos e com excelente definição de ponta de baqueta. Ideal para quem busca aquele som clássico de jazz com a qualidade e artesania que só a Istanbul Agop pode proporcionar.',
+    featured: true
+  },
+  {
     id: 2,
     name: 'Crash Istanbul Agop Power Brilliant 22"',
     category: 'pratos',
