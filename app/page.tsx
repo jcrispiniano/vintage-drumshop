@@ -185,13 +185,13 @@ export default function Home() {
                   Todos os Produtos
                 </a>
                 {/* Dropdown */}
-                <div className="absolute left-0 top-full bg-white text-gray-800 shadow-2xl rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[250px] z-50">
+                <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[250px] z-50">
                   <ul className="py-2">
                     {categories.map(cat => (
                       <li key={cat.id}>
                         <a 
                           href={`#${cat.id}`}
-                          className="block px-6 py-2 hover:bg-lightBg transition text-sm"
+                          className="block px-6 py-2 hover:bg-white hover:bg-opacity-60 transition text-sm"
                         >
                           {cat.name}
                         </a>
