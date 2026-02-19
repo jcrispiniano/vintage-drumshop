@@ -57,6 +57,17 @@ export const products: Product[] = [
     featured: true
   },
   {
+    id: 5,
+    name: 'Chimbal Istanbul Agop Xist Dry Dark Brilliant Hi-Hat 15"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 2799.00,
+    image: '/vintage-drumshop/produtos/pratos/hihat-15-xist-dry-dark-brilliant.jpg',
+    badge: 'Premium',
+    description: 'As linhas "Dry Dark" possuem características sonoras inclinadas para ritmos mais modernos, como Worship, Drum N\' Bass e estilos que envolvem misturas com elementos eletrônicos. O Chimbal Istanbul Agop Xist Dry Dark Brilliant Hi-Hat 15" possui timbre grave, dark e trash, mas com um ataque brilhante e preciso. Prato "top" muito fino, combinado com um prato "bottom" médio-pesado, que também soa muito bem usado como stack. Quando não emparelhados, o prato superior cria um crash explosivo, porém seco.',
+    featured: true
+  },
+  {
     id: 2,
     name: 'Crash Istanbul Agop Power Brilliant 22"',
     category: 'pratos',
