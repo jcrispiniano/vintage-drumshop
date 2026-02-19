@@ -108,12 +108,12 @@ export default function Home() {
         {/* Navigation */}
         <nav className="bg-primary text-white">
           <div className="container mx-auto px-4">
-            <ul className="flex justify-center space-x-1">
+            <ul className="flex overflow-x-auto scrollbar-hide md:justify-center space-x-1 md:flex-wrap">
               {categories.map(cat => (
-                <li key={cat.id}>
+                <li key={cat.id} className="flex-shrink-0">
                   <a 
                     href={`#${cat.id}`}
-                    className="block px-4 py-3 hover:bg-secondary transition"
+                    className="block px-3 md:px-4 py-3 hover:bg-secondary transition whitespace-nowrap text-sm md:text-base"
                   >
                     {cat.name}
                   </a>

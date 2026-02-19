@@ -85,10 +85,16 @@ export const categories = [
   { id: 'baterias', name: 'Baterias' },
   { id: 'pratos', name: 'Pratos' },
   { id: 'caixas', name: 'Caixas' },
-  { id: 'baquetas', name: 'Baquetas' },
-  { id: 'ferragens', name: 'Ferragens' },
   { id: 'peles', name: 'Peles' },
+  { id: 'baquetas', name: 'Baquetas' },
   { id: 'acessorios', name: 'Acessórios' },
+  { id: 'ferragens', name: 'Ferragens' },
+  { id: 'bags', name: 'Bags, Cases e Capas' },
+  { id: 'pecas', name: 'Peças de Reparo e Manutenção' },
+  { id: 'cajon', name: 'Cajón' },
+  { id: 'estudo', name: 'Estudo' },
+  { id: 'kids', name: 'Kids Musicalização Infantil' },
+  { id: 'livros', name: 'Livros, DVDs e CDs' },
 ];
 
 export function formatPrice(price: number): string {
