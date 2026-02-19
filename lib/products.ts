@@ -25,6 +25,17 @@ export const products: Product[] = [
   },
   {
     id: 2,
+    name: 'Prato Istanbul Agop Xist Dry Dark Brilliant Crash 19"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 2099.00,
+    image: '/vintage-drumshop/produtos/pratos/crash-19-xist-dry-dark-brilliant.jpg',
+    badge: 'Novo',
+    description: 'O Prato Istanbul Agop Xist Dry Dark Brilliant Crash 19" possui timbre grave, dark e trash, mas com um ataque brilhante e preciso. Prato com espessura fina, que ao atacado possui decay curto, mas cortante. Pelo seu martelamento profundo, pode ser até usado como ride quando tocado mais leve. As linhas "Dry Dark" possuem características sonoras mais particulares, inclinação para ritmos mais modernos, como Worship, Drum N\' Bass e estilos que envolvem misturas com elementos eletrônicos.',
+    featured: true
+  },
+  {
+    id: 2,
     name: 'Crash Istanbul Agop Power Brilliant 22"',
     category: 'pratos',
     brand: 'istanbul',
