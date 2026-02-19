@@ -75,7 +75,7 @@ export const products: Product[] = [
     price: 5699.00,
     image: '/vintage-drumshop/produtos/pratos/ride-24-special-jazz.jpg',
     badge: 'Premium',
-    description: 'O Prato Istanbul Agop "Special Jazz Edition" Ride 24" é uma edição especial desenvolvida especificamente para bateristas de jazz que buscam um som autêntico e versátil. Com suas ranhuras características e martelamento artesanal tradicional, este ride oferece um som quente, rico em harmônicos e com excelente definição de ponta de baqueta. Ideal para quem busca aquele som clássico de jazz com a qualidade e artesania que só a Istanbul Agop pode proporcionar.',
+    description: 'O Prato Istanbul Agop "Special Jazz Edition" Ride 24" é uma edição especial desenvolvida especificamente para bateristas de jazz que buscam um som autêntico e versátil. Liga Bronze B20, conhecida por sua durabilidade e qualidade sonora superior. Acabamento tradicional, com martelamento artesanal e lathing refinado, conferindo um visual clássico e sonoridade autêntica. Produção feita à mão na Turquia, garantindo a individualidade de cada peça. Com suas ranhuras características, este ride oferece um som quente, rico em harmônicos e com excelente definição de ponta de baqueta.',
     featured: true
   },
   {
