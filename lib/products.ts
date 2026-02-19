@@ -46,6 +46,17 @@ export const products: Product[] = [
     featured: true
   },
   {
+    id: 4,
+    name: 'Prato Istanbul Agop Xist Ion Dark Trash 19"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 2099.00,
+    image: '/vintage-drumshop/produtos/pratos/trash-19-xist-ion-dark.jpg',
+    badge: 'Effect',
+    description: 'A série XIST oferece uma seleção diversificada de sons, do clássico ao inovador. O Prato Istanbul Agop XIST "ION" Dark Trash 19" tem como característica principal sua complexidade que é diferente de todos os outros pratos da série. Possui resposta rápida ao toque e decay curto, com timbre grave e "trash". Sua complexidade permite que o baterista também possa usá-lo como ride, desde que toque de forma mais suave. Por ter sonoridade bem específica, é um prato que se encaixa em contextos bem particulares.',
+    featured: true
+  },
+  {
     id: 2,
     name: 'Crash Istanbul Agop Power Brilliant 22"',
     category: 'pratos',
