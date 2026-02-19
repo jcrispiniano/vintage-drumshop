@@ -177,13 +177,28 @@ export default function Home() {
         <nav className="bg-primary text-white hidden md:block">
           <div className="container mx-auto px-4">
             <ul className="flex justify-center flex-wrap">
-              <li>
+              <li className="relative group">
                 <a 
                   href="#produtos"
                   className="block px-4 py-3 hover:bg-secondary transition font-bold"
                 >
                   Todos os Produtos
                 </a>
+                {/* Dropdown */}
+                <div className="absolute left-0 top-full bg-white text-gray-800 shadow-2xl rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[250px] z-50">
+                  <ul className="py-2">
+                    {categories.map(cat => (
+                      <li key={cat.id}>
+                        <a 
+                          href={`#${cat.id}`}
+                          className="block px-6 py-2 hover:bg-lightBg transition text-sm"
+                        >
+                          {cat.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </li>
               {categories.map(cat => (
                 <li key={cat.id}>
