@@ -200,7 +200,10 @@ export default function Home() {
                   </ul>
                 </div>
               </li>
-              {categories.map(cat => (
+              {/* Apenas categorias principais visíveis */}
+              {categories.filter(cat => 
+                ['baterias', 'pratos', 'caixas', 'peles', 'baquetas', 'acessorios'].includes(cat.id)
+              ).map(cat => (
                 <li key={cat.id}>
                   <a 
                     href={`#${cat.id}`}
