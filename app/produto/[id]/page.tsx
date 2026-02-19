@@ -8,8 +8,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ProdutoPage({ params }: { params: { id: string } }) {
-  const productId = parseInt(params.id);
+export default async function ProdutoPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const productId = parseInt(id);
   const product = products.find(p => p.id === productId);
 
   if (!product) {
