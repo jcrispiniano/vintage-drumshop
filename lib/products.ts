@@ -79,14 +79,14 @@ export const products: Product[] = [
     featured: true
   },
   {
-    id: 2,
-    name: 'Crash Istanbul Agop Power Brilliant 22"',
+    id: 7,
+    name: 'Crash Istanbul Agop Xist Power Brilliant 22"',
     category: 'pratos',
     brand: 'istanbul',
     price: 2999.00,
-    image: '🎵',
+    image: '/vintage-drumshop/produtos/pratos/crash-22-power-brilliant.jpg',
     badge: 'Novo',
-    description: 'Prato crash com projeção e brilho excepcional',
+    description: 'Prato crash com projeção e brilho excepcional da série Xist. Com acabamento brilhante e peso médio-pesado, oferece alta projeção e corte para performances que exigem volume. Ideal para rock, metal e estilos mais enérgicos.',
     featured: true
   },
   {
