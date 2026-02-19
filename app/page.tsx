@@ -490,9 +490,12 @@ export default function Home() {
                     >
                       Adicionar ao Carrinho
                     </button>
-                    <button className="w-full border-2 border-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:border-accent hover:text-accent transition">
+                    <Link 
+                      href={`/produto/${product.id}`}
+                      className="w-full border-2 border-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:border-accent hover:text-accent transition text-center block"
+                    >
                       Ver Detalhes
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -564,12 +567,20 @@ export default function Home() {
                       </p>
                     </div>
                   </div>
-                  <button 
-                    onClick={() => handleAddToCart(product.id)}
-                    className="w-full bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md"
-                  >
-                    Adicionar ao Carrinho
-                  </button>
+                  <div className="flex flex-col gap-2">
+                    <Link 
+                      href={`/produto/${product.id}`}
+                      className="w-full border-2 border-primary text-primary py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition text-center block"
+                    >
+                      Ver Detalhes
+                    </Link>
+                    <button 
+                      onClick={() => handleAddToCart(product.id)}
+                      className="w-full bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md"
+                    >
+                      Adicionar ao Carrinho
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -640,12 +651,20 @@ export default function Home() {
                       </p>
                     </div>
                   </div>
-                  <button 
-                    onClick={() => handleAddToCart(product.id)}
-                    className="w-full bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md"
-                  >
-                    Adicionar ao Carrinho
-                  </button>
+                  <div className="flex flex-col gap-2">
+                    <Link 
+                      href={`/produto/${product.id}`}
+                      className="w-full border-2 border-white text-white py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition text-center block"
+                    >
+                      Ver Detalhes
+                    </Link>
+                    <button 
+                      onClick={() => handleAddToCart(product.id)}
+                      className="w-full bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md"
+                    >
+                      Adicionar ao Carrinho
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
