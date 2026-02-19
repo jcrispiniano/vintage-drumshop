@@ -53,7 +53,7 @@ export const products: Product[] = [
     price: 2099.00,
     image: '/vintage-drumshop/produtos/pratos/trash-19-xist-ion-dark.jpg',
     badge: 'Effect',
-    description: 'A série XIST oferece uma seleção diversificada de sons, do clássico ao inovador. O Prato Istanbul Agop XIST "ION" Dark Trash 19" tem como característica principal sua complexidade que é diferente de todos os outros pratos da série. Possui resposta rápida ao toque e decay curto, com timbre grave e "trash". Sua complexidade permite que o baterista também possa usá-lo como ride, desde que toque de forma mais suave. Por ter sonoridade bem específica, é um prato que se encaixa em contextos bem particulares.',
+    description: 'A série XIST é a que possui mais modelos dentre as linhas da Istanbul Agop. Isso significa que as possibilidades que você pode alcançar com esses pratos não têm fim. Todos os pratos da série são feitos sob técnicas modernas de produção combinadas com processos tradicionais de fabricação de pratos manuais que oferecem aos bateristas uma seleção diversificada de sons, do clássico ao inovador. O Prato Istanbul Agop XIST "ION" Dark Trash 19" tem como característica principal sua complexidade que é diferente de todos os outros pratos da série. Possui resposta rápida ao toque e decay curto, com timbre grave e "trash". Sua complexidade permite que o baterista também possa usá-lo como ride, desde que toque de forma mais suave.',
     featured: true
   },
   {
