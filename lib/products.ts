@@ -14,13 +14,13 @@ export interface Product {
 export const products: Product[] = [
   {
     id: 1,
-    name: 'Crash Istanbul Agop Xist Dry Dark Brilliant 22"',
+    name: 'Istanbul Agop Traditional Clap Stack Set (11"/13"/15") CSFX',
     category: 'pratos',
     brand: 'istanbul',
     price: 2999.00,
-    image: '🎵',
-    badge: 'Novo',
-    description: 'Prato crash profissional com som seco e definido',
+    image: '/vintage-drumshop/produtos/pratos/clap-stack-set.jpg',
+    badge: 'Effect',
+    description: 'O Istanbul Agop Traditional Clap Stack Set é uma coleção indispensável para bateristas que buscam um som autêntico e versátil. Disponível em três tamanhos — 11", 13" e 15" — este conjunto é ideal para diversos estilos musicais, desde o jazz sutil até o rock enérgico. Com design clássico e acabamento de alta qualidade, oferece um som vibrante, cheio de nuances e caráter. A construção artesanal e as técnicas de martelagem especializadas proporcionam uma resposta rápida e um ataque explosivo.',
     featured: true
   },
   {

@@ -1,0 +1,134 @@
+[
+  {
+    "id": 301,
+    "name": "Baqueta Wincent 5A (W-5A) Hickory",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 126.00,
+    "image": "🥁",
+    "badge": null,
+    "description": "Baqueta 5A tradicional em madeira Hickory",
+    "featured": true
+  },
+  {
+    "id": 302,
+    "name": "Baqueta Wincent 5A Black (W-5ACB) Hickory",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 126.45,
+    "image": "🥁",
+    "badge": null,
+    "description": "Baqueta 5A com acabamento preto em Hickory",
+    "featured": false
+  },
+  {
+    "id": 303,
+    "name": "Baqueta Wincent 5AXL (W-5AXL) Hickory",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 126.45,
+    "image": "🥁",
+    "badge": null,
+    "description": "Baqueta 5A extra longa em Hickory",
+    "featured": false
+  },
+  {
+    "id": 304,
+    "name": "Baqueta Wincent 5A Precision (W-5AP) Hickory",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 126.45,
+    "image": "🥁",
+    "badge": null,
+    "description": "Baqueta 5A com precisão aprimorada",
+    "featured": false
+  },
+  {
+    "id": 305,
+    "name": "Baqueta Wincent 5A Jazz (W-5AJ) Hickory",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 126.45,
+    "image": "🥁",
+    "badge": null,
+    "description": "Baqueta 5A especial para jazz",
+    "featured": false
+  },
+  {
+    "id": 306,
+    "name": "Baqueta Wincent 5B (W-5B) Hickory",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 126.45,
+    "image": "🥁",
+    "badge": null,
+    "description": "Baqueta 5B tradicional em madeira Hickory",
+    "featured": true
+  },
+  {
+    "id": 307,
+    "name": "Baqueta Wincent 55F (W-55F) Hickory",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 126.45,
+    "image": "🥁",
+    "badge": null,
+    "description": "Baqueta modelo 55F em Hickory",
+    "featured": false
+  },
+  {
+    "id": 308,
+    "name": "Baqueta Wincent 7A (W-7A) Hickory",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 126.45,
+    "image": "🥁",
+    "badge": null,
+    "description": "Baqueta 7A leve e versátil em Hickory",
+    "featured": false
+  },
+  {
+    "id": 309,
+    "name": "Baqueta Wincent Rock (W-ROCK) Hickory",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 126.45,
+    "image": "🥁",
+    "badge": null,
+    "description": "Baqueta especial para rock e metal em Hickory",
+    "featured": false
+  },
+  {
+    "id": 310,
+    "name": "Baqueta Wincent Daniel Erlandsson Signature (W-DES)",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 136.38,
+    "image": "🥁",
+    "badge": "Signature",
+    "description": "Modelo assinado por Daniel Erlandsson",
+    "featured": true
+  },
+  {
+    "id": 311,
+    "name": "Baqueta Wincent Mikkey Dee Signature (W-MDS)",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 136.00,
+    "image": "🥁",
+    "badge": "Signature",
+    "description": "Modelo assinado por Mikkey Dee (Motörhead)",
+    "featured": true
+  },
+  {
+    "id": 312,
+    "name": "Baqueta Wincent El Pana Timbale Sticks (W-TBEP) - 2 Pares",
+    "category": "baquetas",
+    "brand": "wincent",
+    "price": 185.23,
+    "image": "🥁",
+    "badge": null,
+    "description": "Kit com 2 pares de baquetas para timbale em Hickory",
+    "featured": false
+  }
+]
