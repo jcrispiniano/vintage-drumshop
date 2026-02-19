@@ -191,7 +191,7 @@ export default function Home() {
                       <li key={cat.id}>
                         <a 
                           href={`#${cat.id}`}
-                          className="block px-6 py-2 hover:bg-white hover:bg-opacity-60 transition text-sm"
+                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
                         >
                           {cat.name}
                         </a>
