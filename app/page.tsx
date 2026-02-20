@@ -258,12 +258,12 @@ export default function Home() {
                 
                 return (
                   <li key={cat.id}>
-                    <a 
-                      href={`#${cat.id}`}
+                    <Link 
+                      href={`/${cat.id}`}
                       className="block px-4 py-3 hover:bg-secondary transition"
                     >
                       {cat.name}
-                    </a>
+                    </Link>
                   </li>
                 );
               })}
