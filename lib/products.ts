@@ -264,7 +264,7 @@ export const products: Product[] = [
     image: '🥁',
     badge: 'Novo',
     description: 'Kit completo profissional 5 peças',
-    featured: true
+    featured: false
   },
   {
     id: 23,
@@ -275,7 +275,7 @@ export const products: Product[] = [
     image: '🔧',
     badge: 'Premium',
     description: 'Pedal duplo profissional de alta performance',
-    featured: true
+    featured: false
   },
 ];
 
