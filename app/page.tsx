@@ -415,9 +415,9 @@ export default function Home() {
                   Baquetas profissionais suecas com madeira de primeira qualidade. 
                   Durabilidade e equilíbrio perfeito para todos os estilos musicais.
                 </p>
-                <button className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full">
+                <a href="/baquetas#wincent" className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center">
                   Ver Baquetas Wincent →
-                </button>
+                </a>
               </div>
             </div>
             

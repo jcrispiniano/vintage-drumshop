@@ -101,9 +101,18 @@ export default function BaquetasPage() {
         </div>
       </section>
 
-      {/* Produtos */}
-      <section className="py-20 bg-white">
+      {/* Todos as Baquetas */}
+      <section id="todas-baquetas" className="py-20 bg-white">
         <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="text-accent font-bold text-sm tracking-wider uppercase">Categoria</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-4">
+              Todas as Baquetas
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Explore nossa seleção completa de baquetas profissionais
+            </p>
+          </div>
           {categoryProducts.length === 0 ? (
             <div className="text-center py-16">
               <div className="bg-white rounded-2xl shadow-lg p-12 max-w-md mx-auto">
@@ -193,6 +202,93 @@ export default function BaquetasPage() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Wincent - Baquetas */}
+      <section id="wincent" className="py-20 bg-gradient-to-br from-gray-900 to-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="text-accent font-bold text-sm tracking-wider uppercase">Marca Oficial</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-4">
+              Baquetas Wincent
+            </h2>
+            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+              Baquetas profissionais suecas com madeira de primeira qualidade. Durabilidade e equilíbrio perfeito.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products.filter(p => p.category === 'baquetas' && p.brand === 'wincent').map(product => (
+              <div 
+                key={product.id} 
+                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
+              >
+                <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden block cursor-pointer">
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
+                  <img 
+                    src={product.image}
+                    alt={product.name}
+                    className="h-48 w-auto object-contain group-hover:scale-110 transition"
+                  />
+                  {product.badge && (
+                    <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
+                      {product.badge}
+                    </span>
+                  )}
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleFavorite(product.id);
+                    }}
+                    className={`absolute top-4 left-4 p-3 rounded-full transition shadow-lg ${
+                      favorites.includes(product.id)
+                        ? 'bg-accent text-white'
+                        : 'bg-white text-gray-400 hover:text-accent'
+                    }`}
+                  >
+                    <Heart size={18} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
+                  </button>
+                </Link>
+                <div className="p-6">
+                  <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
+                    Wincent
+                  </p>
+                  <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-2">
+                    {product.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                    {product.description}
+                  </p>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      {product.oldPrice && (
+                        <p className="text-gray-400 line-through text-sm">
+                          {formatPrice(product.oldPrice)}
+                        </p>
+                      )}
+                      <p className="text-2xl font-bold text-accent">
+                        {formatPrice(product.price)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Link 
+                      href={`/produto/${product.id}`}
+                      className="w-full border-2 border-accent text-accent py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block"
+                    >
+                      Ver Produto
+                    </Link>
+                    <button 
+                      onClick={() => handleAddToCart(product.id)}
+                      className="w-full bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md"
+                    >
+                      Adicionar ao Carrinho
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </div>
