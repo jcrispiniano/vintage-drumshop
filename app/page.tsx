@@ -426,11 +426,11 @@ export default function Home() {
                 OFICIAL
               </span>
               <div className="text-center">
-                <div className="h-32 flex items-center justify-center mx-auto mb-6">
+                <div className="h-24 flex items-center justify-center mx-auto mb-6">
                   <img 
                     src="/vintage-drumshop/istanbul-logo.png" 
                     alt="Istanbul Agop"
-                    className="max-h-full w-auto object-contain group-hover:scale-110 transition"
+                    className="h-full w-auto object-contain group-hover:scale-110 transition"
                   />
                 </div>
                 <p className="text-accent font-bold text-sm tracking-wide uppercase mb-3">Distribuidor Oficial</p>
