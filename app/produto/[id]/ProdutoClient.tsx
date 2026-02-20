@@ -1,13 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowLeft, Heart, ShoppingCart, Share2 } from 'lucide-react';
+import { ArrowLeft, Heart, ShoppingCart, Share2, X, ZoomIn } from 'lucide-react';
 import { Product, formatPrice, contactInfo, products } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
+import { useState } from 'react';
 
 export default function ProdutoClient({ product }: { product: Product }) {
   const { addToCart, toggleFavorite, favorites } = useCart();
   const isFavorite = favorites.includes(product.id);
+  const [isImageExpanded, setIsImageExpanded] = useState(false);
 
   const handleAddToCart = () => {
     addToCart({
@@ -64,17 +66,25 @@ export default function ProdutoClient({ product }: { product: Product }) {
         <div className="grid lg:grid-cols-2 gap-12 mb-12">
           {/* Imagem */}
           <div className="bg-white rounded-2xl p-8 shadow-lg">
-            <div className="relative aspect-square flex items-center justify-center">
+            <div 
+              className="relative aspect-square flex items-center justify-center cursor-pointer group"
+              onClick={() => setIsImageExpanded(true)}
+            >
               <img 
                 src={product.image}
                 alt={product.name}
-                className="max-h-full max-w-full object-contain"
+                className="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
               />
               {product.badge && (
                 <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
                   {product.badge}
                 </span>
               )}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3">
+                  <ZoomIn size={24} className="text-gray-900" />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -201,6 +211,27 @@ export default function ProdutoClient({ product }: { product: Product }) {
           </div>
         </div>
       </div>
+
+      {/* Modal Lightbox */}
+      {isImageExpanded && (
+        <div 
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+          onClick={() => setIsImageExpanded(false)}
+        >
+          <button 
+            onClick={() => setIsImageExpanded(false)}
+            className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition"
+          >
+            <X size={24} />
+          </button>
+          <img 
+            src={product.image}
+            alt={product.name}
+            className="max-h-[90vh] max-w-[90vw] object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }
