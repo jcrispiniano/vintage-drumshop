@@ -90,6 +90,138 @@ export const products: Product[] = [
     featured: true
   },
   {
+    id: 9,
+    name: 'Chimbal Istanbul Agop Traditional Jazz Hi-Hats 15"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 3999.00,
+    image: '/vintage-drumshop/produtos/pratos/hihat-15-traditional-jazz.jpg',
+    badge: 'Premium',
+    description: 'Istanbul Agop Traditional Jazz Hi-Hats, das versões de 14″ e 15″, mostrando o acabamento tradicional, o trabalho manual com bronze B20 e o look artesanal característico. A série Traditional Jazz é parte da linha Traditional, que exibe excelência artesanal com afinação lathe em ambos os lados, resultando em timbres ricos, ressonantes e altamente musicais',
+    featured: false
+  },
+  {
+    id: 10,
+    name: 'Chimbal Istanbul Agop Traditional Jazz Hi-Hats 14"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 3599.00,
+    image: '/vintage-drumshop/produtos/pratos/hihat-14-traditional-jazz.jpg',
+    badge: 'Premium',
+    description: 'Istanbul Agop Traditional Jazz Hi-Hats, das versões de 14″ e 15″, mostrando o acabamento tradicional, o trabalho manual com bronze B20 e o look artesanal característico. A série Traditional Jazz é parte da linha Traditional, que exibe excelência artesanal com afinação lathe em ambos os lados, resultando em timbres ricos, ressonantes e altamente musicais',
+    featured: false
+  },
+  {
+    id: 11,
+    name: 'Prato Istanbul Agop "Mel Lewis" Signature Ride 22"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 4499.00,
+    image: '/vintage-drumshop/produtos/pratos/ride-22-mel-lewis.jpg',
+    badge: 'Signature',
+    description: 'Liga (Alloy): Bronze B20 (níquel-estanho), feito à mão e com acabamento polido (brilliant/glossy). Fabricado com base em protótipos usados por Mel Lewis, em prol de autenticidade sonora e estética clássica turca',
+    featured: false
+  },
+  {
+    id: 12,
+    name: 'Prato Istanbul Agop Traditional Dark Ride 22"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 3999.00,
+    image: '/vintage-drumshop/produtos/pratos/ride-22-traditional-dark.jpg',
+    badge: 'Novo',
+    description: 'Istanbul Agop 22″ Traditional Dark Ride, um belo prato feito à mão com acabamento tradicional, ideal para seu visual e sonoridade únicos. Material: Bronze B20 (níquel e estanho). Acabamento: Latonado (lathed) por cima e por baixo, com aparência tradicional, artesanal e visual clássico. Feito à mão: Sim, cada exemplar é hand-hammered por artesãos turcos',
+    featured: false
+  },
+  {
+    id: 13,
+    name: 'Prato Istanbul Agop Traditional Dark Ride 21"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 3699.00,
+    image: '/vintage-drumshop/produtos/pratos/ride-21-traditional-dark.jpg',
+    badge: 'Novo',
+    description: 'Istanbul Agop 21″ Traditional Dark Ride, um belo prato feito à mão com acabamento tradicional, ideal para seu visual e sonoridade únicos. Material: Bronze B20 (níquel e estanho). Acabamento: Latonado (lathed) por cima e por baixo, com aparência tradicional, artesanal e visual clássico. Feito à mão: Sim, cada exemplar é hand-hammered por artesãos turcos',
+    featured: false
+  },
+  {
+    id: 14,
+    name: 'Prato Istanbul Agop Traditional Dark Crash 24"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 4599.00,
+    image: '/vintage-drumshop/produtos/pratos/crash-24-traditional-dark.jpg',
+    badge: 'Novo',
+    description: 'Istanbul Agop 24″ Traditional Dark Crash, um belo prato feito à mão com acabamento tradicional, ideal para seu visual e sonoridade únicos. Material: Bronze B20 (níquel e estanho). Acabamento: Latonado (lathed) por cima e por baixo, com aparência tradicional, artesanal e visual clássico. Feito à mão: Sim, cada exemplar é hand-hammered por artesãos turcos',
+    featured: false
+  },
+  {
+    id: 15,
+    name: 'Prato Istanbul Agop Traditional Medium Ride 21"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 3699.00,
+    image: '/vintage-drumshop/produtos/pratos/ride-21-traditional-medium.jpg',
+    badge: 'Novo',
+    description: 'Istanbul Agop 21″ Traditional Medium Ride, um belo prato feito à mão com acabamento tradicional, ideal para seu visual e sonoridade únicos. Material: Bronze B20 (níquel e estanho). Acabamento: Latonado (lathed) por cima e por baixo, com aparência tradicional, artesanal e visual clássico. Feito à mão: Sim, cada exemplar é hand-hammered por artesãos turcos',
+    featured: false
+  },
+  {
+    id: 16,
+    name: 'Prato Istanbul Agop Traditional Medium Crash 16"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 2149.00,
+    image: '/vintage-drumshop/produtos/pratos/crash-16-traditional-medium.jpg',
+    badge: 'Novo',
+    description: 'A SÉRIE TRADITIONAL - Os pratos da série Traditional são completamente torneados na parte superior e inferior, produzindo tons ricos e quentes e uma presença altamente musical. Eles estão disponíveis em gramaturas que variam de paperthin a heavy, oferecendo uma ampla variedade de opções para complementar qualquer estilo de música. É uma série que tem uma sonoridade versátil, funcionando muito bem para praticamente todos os estilos. CARACTERÍSTICAS DO PRATO - O Prato Istanbul Agop Traditional Medium Crash 16" possui sonoridade média, com espessura também média. É um prato com ataque cortante, que combina muito bem com pratos de diversas séries. Bem pronunciado, possui bom volume e tem timbre diferenciado, mesmo tendo aquela sobra dark que a série Traditional costuma ter como característica marcante. CONSTRUÇÃO DE ALTA QUALIDADE - Cada prato da Istanbul Agop é feito à mão, assegurando não apenas durabilidade, mas também uma sonoridade única que se adapta ao seu estilo musical. A marca Istanbul Agop exemplifica a excelência artesanal da marca, garantindo um instrumento robusto e de destaque em qualquer performance. Transforme suas performances e descubra novas texturas sonoras com o Prato Istanbul Agop Traditional Medium Crash 16"',
+    featured: false
+  },
+  {
+    id: 17,
+    name: 'Prato Istanbul Agop Traditional Medium Crash 20"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 3399.00,
+    image: '/vintage-drumshop/produtos/pratos/crash-20-traditional-medium.jpg',
+    badge: 'Novo',
+    description: 'A SÉRIE TRADITIONAL - Os pratos da série Traditional são completamente torneados na parte superior e inferior, produzindo tons ricos e quentes e uma presença altamente musical. Eles estão disponíveis em gramaturas que variam de paperthin a heavy, oferecendo uma ampla variedade de opções para complementar qualquer estilo de música. É uma série que tem uma sonoridade versátil, funcionando muito bem para praticamente todos os estilos. CARACTERÍSTICAS DO PRATO - O Prato Istanbul Agop Traditional Medium Crash possui sonoridade média, com espessura também média. É um prato com ataque cortante, que combina muito bem com pratos de diversas séries. Bem pronunciado, possui bom volume e tem timbre diferenciado, mesmo tendo aquela sobra dark que a série Traditional costuma ter como característica marcante. CONSTRUÇÃO DE ALTA QUALIDADE - Cada prato da Istanbul Agop é feito à mão, assegurando não apenas durabilidade, mas também uma sonoridade única que se adapta ao seu estilo musical. A marca Istanbul Agop exemplifica a excelência artesanal da marca, garantindo um instrumento robusto e de destaque em qualquer performance. Transforme suas performances e descubra novas texturas sonoras com o Prato Istanbul Agop Traditional Medium Crash 20"',
+    featured: false
+  },
+  {
+    id: 18,
+    name: 'Prato Istanbul Agop Traditional Medium Crash 19"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 2999.00,
+    image: '/vintage-drumshop/produtos/pratos/crash-19-traditional-medium.jpg',
+    badge: 'Novo',
+    description: 'A SÉRIE TRADITIONAL - Os pratos da série Traditional são completamente torneados na parte superior e inferior, produzindo tons ricos e quentes e uma presença altamente musical. Eles estão disponíveis em gramaturas que variam de paperthin a heavy, oferecendo uma ampla variedade de opções para complementar qualquer estilo de música. É uma série que tem uma sonoridade versátil, funcionando muito bem para praticamente todos os estilos. CARACTERÍSTICAS DO PRATO - O Prato Istanbul Agop Traditional Medium Crash possui sonoridade média, com espessura também média. É um prato com ataque cortante, que combina muito bem com pratos de diversas séries. Bem pronunciado, possui bom volume e tem timbre diferenciado, mesmo tendo aquela sobra dark que a série Traditional costuma ter como característica marcante. CONSTRUÇÃO DE ALTA QUALIDADE - Cada prato da Istanbul Agop é feito à mão, assegurando não apenas durabilidade, mas também uma sonoridade única que se adapta ao seu estilo musical. A marca Istanbul Agop exemplifica a excelência artesanal da marca, garantindo um instrumento robusto e de destaque em qualquer performance. Transforme suas performances e descubra novas texturas sonoras com o Prato Istanbul Agop Traditional Medium Crash 19"',
+    featured: false
+  },
+  {
+    id: 19,
+    name: 'Prato Istanbul Agop Traditional Medium Crash 18"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 2499.00,
+    image: '/vintage-drumshop/produtos/pratos/crash-18-traditional-medium.jpg',
+    badge: 'Novo',
+    description: 'A SÉRIE TRADITIONAL - Os pratos da série Traditional são completamente torneados na parte superior e inferior, produzindo tons ricos e quentes e uma presença altamente musical. Eles estão disponíveis em gramaturas que variam de paperthin a heavy, oferecendo uma ampla variedade de opções para complementar qualquer estilo de música. É uma série que tem uma sonoridade versátil, funcionando muito bem para praticamente todos os estilos. CARACTERÍSTICAS DO PRATO - O Prato Istanbul Agop Traditional Medium Crash possui sonoridade média, com espessura também média. É um prato com ataque cortante, que combina muito bem com pratos de diversas séries. Bem pronunciado, possui bom volume e tem timbre diferenciado, mesmo tendo aquela sobra dark que a série Traditional costuma ter como característica marcante. CONSTRUÇÃO DE ALTA QUALIDADE - Cada prato da Istanbul Agop é feito à mão, assegurando não apenas durabilidade, mas também uma sonoridade única que se adapta ao seu estilo musical. A marca Istanbul Agop exemplifica a excelência artesanal da marca, garantindo um instrumento robusto e de destaque em qualquer performance. Transforme suas performances e descubra novas texturas sonoras com o Prato Istanbul Agop Traditional Medium Crash 18"',
+    featured: false
+  },
+  {
+    id: 20,
+    name: 'Prato Istanbul Agop Traditional Medium Crash 17"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 2299.00,
+    image: '/vintage-drumshop/produtos/pratos/crash-17-traditional-medium.jpg',
+    badge: 'Novo',
+    description: 'A SÉRIE TRADITIONAL - Os pratos da série Traditional são completamente torneados na parte superior e inferior, produzindo tons ricos e quentes e uma presença altamente musical. Eles estão disponíveis em gramaturas que variam de paperthin a heavy, oferecendo uma ampla variedade de opções para complementar qualquer estilo de música. É uma série que tem uma sonoridade versátil, funcionando muito bem para praticamente todos os estilos. CARACTERÍSTICAS DO PRATO - O Prato Istanbul Agop Traditional Medium Crash possui sonoridade média, com espessura também média. É um prato com ataque cortante, que combina muito bem com pratos de diversas séries. Bem pronunciado, possui bom volume e tem timbre diferenciado, mesmo tendo aquela sobra dark que a série Traditional costuma ter como característica marcante. CONSTRUÇÃO DE ALTA QUALIDADE - Cada prato da Istanbul Agop é feito à mão, assegurando não apenas durabilidade, mas também uma sonoridade única que se adapta ao seu estilo musical. A marca Istanbul Agop exemplifica a excelência artesanal da marca, garantindo um instrumento robusto e de destaque em qualquer performance. Transforme suas performances e descubra novas texturas sonoras com o Prato Istanbul Agop Traditional Medium Crash 17"',
+    featured: false
+  },
+  {
     id: 7,
     name: 'Crash Istanbul Agop Xist Power Brilliant 22"',
     category: 'pratos',
@@ -113,7 +245,7 @@ export const products: Product[] = [
     featured: true
   },
   {
-    id: 9,
+    id: 21,
     name: 'Caixa Pinguim Real Alumínio 14x6,5"',
     category: 'caixas',
     brand: 'pinguim',
@@ -124,7 +256,7 @@ export const products: Product[] = [
     featured: true
   },
   {
-    id: 12,
+    id: 22,
     name: 'Bateria Tama Superstar Classic 5 Peças',
     category: 'baterias',
     brand: 'tama',
@@ -135,7 +267,7 @@ export const products: Product[] = [
     featured: true
   },
   {
-    id: 15,
+    id: 23,
     name: 'Pedal Duplo DW 9002',
     category: 'ferragens',
     brand: 'dw',
