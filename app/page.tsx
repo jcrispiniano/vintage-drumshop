@@ -202,7 +202,7 @@ export default function Home() {
                   Todos os Produtos
                 </a>
                 {/* Dropdown */}
-                <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[250px] z-[100]">
+                <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[250px] z-[9999]">
                   <ul className="py-2">
                     {categories.map(cat => (
                       <li key={cat.id}>
@@ -232,7 +232,7 @@ export default function Home() {
                         {cat.name}
                       </Link>
                       {/* Dropdown de marcas */}
-                      <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[100]">
+                      <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[9999]">
                         <ul className="py-2">
                           <li>
                             <Link 
@@ -267,7 +267,7 @@ export default function Home() {
                         {cat.name}
                       </Link>
                       {/* Dropdown de marcas */}
-                      <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[100]">
+                      <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[9999]">
                         <ul className="py-2">
                           <li>
                             <Link 
