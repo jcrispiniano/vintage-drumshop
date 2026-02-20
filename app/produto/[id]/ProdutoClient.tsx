@@ -108,7 +108,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
                   {formatPrice(product.price)}
                 </p>
                 <p className="text-sm text-gray-600">
-                  ou 6x de {formatPrice(product.price / 6)} sem juros
+                  ou 3x de {formatPrice(product.price / 3)} sem juros
                 </p>
               </div>
 
