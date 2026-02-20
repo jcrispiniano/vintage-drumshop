@@ -117,17 +117,12 @@ export default function Home() {
               <Menu size={24} className="text-primary" />
             </button>
 
-            <a href="/" className="flex-shrink-0 flex items-center gap-2 md:gap-3">
+            <a href="/" className="flex-shrink-0 flex items-center">
               <img 
                 src="/vintage-drumshop/logo-small.png" 
                 alt="Vintage Drum Shop" 
-                className="h-12 md:h-20 w-auto object-contain"
+                className="h-16 md:h-24 w-auto object-contain"
               />
-              <div className="hidden md:block">
-                <h1 className="text-xl font-bold text-primary leading-tight">
-                  Vintage Drum Shop
-                </h1>
-              </div>
             </a>
 
             <div className="flex-1 max-w-xl">
