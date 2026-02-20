@@ -233,18 +233,6 @@ export const products: Product[] = [
     featured: true
   },
   {
-    id: 5,
-    name: 'Baqueta Wincent 5BXL Hickory',
-    category: 'baquetas',
-    brand: 'wincent',
-    price: 120.00,
-    oldPrice: 149.90,
-    image: '🥢',
-    badge: 'Promoção',
-    description: 'Baqueta profissional 5B extra longa',
-    featured: false
-  },
-  {
     id: 21,
     name: 'Caixa Pinguim Real Alumínio 14x6,5"',
     category: 'caixas',
