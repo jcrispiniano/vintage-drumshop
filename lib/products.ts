@@ -244,17 +244,6 @@ export const products: Product[] = [
     featured: true
   },
   {
-    id: 22,
-    name: 'Bateria Tama Superstar Classic 5 Peças',
-    category: 'baterias',
-    brand: 'tama',
-    price: 8999.00,
-    image: '🥁',
-    badge: 'Novo',
-    description: 'Kit completo profissional 5 peças',
-    featured: false
-  },
-  {
     id: 23,
     name: 'Pedal Duplo DW 9002',
     category: 'ferragens',
