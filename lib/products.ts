@@ -79,6 +79,17 @@ export const products: Product[] = [
     featured: true
   },
   {
+    id: 8,
+    name: 'Chimbal Istanbul Agop "Special Jazz Edition" Hi-Hat 14"',
+    category: 'pratos',
+    brand: 'istanbul',
+    price: 3999.00,
+    image: '/vintage-drumshop/produtos/pratos/hihat-14-special-jazz.jpg',
+    badge: 'Premium',
+    description: 'O Chimbal Istanbul Agop "Special Jazz Edition" Hi-Hat 14" faz parte da linha especial desenvolvida para bateristas de jazz que buscam autenticidade sonora. Com liga Bronze B20 e acabamento tradicional com lathing refinado e ranhuras características, oferece um som clássico e versátil. Produzido à mão na Turquia, garante qualidade artesanal e sonoridade única. Perfeito para quem busca aquele "chick" definido e wash controlado do jazz tradicional.',
+    featured: true
+  },
+  {
     id: 7,
     name: 'Crash Istanbul Agop Xist Power Brilliant 22"',
     category: 'pratos',
