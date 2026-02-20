@@ -9,9 +9,9 @@ interface CategoryNavProps {
 
 export default function CategoryNav({ currentCategory }: CategoryNavProps) {
   return (
-    <nav className="bg-primary text-white shadow-lg sticky top-16 z-50 relative">
-      <div className="container mx-auto px-4">
-        <ul className="flex items-center justify-center gap-2 md:gap-4 overflow-x-auto py-3 relative">
+    <nav className="bg-primary text-white shadow-lg sticky top-16 z-50 relative overflow-visible">
+      <div className="container mx-auto px-4 overflow-visible">
+        <ul className="flex items-center justify-center gap-2 md:gap-4 py-3 relative overflow-visible">
           {/* Todos os Produtos com Dropdown */}
           <li className="relative group">
             <span className="block px-3 md:px-4 py-2 hover:bg-secondary transition whitespace-nowrap text-sm md:text-base cursor-pointer">
