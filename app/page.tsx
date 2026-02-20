@@ -440,9 +440,9 @@ export default function Home() {
                   Pratos artesanais turcos feitos à mão há gerações. Som único, 
                   rico em harmônicos e usado pelos maiores bateristas do mundo.
                 </p>
-                <button className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full">
+                <a href="#istanbul-agop" className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center">
                   Ver Pratos Istanbul →
-                </button>
+                </a>
               </div>
             </div>
           </div>
