@@ -39,7 +39,7 @@ export const products: Product[] = [
     name: 'Prato Istanbul Agop "Joey Waronker" Signature Ride 24"',
     category: 'pratos',
     brand: 'istanbul',
-    price: 5500.00,
+    price: 5499.00,
     image: '/vintage-drumshop/produtos/pratos/ride-24-joey-waronker.jpg',
     badge: 'Signature',
     description: 'O Prato Istanbul Agop "Joey Waronker" Signature Ride 24" é projetado para bateristas que buscam um som distintivo e poderoso. Com design elegante e acabamento impecável, oferece um som rico e profundo, perfeito para diversos estilos musicais, desde o jazz sofisticado até o rock enérgico. Sua construção artesanal e técnicas de martelagem especializadas garantem uma resposta rápida e um ataque impressionante. Desenvolvida para atender às exigências de músicos de alto nível, a série Signature combina tradição e inovação.',
