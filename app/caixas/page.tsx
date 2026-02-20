@@ -4,6 +4,7 @@ import { products, formatPrice } from '@/lib/products';
 import { ShoppingCart, Heart, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
+import CategoryNav from '@/components/CategoryNav';
 
 export default function CaixasPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
@@ -54,42 +55,7 @@ export default function CaixasPage() {
       </header>
 
       {/* Menu de Categorias */}
-      <nav className="bg-primary text-white shadow-lg sticky top-16 z-40">
-        <div className="container mx-auto px-4">
-          <ul className="flex items-center justify-center gap-2 md:gap-4 overflow-x-auto py-3">
-            <li>
-              <Link href="/baterias" className="block px-3 md:px-4 py-2 hover:bg-secondary transition whitespace-nowrap text-sm md:text-base">
-                Baterias
-              </Link>
-            </li>
-            <li>
-              <Link href="/pratos" className="block px-3 md:px-4 py-2 hover:bg-secondary transition whitespace-nowrap text-sm md:text-base">
-                Pratos
-              </Link>
-            </li>
-            <li>
-              <Link href="/caixas" className="block px-3 md:px-4 py-2 bg-secondary transition whitespace-nowrap text-sm md:text-base">
-                Caixas
-              </Link>
-            </li>
-            <li>
-              <Link href="/peles" className="block px-3 md:px-4 py-2 hover:bg-secondary transition whitespace-nowrap text-sm md:text-base">
-                Peles
-              </Link>
-            </li>
-            <li>
-              <Link href="/baquetas" className="block px-3 md:px-4 py-2 hover:bg-secondary transition whitespace-nowrap text-sm md:text-base">
-                Baquetas
-              </Link>
-            </li>
-            <li>
-              <Link href="/acessorios" className="block px-3 md:px-4 py-2 hover:bg-secondary transition whitespace-nowrap text-sm md:text-base">
-                Acessórios
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <CategoryNav currentCategory="caixas" />
 
       {/* Hero */}
       <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16">

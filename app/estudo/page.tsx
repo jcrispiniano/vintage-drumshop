@@ -4,6 +4,7 @@ import { products, formatPrice } from '@/lib/products';
 import { ShoppingCart, Heart, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
+import CategoryNav from '@/components/CategoryNav';
 
 export default function EstudoPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
