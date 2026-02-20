@@ -410,7 +410,6 @@ export default function Home() {
                     className="h-full w-auto object-contain group-hover:scale-110 transition"
                   />
                 </div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">WINCENT</h3>
                 <p className="text-accent font-bold text-sm tracking-wide uppercase mb-3">Revenda Autorizada</p>
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   Baquetas profissionais suecas com madeira de primeira qualidade. 
@@ -434,7 +433,6 @@ export default function Home() {
                     className="max-h-full w-auto object-contain group-hover:scale-110 transition"
                   />
                 </div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-2">ISTANBUL AGOP</h3>
                 <p className="text-accent font-bold text-sm tracking-wide uppercase mb-3">Distribuidor Oficial</p>
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   Pratos artesanais turcos feitos à mão há gerações. Som único, 
