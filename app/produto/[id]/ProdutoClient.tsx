@@ -48,7 +48,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
             <img 
               src="/vintage-drumshop/logo-small.png" 
               alt="Vintage Drum Shop" 
-              className="h-10 w-auto"
+              className="h-16 md:h-20 w-auto"
             />
             <div className="flex gap-4">
               <Link href="/favoritos" className="text-primary hover:text-accent transition">
