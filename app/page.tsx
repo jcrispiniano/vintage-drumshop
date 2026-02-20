@@ -3,14 +3,35 @@
 import { products, formatPrice, categories, contactInfo } from '@/lib/products';
 import { ShoppingCart, Heart, Search, Menu, Instagram, X } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import InstagramFeed from '@/components/InstagramFeed';
+
+const bannerImages = [
+  '/vintage-drumshop/banner/slide-1.jpg',
+  '/vintage-drumshop/banner/slide-2.jpg',
+  '/vintage-drumshop/banner/slide-3.jpg',
+  '/vintage-drumshop/banner/slide-4.jpg',
+  '/vintage-drumshop/banner/slide-5.jpg',
+  '/vintage-drumshop/banner/slide-6.jpg',
+  '/vintage-drumshop/banner/slide-7.jpg',
+  '/vintage-drumshop/banner/slide-8.jpg',
+  '/vintage-drumshop/banner/slide-9.jpg',
+];
 
 export default function Home() {
   const { cartItems, favorites, addToCart, toggleFavorite } = useCart();
   const featuredProducts = products.filter(p => p.featured);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
+    }, 4000); // Muda a cada 4 segundos
+
+    return () => clearInterval(timer);
+  }, []);
 
   const handleAddToCart = (productId: number) => {
     const product = products.find(p => p.id === productId);
@@ -280,14 +301,31 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div className="relative h-64 md:h-96 hidden md:block">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl flex items-center justify-center">
-                <div className="text-center space-y-4 p-8">
-                  <div className="text-6xl font-bold text-primary/20">🥁</div>
-                  <p className="text-sm text-gray-600 font-semibold">
-                    Equipamentos Profissionais
-                  </p>
+            <div className="relative h-64 md:h-96 hidden md:block overflow-hidden rounded-3xl shadow-2xl">
+              {bannerImages.map((image, index) => (
+                <div
+                  key={index}
+                  className={`absolute inset-0 transition-opacity duration-1000 ${
+                    index === currentSlide ? 'opacity-100' : 'opacity-0'
+                  }`}
+                >
+                  <img
+                    src={image}
+                    alt={`Slide ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
+              ))}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                {bannerImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-2 h-2 rounded-full transition ${
+                      index === currentSlide ? 'bg-white' : 'bg-white/50'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
           </div>
