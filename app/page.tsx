@@ -139,13 +139,13 @@ export default function Home() {
               <Menu size={24} className="text-primary" />
             </button>
 
-            <a href="/" className="flex-shrink-0 flex items-center justify-center w-36 md:w-44">
+            <Link href="/" className="flex-shrink-0 flex items-center justify-center w-36 md:w-44 cursor-pointer">
               <img 
                 src="/vintage-drumshop/logo-small.png" 
                 alt="Vintage Drum Shop" 
-                className="h-24 md:h-32 w-auto object-contain"
+                className="h-24 md:h-32 w-auto object-contain hover:opacity-80 transition"
               />
-            </a>
+            </Link>
 
             <div className="flex-1 max-w-xl">
               <div className="relative">
