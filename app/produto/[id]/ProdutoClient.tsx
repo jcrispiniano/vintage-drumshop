@@ -16,7 +16,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
       id: product.id,
       name: product.name,
       price: product.price,
-      category: product.category
+      category: product.category,
+      image: product.image
     });
     alert('✅ Produto adicionado ao carrinho!');
   };

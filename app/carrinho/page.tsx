@@ -100,9 +100,17 @@ export default function CarrinhoPage() {
               {cartItems.map(item => (
                 <div key={item.id} className="bg-white rounded-xl shadow-md p-6">
                   <div className="flex gap-6">
-                    {/* Imagem Placeholder */}
-                    <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <ShoppingCart className="text-gray-300" size={32} />
+                    {/* Imagem */}
+                    <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      {item.image ? (
+                        <img 
+                          src={item.image} 
+                          alt={item.name}
+                          className="w-full h-full object-contain p-2"
+                        />
+                      ) : (
+                        <ShoppingCart className="text-gray-300" size={32} />
+                      )}
                     </div>
 
                     {/* Detalhes */}
