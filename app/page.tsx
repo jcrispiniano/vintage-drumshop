@@ -426,7 +426,7 @@ export default function Home() {
                 OFICIAL
               </span>
               <div className="text-center">
-                <div className="h-32 flex items-center justify-center mx-auto mb-6">
+                <div className="h-40 flex items-center justify-center mx-auto mb-6">
                   <img 
                     src="/vintage-drumshop/istanbul-logo.png" 
                     alt="Istanbul Agop"
@@ -470,9 +470,9 @@ export default function Home() {
                 <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden block cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                   <img 
-                    src="/vintage-drumshop/logo.png"
+                    src={product.image}
                     alt={product.name}
-                    className="h-32 w-auto object-contain opacity-10 group-hover:opacity-20 transition"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-5xl font-bold text-primary/10 group-hover:text-primary/20 transition">
