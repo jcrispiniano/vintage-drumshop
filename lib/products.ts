@@ -242,7 +242,7 @@ export const products: Product[] = [
     image: '🥢',
     badge: 'Promoção',
     description: 'Baqueta profissional 5B extra longa',
-    featured: true
+    featured: false
   },
   {
     id: 21,
