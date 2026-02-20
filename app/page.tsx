@@ -202,7 +202,7 @@ export default function Home() {
                   Todos os Produtos
                 </a>
                 {/* Dropdown */}
-                <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[250px] z-50">
+                <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[250px] z-[100]">
                   <ul className="py-2">
                     {categories.map(cat => (
                       <li key={cat.id}>
@@ -232,7 +232,7 @@ export default function Home() {
                         {cat.name}
                       </Link>
                       {/* Dropdown de marcas */}
-                      <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-50">
+                      <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[100]">
                         <ul className="py-2">
                           <li>
                             <Link 
@@ -248,6 +248,41 @@ export default function Home() {
                               className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
                             >
                               Istanbul Agop
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                  );
+                }
+                
+                // Baquetas tem dropdown especial
+                if (cat.id === 'baquetas') {
+                  return (
+                    <li key={cat.id} className="relative group">
+                      <Link 
+                        href="/baquetas"
+                        className="block px-4 py-3 hover:bg-secondary transition"
+                      >
+                        {cat.name}
+                      </Link>
+                      {/* Dropdown de marcas */}
+                      <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[100]">
+                        <ul className="py-2">
+                          <li>
+                            <Link 
+                              href="/baquetas#todas-baquetas"
+                              className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
+                            >
+                              Todas as Baquetas
+                            </Link>
+                          </li>
+                          <li>
+                            <Link 
+                              href="/baquetas#wincent"
+                              className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
+                            >
+                              Wincent
                             </Link>
                           </li>
                         </ul>

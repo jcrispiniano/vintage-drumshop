@@ -9,7 +9,7 @@ interface CategoryNavProps {
 
 export default function CategoryNav({ currentCategory }: CategoryNavProps) {
   return (
-    <nav className="bg-primary text-white shadow-lg sticky top-16 z-40">
+    <nav className="bg-primary text-white shadow-lg sticky top-16 z-50">
       <div className="container mx-auto px-4">
         <ul className="flex items-center justify-center gap-2 md:gap-4 overflow-x-auto py-3">
           {/* Todos os Produtos com Dropdown */}
@@ -18,7 +18,7 @@ export default function CategoryNav({ currentCategory }: CategoryNavProps) {
               Todos os Produtos ▾
             </span>
             {/* Dropdown */}
-            <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[250px] z-50">
+            <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[250px] z-[100]">
               <ul className="py-2">
                 {categories.map(cat => (
                   <li key={cat.id}>
@@ -53,7 +53,7 @@ export default function CategoryNav({ currentCategory }: CategoryNavProps) {
                     {cat.name}
                   </Link>
                   {/* Dropdown de marcas */}
-                  <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-50">
+                  <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[100]">
                     <ul className="py-2">
                       <li>
                         <Link 
@@ -92,7 +92,7 @@ export default function CategoryNav({ currentCategory }: CategoryNavProps) {
                     {cat.name}
                   </Link>
                   {/* Dropdown de marcas */}
-                  <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-50">
+                  <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[100]">
                     <ul className="py-2">
                       <li>
                         <Link 
