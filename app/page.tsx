@@ -86,13 +86,13 @@ export default function Home() {
               </li>
               {categories.map(cat => (
                 <li key={cat.id}>
-                  <a 
-                    href={`#${cat.id}`}
+                  <Link 
+                    href={`/${cat.id}`}
                     onClick={() => setIsSidebarOpen(false)}
                     className="block px-6 py-3 hover:bg-lightBg transition border-b border-gray-100"
                   >
                     {cat.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -206,12 +206,12 @@ export default function Home() {
                   <ul className="py-2">
                     {categories.map(cat => (
                       <li key={cat.id}>
-                        <a 
-                          href={`#${cat.id}`}
+                        <Link 
+                          href={`/${cat.id}`}
                           className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
                         >
                           {cat.name}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
