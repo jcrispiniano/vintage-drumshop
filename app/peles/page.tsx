@@ -38,7 +38,7 @@ export default function PelesPage() {
               <img 
                 src="/vintage-drumshop/logo-small.png" 
                 alt="Vintage Drum Shop" 
-                className="h-16 md:h-22 w-auto cursor-pointer hover:opacity-80 transition"
+                className="h-18 md:h-24 w-auto cursor-pointer hover:opacity-80 transition"
               />
             </Link>
             <div className="flex gap-4">
