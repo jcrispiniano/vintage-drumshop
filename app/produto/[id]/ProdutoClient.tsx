@@ -45,11 +45,13 @@ export default function ProdutoClient({ product }: { product: Product }) {
               <ArrowLeft size={24} />
               <span className="font-bold hidden md:inline">Voltar</span>
             </Link>
-            <img 
-              src="/vintage-drumshop/logo-small.png" 
-              alt="Vintage Drum Shop" 
-              className="h-16 md:h-20 w-auto"
-            />
+            <Link href="/" className="flex items-center">
+              <img 
+                src="/vintage-drumshop/logo-small.png" 
+                alt="Vintage Drum Shop" 
+                className="h-20 md:h-28 w-auto cursor-pointer hover:opacity-80 transition"
+              />
+            </Link>
             <div className="flex gap-4">
               <Link href="/favoritos" className="text-primary hover:text-accent transition">
                 <Heart size={24} />
