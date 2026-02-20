@@ -128,7 +128,7 @@ export default function Home() {
         </div>
 
         {/* Main Header */}
-        <div className="bg-lightBg py-4">
+        <div className="bg-lightBg py-2">
           <div className="container mx-auto px-4 flex items-center justify-between gap-4">
             {/* Menu Hamburguer (mobile only) */}
             <button 
@@ -139,11 +139,11 @@ export default function Home() {
               <Menu size={24} className="text-primary" />
             </button>
 
-            <a href="/" className="flex-shrink-0 flex items-center justify-center w-32 md:w-40">
+            <a href="/" className="flex-shrink-0 flex items-center justify-center w-36 md:w-44">
               <img 
                 src="/vintage-drumshop/logo-small.png" 
                 alt="Vintage Drum Shop" 
-                className="h-20 md:h-28 w-auto object-contain"
+                className="h-24 md:h-32 w-auto object-contain"
               />
             </a>
 
