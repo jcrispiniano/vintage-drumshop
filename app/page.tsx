@@ -435,7 +435,7 @@ export default function Home() {
                 key={product.id} 
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
               >
-                <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
+                <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden block cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                   <img 
                     src="/vintage-drumshop/logo.png"
@@ -453,7 +453,10 @@ export default function Home() {
                     </span>
                   )}
                   <button 
-                    onClick={() => toggleFavorite(product.id)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleFavorite(product.id);
+                    }}
                     className={`absolute top-4 left-4 p-3 rounded-full transition shadow-lg ${
                       favorites.includes(product.id)
                         ? 'bg-accent text-white'
@@ -462,7 +465,7 @@ export default function Home() {
                   >
                     <Heart size={18} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
                   </button>
-                </div>
+                </Link>
                 <div className="p-6">
                   <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
                     {product.category}
@@ -492,9 +495,9 @@ export default function Home() {
                     </button>
                     <Link 
                       href={`/produto/${product.id}`}
-                      className="w-full border-2 border-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:border-accent hover:text-accent transition text-center block"
+                      className="w-full border-2 border-accent text-accent py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block"
                     >
-                      Ver Detalhes
+                      Ver Produto
                     </Link>
                   </div>
                 </div>
@@ -522,7 +525,7 @@ export default function Home() {
                 key={product.id} 
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
               >
-                <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
+                <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden block cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                   <img 
                     src={product.image}
@@ -535,7 +538,10 @@ export default function Home() {
                     </span>
                   )}
                   <button 
-                    onClick={() => toggleFavorite(product.id)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleFavorite(product.id);
+                    }}
                     className={`absolute top-4 left-4 p-3 rounded-full transition shadow-lg ${
                       favorites.includes(product.id)
                         ? 'bg-accent text-white'
@@ -544,7 +550,7 @@ export default function Home() {
                   >
                     <Heart size={18} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
                   </button>
-                </div>
+                </Link>
                 <div className="p-6">
                   <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
                     {product.brand === 'istanbul' ? 'Istanbul Agop' : product.category}
@@ -570,9 +576,9 @@ export default function Home() {
                   <div className="flex flex-col gap-2">
                     <Link 
                       href={`/produto/${product.id}`}
-                      className="w-full border-2 border-primary text-primary py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition text-center block"
+                      className="w-full border-2 border-accent text-accent py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block"
                     >
-                      Ver Detalhes
+                      Ver Produto
                     </Link>
                     <button 
                       onClick={() => handleAddToCart(product.id)}
@@ -606,7 +612,7 @@ export default function Home() {
                 key={product.id} 
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
               >
-                <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
+                <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden block cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                   <img 
                     src={product.image}
@@ -619,7 +625,10 @@ export default function Home() {
                     </span>
                   )}
                   <button 
-                    onClick={() => toggleFavorite(product.id)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleFavorite(product.id);
+                    }}
                     className={`absolute top-4 left-4 p-3 rounded-full transition shadow-lg ${
                       favorites.includes(product.id)
                         ? 'bg-accent text-white'
@@ -628,7 +637,7 @@ export default function Home() {
                   >
                     <Heart size={18} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
                   </button>
-                </div>
+                </Link>
                 <div className="p-6">
                   <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
                     {product.category}
@@ -654,9 +663,9 @@ export default function Home() {
                   <div className="flex flex-col gap-2">
                     <Link 
                       href={`/produto/${product.id}`}
-                      className="w-full border-2 border-white text-white py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition text-center block"
+                      className="w-full border-2 border-accent text-accent py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block"
                     >
-                      Ver Detalhes
+                      Ver Produto
                     </Link>
                     <button 
                       onClick={() => handleAddToCart(product.id)}
