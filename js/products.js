@@ -8,7 +8,7 @@ const products = [
         brand: 'istanbul',
         price: 2999.00,
         oldPrice: null,
-        image: '🎵',
+        image: 'images/produtos/00550d42-be64-411f-bd94-056299cfded1.jpg',
         badge: 'Novo',
         description: 'Prato crash profissional com som seco e definido'
     },
@@ -19,7 +19,7 @@ const products = [
         brand: 'istanbul',
         price: 2999.00,
         oldPrice: null,
-        image: '🎵',
+        image: 'images/produtos/0681672d-825c-46ec-a16d-a3c02a9471a8.jpg',
         badge: 'Novo',
         description: 'Prato crash com projeção e brilho excepcional'
     },
@@ -30,7 +30,7 @@ const products = [
         brand: 'istanbul',
         price: 3499.00,
         oldPrice: null,
-        image: '🎵',
+        image: 'images/produtos/098d8113-167b-4e7a-95ea-eef021174636.jpg',
         badge: null,
         description: 'Ride tradicional turco com som rico e complexo'
     },
@@ -41,7 +41,7 @@ const products = [
         brand: 'istanbul',
         price: 2799.00,
         oldPrice: null,
-        image: '🎵',
+        image: 'images/produtos/0a8cf347-8e1d-400e-b42f-f91ebb9e3da7.jpg',
         badge: null,
         description: 'Chimbal versátil com resposta rápida'
     },
@@ -100,7 +100,7 @@ const products = [
         brand: 'pinguim',
         price: 2099.00,
         oldPrice: null,
-        image: '📦',
+        image: 'images/produtos/0ef82007-88fa-4558-a9fc-324b9b27b9dc.jpg',
         badge: 'Destaque',
         description: 'Caixa profissional em alumínio com som definido'
     },
@@ -111,7 +111,7 @@ const products = [
         brand: 'yamaha',
         price: 1899.00,
         oldPrice: null,
-        image: '📦',
+        image: 'images/produtos/101083e0-bc9a-414c-ae99-6737dc5ae5b4.jpg',
         badge: null,
         description: 'Caixa em aço com resposta versátil'
     },
@@ -122,7 +122,7 @@ const products = [
         brand: 'pearl',
         price: 1699.00,
         oldPrice: 1999.00,
-        image: '📦',
+        image: 'images/produtos/1a05183a-64b5-46e9-935d-c956df9329bb.jpg',
         badge: 'Oferta',
         description: 'Caixa em madeira com som quente'
     },
@@ -135,7 +135,7 @@ const products = [
         brand: 'tama',
         price: 8999.00,
         oldPrice: null,
-        image: '🥁',
+        image: 'images/produtos/215dc4ae-7ea5-4398-8678-b18ce9046c2b.jpg',
         badge: 'Novo',
         description: 'Kit completo profissional 5 peças'
     },
@@ -146,7 +146,7 @@ const products = [
         brand: 'pearl',
         price: 7499.00,
         oldPrice: null,
-        image: '🥁',
+        image: 'images/produtos/216c9799-6e50-4623-9f9c-6cb417018bea.jpg',
         badge: null,
         description: 'Kit intermediário de alta qualidade'
     },
@@ -157,7 +157,7 @@ const products = [
         brand: 'yamaha',
         price: 9999.00,
         oldPrice: null,
-        image: '🥁',
+        image: 'images/produtos/26aee98c-d7e4-4d1b-8b28-b71690da9715.jpg',
         badge: 'Destaque',
         description: 'Kit profissional versátil'
     },
@@ -170,7 +170,7 @@ const products = [
         brand: 'dw',
         price: 4999.00,
         oldPrice: null,
-        image: '🔧',
+        image: 'images/produtos/283f11a6-e986-4693-9f41-39ecdf708908.jpg',
         badge: 'Premium',
         description: 'Pedal duplo profissional de alta performance'
     },
@@ -181,7 +181,7 @@ const products = [
         brand: 'tama',
         price: 899.00,
         oldPrice: null,
-        image: '🔧',
+        image: 'images/produtos/3c6cfb30-9cdc-4a19-ada0-a4313dd58642.jpg',
         badge: null,
         description: 'Estante robusta e ajustável'
     },
@@ -192,7 +192,7 @@ const products = [
         brand: 'pearl',
         price: 1299.00,
         oldPrice: 1499.00,
-        image: '🔧',
+        image: 'images/produtos/42060f92-16da-45ff-8644-f41ad5fe8877.jpg',
         badge: 'Promoção',
         description: 'Pedal simples com corrente'
     },
@@ -205,7 +205,7 @@ const products = [
         brand: 'remo',
         price: 189.00,
         oldPrice: null,
-        image: '🎯',
+        image: 'images/produtos/63d7474e-c04e-43a1-a87b-454cb61a17a7.jpg',
         badge: null,
         description: 'Pele dupla para caixa com som controlado'
     },
@@ -216,7 +216,7 @@ const products = [
         brand: 'evans',
         price: 299.00,
         oldPrice: null,
-        image: '🎯',
+        image: 'images/produtos/713a49b0-14e8-48ac-9277-ec180bcf1444.jpg',
         badge: null,
         description: 'Pele de bumbo com controle de ataque'
     },
@@ -227,7 +227,7 @@ const products = [
         brand: 'aquarian',
         price: 169.00,
         oldPrice: null,
-        image: '🎯',
+        image: 'images/produtos/7fa4ed18-677d-4321-b3be-636952e84746.jpg',
         badge: null,
         description: 'Pele dupla transparente para tons'
     },
@@ -240,7 +240,7 @@ const products = [
         brand: 'rtom',
         price: 79.00,
         oldPrice: null,
-        image: '⚙️',
+        image: 'images/produtos/807e765e-e528-4a05-b2b9-9445ef248404.jpg',
         badge: null,
         description: 'Gel abafador reutilizável'
     },
@@ -251,7 +251,7 @@ const products = [
         brand: 'gibraltar',
         price: 49.00,
         oldPrice: null,
-        image: '⚙️',
+        image: 'images/produtos/83f697cc-af64-460d-9658-1e2208b808e6.jpg',
         badge: null,
         description: 'Chave profissional para afinação'
     },
@@ -262,7 +262,7 @@ const products = [
         brand: 'ahead',
         price: 599.00,
         oldPrice: null,
-        image: '⚙️',
+        image: 'images/produtos/929c37fd-ea71-4714-99b2-cfe909871df7.jpg',
         badge: null,
         description: 'Bag acolchoado para transporte de pratos'
     },
@@ -273,7 +273,7 @@ const products = [
         brand: 'tama',
         price: 1499.00,
         oldPrice: null,
-        image: '⚙️',
+        image: 'images/produtos/bb8c64fa-0b08-4032-b2bf-c8646f93e52c.jpg',
         badge: 'Destaque',
         description: 'Banco profissional com regulagem de altura'
     }
