@@ -675,31 +675,147 @@ img {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .top-bar {
+        font-size: 11px;
+        padding: 5px 0;
+    }
+    
+    .top-bar-content {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .contact-info {
+        gap: 10px;
+    }
+    
+    .main-header {
+        padding: 10px 0;
+    }
+    
     .header-content {
         flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .logo h1 {
+        font-size: 20px;
+    }
+    
+    .tagline {
+        font-size: 10px;
     }
     
     .search-bar {
         order: 3;
         width: 100%;
         max-width: 100%;
-        margin-top: 15px;
+        margin-top: 10px;
+    }
+    
+    .search-bar input {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+    
+    .header-actions {
+        gap: 15px;
+    }
+    
+    .header-icon {
+        font-size: 12px;
+    }
+    
+    .header-icon .icon {
+        font-size: 20px;
+    }
+    
+    .main-nav {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .nav-menu {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         font-size: 13px;
+        white-space: nowrap;
     }
     
     .nav-item > a {
-        padding: 12px 15px;
+        padding: 12px 12px;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        display: none;
+        box-shadow: none;
+        border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .nav-item.dropdown:hover .dropdown-menu {
+        display: none;
+    }
+    
+    .hero {
+        padding: 40px 0;
     }
     
     .hero-content h2 {
-        font-size: 32px;
+        font-size: 28px;
+    }
+    
+    .hero-content p {
+        font-size: 14px;
+    }
+    
+    .section-title {
+        font-size: 28px;
     }
     
     .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .product-card {
+        border-radius: 10px;
+    }
+    
+    .product-image {
+        height: 180px;
+        font-size: 50px;
+    }
+    
+    .product-info {
+        padding: 12px;
+    }
+    
+    .product-name {
+        font-size: 13px;
+    }
+    
+    .product-price {
+        font-size: 16px;
+    }
+    
+    .product-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .btn-add-cart,
+    .btn-favorite {
+        width: 100%;
+        font-size: 12px;
+        padding: 8px;
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
     }
 }
