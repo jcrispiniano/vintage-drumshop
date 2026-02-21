@@ -146,6 +146,17 @@ const products = [
         badge: null,
         description: 'Baqueta profissional 5B Standard em madeira hickory, versátil para todos os estilos'
     },
+    {
+        id: 30,
+        name: 'Baqueta Wincent 5A JAZZ (W-5AJ)',
+        category: 'baquetas',
+        brand: 'wincent',
+        price: 119.00,
+        oldPrice: null,
+        image: 'images/produtos/c58334f3-7c87-4921-ac1c-271cecf8b655.jpg',
+        badge: null,
+        description: 'Baqueta profissional 5A JAZZ em madeira hickory para jazz e estilos leves'
+    },
     
     // Caixas
     {
