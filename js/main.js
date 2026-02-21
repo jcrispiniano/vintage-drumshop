@@ -92,7 +92,10 @@ function handleSearch(e) {
 
 function showSearchSuggestions(filteredProducts = null, searchTerm = '') {
     const searchInput = document.getElementById('searchInput');
+    if (!searchInput) return;
+    
     const searchBar = searchInput.closest('.search-bar');
+    if (!searchBar) return;
     
     // Criar container de sugestões se não existir
     let suggestionsBox = document.getElementById('searchSuggestions');
@@ -195,18 +198,25 @@ function updateSelectedSuggestion() {
 
 function selectProduct(productId) {
     const product = getProductById(productId);
-    if (product) {
-        const searchInput = document.getElementById('searchInput');
+    if (!product) return;
+    
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
         searchInput.value = product.name;
-        hideSearchSuggestions();
-        
-        // Scroll até o produto ou mostrar detalhes
-        const productCard = document.querySelector(`[data-product-id="${productId}"]`);
-        if (productCard) {
-            productCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            productCard.classList.add('highlight');
-            setTimeout(() => productCard.classList.remove('highlight'), 2000);
-        }
+    }
+    hideSearchSuggestions();
+    
+    // Verificar se o produto está visível na página atual
+    let productCard = document.querySelector(`[data-product-id="${productId}"]`);
+    
+    if (productCard) {
+        // Produto está na página, fazer scroll até ele
+        productCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        productCard.classList.add('highlight');
+        setTimeout(() => productCard.classList.remove('highlight'), 2000);
+    } else {
+        // Produto não está na página, redirecionar para a categoria dele
+        window.location.href = `categoria.html?cat=${product.category}#product-${productId}`;
     }
 }
 
@@ -265,7 +275,23 @@ function loadCategoryPage() {
 
 // Se estiver na página de categoria, carregar produtos
 if (window.location.pathname.includes('categoria.html')) {
-    document.addEventListener('DOMContentLoaded', loadCategoryPage);
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCategoryPage();
+        
+        // Se tem hash na URL (vindo de busca), fazer scroll até o produto
+        setTimeout(() => {
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#product-')) {
+                const productId = hash.replace('#product-', '');
+                const productCard = document.querySelector(`[data-product-id="${productId}"]`);
+                if (productCard) {
+                    productCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    productCard.classList.add('highlight');
+                    setTimeout(() => productCard.classList.remove('highlight'), 2000);
+                }
+            }
+        }, 500);
+    });
 }
 
 // Header sempre visível - removido animação de esconder no scroll
