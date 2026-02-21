@@ -301,8 +301,10 @@ function createProductCard(product) {
         ? `<span class="product-badge">${product.badge}</span>` 
         : '';
     
-    const imageHTML = product.image.startsWith('http') 
-        ? `<img src="${product.image}" alt="${product.name}">` 
+    // Verifica se é URL ou emoji
+    const isUrl = product.image && (product.image.startsWith('http') || product.image.startsWith('/') || product.image.startsWith('./'));
+    const imageHTML = isUrl
+        ? `<img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'">` 
         : `<div class="product-emoji">${product.image}</div>`;
     
     card.innerHTML = `
