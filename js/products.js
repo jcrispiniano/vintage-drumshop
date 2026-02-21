@@ -301,9 +301,13 @@ function createProductCard(product) {
         ? `<span class="product-badge">${product.badge}</span>` 
         : '';
     
+    const imageHTML = product.image.startsWith('http') 
+        ? `<img src="${product.image}" alt="${product.name}">` 
+        : `<div class="product-emoji">${product.image}</div>`;
+    
     card.innerHTML = `
         <div class="product-image">
-            ${product.image}
+            ${imageHTML}
             ${badgeHTML}
         </div>
         <div class="product-info">

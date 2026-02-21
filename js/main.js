@@ -111,23 +111,21 @@ if (window.location.pathname.includes('categoria.html')) {
     document.addEventListener('DOMContentLoaded', loadCategoryPage);
 }
 
-// Animação de scroll para header
-let lastScroll = 0;
-window.addEventListener('scroll', () => {
-    const header = document.querySelector('.header');
-    const currentScroll = window.pageYOffset;
+// Header sempre visível - removido animação de esconder no scroll
+
+// Botão voltar - usar histórico do browser
+document.addEventListener('DOMContentLoaded', function() {
+    const backButtons = document.querySelectorAll('[data-action="back"], .btn-back, .back-button');
     
-    if (currentScroll > lastScroll && currentScroll > 100) {
-        header.style.transform = 'translateY(-100%)';
-    } else {
-        header.style.transform = 'translateY(0)';
-    }
-    
-    lastScroll = currentScroll;
+    backButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.history.back();
+        });
+    });
 });
 
-// Adicionar transição ao header
-const header = document.querySelector('.header');
-if (header) {
-    header.style.transition = 'transform 0.3s ease';
+// Função global para voltar - pode ser chamada de qualquer lugar
+function goBack() {
+    window.history.back();
 }
