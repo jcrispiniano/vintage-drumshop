@@ -24,6 +24,9 @@ export default function Home() {
   const featuredProducts = products.filter(p => p.featured);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState<typeof products>([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -32,6 +35,26 @@ export default function Home() {
 
     return () => clearInterval(timer);
   }, []);
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    
+    if (term.length < 2) {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      return;
+    }
+
+    const filtered = products.filter(product => 
+      product.name.toLowerCase().includes(term.toLowerCase()) ||
+      product.category.toLowerCase().includes(term.toLowerCase()) ||
+      product.brand?.toLowerCase().includes(term.toLowerCase()) ||
+      product.description.toLowerCase().includes(term.toLowerCase())
+    );
+
+    setSearchResults(filtered.slice(0, 8)); // Limitar a 8 resultados
+    setShowSearchResults(true);
+  };
 
   const handleAddToCart = (productId: number) => {
     const product = products.find(p => p.id === productId);
@@ -147,15 +170,49 @@ export default function Home() {
               />
             </Link>
 
-            <div className="flex-1 max-w-xl">
+            <div className="flex-1 max-w-xl relative">
               <div className="relative">
                 <input 
                   type="text" 
-                  placeholder="Buscar..." 
-                  className="w-full px-3 py-2 text-sm md:text-base rounded-full border-2 border-gray-300 focus:border-accent outline-none"
+                  placeholder="Buscar produtos, marcas..." 
+                  value={searchTerm}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  onFocus={() => searchResults.length > 0 && setShowSearchResults(true)}
+                  onBlur={() => setTimeout(() => setShowSearchResults(false), 200)}
+                  className="w-full px-3 py-2 pr-10 text-sm md:text-base rounded-full border-2 border-gray-300 focus:border-accent outline-none"
                 />
-                <Search className="absolute right-3 top-2.5 text-gray-400" size={18} />
+                <Search className="absolute right-3 top-2.5 text-gray-400 pointer-events-none" size={18} />
               </div>
+
+              {/* Dropdown de resultados */}
+              {showSearchResults && searchResults.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-gray-200 rounded-2xl shadow-xl z-50 max-h-96 overflow-y-auto">
+                  {searchResults.map(product => (
+                    <Link
+                      key={product.id}
+                      href={`/produto/${product.id}`}
+                      className="flex items-center gap-3 p-3 hover:bg-lightBg border-b border-gray-100 last:border-b-0 transition"
+                      onClick={() => {
+                        setShowSearchResults(false);
+                        setSearchTerm('');
+                      }}
+                    >
+                      <div className="w-16 h-16 flex-shrink-0 bg-lightBg rounded-lg overflow-hidden">
+                        <img 
+                          src={product.image} 
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-sm truncate">{product.name}</h4>
+                        <p className="text-xs text-gray-500">{product.category}</p>
+                        <p className="text-accent font-bold">{formatPrice(product.price)}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex gap-2 md:gap-4">
