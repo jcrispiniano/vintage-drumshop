@@ -221,21 +221,45 @@ function loadCategoryPage() {
         const container = document.getElementById('categoryProducts');
         if (container) {
             container.innerHTML = '';
-            filtered.forEach(product => {
-                container.appendChild(createProductCard(product));
-            });
+            if (filtered.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 40px; color: #999;">Nenhum produto encontrado nesta categoria.</p>';
+            } else {
+                filtered.forEach(product => {
+                    container.appendChild(createProductCard(product));
+                });
+            }
             updateFavoritesUI();
         }
         
-        // Atualizar título
-        const title = document.getElementById('categoryTitle');
-        if (title) {
+        // Atualizar todos os títulos da página
+        const titles = document.querySelectorAll('#categoryTitle');
+        const categoryNames = {
+            'baterias': 'Baterias Profissionais',
+            'pratos': 'Pratos Profissionais',
+            'caixas': 'Caixas Profissionais',
+            'baquetas': 'Baquetas Profissionais',
+            'peles': 'Peles Profissionais',
+            'ferragens': 'Ferragens Profissionais',
+            'acessorios': 'Acessórios Profissionais'
+        };
+        
+        const categoryDescriptions = {
+            'baterias': 'Baterias completas de alta qualidade',
+            'pratos': 'Pratos artesanais e profissionais',
+            'caixas': 'Caixas com som definido e potente',
+            'baquetas': 'Baquetas profissionais das melhores marcas',
+            'peles': 'Peles de qualidade para seu kit',
+            'ferragens': 'Ferragens robustas e duráveis',
+            'acessorios': 'Acessórios essenciais para bateristas'
+        };
+        
+        titles.forEach(title => {
             if (category) {
-                title.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                title.textContent = categoryNames[category] || category.charAt(0).toUpperCase() + category.slice(1);
             } else if (brand) {
                 title.textContent = brand.toUpperCase();
             }
-        }
+        });
     }
 }
 

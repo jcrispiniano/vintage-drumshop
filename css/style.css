@@ -914,4 +914,17 @@ img {
         grid-template-columns: 1fr;
         gap: 30px;
     }
+    
+    .breadcrumb {
+        font-size: 12px;
+    }
+    
+    .products-section {
+        padding: 30px 0;
+    }
+    
+    .search-suggestions {
+        right: 0;
+        left: 0;
+    }
 }
