@@ -91,6 +91,39 @@ const products = [
         badge: null,
         description: 'Baqueta pesada para som potente'
     },
+    {
+        id: 25,
+        name: 'Wincent Pro Brushes 29 Light (W-29L)',
+        category: 'baquetas',
+        brand: 'wincent',
+        price: 310.00,
+        oldPrice: null,
+        image: 'images/produtos/d59c1b49-7205-4622-8bc5-51a4b7d35da6.jpg',
+        badge: null,
+        description: 'Vassoura profissional Wincent 29 Light com cerdas retráteis para sons delicados'
+    },
+    {
+        id: 26,
+        name: 'Wincent Pro Brushes 40 Heavy (W-40H)',
+        category: 'baquetas',
+        brand: 'wincent',
+        price: 310.00,
+        oldPrice: null,
+        image: 'images/produtos/ee2c3565-b2f5-461a-b1ce-e091b82bb3c8.jpg',
+        badge: null,
+        description: 'Vassoura profissional Wincent 40 Heavy com cerdas retráteis para volume intenso'
+    },
+    {
+        id: 27,
+        name: 'Wincent Pro Bamboo Rods 19P (W-19P)',
+        category: 'baquetas',
+        brand: 'wincent',
+        price: 170.00,
+        oldPrice: null,
+        image: 'images/produtos/wincent-19p-rods.jpg',
+        badge: null,
+        description: 'Rods de bambu profissionais Wincent 19P com som equilibrado'
+    },
     
     // Caixas
     {
