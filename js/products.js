@@ -135,6 +135,17 @@ const products = [
         badge: null,
         description: 'Baqueta leve Dynabeat 7A em madeira hickory com ótimo custo-benefício'
     },
+    {
+        id: 29,
+        name: 'Baqueta Wincent 5B Standard (W-5B)',
+        category: 'baquetas',
+        brand: 'wincent',
+        price: 119.00,
+        oldPrice: null,
+        image: 'images/produtos/caf28eb0-c37a-47cc-ac10-845a5643d501.jpg',
+        badge: null,
+        description: 'Baqueta profissional 5B Standard em madeira hickory, versátil para todos os estilos'
+    },
     
     // Caixas
     {
