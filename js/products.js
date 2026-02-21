@@ -124,6 +124,17 @@ const products = [
         badge: null,
         description: 'Rods de bambu profissionais Wincent 19P com som equilibrado'
     },
+    {
+        id: 28,
+        name: 'Baqueta Dynabeat 7A (W-BD7A)',
+        category: 'baquetas',
+        brand: 'wincent',
+        price: 80.00,
+        oldPrice: null,
+        image: 'images/produtos/bfcc32f1-5973-4b3a-b503-77f1ac55cc3d.jpg',
+        badge: null,
+        description: 'Baqueta leve Dynabeat 7A em madeira hickory com ótimo custo-benefício'
+    },
     
     // Caixas
     {
