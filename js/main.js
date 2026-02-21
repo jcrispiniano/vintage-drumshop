@@ -44,9 +44,12 @@ function setupEventListeners() {
     // Busca com autocomplete
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
+        console.log('Busca: eventos configurados');
         searchInput.addEventListener('input', handleSearch);
         searchInput.addEventListener('focus', showSearchSuggestions);
         searchInput.addEventListener('keydown', handleSearchKeyboard);
+    } else {
+        console.log('Busca: searchInput não encontrado');
     }
     
     // Fechar sugestões ao clicar fora
@@ -72,6 +75,7 @@ function setupEventListeners() {
 let selectedSuggestionIndex = -1;
 
 function handleSearch(e) {
+    console.log('handleSearch chamado:', e.target.value);
     const searchTerm = e.target.value.toLowerCase();
     
     if (searchTerm.length < 1) {
@@ -87,6 +91,7 @@ function handleSearch(e) {
         product.description.toLowerCase().includes(searchTerm)
     );
     
+    console.log('Produtos filtrados:', filtered.length);
     showSearchSuggestions(filtered, searchTerm);
 }
 
