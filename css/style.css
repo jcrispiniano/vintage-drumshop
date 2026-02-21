@@ -149,6 +149,7 @@ img {
     max-width: 500px;
     display: flex;
     gap: 5px;
+    position: relative;
 }
 
 .search-bar input {
@@ -162,6 +163,92 @@ img {
 
 .search-bar input:focus {
     border-color: var(--accent-color);
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 50px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: 5px;
+    display: none;
+}
+
+.suggestion-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.2s;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover,
+.suggestion-item.selected {
+    background: var(--light-bg);
+}
+
+.suggestion-item.no-results {
+    justify-content: center;
+    color: #999;
+    cursor: default;
+}
+
+.suggestion-item.no-results:hover {
+    background: white;
+}
+
+.suggestion-image {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--light-bg);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.suggestion-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.suggestion-emoji {
+    font-size: 24px;
+}
+
+.suggestion-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.suggestion-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.suggestion-price {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent-color);
 }
 
 .search-btn {
@@ -360,6 +447,15 @@ img {
     box-shadow: var(--shadow);
     transition: all 0.3s ease;
     cursor: pointer;
+}
+
+.product-card.highlight {
+    animation: highlight 2s ease;
+}
+
+@keyframes highlight {
+    0%, 100% { box-shadow: var(--shadow); }
+    50% { box-shadow: 0 0 0 3px var(--accent-color), 0 4px 20px rgba(0,0,0,0.15); }
 }
 
 .product-card:hover {
