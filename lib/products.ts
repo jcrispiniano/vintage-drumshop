@@ -254,6 +254,296 @@ export const products: Product[] = [
     description: 'Pedal duplo profissional de alta performance',
     featured: false
   },
+  {
+    id: 24,
+    name: 'Baqueta Wincent 5B Precision (W-5BP)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5bp.jpg',
+    description: 'Baqueta profissional 5B linha Precision em madeira hickory selecionada, equilíbrio perfeito e durabilidade superior',
+    featured: true
+  },
+  {
+    id: 25,
+    name: 'Baqueta Wincent SD2 (W-SD2)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-sd2.jpg',
+    description: 'Baqueta profissional SD2 Round Tip em madeira hickory, versátil para todos os estilos',
+    featured: false
+  },
+  {
+    id: 26,
+    name: 'Baqueta Wincent 55F (W-55F)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-55f.jpg',
+    description: 'Baqueta profissional 55F Standard em madeira hickory selecionada',
+    featured: false
+  },
+  {
+    id: 27,
+    name: 'Baqueta Wincent 7A (W-7A)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-7a.jpg',
+    description: 'Baqueta profissional 7A Standard em madeira hickory, leve e ágil',
+    featured: true
+  },
+  {
+    id: 28,
+    name: 'Baqueta Wincent ROCK (W-ROCK)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-rock.jpg',
+    description: 'Baqueta profissional ROCK em madeira hickory, resistente para toques pesados',
+    featured: false
+  },
+  {
+    id: 29,
+    name: 'Baqueta Wincent 5BXL (W-5BXL)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5bxl.jpg',
+    description: 'Baqueta profissional 5B Extra Long em madeira hickory, maior alcance e potência',
+    featured: true
+  },
+  {
+    id: 30,
+    name: 'Baqueta Wincent 5AXL (W-5AXL)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5axl.jpg',
+    description: 'Baqueta profissional 5A Extra Long em madeira hickory selecionada',
+    featured: false
+  },
+  {
+    id: 31,
+    name: 'Baqueta Wincent 5B Colors White Standard (W-5BCW)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5bcw.jpg',
+    description: 'Baqueta profissional 5B acabamento branco em madeira hickory',
+    featured: false
+  },
+  {
+    id: 32,
+    name: 'Baqueta Wincent 5A (W-5A)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5a.jpg',
+    description: 'Baqueta profissional 5A Standard em madeira hickory, versátil e equilibrada',
+    featured: true
+  },
+  {
+    id: 33,
+    name: 'Baqueta Dynabeat 5A (W-BD5A)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 80.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-bd5a.jpg',
+    description: 'Baqueta linha Dynabeat 5A em madeira hickory, excelente custo-benefício',
+    featured: false
+  },
+  {
+    id: 34,
+    name: 'Baqueta Wincent 5A Colors Black Standard (W-5ACB)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5acb.jpg',
+    description: 'Baqueta profissional 5A acabamento preto em madeira hickory',
+    featured: false
+  },
+  {
+    id: 35,
+    name: 'Wincent Pro Brushes 33M (W-33M)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 310.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-33m.jpg',
+    description: 'Vassoura profissional Wincent 33M Medium com cerdas retráteis',
+    featured: false
+  },
+  {
+    id: 36,
+    name: 'Wincent Pro Bamboo Rods 19A (W-19A)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 170.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-19a.jpg',
+    description: 'Rods de bambu profissionais Wincent 19A, som suave e articulado',
+    featured: false
+  },
+  {
+    id: 37,
+    name: 'Wincent Mallets Dual Soft (W-DS)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 310.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-ds.jpg',
+    description: 'Mallets profissionais Dual Soft com cabeça macia para sons suaves',
+    featured: false
+  },
+  {
+    id: 38,
+    name: 'Baqueta Wincent 5B Colors Black Standard (W-5BCB)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5bcb.jpg',
+    description: 'Baqueta profissional 5B acabamento preto em madeira hickory',
+    featured: false
+  },
+  {
+    id: 39,
+    name: 'Baqueta Dynabeat 5B (W-BD5B)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 80.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-bd5b.jpg',
+    description: 'Baqueta linha Dynabeat 5B em madeira hickory, ótimo custo-benefício',
+    featured: false
+  },
+  {
+    id: 40,
+    name: 'Baqueta Wincent SD4 (W-SD4)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-sd4.jpg',
+    description: 'Baqueta profissional SD4 Barrel Tip em madeira hickory selecionada',
+    featured: false
+  },
+  {
+    id: 41,
+    name: 'Wincent Pad de estudo 6"',
+    category: 'estudo',
+    brand: 'wincent',
+    price: 280.00,
+    image: '/vintage-drumshop/produtos/baquetas/pad-6.jpg',
+    description: 'Pad de estudo Wincent 6 polegadas com superfície realista para prática',
+    featured: false
+  },
+  {
+    id: 42,
+    name: 'Wincent Mallets Swoosh Soft (W-SS)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 310.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-ss.jpg',
+    description: 'Mallets profissionais Swoosh Soft para sons suaves e expressivos',
+    featured: false
+  },
+  {
+    id: 43,
+    name: 'Baqueta Wincent 5A Colors White Standard (W-5ACW)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5acw.jpg',
+    description: 'Baqueta profissional 5A acabamento branco em madeira hickory',
+    featured: false
+  },
+  {
+    id: 44,
+    name: 'Wincent Pro Bamboo Rods 19P (W-19P)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 170.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-19p.jpg',
+    description: 'Rods de bambu profissionais Wincent 19P com som equilibrado',
+    featured: false
+  },
+  {
+    id: 45,
+    name: 'Baqueta Wincent 5A JAZZ (W-5AJ)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5a-jazz.jpg',
+    description: 'Baqueta profissional 5A JAZZ em madeira hickory para jazz e estilos leves',
+    featured: false
+  },
+  {
+    id: 46,
+    name: 'Baqueta Wincent 5B Standard (W-5B)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5b.jpg',
+    description: 'Baqueta profissional 5B Standard em madeira hickory, versátil para todos os estilos',
+    featured: false
+  },
+  {
+    id: 47,
+    name: 'Baqueta Wincent 5A Precision (W-5AP)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 119.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-5ap.jpg',
+    description: 'Baqueta profissional 5A linha Precision em madeira hickory selecionada',
+    featured: false
+  },
+  {
+    id: 48,
+    name: 'Wincent Pro Brushes 40 Heavy (W-40H)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 310.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-40h.jpg',
+    description: 'Vassoura profissional Wincent 40 Heavy com cerdas retráteis para volume intenso',
+    featured: false
+  },
+  {
+    id: 49,
+    name: 'Wincent Pro Bamboo Rods 19R (W-19R)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 170.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-19r.jpg',
+    description: 'Rods de bambu profissionais Wincent 19R com excelente controle',
+    featured: false
+  },
+  {
+    id: 50,
+    name: 'Wincent Pro Brushes 29 Light (W-29L)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 310.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-29l.jpg',
+    description: 'Vassoura profissional Wincent 29 Light com cerdas retráteis para sons delicados',
+    featured: false
+  },
+  {
+    id: 51,
+    name: 'Baqueta Dynabeat 7A (W-BD7A)',
+    category: 'baquetas',
+    brand: 'wincent',
+    price: 80.00,
+    image: '/vintage-drumshop/produtos/baquetas/w-bd7a.jpg',
+    description: 'Baqueta linha Dynabeat 7A em madeira hickory, leve e ágil com ótimo custo-benefício',
+    featured: false
+  },
+  {
+    id: 52,
+    name: 'RockKey Prime - Chave de Afinação',
+    category: 'acessorios',
+    brand: 'rockkey',
+    price: 50.00,
+    image: '/vintage-drumshop/produtos/baquetas/rockkey.jpg',
+    description: 'Chave de afinação profissional RockKey Prime com design ergonômico',
+    featured: false
+  },
 ];
 
 export const categories = [
