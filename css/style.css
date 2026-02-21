@@ -147,9 +147,11 @@ img {
 .search-bar {
     flex: 1;
     max-width: 500px;
-    display: flex;
+    display: flex !important;
     gap: 5px;
     position: relative;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .search-bar input {
@@ -159,6 +161,8 @@ img {
     border-radius: 50px;
     font-size: 14px;
     outline: none;
+    display: block !important;
+    visibility: visible !important;
 }
 
 .search-bar input:focus {
