@@ -54,7 +54,7 @@ const products = [
         brand: 'wincent',
         price: 120.00,
         oldPrice: 149.90,
-        image: '🥢',
+        image: 'images/produtos/47b1f7aa-3b70-417c-b779-783b59328c49.jpg',
         badge: 'Promoção',
         description: 'Baqueta profissional 5B extra longa'
     },
@@ -65,7 +65,7 @@ const products = [
         brand: 'wincent',
         price: 110.00,
         oldPrice: null,
-        image: '🥢',
+        image: 'images/produtos/180ea6af-fd5c-4fcc-adf8-2598db3e8c01.jpg',
         badge: null,
         description: 'Baqueta leve e rápida em maple'
     },
@@ -76,7 +76,7 @@ const products = [
         brand: 'wincent',
         price: 115.00,
         oldPrice: null,
-        image: '🥢',
+        image: 'images/produtos/0f84e39e-fc21-4192-81d0-76796cf87b78.jpg',
         badge: null,
         description: 'Modelo clássico 5A em hickory'
     },
@@ -87,7 +87,7 @@ const products = [
         brand: 'wincent',
         price: 125.00,
         oldPrice: null,
-        image: '🥢',
+        image: 'images/produtos/dynabeat-2b.jpg',
         badge: null,
         description: 'Baqueta pesada para som potente'
     },
