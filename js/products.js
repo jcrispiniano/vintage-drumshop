@@ -157,6 +157,17 @@ const products = [
         badge: null,
         description: 'Baqueta profissional 5A JAZZ em madeira hickory para jazz e estilos leves'
     },
+    {
+        id: 31,
+        name: 'Baqueta Wincent 5A Precision (W-5AP)',
+        category: 'baquetas',
+        brand: 'wincent',
+        price: 119.00,
+        oldPrice: null,
+        image: 'images/produtos/ec9688e6-f32a-474a-b811-cb779f545216.jpg',
+        badge: null,
+        description: 'Baqueta profissional 5A linha Precision em madeira hickory selecionada'
+    },
     
     // Caixas
     {
