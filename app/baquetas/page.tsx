@@ -27,7 +27,7 @@ export default function BaquetasPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-orange-50">
       {/* Header com busca */}
       <Header showBackButton={true} />
 
@@ -81,7 +81,7 @@ export default function BaquetasPage() {
                   key={product.id} 
                   className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
                 >
-                  <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center overflow-hidden block cursor-pointer">
+                  <Link href={`/produto/${product.id}`} className="relative h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer">
                     <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                     <img 
                       src={product.image}
@@ -166,7 +166,7 @@ export default function BaquetasPage() {
                 key={product.id} 
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
               >
-                <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center overflow-hidden block cursor-pointer">
+                <Link href={`/produto/${product.id}`} className="relative h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                   <img 
                     src={product.image}
@@ -253,7 +253,7 @@ export default function BaquetasPage() {
                 key={product.id} 
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
               >
-                <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center overflow-hidden block cursor-pointer">
+                <Link href={`/produto/${product.id}`} className="relative h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                   <img 
                     src={product.image}
@@ -340,7 +340,7 @@ export default function BaquetasPage() {
                 key={product.id} 
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
               >
-                <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center overflow-hidden block cursor-pointer">
+                <Link href={`/produto/${product.id}`} className="relative h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                   <img 
                     src={product.image}
@@ -427,7 +427,7 @@ export default function BaquetasPage() {
                 key={product.id} 
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
               >
-                <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center overflow-hidden block cursor-pointer">
+                <Link href={`/produto/${product.id}`} className="relative h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                   <img 
                     src={product.image}

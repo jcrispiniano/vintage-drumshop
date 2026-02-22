@@ -122,7 +122,7 @@ export default function Home() {
           </nav>
 
           {/* Footer da Sidebar */}
-          <div className="p-4 border-t border-gray-200 bg-gray-50">
+          <div className="p-4 border-t border-gray-200 bg-orange-50">
             <p className="text-xs text-gray-600 text-center">
               {contactInfo.phoneFormatted}
             </p>
@@ -556,7 +556,7 @@ export default function Home() {
       </section>
 
       {/* Produtos */}
-      <section id="produtos" className="py-20 bg-gray-50">
+      <section id="produtos" className="py-20 bg-orange-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-12">
             <div>
@@ -575,7 +575,7 @@ export default function Home() {
                 key={product.id} 
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
               >
-                <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center overflow-hidden block cursor-pointer">
+                <Link href={`/produto/${product.id}`} className="relative h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                   <img 
                     src={product.image}

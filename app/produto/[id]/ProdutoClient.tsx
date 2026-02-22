@@ -36,7 +36,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-orange-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
@@ -68,7 +68,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-2 gap-12 mb-12">
           {/* Imagem */}
-          <div className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 rounded-2xl p-8 shadow-lg">
+          <div className="bg-white rounded-2xl p-8 shadow-lg">
             <div 
               className="relative aspect-square flex items-center justify-center cursor-pointer group"
               onClick={() => setIsImageExpanded(true)}
@@ -194,7 +194,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
                   href={`/produto/${relatedProduct.id}`}
                   className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition group"
                 >
-                  <div className="relative h-48 bg-gray-50 flex items-center justify-center">
+                  <div className="relative h-48 bg-orange-50 flex items-center justify-center">
                     <img 
                       src={relatedProduct.image}
                       alt={relatedProduct.name}
