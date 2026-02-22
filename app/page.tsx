@@ -138,11 +138,15 @@ export default function Home() {
         {/* Top Bar */}
         <div className="bg-darkBg text-white py-2">
           <div className="container mx-auto px-4 flex justify-between text-sm">
-            <div className="space-x-4">
+            {/* Desktop: mostra tudo */}
+            <div className="hidden md:flex space-x-4">
               <span>{contactInfo.phoneFormatted}</span>
               <span>{contactInfo.email}</span>
               <span>{contactInfo.instagramHandle}</span>
             </div>
+            {/* Mobile: esconde infos de contato */}
+            <div className="md:hidden flex-1"></div>
+            
             <div className="space-x-4">
               <a href="#" className="hover:text-accent">Entrar</a>
               <a href="#" className="hover:text-accent">Cadastrar</a>
@@ -170,7 +174,7 @@ export default function Home() {
               />
             </Link>
 
-            <div className="flex-1 max-w-xl relative">
+            <div className="flex-1 max-w-md md:max-w-xl relative">
               <div className="relative">
                 <input 
                   type="text" 
@@ -220,12 +224,12 @@ export default function Home() {
                 href={contactInfo.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden md:flex flex-col items-center hover:text-accent"
+                className="flex flex-col items-center hover:text-accent text-primary"
               >
-                <Instagram size={24} />
-                <span className="text-xs">Instagram</span>
+                <Instagram size={20} className="md:w-6 md:h-6" />
+                <span className="text-xs hidden md:inline">Instagram</span>
               </a>
-              <Link href="/favoritos" className="relative flex flex-col items-center hover:text-accent">
+              <Link href="/favoritos" className="relative flex flex-col items-center hover:text-accent text-primary">
                 <Heart size={20} className="md:w-6 md:h-6" />
                 <span className="text-xs hidden md:inline">Favoritos</span>
                 {favorites.length > 0 && (
@@ -234,7 +238,7 @@ export default function Home() {
                   </span>
                 )}
               </Link>
-              <Link href="/carrinho" className="relative flex flex-col items-center hover:text-accent">
+              <Link href="/carrinho" className="relative flex flex-col items-center hover:text-accent text-primary">
                 <ShoppingCart size={20} className="md:w-6 md:h-6" />
                 <span className="text-xs hidden md:inline">Carrinho</span>
                 {cartItems.length > 0 && (
