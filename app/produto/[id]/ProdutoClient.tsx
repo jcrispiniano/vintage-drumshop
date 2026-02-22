@@ -68,7 +68,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
       <div className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-2 gap-12 mb-12">
           {/* Imagem */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg">
+          <div className="bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 rounded-2xl p-8 shadow-lg">
             <div 
               className="relative aspect-square flex items-center justify-center cursor-pointer group"
               onClick={() => setIsImageExpanded(true)}
