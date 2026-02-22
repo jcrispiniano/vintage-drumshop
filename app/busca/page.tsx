@@ -153,7 +153,7 @@ function BuscaContent() {
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {searchResults.map(product => (
                   <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100">
-                    <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden block cursor-pointer">
+                    <Link href={`/produto/${product.id}`} className="relative h-64 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center overflow-hidden block cursor-pointer">
                       <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                       <img 
                         src={product.image} 

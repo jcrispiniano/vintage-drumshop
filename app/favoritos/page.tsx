@@ -73,7 +73,7 @@ export default function FavoritosPage() {
                   key={product.id}
                   className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
                 >
-                  <div className="relative h-64 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
+                  <div className="relative h-64 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
                     <div className="text-5xl font-bold text-primary/10 group-hover:text-primary/20 transition">
                       {product.name.substring(0, 2).toUpperCase()}
