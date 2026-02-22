@@ -42,10 +42,10 @@ export default function Header({ showBackButton = false }: HeaderProps) {
       
       // Mapa de marcas para suas páginas
       const brandPages: { [key: string]: string } = {
-        'wincent': '/wincent',
-        'dynabeat': '/dynabeat',
-        'istanbul': '/pratos#istanbul-agop',
-        'istanbul agop': '/pratos#istanbul-agop',
+        'wincent': '/vintage-drumshop/wincent',
+        'dynabeat': '/vintage-drumshop/dynabeat',
+        'istanbul': '/vintage-drumshop/pratos#istanbul-agop',
+        'istanbul agop': '/vintage-drumshop/pratos#istanbul-agop',
       };
       
       // Se for uma marca conhecida, redireciona para a página da marca
