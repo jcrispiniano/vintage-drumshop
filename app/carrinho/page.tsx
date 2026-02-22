@@ -1,9 +1,10 @@
 'use client';
 
-import { ShoppingCart, Trash2, Plus, Minus, ArrowLeft } from 'lucide-react';
+import { Trash2, Plus, Minus } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import { contactInfo } from '@/lib/products';
+import Header from '@/components/Header';
 
 export default function CarrinhoPage() {
   const { cartItems, updateQuantity, removeFromCart } = useCart();
@@ -57,16 +58,7 @@ export default function CarrinhoPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="hover:text-accent transition">
-              <ArrowLeft size={24} />
-            </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Carrinho de Compras</h1>
-          </div>
-        </div>
-      </header>
+      <Header showBackButton={true} />
 
       <div className="container mx-auto px-4 py-8">
         {cartItems.length === 0 ? (

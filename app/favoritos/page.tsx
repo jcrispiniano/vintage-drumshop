@@ -1,9 +1,10 @@
 'use client';
 
-import { Heart, ShoppingCart, ArrowLeft, Trash2 } from 'lucide-react';
+import { Heart, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import { products, formatPrice } from '@/lib/products';
+import Header from '@/components/Header';
 
 export default function FavoritosPage() {
   const { favorites, toggleFavorite, addToCart } = useCart();
@@ -28,21 +29,7 @@ export default function FavoritosPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="hover:text-accent transition">
-              <ArrowLeft size={24} />
-            </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Meus Favoritos</h1>
-            {favoriteProducts.length > 0 && (
-              <span className="bg-accent text-white px-3 py-1 rounded-full text-sm font-bold">
-                {favoriteProducts.length}
-              </span>
-            )}
-          </div>
-        </div>
-      </header>
+      <Header showBackButton={true} />
 
       <div className="container mx-auto px-4 py-8">
         {favoriteProducts.length === 0 ? (
