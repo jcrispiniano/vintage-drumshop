@@ -12,8 +12,8 @@ export default function CategoryNav({ currentCategory }: CategoryNavProps) {
     <nav className="bg-primary text-white shadow-lg sticky top-[96px] md:top-[112px] z-40 overflow-visible">
       <div className="container mx-auto px-4 overflow-visible">
         <ul className="flex items-center justify-center gap-2 md:gap-4 py-3 relative overflow-visible">
-          {/* Todos os Produtos com Dropdown */}
-          <li className="relative group">
+          {/* Todos os Produtos com Dropdown - APENAS DESKTOP */}
+          <li className="relative group hidden md:block">
             <span className="block px-3 md:px-4 py-2 hover:bg-secondary transition whitespace-nowrap text-sm md:text-base cursor-pointer">
               Todos os Produtos ▾
             </span>
