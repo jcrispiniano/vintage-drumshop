@@ -10,6 +10,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const { addToCart, toggleFavorite, favorites } = useCart();
   const isFavorite = favorites.includes(product.id);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
+  const [currentImage, setCurrentImage] = useState(product.image);
 
   const handleAddToCart = () => {
     addToCart({
@@ -74,7 +75,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
               onClick={() => setIsImageExpanded(true)}
             >
               <img 
-                src={product.image}
+                src={currentImage}
                 alt={product.name}
                 className="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
               />
@@ -89,6 +90,41 @@ export default function ProdutoClient({ product }: { product: Product }) {
                 </div>
               </div>
             </div>
+            
+            {/* Galeria de imagens */}
+            {product.images && product.images.length > 0 && (
+              <div className="mt-4 grid grid-cols-4 gap-2">
+                {/* Imagem principal */}
+                <button
+                  onClick={() => setCurrentImage(product.image)}
+                  className={`aspect-square rounded-lg overflow-hidden border-2 transition ${
+                    currentImage === product.image ? 'border-accent' : 'border-gray-200 hover:border-accent'
+                  }`}
+                >
+                  <img 
+                    src={product.image}
+                    alt={`${product.name} - principal`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+                {/* Imagens adicionais */}
+                {product.images.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImage(img)}
+                    className={`aspect-square rounded-lg overflow-hidden border-2 transition ${
+                      currentImage === img ? 'border-accent' : 'border-gray-200 hover:border-accent'
+                    }`}
+                  >
+                    <img 
+                      src={img}
+                      alt={`${product.name} - ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Informações */}
