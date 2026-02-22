@@ -1,9 +1,10 @@
 'use client';
 
 import { products, formatPrice } from '@/lib/products';
-import { ShoppingCart, Heart, ArrowLeft } from 'lucide-react';
+
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
+import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 
 export default function CaixasPage() {
@@ -27,32 +28,8 @@ export default function CaixasPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm relative z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 text-primary hover:text-accent transition">
-              <ArrowLeft size={24} />
-              <span className="font-bold hidden md:inline">Voltar</span>
-            </Link>
-            <Link href="/" className="flex items-center">
-              <img 
-                src="/vintage-drumshop/logo-small.png" 
-                alt="Vintage Drum Shop" 
-                className="h-18 md:h-24 w-auto cursor-pointer hover:opacity-80 transition"
-              />
-            </Link>
-            <div className="flex gap-4">
-              <Link href="/favoritos" className="text-primary hover:text-accent transition">
-                <Heart size={24} />
-              </Link>
-              <Link href="/carrinho" className="text-primary hover:text-accent transition">
-                <ShoppingCart size={24} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* Header com busca */}
+      <Header showBackButton={true} />
 
       {/* Menu de Categorias */}
       <CategoryNav currentCategory="caixas" />
