@@ -1,6 +1,7 @@
 'use client';
 
 import { products, formatPrice } from '@/lib/products';
+import { Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import Header from '@/components/Header';
