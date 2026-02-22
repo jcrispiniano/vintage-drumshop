@@ -34,6 +34,12 @@ export default function Header({ showBackButton = false }: HeaderProps) {
     setShowSearchResults(true);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchTerm.trim()) {
+      window.location.href = `/busca?q=${encodeURIComponent(searchTerm.trim())}`;
+    }
+  };
+
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
@@ -60,9 +66,10 @@ export default function Header({ showBackButton = false }: HeaderProps) {
             <div className="relative">
               <input 
                 type="text" 
-                placeholder="Buscar produtos, marcas..." 
+                placeholder="Buscar produtos, marcas... (Enter para buscar)" 
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
+                onKeyDown={handleKeyDown}
                 onFocus={() => searchResults.length > 0 && setShowSearchResults(true)}
                 onBlur={() => setTimeout(() => setShowSearchResults(false), 200)}
                 className="w-full px-4 py-2 pr-10 text-sm rounded-full border-2 border-gray-300 focus:border-accent outline-none"
