@@ -480,7 +480,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5b.jpg',
+    image: '/produtos/baquetas/w-5b-standard.jpg',
     description: 'Baqueta profissional 5B Standard em madeira hickory, versátil para todos os estilos',
     featured: false
   },
@@ -490,7 +490,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5ap.jpg',
+    image: '/produtos/baquetas/w-5a-precision.jpg',
     description: 'Baqueta profissional 5A linha Precision em madeira hickory selecionada',
     featured: false
   },
