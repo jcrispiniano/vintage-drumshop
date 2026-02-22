@@ -141,8 +141,11 @@ export default function CategoryNav({ currentCategory }: CategoryNavProps) {
             }
             
             // Outras categorias normais
+            // Acessórios: esconder no mobile
+            const hiddenMobile = cat.id === 'acessorios' ? 'hidden md:block' : '';
+            
             return (
-              <li key={cat.id}>
+              <li key={cat.id} className={hiddenMobile}>
                 <Link 
                   href={`/${cat.id}`}
                   className={`block px-3 md:px-4 py-2 transition whitespace-nowrap text-sm md:text-base ${
