@@ -40,18 +40,20 @@ export default function DynabeatPage() {
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero com imagem de fundo */}
-      <section className="relative bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900 text-white py-16 overflow-hidden">
+      <section className="relative bg-gray-900 text-white py-16 overflow-hidden">
         {/* Imagem de fundo */}
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0">
           <img 
             src="/vintage-drumshop/banner/dynabeat-bg.jpg" 
             alt="Dynabeat Background"
             className="w-full h-full object-cover"
           />
+          {/* Overlay escuro para legibilidade */}
+          <div className="absolute inset-0 bg-black/40"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">Dynabeat</h1>
-          <p className="text-xl text-amber-100 drop-shadow-md">
+          <p className="text-xl text-white drop-shadow-md">
             Baquetas de alta qualidade com excelente custo-benefício
           </p>
         </div>

@@ -155,14 +155,16 @@ export default function BaquetasPage() {
       </section>
 
       {/* Wincent - Baquetas */}
-      <section id="wincent" className="py-20 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden">
+      <section id="wincent" className="py-20 bg-gray-900 relative overflow-hidden">
         {/* Imagem de fundo */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0">
           <img 
             src="/vintage-drumshop/banner/wincent-bg.jpg" 
             alt="Wincent Background"
             className="w-full h-full object-cover"
           />
+          {/* Overlay escuro para legibilidade */}
+          <div className="absolute inset-0 bg-black/50"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
@@ -170,7 +172,7 @@ export default function BaquetasPage() {
             <h2 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-4 drop-shadow-lg">
               Baquetas Wincent
             </h2>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto drop-shadow-md">
+            <p className="text-white text-lg max-w-2xl mx-auto drop-shadow-md">
               Baquetas profissionais suecas com madeira de primeira qualidade. Durabilidade e equilíbrio perfeito.
             </p>
           </div>
@@ -250,22 +252,24 @@ export default function BaquetasPage() {
       </section>
 
       {/* Dynabeat - Baquetas */}
-      <section id="dynabeat" className="py-20 bg-white relative">
+      <section id="dynabeat" className="py-20 bg-gray-900 relative overflow-hidden">
         {/* Imagem de fundo */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0">
           <img 
             src="/vintage-drumshop/banner/dynabeat-bg.jpg" 
             alt="Background Dynabeat"
             className="w-full h-full object-cover"
           />
+          {/* Overlay escuro para legibilidade */}
+          <div className="absolute inset-0 bg-black/50"></div>
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
-            <span className="text-accent font-bold text-sm tracking-wider uppercase">Marca Nacional</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-4">
+            <span className="text-accent font-bold text-sm tracking-wider uppercase drop-shadow-md">Marca Nacional</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-4 drop-shadow-lg">
               Baquetas Dynabeat
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="text-white text-lg max-w-2xl mx-auto drop-shadow-md">
               Baquetas brasileiras de alta qualidade com excelente custo-benefício
             </p>
           </div>

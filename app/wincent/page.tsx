@@ -37,18 +37,20 @@ export default function WincentPage() {
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero com imagem de fundo */}
-      <section className="relative bg-gradient-to-r from-red-900 via-red-800 to-red-900 text-white py-16 overflow-hidden">
+      <section className="relative bg-gray-900 text-white py-16 overflow-hidden">
         {/* Imagem de fundo */}
-        <div className="absolute inset-0 opacity-40">
+        <div className="absolute inset-0">
           <img 
             src="/vintage-drumshop/banner/wincent-bg.jpg" 
             alt="Wincent Background"
             className="w-full h-full object-cover"
           />
+          {/* Overlay escuro para legibilidade do texto */}
+          <div className="absolute inset-0 bg-black/40"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">Wincent</h1>
-          <p className="text-xl text-red-100 drop-shadow-md">
+          <p className="text-xl text-white drop-shadow-md">
             Baquetas profissionais suecas com madeira de primeira qualidade
           </p>
         </div>
