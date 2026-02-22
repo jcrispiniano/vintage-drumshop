@@ -40,17 +40,60 @@ export default function Header({ showBackButton = false }: HeaderProps) {
     if (e.key === 'Enter' && searchTerm.trim()) {
       const term = searchTerm.trim().toLowerCase();
       
-      // Mapa de marcas para suas páginas
-      const brandPages: { [key: string]: string } = {
+      // Mapa completo de redirecionamentos (categorias + marcas + produtos específicos)
+      const redirectMap: { [key: string]: string } = {
+        // Categorias principais
+        'baterias': '/vintage-drumshop/baterias',
+        'bateria': '/vintage-drumshop/baterias',
+        'pratos': '/vintage-drumshop/pratos',
+        'prato': '/vintage-drumshop/pratos',
+        'caixas': '/vintage-drumshop/caixas',
+        'caixa': '/vintage-drumshop/caixas',
+        'peles': '/vintage-drumshop/peles',
+        'pele': '/vintage-drumshop/peles',
+        'baquetas': '/vintage-drumshop/baquetas',
+        'baqueta': '/vintage-drumshop/baquetas',
+        'acessorios': '/vintage-drumshop/acessorios',
+        'acessório': '/vintage-drumshop/acessorios',
+        'acessórios': '/vintage-drumshop/acessorios',
+        
+        // Subcategorias
+        'ferragens': '/vintage-drumshop/ferragens',
+        'ferragem': '/vintage-drumshop/ferragens',
+        'bags': '/vintage-drumshop/bags',
+        'bag': '/vintage-drumshop/bags',
+        'estudo': '/vintage-drumshop/estudo',
+        'cajon': '/vintage-drumshop/cajon',
+        'cajón': '/vintage-drumshop/cajon',
+        'kids': '/vintage-drumshop/kids',
+        'infantil': '/vintage-drumshop/kids',
+        'livros': '/vintage-drumshop/livros',
+        'livro': '/vintage-drumshop/livros',
+        'pecas': '/vintage-drumshop/pecas',
+        'peças': '/vintage-drumshop/pecas',
+        'peça': '/vintage-drumshop/pecas',
+        
+        // Marcas
         'wincent': '/vintage-drumshop/wincent',
         'dynabeat': '/vintage-drumshop/dynabeat',
         'istanbul': '/vintage-drumshop/pratos#istanbul-agop',
         'istanbul agop': '/vintage-drumshop/pratos#istanbul-agop',
+        
+        // Produtos específicos (baquetas)
+        'vassourinhas': '/vintage-drumshop/vassourinhas',
+        'vassoura': '/vintage-drumshop/vassourinhas',
+        'vassourinha': '/vintage-drumshop/vassourinhas',
+        'brush': '/vintage-drumshop/vassourinhas',
+        'brushes': '/vintage-drumshop/vassourinhas',
+        'mallets': '/vintage-drumshop/mallets',
+        'mallet': '/vintage-drumshop/mallets',
+        'rod': '/vintage-drumshop/vassourinhas',
+        'rods': '/vintage-drumshop/vassourinhas',
       };
       
-      // Se for uma marca conhecida, redireciona para a página da marca
-      if (brandPages[term]) {
-        window.location.href = brandPages[term];
+      // Se encontrar um redirecionamento direto, usa ele
+      if (redirectMap[term]) {
+        window.location.href = redirectMap[term];
       } else {
         // Senão, vai para busca normal
         router.push(`/busca?q=${encodeURIComponent(searchTerm.trim())}`);

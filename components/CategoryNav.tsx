@@ -9,7 +9,7 @@ interface CategoryNavProps {
 
 export default function CategoryNav({ currentCategory }: CategoryNavProps) {
   return (
-    <nav className="bg-primary text-white shadow-lg sticky top-[72px] md:top-[88px] z-40 overflow-visible">
+    <nav className="bg-primary text-white shadow-lg sticky top-[96px] md:top-[112px] z-40 overflow-visible">
       <div className="container mx-auto px-4 overflow-visible">
         <ul className="flex items-center justify-center gap-2 md:gap-4 py-3 relative overflow-visible">
           {/* Todos os Produtos com Dropdown */}
