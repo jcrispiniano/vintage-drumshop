@@ -510,7 +510,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 170.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-19r.jpg',
+    image: '/produtos/baquetas/w-19r.jpg',
     description: 'Rods de bambu profissionais Wincent 19R com excelente controle',
     featured: false
   },
