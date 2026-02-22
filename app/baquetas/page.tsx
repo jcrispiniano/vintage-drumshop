@@ -155,14 +155,22 @@ export default function BaquetasPage() {
       </section>
 
       {/* Wincent - Baquetas */}
-      <section id="wincent" className="py-20 bg-gradient-to-br from-gray-900 to-gray-800">
-        <div className="container mx-auto px-4">
+      <section id="wincent" className="py-20 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden">
+        {/* Imagem de fundo */}
+        <div className="absolute inset-0 opacity-20">
+          <img 
+            src="/vintage-drumshop/banner/wincent-bg.jpg" 
+            alt="Wincent Background"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
-            <span className="text-accent font-bold text-sm tracking-wider uppercase">Marca Oficial</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-4">
+            <span className="text-accent font-bold text-sm tracking-wider uppercase drop-shadow-md">Marca Oficial</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-4 drop-shadow-lg">
               Baquetas Wincent
             </h2>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-300 text-lg max-w-2xl mx-auto drop-shadow-md">
               Baquetas profissionais suecas com madeira de primeira qualidade. Durabilidade e equilíbrio perfeito.
             </p>
           </div>
