@@ -536,6 +536,16 @@ export const products: Product[] = [
   },
   {
     id: 52,
+    name: 'Baqueta Dynabeat 2B (W-BD2B)',
+    category: 'baquetas',
+    brand: 'dynabeat',
+    price: 80.00,
+    image: '/produtos/baquetas/w-bd2b.jpg',
+    description: 'Baqueta linha Dynabeat 2B em madeira hickory americana, extra pesada com excelente custo-benefício',
+    featured: false
+  },
+  {
+    id: 53,
     name: 'RockKey Prime - Chave de Afinação',
     category: 'acessorios',
     brand: 'rockkey',
