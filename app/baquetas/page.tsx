@@ -242,8 +242,16 @@ export default function BaquetasPage() {
       </section>
 
       {/* Dynabeat - Baquetas */}
-      <section id="dynabeat" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
+      <section id="dynabeat" className="py-20 bg-white relative">
+        {/* Imagem de fundo */}
+        <div className="absolute inset-0 opacity-10">
+          <img 
+            src="/vintage-drumshop/banner/dynabeat-bg.jpg" 
+            alt="Background Dynabeat"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
             <span className="text-accent font-bold text-sm tracking-wider uppercase">Marca Nacional</span>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-4">
