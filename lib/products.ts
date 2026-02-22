@@ -350,7 +350,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'dynabeat',
     price: 80.00,
-    image: '/produtos/baquetas/w-bd5a.jpg',
+    image: '/vintage-drumshop/produtos/baquetas/w-bd5a.jpg',
     description: 'Baqueta linha Dynabeat 5A em madeira hickory, excelente custo-benefício',
     featured: false
   },
@@ -410,7 +410,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'dynabeat',
     price: 80.00,
-    image: '/produtos/baquetas/w-bd5b.jpg',
+    image: '/vintage-drumshop/produtos/baquetas/w-bd5b.jpg',
     description: 'Baqueta linha Dynabeat 5B em madeira hickory, ótimo custo-benefício',
     featured: false
   },
@@ -470,7 +470,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/produtos/baquetas/w-5a-jazz.jpg',
+    image: '/vintage-drumshop/produtos/baquetas/w-5a-jazz.jpg',
     description: 'Baqueta profissional 5A JAZZ em madeira hickory para jazz e estilos leves',
     featured: false
   },
@@ -480,7 +480,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/produtos/baquetas/w-5b-standard.jpg',
+    image: '/vintage-drumshop/produtos/baquetas/w-5b-standard.jpg',
     description: 'Baqueta profissional 5B Standard em madeira hickory, versátil para todos os estilos',
     featured: false
   },
@@ -490,7 +490,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/produtos/baquetas/w-5a-precision.jpg',
+    image: '/vintage-drumshop/produtos/baquetas/w-5a-precision.jpg',
     description: 'Baqueta profissional 5A linha Precision em madeira hickory selecionada',
     featured: false
   },
@@ -500,7 +500,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 310.00,
-    image: '/produtos/baquetas/w-40h.jpg',
+    image: '/vintage-drumshop/produtos/baquetas/w-40h.jpg',
     description: 'Vassoura profissional Wincent 40 Heavy com cerdas retráteis para volume intenso',
     featured: false
   },
@@ -510,7 +510,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 170.00,
-    image: '/produtos/baquetas/w-19r.jpg',
+    image: '/vintage-drumshop/produtos/baquetas/w-19r.jpg',
     description: 'Rods de bambu profissionais Wincent 19R com excelente controle',
     featured: false
   },
@@ -520,7 +520,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 310.00,
-    image: '/produtos/baquetas/w-29l.jpg',
+    image: '/vintage-drumshop/produtos/baquetas/w-29l.jpg',
     description: 'Vassoura profissional Wincent 29 Light com cerdas retráteis para sons delicados',
     featured: false
   },
@@ -530,7 +530,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'dynabeat',
     price: 80.00,
-    image: '/produtos/baquetas/w-bd7a.jpg',
+    image: '/vintage-drumshop/produtos/baquetas/w-bd7a.jpg',
     description: 'Baqueta linha Dynabeat 7A em madeira hickory, leve e ágil com ótimo custo-benefício',
     featured: false
   },
@@ -540,7 +540,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'dynabeat',
     price: 80.00,
-    image: '/produtos/baquetas/w-bd2b.jpg',
+    image: '/vintage-drumshop/produtos/baquetas/w-bd2b.jpg',
     description: 'Baqueta linha Dynabeat 2B em madeira hickory americana, extra pesada com excelente custo-benefício',
     featured: false
   },
