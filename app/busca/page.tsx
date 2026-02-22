@@ -15,14 +15,45 @@ function BuscaContent() {
   const { addToCart, toggleFavorite, favorites } = useCart();
 
   // Buscar produtos
-  const searchResults = query.length >= 2 
-    ? products.filter(product => 
-        product.name.toLowerCase().includes(query.toLowerCase()) ||
-        product.category.toLowerCase().includes(query.toLowerCase()) ||
-        product.brand?.toLowerCase().includes(query.toLowerCase()) ||
-        product.description.toLowerCase().includes(query.toLowerCase())
-      )
-    : [];
+  let searchResults: typeof products = [];
+  let searchType = 'exact'; // exact, brand, category, none
+  
+  if (query.length >= 2) {
+    const lowerQuery = query.toLowerCase();
+    
+    // 1. Busca exata (nome do produto contém o termo)
+    const exactMatches = products.filter(product => 
+      product.name.toLowerCase().includes(lowerQuery) ||
+      product.description.toLowerCase().includes(lowerQuery)
+    );
+    
+    if (exactMatches.length > 0) {
+      searchResults = exactMatches;
+      searchType = 'exact';
+    } else {
+      // 2. Busca por marca
+      const brandMatches = products.filter(product => 
+        product.brand?.toLowerCase().includes(lowerQuery)
+      );
+      
+      if (brandMatches.length > 0) {
+        searchResults = brandMatches;
+        searchType = 'brand';
+      } else {
+        // 3. Busca por categoria
+        const categoryMatches = products.filter(product => 
+          product.category.toLowerCase().includes(lowerQuery)
+        );
+        
+        if (categoryMatches.length > 0) {
+          searchResults = categoryMatches;
+          searchType = 'category';
+        } else {
+          searchType = 'none';
+        }
+      }
+    }
+  }
 
   const handleAddToCart = (productId: number) => {
     const product = products.find(p => p.id === productId);
@@ -74,21 +105,21 @@ function BuscaContent() {
                 </p>
               </div>
             </div>
-          ) : searchResults.length === 0 ? (
+          ) : searchType === 'none' ? (
             <div className="text-center py-16">
               <div className="bg-white rounded-2xl shadow-lg p-12 max-w-md mx-auto">
                 <div className="text-6xl mb-4">😕</div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                  Nenhum resultado encontrado
+                  Produto não disponível
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Não encontramos produtos para <strong>"{query}"</strong>
+                  Infelizmente não temos <strong>"{query}"</strong> disponível no momento ou ainda não trabalhamos com este produto.
                 </p>
                 <p className="text-sm text-gray-500 mb-8">
-                  Tente buscar por:
-                  <br />• Nome do produto (ex: "brushes", "5A")
-                  <br />• Marca (ex: "wincent", "dynabeat")
-                  <br />• Categoria (ex: "baquetas", "pratos")
+                  Tente buscar por outras marcas ou produtos:
+                  <br />• Baquetas (Wincent, Dynabeat)
+                  <br />• Pratos (Istanbul Agop)
+                  <br />• Baterias, Caixas, Peles
                 </p>
                 <Link
                   href="/"
@@ -104,9 +135,19 @@ function BuscaContent() {
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">
                   {searchResults.length} {searchResults.length === 1 ? 'produto encontrado' : 'produtos encontrados'}
                 </h2>
-                <p className="text-gray-600">
-                  Mostrando resultados para "{query}"
-                </p>
+                {searchType === 'brand' ? (
+                  <p className="text-gray-600">
+                    Mostrando produtos da marca <span className="font-bold text-accent">"{query}"</span>
+                  </p>
+                ) : searchType === 'category' ? (
+                  <p className="text-gray-600">
+                    Mostrando produtos da categoria <span className="font-bold text-accent">"{query}"</span>
+                  </p>
+                ) : (
+                  <p className="text-gray-600">
+                    Mostrando resultados para "{query}"
+                  </p>
+                )}
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">

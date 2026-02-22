@@ -2,8 +2,9 @@
 
 import { ShoppingCart, Heart, Search, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { products, formatPrice } from '@/lib/products';
+import { useRouter } from 'next/navigation';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -13,6 +14,18 @@ export default function Header({ showBackButton = false }: HeaderProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<typeof products>([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const router = useRouter();
+
+  // Redirecionar automaticamente após 1 segundo de digitação
+  useEffect(() => {
+    if (searchTerm.trim().length >= 2) {
+      const timer = setTimeout(() => {
+        router.push(`/busca?q=${encodeURIComponent(searchTerm.trim())}`);
+      }, 1000); // 1 segundo de delay
+
+      return () => clearTimeout(timer);
+    }
+  }, [searchTerm, router]);
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
@@ -36,7 +49,7 @@ export default function Header({ showBackButton = false }: HeaderProps) {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && searchTerm.trim()) {
-      window.location.href = `/busca?q=${encodeURIComponent(searchTerm.trim())}`;
+      router.push(`/busca?q=${encodeURIComponent(searchTerm.trim())}`);
     }
   };
 
@@ -66,7 +79,7 @@ export default function Header({ showBackButton = false }: HeaderProps) {
             <div className="relative">
               <input 
                 type="text" 
-                placeholder="Buscar produtos, marcas... (Enter para buscar)" 
+                placeholder="Buscar produtos, marcas..." 
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
                 onKeyDown={handleKeyDown}
