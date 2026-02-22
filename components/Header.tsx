@@ -16,17 +16,6 @@ export default function Header({ showBackButton = false }: HeaderProps) {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const router = useRouter();
 
-  // Redirecionar automaticamente após 1 segundo de digitação
-  useEffect(() => {
-    if (searchTerm.trim().length >= 2) {
-      const timer = setTimeout(() => {
-        router.push(`/busca?q=${encodeURIComponent(searchTerm.trim())}`);
-      }, 1000); // 1 segundo de delay
-
-      return () => clearTimeout(timer);
-    }
-  }, [searchTerm, router]);
-
   const handleSearch = (term: string) => {
     setSearchTerm(term);
     
@@ -49,7 +38,23 @@ export default function Header({ showBackButton = false }: HeaderProps) {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && searchTerm.trim()) {
-      router.push(`/busca?q=${encodeURIComponent(searchTerm.trim())}`);
+      const term = searchTerm.trim().toLowerCase();
+      
+      // Mapa de marcas para suas páginas
+      const brandPages: { [key: string]: string } = {
+        'wincent': '/wincent',
+        'dynabeat': '/dynabeat',
+        'istanbul': '/pratos#istanbul-agop',
+        'istanbul agop': '/pratos#istanbul-agop',
+      };
+      
+      // Se for uma marca conhecida, redireciona para a página da marca
+      if (brandPages[term]) {
+        window.location.href = brandPages[term];
+      } else {
+        // Senão, vai para busca normal
+        router.push(`/busca?q=${encodeURIComponent(searchTerm.trim())}`);
+      }
     }
   };
 
@@ -79,7 +84,7 @@ export default function Header({ showBackButton = false }: HeaderProps) {
             <div className="relative">
               <input 
                 type="text" 
-                placeholder="Buscar produtos, marcas..." 
+                placeholder="Buscar produtos, marcas... (Enter para buscar)" 
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
                 onKeyDown={handleKeyDown}
