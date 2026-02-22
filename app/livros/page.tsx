@@ -2,10 +2,10 @@
 
 import { products, formatPrice } from '@/lib/products';
 import { Heart } from 'lucide-react';
-import { ShoppingCart, Heart, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import CategoryNav from '@/components/CategoryNav';
+import Header from '@/components/Header';
 
 export default function LivrosPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
