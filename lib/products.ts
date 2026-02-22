@@ -499,8 +499,8 @@ export const products: Product[] = [
     name: 'Wincent Pro Brushes 40 Heavy (W-40H)',
     category: 'baquetas',
     brand: 'wincent',
-    price: 310.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-40h.jpg',
+    price: 170.00,
+    image: '/produtos/baquetas/w-33m.jpg',
     description: 'Vassoura profissional Wincent 40 Heavy com cerdas retráteis para volume intenso',
     featured: false
   },
@@ -519,8 +519,8 @@ export const products: Product[] = [
     name: 'Wincent Pro Brushes 29 Light (W-29L)',
     category: 'baquetas',
     brand: 'wincent',
-    price: 310.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-29l.jpg',
+    price: 170.00,
+    image: '/produtos/baquetas/w-33m.jpg',
     description: 'Vassoura profissional Wincent 29 Light com cerdas retráteis para sons delicados',
     featured: false
   },
