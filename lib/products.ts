@@ -238,7 +238,7 @@ export const products: Product[] = [
     category: 'caixas',
     brand: 'pinguim',
     price: 2099.00,
-    image: '📦',
+    image: '/vintage-drumshop/produtos/caixa-pinguim-real.jpg',
     badge: 'Destaque',
     description: 'Caixa profissional em alumínio com som definido',
     featured: true
