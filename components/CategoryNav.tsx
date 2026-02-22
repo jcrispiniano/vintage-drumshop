@@ -104,7 +104,7 @@ export default function CategoryNav({ currentCategory }: CategoryNavProps) {
                       </li>
                       <li>
                         <Link 
-                          href="/baquetas#wincent"
+                          href="/wincent"
                           className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
                         >
                           Wincent
@@ -120,7 +120,7 @@ export default function CategoryNav({ currentCategory }: CategoryNavProps) {
                       </li>
                       <li>
                         <Link 
-                          href="/baquetas#vassourinhas"
+                          href="/vassourinhas"
                           className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
                         >
                           Vassourinhas
@@ -128,7 +128,7 @@ export default function CategoryNav({ currentCategory }: CategoryNavProps) {
                       </li>
                       <li>
                         <Link 
-                          href="/baquetas#mallets"
+                          href="/mallets"
                           className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
                         >
                           Mallets
