@@ -1,6 +1,6 @@
 'use client';
 
-import { ShoppingCart, Heart, Search, ArrowLeft } from 'lucide-react';
+import { ShoppingCart, Heart, Search, ArrowLeft, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { products, formatPrice } from '@/lib/products';
@@ -8,9 +8,10 @@ import { useRouter } from 'next/navigation';
 
 interface HeaderProps {
   showBackButton?: boolean;
+  onMenuClick?: () => void;
 }
 
-export default function Header({ showBackButton = false }: HeaderProps) {
+export default function Header({ showBackButton = false, onMenuClick }: HeaderProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<typeof products>([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -105,13 +106,23 @@ export default function Header({ showBackButton = false }: HeaderProps) {
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-4">
-          {/* Botão Voltar */}
-          {showBackButton && (
-            <Link href="/" className="flex items-center gap-2 text-primary hover:text-accent transition flex-shrink-0">
-              <ArrowLeft size={24} />
-              <span className="font-bold hidden md:inline">Voltar</span>
-            </Link>
-          )}
+          {/* Botão Menu Hambúrguer (Mobile) ou Voltar */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {onMenuClick && (
+              <button 
+                onClick={onMenuClick}
+                className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition text-primary"
+              >
+                <Menu size={24} />
+              </button>
+            )}
+            {showBackButton && (
+              <Link href="/" className="flex items-center gap-2 text-primary hover:text-accent transition">
+                <ArrowLeft size={24} />
+                <span className="font-bold hidden md:inline">Voltar</span>
+              </Link>
+            )}
+          </div>
 
           {/* Logo */}
           <Link href="/" className="flex items-center flex-shrink-0">

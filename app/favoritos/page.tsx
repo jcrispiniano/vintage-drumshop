@@ -1,13 +1,16 @@
 'use client';
+import { useState } from 'react';
 
 import { Heart, Trash2, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import { products, formatPrice } from '@/lib/products';
 import Header from '@/components/Header';
+import Sidebar from '@/components/Sidebar';
 
 export default function FavoritosPage() {
   const { favorites, toggleFavorite, addToCart } = useCart();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const favoriteProducts = products.filter(p => favorites.includes(p.id));
 
@@ -29,7 +32,9 @@ export default function FavoritosPage() {
   return (
     <div className="min-h-screen bg-orange-50">
       {/* Header */}
-      <Header showBackButton={true} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
+      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
 
       <div className="container mx-auto px-4 py-8">
         {favoriteProducts.length === 0 ? (

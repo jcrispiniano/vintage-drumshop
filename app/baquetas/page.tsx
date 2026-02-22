@@ -4,12 +4,15 @@ import { products, formatPrice } from '@/lib/products';
 import { Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
+import { useState } from 'react';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
+import Sidebar from '@/components/Sidebar';
 
 export default function BaquetasPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
   const categoryProducts = products.filter(p => p.category === 'baquetas');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleAddToCart = (productId: number) => {
     const product = products.find(p => p.id === productId);
@@ -28,8 +31,11 @@ export default function BaquetasPage() {
 
   return (
     <div className="min-h-screen bg-orange-50">
+      {/* Sidebar */}
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
       {/* Header com busca */}
-      <Header showBackButton={true} />
+      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
 
       {/* Menu de Categorias */}
       <CategoryNav currentCategory="baquetas" />

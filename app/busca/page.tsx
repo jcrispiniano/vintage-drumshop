@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 
 import { products, formatPrice } from '@/lib/products';
 import { Heart, Search } from 'lucide-react';
@@ -6,6 +7,7 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
+import Sidebar from '@/components/Sidebar';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -13,6 +15,7 @@ function BuscaContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
   const { addToCart, toggleFavorite, favorites } = useCart();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Buscar produtos
   let searchResults: typeof products = [];
@@ -72,7 +75,9 @@ function BuscaContent() {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Header showBackButton={true} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
+      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
       <CategoryNav currentCategory="" />
 
       {/* Hero */}

@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 
 import { products, formatPrice } from '@/lib/products';
 import { Heart } from 'lucide-react';
@@ -6,9 +7,11 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
+import Sidebar from '@/components/Sidebar';
 
 export default function VassourinhasPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // Filtrar produtos que são brushes (vassourinhas)
   const brushProducts = products.filter(p => 
     p.category === 'baquetas' && 
@@ -32,7 +35,9 @@ export default function VassourinhasPage() {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Header showBackButton={true} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
+      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero */}
