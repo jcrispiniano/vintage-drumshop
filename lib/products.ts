@@ -470,7 +470,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5a-jazz.jpg',
+    image: '/produtos/baquetas/w-5a-jazz.jpg',
     description: 'Baqueta profissional 5A JAZZ em madeira hickory para jazz e estilos leves',
     featured: false
   },

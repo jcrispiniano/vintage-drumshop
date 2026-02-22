@@ -112,6 +112,14 @@ export default function CategoryNav({ currentCategory }: CategoryNavProps) {
                       </li>
                       <li>
                         <Link 
+                          href="/baquetas#dynabeat"
+                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
+                        >
+                          Dynabeat
+                        </Link>
+                      </li>
+                      <li>
+                        <Link 
                           href="/baquetas#vassourinhas"
                           className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
                         >
