@@ -1,16 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowLeft, Heart, ShoppingCart, Share2, X, ZoomIn } from 'lucide-react';
+import { ArrowLeft, Heart, ShoppingCart, Share2, X, ZoomIn, Menu } from 'lucide-react';
 import { Product, formatPrice, contactInfo, products } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
+import Header from '@/components/Header';
+import Sidebar from '@/components/Sidebar';
 
 export default function ProdutoClient({ product }: { product: Product }) {
   const { addToCart, toggleFavorite, favorites } = useCart();
   const isFavorite = favorites.includes(product.id);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [currentImage, setCurrentImage] = useState(product.image);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleAddToCart = () => {
     addToCart({
@@ -38,32 +41,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 text-primary hover:text-accent transition">
-              <ArrowLeft size={24} />
-              <span className="font-bold hidden md:inline">Voltar</span>
-            </Link>
-            <Link href="/" className="flex items-center">
-              <img 
-                src="/vintage-drumshop/logo-small.png" 
-                alt="Vintage Drum Shop" 
-                className="h-16 md:h-22 w-auto cursor-pointer hover:opacity-80 transition"
-              />
-            </Link>
-            <div className="flex gap-4">
-              <Link href="/favoritos" className="text-primary hover:text-accent transition">
-                <Heart size={24} />
-              </Link>
-              <Link href="/carrinho" className="text-primary hover:text-accent transition">
-                <ShoppingCart size={24} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
 
       {/* Produto */}
       <div className="container mx-auto px-4 py-12">
