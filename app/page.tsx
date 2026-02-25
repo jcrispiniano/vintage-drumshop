@@ -691,7 +691,7 @@ export default function Home() {
             <div>
               <img 
                 src="/vintage-drumshop/logo-small.png" 
-                alt="Vintage Drum Shop" 
+                alt="Vintage Drum Shop — Percussão Profissional" 
                 className="h-20 w-auto mb-4"
               />
               <p className="text-sm text-gray-300">
@@ -701,34 +701,71 @@ export default function Home() {
             <div>
               <h4 className="font-bold mb-4 text-accent">Categorias</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-accent">Baterias</a></li>
-                <li><a href="#" className="hover:text-accent">Pratos</a></li>
-                <li><a href="#" className="hover:text-accent">Caixas</a></li>
-                <li><a href="#" className="hover:text-accent">Baquetas</a></li>
+                <li><Link href="/baterias" className="hover:text-accent transition">Baterias</Link></li>
+                <li><Link href="/pratos" className="hover:text-accent transition">Pratos</Link></li>
+                <li><Link href="/caixas" className="hover:text-accent transition">Caixas</Link></li>
+                <li><Link href="/baquetas" className="hover:text-accent transition">Baquetas</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold mb-4 text-accent">Atendimento</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-accent">Fale Conosco</a></li>
-                <li><a href="#" className="hover:text-accent">Trocas e Devoluções</a></li>
-                <li><a href="#" className="hover:text-accent">Política de Privacidade</a></li>
+                <li>
+                  <a 
+                    href={contactInfo.whatsapp} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="hover:text-accent transition"
+                  >
+                    Fale Conosco
+                  </a>
+                </li>
+                <li><Link href="/trocas-e-devolucoes" className="hover:text-accent transition">Trocas e Devoluções</Link></li>
+                <li><Link href="/politica-de-privacidade" className="hover:text-accent transition">Política de Privacidade</Link></li>
+                <li><Link href="/termos-de-uso" className="hover:text-accent transition">Termos de Uso</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold mb-4 text-accent">Contato</h4>
-              <p className="text-sm space-y-2">
-                <span className="block">{contactInfo.phoneFormatted}</span>
-                <span className="block">{contactInfo.email}</span>
-                <span className="block">{contactInfo.instagramHandle}</span>
-                <span className="block">{contactInfo.address}</span>
-                <span className="block">{contactInfo.hours}</span>
-              </p>
+              <address className="not-italic text-sm space-y-2">
+                <p className="block">
+                  <a 
+                    href={`tel:${contactInfo.phone}`}
+                    className="hover:text-accent transition"
+                    aria-label={`Ligar para ${contactInfo.phoneFormatted}`}
+                  >
+                    {contactInfo.phoneFormatted}
+                  </a>
+                </p>
+                <p className="block">
+                  <a 
+                    href={`mailto:${contactInfo.email}`}
+                    className="hover:text-accent transition"
+                    aria-label={`Enviar e-mail para ${contactInfo.email}`}
+                  >
+                    {contactInfo.email}
+                  </a>
+                </p>
+                <p className="block">
+                  <a 
+                    href={contactInfo.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer me"
+                    className="hover:text-accent transition"
+                    aria-label={`Seguir ${contactInfo.instagramHandle} no Instagram`}
+                  >
+                    {contactInfo.instagramHandle}
+                  </a>
+                </p>
+                <p className="block">{contactInfo.address}</p>
+                <p className="block">{contactInfo.hours} (Horário de Brasília - GMT-3)</p>
+              </address>
               <div className="flex gap-2 mt-4">
                 <a 
                   href={contactInfo.whatsapp} 
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Falar conosco pelo WhatsApp"
                   className="flex-1 bg-green-500 px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-600 transition text-center"
                 >
                   WhatsApp
@@ -736,7 +773,8 @@ export default function Home() {
                 <a 
                   href={contactInfo.instagram} 
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer me"
+                  aria-label="Seguir Vintage Drum Shop no Instagram"
                   className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 rounded-full text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition text-center"
                 >
                   Instagram
