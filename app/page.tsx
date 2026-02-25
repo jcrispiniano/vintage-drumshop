@@ -174,7 +174,7 @@ export default function Home() {
       </aside>
 
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white shadow-md">
+      <header className="sticky top-0 z-[60] bg-white shadow-md">
         {/* Top Bar */}
         <div className="bg-darkBg text-white py-2">
           <div className="container mx-auto px-4 flex justify-between text-sm">
@@ -425,7 +425,7 @@ export default function Home() {
       </header>
 
       {/* Category Navigation */}
-      <CategoryNav />
+      <CategoryNav stickyBelowHeader={true} />
 
       {/* Main Content */}
       <main id="main-content">
