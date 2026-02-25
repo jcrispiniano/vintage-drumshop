@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import Toast from '@/components/Toast';
 
 interface CartItem {
   id: number;
@@ -27,39 +28,58 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Carregar do localStorage ao montar
+  // Carregar do localStorage ao montar (client-side only)
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
-    const savedFavorites = localStorage.getItem('favorites');
-    
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
-    }
-    if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites));
+    if (typeof window !== 'undefined') {
+      const savedCart = localStorage.getItem('cart');
+      const savedFavorites = localStorage.getItem('favorites');
+      
+      if (savedCart) {
+        try {
+          setCartItems(JSON.parse(savedCart));
+        } catch (e) {
+          console.error('Error loading cart from localStorage:', e);
+        }
+      }
+      if (savedFavorites) {
+        try {
+          setFavorites(JSON.parse(savedFavorites));
+        } catch (e) {
+          console.error('Error loading favorites from localStorage:', e);
+        }
+      }
+      setIsHydrated(true);
     }
   }, []);
 
-  // Salvar no localStorage quando mudar
+  // Salvar no localStorage quando mudar (apenas após hydration)
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-  }, [cartItems]);
+    if (isHydrated && typeof window !== 'undefined') {
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+    }
+  }, [cartItems, isHydrated]);
 
   useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
+    if (isHydrated && typeof window !== 'undefined') {
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+  }, [favorites, isHydrated]);
 
   const addToCart = (item: Omit<CartItem, 'quantity'>) => {
     setCartItems(prev => {
       const existing = prev.find(i => i.id === item.id);
       if (existing) {
+        setToastMessage(`${item.name} - Quantidade atualizada!`);
         return prev.map(i =>
           i.id === item.id
             ? { ...i, quantity: i.quantity + 1 }
             : i
         );
       }
+      setToastMessage(`${item.name} adicionado ao carrinho!`);
       return [...prev, { ...item, quantity: 1 }];
     });
   };
@@ -105,6 +125,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
+      {toastMessage && (
+        <Toast 
+          message={toastMessage} 
+          onClose={() => setToastMessage(null)} 
+        />
+      )}
     </CartContext.Provider>
   );
 }

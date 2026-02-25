@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { products, formatPrice } from '@/lib/products';
 import { useRouter } from 'next/navigation';
+import { useCart } from '@/contexts/CartContext';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -16,6 +17,7 @@ export default function Header({ showBackButton = false, onMenuClick }: HeaderPr
   const [searchResults, setSearchResults] = useState<typeof products>([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const router = useRouter();
+  const { cartItems, favorites } = useCart();
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
@@ -182,11 +184,29 @@ export default function Header({ showBackButton = false, onMenuClick }: HeaderPr
 
           {/* Ações */}
           <div className="flex gap-3 md:gap-4 flex-shrink-0">
-            <Link href="/favoritos" className="text-primary hover:text-accent transition">
-              <Heart size={24} />
+            <Link 
+              href="/favoritos" 
+              className="text-primary hover:text-accent transition relative"
+              aria-label={`Acessar favoritos (${favorites.length} itens)`}
+            >
+              <Heart size={24} fill={favorites.length > 0 ? 'currentColor' : 'none'} />
+              {favorites.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {favorites.length}
+                </span>
+              )}
             </Link>
-            <Link href="/carrinho" className="text-primary hover:text-accent transition">
+            <Link 
+              href="/carrinho" 
+              className="text-primary hover:text-accent transition relative"
+              aria-label={`Acessar carrinho (${cartItems.length} itens)`}
+            >
               <ShoppingCart size={24} />
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartItems.length}
+                </span>
+              )}
             </Link>
           </div>
         </div>

@@ -7,16 +7,43 @@ import { useState, useEffect } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import InstagramFeed from '@/components/InstagramFeed';
 
-const bannerImages = [
-  '/vintage-drumshop/banner/slide-1.jpg',
-  '/vintage-drumshop/banner/slide-2.jpg',
-  '/vintage-drumshop/banner/slide-3.jpg',
-  '/vintage-drumshop/banner/slide-4.jpg',
-  '/vintage-drumshop/banner/slide-5.jpg',
-  '/vintage-drumshop/banner/slide-6.jpg',
-  '/vintage-drumshop/banner/slide-7.jpg',
-  '/vintage-drumshop/banner/slide-8.jpg',
-  '/vintage-drumshop/banner/slide-9.jpg',
+const bannerSlides = [
+  { 
+    image: '/vintage-drumshop/banner/slide-1.jpg',
+    alt: 'Baquetas Wincent profissionais - Linha completa de modelos 5A, 5B, 7A e mallets'
+  },
+  { 
+    image: '/vintage-drumshop/banner/slide-2.jpg',
+    alt: 'Pratos Istanbul Agop Traditional - Crafted in Turkey, sonoridade autêntica'
+  },
+  { 
+    image: '/vintage-drumshop/banner/slide-3.jpg',
+    alt: 'Coleção completa de baquetas Wincent - Precision, Jazz e modelos especiais'
+  },
+  { 
+    image: '/vintage-drumshop/banner/slide-4.jpg',
+    alt: 'Pratos Istanbul Agop Xist - Modernidade e versatilidade para todos os estilos'
+  },
+  { 
+    image: '/vintage-drumshop/banner/slide-5.jpg',
+    alt: 'Vassourinhas e Rods Wincent - Pro Brushes para jazz e estilos dinâmicos'
+  },
+  { 
+    image: '/vintage-drumshop/banner/slide-6.jpg',
+    alt: 'Setup completo com pratos Istanbul Agop - Crash, Ride e Hi-Hat profissionais'
+  },
+  { 
+    image: '/vintage-drumshop/banner/slide-7.jpg',
+    alt: 'Baquetas Dynabeat - Qualidade e custo-benefício para percussionistas'
+  },
+  { 
+    image: '/vintage-drumshop/banner/slide-8.jpg',
+    alt: 'Mallets Wincent - Dual Soft e Swoosh para percussão sinfônica'
+  },
+  { 
+    image: '/vintage-drumshop/banner/slide-9.jpg',
+    alt: 'Linha Signature Istanbul Agop - Joey Waronker, Mel Lewis e Special Jazz Edition'
+  },
 ];
 
 export default function Home() {
@@ -30,7 +57,7 @@ export default function Home() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % bannerImages.length);
+      setCurrentSlide((prev) => (prev + 1) % bannerSlides.length);
     }, 4000); // Muda a cada 4 segundos
 
     return () => clearInterval(timer);
@@ -73,6 +100,14 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Skip to main content link */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-accent focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold focus:shadow-lg"
+      >
+        Ir para o conteúdo principal
+      </a>
+
       {/* Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
@@ -384,8 +419,14 @@ export default function Home() {
         </nav>
       </header>
 
-      {/* Hero Banner */}
-      <section className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
+      {/* Main Content */}
+      <main id="main-content">
+        {/* Hero Banner */}
+        <section 
+          className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden"
+          role="region"
+          aria-label="Destaques e promoções"
+        >
         <div className="container mx-auto px-4 py-16 md:py-24">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="space-y-6">
@@ -414,7 +455,7 @@ export default function Home() {
               </div>
             </div>
             <div className="relative h-64 md:h-96 hidden md:block overflow-hidden rounded-3xl shadow-2xl">
-              {bannerImages.map((image, index) => (
+              {bannerSlides.map((slide, index) => (
                 <div
                   key={index}
                   className={`absolute inset-0 transition-opacity duration-1000 ${
@@ -422,17 +463,24 @@ export default function Home() {
                   }`}
                 >
                   <img
-                    src={image}
-                    alt={`Slide ${index + 1}`}
+                    src={slide.image}
+                    alt={slide.alt}
+                    loading={index === 0 ? 'eager' : 'lazy'}
                     className="w-full h-full object-cover"
                   />
                 </div>
               ))}
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                {bannerImages.map((_, index) => (
+              <div 
+                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2"
+                role="group"
+                aria-label="Controles do carrossel"
+              >
+                {bannerSlides.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentSlide(index)}
+                    aria-label={`Ir para slide ${index + 1}`}
+                    aria-current={index === currentSlide ? 'true' : 'false'}
                     className={`w-2 h-2 rounded-full transition ${
                       index === currentSlide ? 'bg-white' : 'bg-white/50'
                     }`}
@@ -685,6 +733,8 @@ export default function Home() {
       </section>
 
       {/* Footer */}
+      </main>
+
       <footer className="bg-darkBg text-white py-12">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
