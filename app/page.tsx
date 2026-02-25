@@ -615,6 +615,69 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Ofertas Especiais */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="text-accent font-bold text-sm tracking-wider uppercase">Promoções</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-4">
+              OFERTAS
+            </h2>
+            <div className="w-20 h-1 bg-accent mx-auto"></div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {products.filter(p => p.oldPrice).slice(0, 2).map(product => {
+              const discount = Math.round(((product.oldPrice! - product.price) / product.oldPrice!) * 100);
+              return (
+                <div key={product.id} className="bg-gradient-to-br from-orange-50 to-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all group border-2 border-orange-200">
+                  <div className="relative">
+                    <div className="absolute top-4 left-4 bg-accent text-white px-6 py-3 rounded-lg font-bold text-xl shadow-lg z-10">
+                      {discount}% OFF
+                    </div>
+                    <Link href={`/produto/${product.id}`} className="block relative h-64 bg-white overflow-hidden">
+                      <img 
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </Link>
+                  </div>
+                  <div className="p-6">
+                    <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
+                      {product.category}
+                    </p>
+                    <h3 className="font-bold text-xl mb-3 line-clamp-2 text-gray-900">
+                      {product.name}
+                    </h3>
+                    <div className="mb-4">
+                      <div className="flex items-baseline gap-3 mb-2">
+                        <data value={product.price} className="text-3xl md:text-4xl font-bold text-accent">
+                          {formatPrice(product.price)}
+                        </data>
+                        <span className="text-sm text-gray-500 uppercase font-semibold">no PIX</span>
+                      </div>
+                      <data value={product.oldPrice} className="text-lg text-gray-400 line-through block">
+                        {formatPrice(product.oldPrice!)}
+                      </data>
+                      <p className="text-sm text-gray-600 mt-2">
+                        em até <strong>3x de {formatPrice(product.price / 3)}</strong> sem juros
+                      </p>
+                    </div>
+                    <Link
+                      href={`/produto/${product.id}`}
+                      className="block w-full bg-gradient-to-r from-accent to-secondary text-white py-4 rounded-lg font-bold text-center hover:from-secondary hover:to-accent transition shadow-lg"
+                    >
+                      COMPRAR
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Produtos */}
       <section id="produtos" className="py-20 bg-orange-50">
         <div className="container mx-auto px-4">
