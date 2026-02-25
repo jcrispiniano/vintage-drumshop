@@ -27,29 +27,24 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <article 
-      className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
+      className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group border border-gray-100"
       aria-label={`Produto: ${product.name}`}
     >
       <Link 
         href={`/produto/${product.id}`} 
-        className="relative h-64 bg-gradient-to-br from-orange-50 to-white flex items-center justify-center overflow-hidden block cursor-pointer"
+        className="relative h-40 bg-gradient-to-br from-orange-50 to-white flex items-center justify-center overflow-hidden block cursor-pointer"
       >
-        <div className="relative h-48 w-full">
+        <div className="relative h-32 w-full">
           <Image 
             src={product.image} 
             alt={product.name}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
             className="object-contain group-hover:scale-110 transition"
           />
         </div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-5xl font-bold text-primary/10 group-hover:text-primary/20 transition">
-            {product.name.substring(0, 2).toUpperCase()}
-          </div>
-        </div>
         {product.badge && (
-          <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
+          <span className="absolute top-2 right-2 bg-accent text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-lg">
             {product.badge}
           </span>
         )}
@@ -59,56 +54,46 @@ export default function ProductCard({ product }: ProductCardProps) {
             toggleFavorite(product.id);
           }}
           aria-label={isFavorite ? `Remover ${product.name} dos favoritos` : `Adicionar ${product.name} aos favoritos`}
-          className={`absolute top-4 left-4 p-3 rounded-full transition shadow-lg ${
+          className={`absolute top-2 left-2 p-2 rounded-full transition shadow-lg ${
             isFavorite
               ? 'bg-accent text-white'
               : 'bg-white text-gray-400 hover:text-accent'
           }`}
         >
-          <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
+          <Heart size={14} fill={isFavorite ? 'currentColor' : 'none'} />
         </button>
       </Link>
       
-      <div className="p-6">
-        <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
+      <div className="p-3">
+        <p className="text-[10px] text-accent uppercase font-bold tracking-wider mb-1">
           {product.category}
         </p>
-        <h3 className="font-bold text-lg mb-3 line-clamp-2 text-gray-900 group-hover:text-accent transition">
+        <h3 className="font-bold text-sm mb-2 line-clamp-2 text-gray-900 group-hover:text-accent transition leading-tight">
           {product.name}
         </h3>
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-          {product.description}
-        </p>
         
-        <div className="mb-4 flex items-baseline gap-2">
+        <div className="mb-3 flex flex-col gap-1">
           {product.oldPrice && (
-            <span className="text-sm text-gray-400 line-through">
+            <span className="text-xs text-gray-400 line-through">
               {formatPrice(product.oldPrice)}
             </span>
           )}
           <data 
             value={product.price} 
-            className="text-3xl font-bold text-accent"
+            className="text-xl font-bold text-accent"
           >
             {formatPrice(product.price)}
           </data>
+          <p className="text-[10px] text-gray-500">no PIX</p>
         </div>
         
-        <div className="flex flex-col gap-2">
-          <button 
-            onClick={handleAddToCart}
-            aria-label={`Adicionar ${product.name} ao carrinho`}
-            className="w-full bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md hover:shadow-lg"
-          >
-            Adicionar ao Carrinho
-          </button>
-          <Link
-            href={`/produto/${product.id}`}
-            className="w-full border-2 border-accent text-accent py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center"
-          >
-            Ver Detalhes
-          </Link>
-        </div>
+        <button 
+          onClick={handleAddToCart}
+          aria-label={`Adicionar ${product.name} ao carrinho`}
+          className="w-full bg-accent text-white py-2 rounded-lg text-sm font-bold hover:bg-secondary transition shadow-sm"
+        >
+          COMPRAR
+        </button>
       </div>
     </article>
   );
