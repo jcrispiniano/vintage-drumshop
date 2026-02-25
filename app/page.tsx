@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import InstagramFeed from '@/components/InstagramFeed';
+import OrganizationSchema from '@/components/schemas/OrganizationSchema';
 
 const bannerSlides = [
   { 
@@ -100,6 +101,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Schema Markup */}
+      <OrganizationSchema />
+
       {/* Skip to main content link */}
       <a 
         href="#main-content" 
@@ -430,12 +434,12 @@ export default function Home() {
         <div className="container mx-auto px-4 py-16 md:py-24">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div className="space-y-6">
-              <h2 className="text-5xl md:text-6xl font-bold leading-tight">
+              <h1 className="text-5xl md:text-6xl font-bold leading-tight">
                 Baterias & Acessórios
                 <span className="block text-accent mt-2">Profissionais</span>
-              </h2>
+              </h1>
               <p className="text-xl text-gray-300">
-                Revenda Oficial Wincent e Istanbul Agop
+                Revenda Oficial Wincent e Istanbul Agop em São Paulo
               </p>
               <div className="flex flex-wrap gap-4">
                 <a 

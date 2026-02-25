@@ -49,6 +49,7 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <link rel="alternate" hrefLang="pt-BR" href="https://jcrispiniano.github.io/vintage-drumshop" />
+        <link rel="sitemap" type="application/xml" href="/vintage-drumshop/sitemap.xml" />
       </head>
       <body className="antialiased">
         <CartProvider>
