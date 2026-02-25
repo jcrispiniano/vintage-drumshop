@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import InstagramFeed from '@/components/InstagramFeed';
 import OrganizationSchema from '@/components/schemas/OrganizationSchema';
+import CategoryNav from '@/components/CategoryNav';
 
 const bannerSlides = [
   { 
@@ -422,6 +423,9 @@ export default function Home() {
           </div>
         </nav>
       </header>
+
+      {/* Category Navigation */}
+      <CategoryNav />
 
       {/* Main Content */}
       <main id="main-content">
