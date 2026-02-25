@@ -627,9 +627,10 @@ export default function Home() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProducts.map(product => (
-              <div 
+              <article 
                 key={product.id} 
                 className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
+                aria-label={`Produto: ${product.name}`}
               >
                 <Link href={`/produto/${product.id}`} className="relative h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
@@ -674,13 +675,13 @@ export default function Home() {
                   </p>
                   <div className="mb-4 flex items-baseline gap-2">
                     {product.oldPrice && (
-                      <span className="text-sm text-gray-400 line-through">
+                      <data value={product.oldPrice} className="text-sm text-gray-400 line-through">
                         {formatPrice(product.oldPrice)}
-                      </span>
+                      </data>
                     )}
-                    <span className="text-3xl font-bold text-accent">
+                    <data value={product.price} className="text-3xl font-bold text-accent">
                       {formatPrice(product.price)}
-                    </span>
+                    </data>
                   </div>
                   <div className="flex flex-col gap-2">
                     <button 
@@ -697,7 +698,7 @@ export default function Home() {
                     </Link>
                   </div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
