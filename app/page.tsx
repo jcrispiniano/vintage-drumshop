@@ -625,44 +625,44 @@ export default function Home() {
             <div className="w-16 h-1 bg-accent mx-auto"></div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 max-w-6xl mx-auto">
             {products.filter(p => p.oldPrice).slice(0, 4).map(product => {
               const discount = Math.round(((product.oldPrice! - product.price) / product.oldPrice!) * 100);
               return (
-                <div key={product.id} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all group border border-gray-200">
+                <div key={product.id} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all group border border-gray-200">
                   <div className="relative">
-                    <div className="absolute top-2 left-2 bg-gray-900 text-white px-3 py-2 rounded-md font-bold text-sm shadow-lg z-10">
+                    <div className="absolute top-1 left-1 bg-gray-900 text-white px-2 py-1 rounded text-[10px] md:text-xs font-bold shadow-md z-10">
                       {discount}% OFF
                     </div>
-                    <Link href={`/produto/${product.id}`} className="block relative h-40 bg-white overflow-hidden">
+                    <Link href={`/produto/${product.id}`} className="block relative h-32 md:h-40 bg-white overflow-hidden">
                       <img 
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-contain p-2 md:p-4 group-hover:scale-110 transition-transform duration-500"
                       />
                     </Link>
                   </div>
-                  <div className="p-3">
-                    <h3 className="font-bold text-sm mb-2 line-clamp-2 text-gray-900 leading-tight">
+                  <div className="p-2">
+                    <h3 className="font-bold text-xs md:text-sm mb-1 line-clamp-2 text-gray-900 leading-tight">
                       {product.name}
                     </h3>
-                    <div className="mb-3">
-                      <div className="flex flex-col gap-1">
-                        <data value={product.price} className="text-xl font-bold text-cyan-600">
+                    <div className="mb-2">
+                      <div className="flex flex-col gap-0.5">
+                        <data value={product.price} className="text-lg md:text-xl font-bold text-cyan-600">
                           {formatPrice(product.price)}
                         </data>
-                        <span className="text-[10px] text-gray-500 uppercase font-semibold">no PIX</span>
+                        <span className="text-[9px] text-gray-500 uppercase font-semibold">no PIX</span>
                       </div>
-                      <data value={product.oldPrice} className="text-xs text-gray-400 line-through block mt-1">
+                      <data value={product.oldPrice} className="text-[10px] text-gray-400 line-through block mt-0.5">
                         {formatPrice(product.oldPrice!)}
                       </data>
-                      <p className="text-[10px] text-gray-600 mt-1">
+                      <p className="text-[9px] text-gray-600 mt-0.5 hidden md:block">
                         em até <strong>5x de {formatPrice(product.price / 5)}</strong>
                       </p>
                     </div>
                     <Link
                       href={`/produto/${product.id}`}
-                      className="block w-full bg-cyan-500 text-white py-2 rounded-lg font-bold text-sm text-center hover:bg-cyan-600 transition shadow-sm"
+                      className="block w-full bg-cyan-500 text-white py-1.5 md:py-2 rounded font-bold text-xs md:text-sm text-center hover:bg-cyan-600 transition shadow-sm"
                     >
                       COMPRAR
                     </Link>
@@ -688,7 +688,7 @@ export default function Home() {
               Ver Todos os Produtos →
             </a>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
             {featuredProducts.map(product => (
               <article 
                 key={product.id} 
