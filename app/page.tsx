@@ -424,8 +424,10 @@ export default function Home() {
         </nav>
       </header>
 
-      {/* Category Navigation */}
-      <CategoryNav stickyBelowHeader={true} />
+      {/* Category Navigation - Apenas Mobile */}
+      <div className="md:hidden">
+        <CategoryNav stickyBelowHeader={true} />
+      </div>
 
       {/* Main Content */}
       <main id="main-content">
