@@ -564,26 +564,6 @@ export const products: Product[] = [
     description: 'Chave de afinação profissional RockKey Prime com design ergonômico',
     featured: false
   },
-  {
-    id: 54,
-    name: 'Wincent Mallets 5D6 e 5H (W-5D6/5H)',
-    category: 'baquetas',
-    brand: 'wincent',
-    price: 310.00,
-    image: '/images/mallets-wincent.jpg',
-    description: 'Mallets profissionais Wincent para percussão: modelo 5D6 Dual Hard (madeira natural) e 5H Swoosh Hard (branco). Ideais para tímpanos, vibrafone, glockenspiel e outros instrumentos de percussão sinfônica',
-    featured: true
-  },
-  {
-    id: 55,
-    name: 'Coleção Wincent Pro Brushes e Rods',
-    category: 'baquetas',
-    brand: 'wincent',
-    price: 310.00,
-    image: '/images/brushes-wincent-collection.jpg',
-    description: 'Linha completa de vassourinhas profissionais Wincent: Pro Brushes retráteis (29L, 33M, 40H), Bamboo Rods (19A, 19P, 19R) e acessórios. Ideais para jazz, blues e estilos dinâmicos que exigem sutileza e controle',
-    featured: true
-  },
 ];
 
 export const categories = [
