@@ -13,6 +13,7 @@ export default function FavoritosPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   const favoriteProducts = products.filter(p => favorites.includes(p.id));
+  const recommendedProducts = products.filter(p => p.featured).slice(0, 3);
 
   const handleAddToCart = (productId: number) => {
     const product = products.find(p => p.id === productId);
@@ -58,6 +59,32 @@ export default function FavoritosPage() {
               >
                 Ver Produtos
               </Link>
+            </div>
+
+            {/* Recomendações */}
+            <div className="mt-12">
+              <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
+                Produtos em Destaque
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {recommendedProducts.map(product => (
+                  <div key={product.id} className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition">
+                    <div className="h-32 flex items-center justify-center mb-4">
+                      <div className="text-4xl font-bold text-primary/20">
+                        {product.name.substring(0, 2).toUpperCase()}
+                      </div>
+                    </div>
+                    <h4 className="font-bold text-sm mb-2 line-clamp-2">{product.name}</h4>
+                    <p className="text-accent font-bold mb-3">{formatPrice(product.price)}</p>
+                    <Link
+                      href={`/produto/${product.id}`}
+                      className="block text-center bg-accent text-white py-2 rounded-lg text-sm font-semibold hover:bg-secondary transition"
+                    >
+                      Ver Produto
+                    </Link>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         ) : (
