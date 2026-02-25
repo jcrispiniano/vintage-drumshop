@@ -579,9 +579,9 @@ export default function Home() {
                   Baquetas profissionais suecas com madeira de primeira qualidade. 
                   Durabilidade e equilíbrio perfeito para todos os estilos musicais.
                 </p>
-                <a href="/wincent" className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center">
+                <Link href="/wincent" className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center">
                   Ver Baquetas Wincent →
-                </a>
+                </Link>
               </div>
             </div>
             
@@ -602,9 +602,9 @@ export default function Home() {
                   Pratos artesanais turcos feitos à mão há gerações. Som único, 
                   rico em harmônicos e usado pelos maiores bateristas do mundo.
                 </p>
-                <a href="/pratos#istanbul-agop" className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center">
+                <Link href="/pratos" className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center">
                   Ver Pratos Istanbul →
-                </a>
+                </Link>
               </div>
             </div>
           </div>
