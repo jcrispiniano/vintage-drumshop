@@ -44,10 +44,10 @@ export default function CategoryNav({ currentCategory, stickyBelowHeader = false
             </div>
           </li>
 
-          {/* Categorias Principais */}
-          {categories.filter(cat => 
-            ['baterias', 'pratos', 'caixas', 'peles', 'baquetas', 'acessorios'].includes(cat.id)
-          ).map(cat => {
+          {/* Categorias Principais - Ordem: Baterias, Pratos, Caixas, Peles, Baquetas, Acessórios */}
+          {['baterias', 'pratos', 'caixas', 'peles', 'baquetas', 'acessorios'].map(catId => {
+            const cat = categories.find(c => c.id === catId);
+            if (!cat) return null;
             // Pratos tem dropdown com Istanbul
             if (cat.id === 'pratos') {
               return (

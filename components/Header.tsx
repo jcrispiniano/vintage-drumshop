@@ -131,7 +131,7 @@ export default function Header({ showBackButton = false, onMenuClick }: HeaderPr
             <img 
               src="/vintage-drumshop/logo-small.png" 
               alt="Vintage Drum Shop" 
-              className="h-16 md:h-20 w-auto cursor-pointer hover:opacity-80 transition"
+              className="h-10 md:h-20 w-auto cursor-pointer hover:opacity-80 transition"
             />
           </Link>
 
