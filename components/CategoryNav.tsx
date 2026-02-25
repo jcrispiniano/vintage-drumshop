@@ -9,14 +9,9 @@ interface CategoryNavProps {
 }
 
 export default function CategoryNav({ currentCategory, stickyBelowHeader = false }: CategoryNavProps) {
-  // Na homepage, fica logo abaixo do header sticky
-  // Nas outras páginas, fica na posição normal (abaixo do Header component)
-  const stickyClass = stickyBelowHeader 
-    ? "sticky top-[120px] md:top-[140px] z-50" 
-    : "sticky top-[96px] md:top-[112px] z-40";
-  
+  // Removido comportamento sticky - barra fica estática
   return (
-    <nav aria-label="Categorias de produtos" className={`bg-primary text-white shadow-lg ${stickyClass} overflow-visible`}>
+    <nav aria-label="Categorias de produtos" className="bg-primary text-white shadow-lg overflow-visible">
       <div className="container mx-auto px-4 overflow-visible">
         <ul className="flex items-center justify-center gap-2 md:gap-4 py-3 relative overflow-visible" role="menubar">
           {/* Todos os Produtos com Dropdown - APENAS DESKTOP */}
