@@ -32,9 +32,9 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       <Link 
         href={`/produto/${product.id}`} 
-        className="relative h-32 md:h-40 bg-gradient-to-br from-orange-50 to-white flex items-center justify-center overflow-hidden block cursor-pointer"
+        className="relative h-24 md:h-40 bg-gradient-to-br from-orange-50 to-white flex items-center justify-center overflow-hidden block cursor-pointer"
       >
-        <div className="relative h-24 md:h-32 w-full">
+        <div className="relative h-20 md:h-32 w-full">
           <Image 
             src={product.image} 
             alt={product.name}
@@ -44,7 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           />
         </div>
         {product.badge && (
-          <span className="absolute top-1 right-1 bg-accent text-white px-2 py-0.5 rounded text-[9px] font-bold shadow-md">
+          <span className="absolute top-1 right-1 bg-accent text-white px-1.5 py-0.5 rounded text-[8px] font-bold shadow-md">
             {product.badge}
           </span>
         )}
@@ -54,43 +54,43 @@ export default function ProductCard({ product }: ProductCardProps) {
             toggleFavorite(product.id);
           }}
           aria-label={isFavorite ? `Remover ${product.name} dos favoritos` : `Adicionar ${product.name} aos favoritos`}
-          className={`absolute top-1 left-1 p-1.5 rounded-full transition shadow-md ${
+          className={`absolute top-1 left-1 p-1 rounded-full transition shadow-md ${
             isFavorite
               ? 'bg-accent text-white'
               : 'bg-white text-gray-400 hover:text-accent'
           }`}
         >
-          <Heart size={12} fill={isFavorite ? 'currentColor' : 'none'} />
+          <Heart size={10} fill={isFavorite ? 'currentColor' : 'none'} />
         </button>
       </Link>
       
-      <div className="p-2">
-        <p className="text-[9px] text-accent uppercase font-bold tracking-wider mb-0.5">
+      <div className="p-1.5 md:p-2">
+        <p className="text-[8px] text-accent uppercase font-bold tracking-wider mb-0.5">
           {product.category}
         </p>
-        <h3 className="font-bold text-xs md:text-sm mb-1 line-clamp-2 text-gray-900 group-hover:text-accent transition leading-tight">
+        <h3 className="font-bold text-[11px] md:text-sm mb-0.5 line-clamp-2 text-gray-900 group-hover:text-accent transition leading-tight">
           {product.name}
         </h3>
         
-        <div className="mb-2 flex flex-col gap-0.5">
+        <div className="mb-1.5 flex flex-col gap-0">
           {product.oldPrice && (
-            <span className="text-[10px] text-gray-400 line-through">
+            <span className="text-[9px] text-gray-400 line-through">
               {formatPrice(product.oldPrice)}
             </span>
           )}
           <data 
             value={product.price} 
-            className="text-lg md:text-xl font-bold text-accent"
+            className="text-base md:text-xl font-bold text-accent"
           >
             {formatPrice(product.price)}
           </data>
-          <p className="text-[9px] text-gray-500">no PIX</p>
+          <p className="text-[8px] text-gray-500">no PIX</p>
         </div>
         
         <button 
           onClick={handleAddToCart}
           aria-label={`Adicionar ${product.name} ao carrinho`}
-          className="w-full bg-accent text-white py-1.5 md:py-2 rounded text-xs md:text-sm font-bold hover:bg-secondary transition shadow-sm"
+          className="w-full bg-accent text-white py-1 md:py-2 rounded text-[10px] md:text-sm font-bold hover:bg-secondary transition shadow-sm"
         >
           COMPRAR
         </button>
