@@ -51,10 +51,12 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="pt-BR" href="https://jcrispiniano.github.io/vintage-drumshop" />
         <link rel="sitemap" type="application/xml" href="/vintage-drumshop/sitemap.xml" />
       </head>
-      <body className="antialiased">
+      <body className="antialiased overflow-x-hidden">
         <CartProvider>
-          {children}
-          <WhatsAppButton />
+          <div className="overflow-x-hidden w-full">
+            {children}
+            <WhatsAppButton />
+          </div>
         </CartProvider>
       </body>
     </html>
