@@ -640,7 +640,7 @@ export default function Home() {
                       <img 
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-contain p-3 md:p-6 group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-contain p-3 md:p-6 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
                       />
                     </Link>
                   </div>
@@ -701,7 +701,7 @@ export default function Home() {
                   <img 
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
                   />
                   {product.badge && (
                     <span className="absolute top-3 right-3 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">

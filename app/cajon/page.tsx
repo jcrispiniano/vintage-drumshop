@@ -77,7 +77,7 @@ export default function CajonPage() {
                     <img 
                       src={product.image}
                       alt={product.name}
-                      className="h-48 w-auto object-contain group-hover:scale-110 transition"
+                      className="h-48 w-auto object-contain group-hover:scale-110 transition mix-blend-multiply"
                     />
                     {product.badge && (
                       <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">

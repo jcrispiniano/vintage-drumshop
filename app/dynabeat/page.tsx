@@ -99,7 +99,7 @@ export default function DynabeatPage() {
                     <img 
                       src={product.image} 
                       alt={product.name}
-                      className="h-48 w-auto object-contain group-hover:scale-110 transition"
+                      className="h-48 w-auto object-contain group-hover:scale-110 transition mix-blend-multiply"
                     />
                     <button 
                       onClick={(e) => {

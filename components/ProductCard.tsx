@@ -32,7 +32,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     >
       <Link 
         href={`/produto/${product.id}`} 
-        className="relative h-48 md:h-64 bg-gradient-to-br from-orange-50 to-white flex items-center justify-center overflow-hidden block cursor-pointer"
+        className="relative h-48 md:h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer"
       >
         <div className="relative h-44 md:h-60 w-full">
           <Image 
@@ -40,7 +40,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={product.name}
             fill
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-            className="object-contain group-hover:scale-110 transition"
+            className="object-contain group-hover:scale-110 transition mix-blend-multiply"
           />
         </div>
         {product.badge && (
