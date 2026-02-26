@@ -199,9 +199,9 @@ export default function Home() {
           <div className="container mx-auto px-4 flex items-center justify-between gap-4">
             {/* Menu Hamburguer (mobile only) */}
             <button 
-              onClick={() => setIsSidebarOpen(true)}
+              onClick={() => setIsSidebarOpen(prev => !prev)}
               className="md:hidden flex-shrink-0 p-2 hover:bg-gray-200 rounded-lg transition"
-              aria-label="Abrir menu"
+              aria-label={isSidebarOpen ? 'Fechar menu' : 'Abrir menu'}
             >
               <Menu size={24} className="text-primary" />
             </button>
