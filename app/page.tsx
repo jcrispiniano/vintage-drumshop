@@ -116,13 +116,13 @@ export default function Home() {
       {/* Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-[55] md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 transform transition-transform duration-300 md:hidden ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-[70] transform transition-transform duration-300 md:hidden ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
           <div className="bg-primary text-white p-4 flex items-center justify-between">
@@ -174,7 +174,7 @@ export default function Home() {
       </aside>
 
       {/* Header */}
-      <header className="sticky top-0 z-[60] bg-white shadow-md">
+      <header className="sticky top-0 z-[65] bg-white shadow-md">
         {/* Top Bar - apenas desktop */}
         <div className="hidden md:block bg-darkBg text-white py-2">
           <div className="container mx-auto px-4 flex justify-between text-sm">
