@@ -7,11 +7,9 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
-import Sidebar from '@/components/Sidebar';
 
 export default function WincentPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const wincentProducts = products.filter(p => p.brand === 'wincent' && p.category === 'baquetas');
 
   const handleAddToCart = (productId: number) => {
@@ -31,9 +29,8 @@ export default function WincentPage() {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
+      <Header showBackButton={true} />
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero com imagem de fundo */}

@@ -7,11 +7,9 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
-import Sidebar from '@/components/Sidebar';
 
 export default function MalletsPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // Filtrar produtos que são mallets
   const malletProducts = products.filter(p => 
     p.category === 'baquetas' && 
@@ -35,9 +33,8 @@ export default function MalletsPage() {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
+      <Header showBackButton={true} />
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero */}

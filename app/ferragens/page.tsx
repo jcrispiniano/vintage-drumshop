@@ -8,11 +8,9 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
-import Sidebar from '@/components/Sidebar';
 
 export default function FerragensPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const categoryProducts = products.filter(p => p.category === 'ferragens');
 
   const handleAddToCart = (productId: number) => {
@@ -33,9 +31,8 @@ export default function FerragensPage() {
   return (
     <div className="min-h-screen bg-orange-50">
       {/* Header com busca */}
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
+      <Header showBackButton={true} />
 
       {/* Hero */}
       <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16">

@@ -2,16 +2,13 @@
 import { useState } from 'react';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
-import Sidebar from '@/components/Sidebar';
 import { contactInfo } from '@/lib/products';
 
 export default function PoliticaPrivacidadePage() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
+      <Header showBackButton={true} />
       <CategoryNav currentCategory="" />
 
       <main id="main-content" className="container mx-auto px-4 py-12">

@@ -6,14 +6,12 @@ import { Product, formatPrice, contactInfo, products } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
 import Header from '@/components/Header';
-import Sidebar from '@/components/Sidebar';
 
 export default function ProdutoClient({ product }: { product: Product }) {
   const { addToCart, toggleFavorite, favorites } = useCart();
   const isFavorite = favorites.includes(product.id);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [currentImage, setCurrentImage] = useState(product.image);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleAddToCart = () => {
     addToCart({
@@ -41,8 +39,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
+      <Header showBackButton={true} />
 
       {/* Produto */}
       <div className="container mx-auto px-4 py-12">

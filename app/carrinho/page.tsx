@@ -6,11 +6,9 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import { contactInfo } from '@/lib/products';
 import Header from '@/components/Header';
-import Sidebar from '@/components/Sidebar';
 
 export default function CarrinhoPage() {
   const { cartItems, updateQuantity, removeFromCart } = useCart();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleUpdateQuantity = (id: number, delta: number) => {
     const item = cartItems.find(i => i.id === id);
@@ -61,9 +59,8 @@ export default function CarrinhoPage() {
   return (
     <div className="min-h-screen bg-orange-50">
       {/* Header */}
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
+      <Header showBackButton={true} />
 
       <div className="container mx-auto px-4 py-8">
         {cartItems.length === 0 ? (

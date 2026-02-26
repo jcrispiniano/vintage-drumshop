@@ -8,11 +8,9 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
-import Sidebar from '@/components/Sidebar';
 
 export default function PratosPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pratosProducts = products.filter(p => p.category === 'pratos');
   const istanbulProducts = pratosProducts.filter(p => p.brand === 'istanbul');
 
@@ -34,9 +32,8 @@ export default function PratosPage() {
   return (
     <div className="min-h-screen bg-orange-50">
       {/* Header com busca */}
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      <Header showBackButton={true} onMenuClick={() => setIsSidebarOpen(true)} />
+      <Header showBackButton={true} />
 
       {/* Menu de Categorias */}
       <CategoryNav currentCategory="pratos" />
