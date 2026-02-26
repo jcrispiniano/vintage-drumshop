@@ -567,12 +567,12 @@ export default function Home() {
               <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
                 OFICIAL
               </span>
-              <div className="text-center">
-                <div className="h-32 flex items-center justify-center mx-auto mb-6">
+              <div className="text-center flex flex-col h-full">
+                <div className="h-64 flex items-center justify-center mx-auto mb-6">
                   <img 
                     src="/vintage-drumshop/wincent-logo.png" 
                     alt="Wincent"
-                    className="h-full w-auto object-contain group-hover:scale-110 transition"
+                    className="max-h-full w-auto object-contain group-hover:scale-110 transition"
                   />
                 </div>
                 <p className="text-accent font-bold text-sm tracking-wide uppercase mb-3">Revenda Autorizada</p>
@@ -580,7 +580,7 @@ export default function Home() {
                   Baquetas profissionais suecas com madeira de primeira qualidade. 
                   Durabilidade e equilíbrio perfeito para todos os estilos musicais.
                 </p>
-                <Link href="/wincent" className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center">
+                <Link href="/wincent" className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center mt-auto">
                   Ver Baquetas Wincent →
                 </Link>
               </div>
@@ -590,12 +590,12 @@ export default function Home() {
               <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
                 OFICIAL
               </span>
-              <div className="text-center">
+              <div className="text-center flex flex-col h-full">
                 <div className="h-64 flex items-center justify-center mx-auto mb-6">
                   <img 
                     src="/vintage-drumshop/istanbul-logo.png" 
                     alt="Istanbul Agop"
-                    className="h-full w-auto object-contain group-hover:scale-110 transition"
+                    className="max-h-full w-auto object-contain group-hover:scale-110 transition"
                   />
                 </div>
                 <p className="text-accent font-bold text-sm tracking-wide uppercase mb-3">Distribuidor Oficial</p>
@@ -603,7 +603,7 @@ export default function Home() {
                   Pratos artesanais turcos feitos à mão há gerações. Som único, 
                   rico em harmônicos e usado pelos maiores bateristas do mundo.
                 </p>
-                <Link href="/pratos" className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center">
+                <Link href="/pratos" className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center mt-auto">
                   Ver Pratos Istanbul →
                 </Link>
               </div>
