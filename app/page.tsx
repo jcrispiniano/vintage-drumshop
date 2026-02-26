@@ -178,19 +178,19 @@ export default function Home() {
         {/* Top Bar */}
         <div className="bg-darkBg text-white py-2">
           <div className="container mx-auto px-4 flex justify-between text-sm">
-            {/* Desktop: mostra tudo */}
-            <div className="hidden md:flex space-x-4">
-              <span>{contactInfo.phoneFormatted}</span>
-              <span>{contactInfo.email}</span>
-              <span>{contactInfo.instagramHandle}</span>
+            <div className="flex space-x-4">
+              <span className="hidden md:inline">{contactInfo.phoneFormatted}</span>
+              <span className="hidden md:inline">{contactInfo.email}</span>
+              <span className="hidden md:inline">{contactInfo.instagramHandle}</span>
             </div>
-            {/* Mobile: esconde infos de contato */}
-            <div className="md:hidden flex-1"></div>
-            
-            <div className="space-x-4">
-              <a href="#" className="hover:text-accent">Entrar</a>
-              <a href="#" className="hover:text-accent">Cadastrar</a>
-            </div>
+            <a 
+              href={contactInfo.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-accent transition"
+            >
+              📲 Fale Conosco
+            </a>
           </div>
         </div>
 
