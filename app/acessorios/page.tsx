@@ -72,21 +72,20 @@ export default function AcessóriosPage() {
               </div>
             </div>
           ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
               {categoryProducts.map(product => (
                 <div 
                   key={product.id} 
                   className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
                 >
-                  <Link href={`/produto/${product.id}`} className="relative h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer">
-                    <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
+                  <Link href={`/produto/${product.id}`} className="relative h-52 md:h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer">
                     <img 
                       src={product.image}
                       alt={product.name}
-                      className="h-48 w-auto object-contain group-hover:scale-110 transition mix-blend-multiply"
+                      className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
                     />
                     {product.badge && (
-                      <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
+                      <span className="absolute top-3 right-3 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
                         {product.badge}
                       </span>
                     )}
@@ -95,47 +94,57 @@ export default function AcessóriosPage() {
                         e.preventDefault();
                         toggleFavorite(product.id);
                       }}
-                      className={`absolute top-4 left-4 p-3 rounded-full transition shadow-lg ${
+                      className={`absolute top-3 left-3 p-2 rounded-full transition shadow-lg ${
                         favorites.includes(product.id)
                           ? 'bg-accent text-white'
                           : 'bg-white text-gray-400 hover:text-accent'
                       }`}
                     >
-                      <Heart size={18} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
+                      <Heart size={16} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
                     </button>
                   </Link>
-                  <div className="p-6">
-                    <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-2">
+                  <div className="p-4 md:p-5">
+                    <p className="text-xs text-accent uppercase font-bold tracking-wider mb-1">
+                      {product.category}
+                    </p>
+                    <h3 className="font-bold text-sm md:text-base mb-2 line-clamp-2 text-gray-900 group-hover:text-accent transition leading-tight">
                       {product.name}
                     </h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                      {product.description}
-                    </p>
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        {product.oldPrice && (
-                          <p className="text-gray-400 line-through text-sm">
-                            {formatPrice(product.oldPrice)}
-                          </p>
-                        )}
-                        <p className="text-2xl font-bold text-accent">
-                          {formatPrice(product.price)}
-                        </p>
-                      </div>
+                    <div className="mb-3">
+
+                      {product.oldPrice && (
+
+                        <data value={product.oldPrice} className="text-xs text-gray-400 line-through block">
+
+                          {formatPrice(product.oldPrice)}
+
+                        </data>
+
+                      )}
+
+                      <data value={product.price} className="text-2xl md:text-3xl font-bold text-accent">
+
+                        {formatPrice(product.price)}
+
+                      </data>
+
+                      <p className="text-xs text-gray-500">NO PIX</p>
+
                     </div>
                     <div className="flex flex-col gap-2">
-                      <Link 
-                        href={`/produto/${product.id}`}
-                        className="w-full border-2 border-accent text-accent py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block"
-                      >
-                        Ver Produto
-                      </Link>
                       <button 
                         onClick={() => handleAddToCart(product.id)}
-                        className="w-full bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md"
+                        className="w-full bg-accent text-white py-2.5 md:py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md text-sm"
                       >
                         Adicionar ao Carrinho
                       </button>
+                      <Link 
+                        href={`/produto/${product.id}`}
+                        className="w-full border-2 border-accent text-accent py-2.5 md:py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block text-sm"
+                      >
+                        Ver Produto
+                      </Link>
+                      
                     </div>
                   </div>
                 </div>
