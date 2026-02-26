@@ -112,8 +112,8 @@ export default function Header({ showBackButton = false, currentCategory }: Head
               />
             </Link>
 
-            {/* Busca - apenas desktop */}
-            <div className="flex-1 max-w-xl relative hidden md:block">
+            {/* Busca - desktop e mobile */}
+            <div className="flex-1 max-w-xl relative">
               <div className="relative">
                 <input 
                   type="text" 
