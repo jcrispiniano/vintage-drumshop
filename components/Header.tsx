@@ -117,7 +117,7 @@ export default function Header({ showBackButton = false, currentCategory }: Head
               <div className="relative">
                 <input 
                   type="text" 
-                  placeholder="Buscar produtos, marcas... (Enter para buscar)" 
+                  placeholder="Buscar produtos, marcas..." 
                   value={searchTerm}
                   onChange={(e) => handleSearch(e.target.value)}
                   onKeyDown={handleKeyDown}
