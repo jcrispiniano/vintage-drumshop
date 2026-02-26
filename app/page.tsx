@@ -175,22 +175,14 @@ export default function Home() {
 
       {/* Header */}
       <header className="sticky top-0 z-[60] bg-white shadow-md">
-        {/* Top Bar */}
-        <div className="bg-darkBg text-white py-2">
+        {/* Top Bar - apenas desktop */}
+        <div className="hidden md:block bg-darkBg text-white py-2">
           <div className="container mx-auto px-4 flex justify-between text-sm">
             <div className="flex space-x-4">
-              <span className="hidden md:inline">{contactInfo.phoneFormatted}</span>
-              <span className="hidden md:inline">{contactInfo.email}</span>
-              <span className="hidden md:inline">{contactInfo.instagramHandle}</span>
+              <span>{contactInfo.phoneFormatted}</span>
+              <span>{contactInfo.email}</span>
+              <span>{contactInfo.instagramHandle}</span>
             </div>
-            <a 
-              href={contactInfo.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-accent transition"
-            >
-              📲 Fale Conosco
-            </a>
           </div>
         </div>
 
