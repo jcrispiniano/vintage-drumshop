@@ -38,10 +38,15 @@ export default function CaixasPage() {
       <CategoryNav currentCategory="caixas" />
 
       {/* Hero */}
-      <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
+      <section className="relative text-white py-20 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('/vintage-drumshop/banner/caixas-hero.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-black/55" />
+        <div className="relative container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-4">Caixas Profissionais</h1>
-          <p className="text-xl text-gray-300">
+          <p className="text-xl text-gray-200">
             Caixas acústicas e eletrônicas de alta performance
           </p>
         </div>
