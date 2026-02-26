@@ -174,7 +174,7 @@ export default function Home() {
       </aside>
 
       {/* Header */}
-      <header className="sticky top-0 z-[65] bg-white shadow-md">
+      <header className="fixed top-0 left-0 right-0 z-[65] bg-white shadow-md">
         {/* Top Bar - apenas desktop */}
         <div className="hidden md:block bg-darkBg text-white py-2">
           <div className="container mx-auto px-4 flex justify-between text-sm">
@@ -415,6 +415,9 @@ export default function Home() {
           </div>
         </nav>
       </header>
+
+      {/* Espaçador para compensar header fixed: mobile ~60px, desktop ~156px */}
+      <div className="h-[60px] md:h-[156px]"></div>
 
       {/* Category Navigation - Apenas Mobile */}
       <div className="md:hidden">
