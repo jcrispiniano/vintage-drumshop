@@ -640,21 +640,21 @@ export default function Home() {
                     </Link>
                   </div>
                   <div className="p-3">
-                    <h3 className="font-bold text-sm mb-1 line-clamp-2 text-gray-900 leading-tight">
+                    <h3 className="font-bold text-sm mb-2 line-clamp-2 text-gray-900 leading-tight">
                       {product.name}
                     </h3>
-                    <div className="mb-2">
-                      <div className="flex flex-col gap-0.5">
-                        <data value={product.price} className="text-lg md:text-2xl font-bold text-accent">
-                          {formatPrice(product.price)}
-                        </data>
-                        <span className="text-[9px] text-gray-500 uppercase font-semibold">no PIX</span>
-                      </div>
-                      <data value={product.oldPrice} className="text-[10px] text-gray-400 line-through block mt-0.5">
+                    <div className="mb-2 flex flex-col gap-0.5">
+                      <data value={product.oldPrice} className="text-xs text-gray-400 line-through">
                         {formatPrice(product.oldPrice!)}
                       </data>
-                      <p className="text-[9px] text-gray-600 mt-0.5 hidden md:block">
-                        em até <strong>5x de {formatPrice(product.price / 5)}</strong>
+                      <div className="flex items-baseline gap-1">
+                        <data value={product.price * 0.95} className="text-lg md:text-2xl font-bold text-accent">
+                          {formatPrice(product.price * 0.95)}
+                        </data>
+                        <span className="text-xs text-green-600 font-bold">NO PIX</span>
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        ou {formatPrice(product.price)} em até <strong>5x</strong>
                       </p>
                     </div>
                     <Link
