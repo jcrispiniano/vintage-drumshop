@@ -602,6 +602,17 @@ export const products: Product[] = [
     featured: true
   },
   {
+    id: 61,
+    name: 'Caixa Pinguim Real 14x5,5" Cobre Martelado',
+    category: 'caixas',
+    brand: 'pinguim',
+    price: 3499.00,
+    image: '/vintage-drumshop/produtos/pinguim-real-cobre.jpg',
+    badge: 'Destaque',
+    description: 'Caixa Pinguim Real 14x5,5" em Cobre Martelado com abafador interno. Corpo em cobre de 1,2mm com corpo martelado, aros Power Hoop 2,3mm. Acabamento em cobre único e sofisticado.',
+    featured: true
+  },
+  {
     id: 60,
     name: 'Caixa Pinguim Real 14x5,5" Latão Martelado',
     category: 'caixas',
