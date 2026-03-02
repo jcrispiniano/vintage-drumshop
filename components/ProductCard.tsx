@@ -84,7 +84,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           >
             {formatPrice(product.price)}
           </data>
-          <p className="text-xs text-gray-500">NO PIX</p>
+          <p className="text-xs text-gray-500">
+            até 3x de {formatPrice(product.price / 3)} sem juros
+          </p>
         </div>
         
         <button 

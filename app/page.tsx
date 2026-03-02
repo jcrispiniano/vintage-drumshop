@@ -733,7 +733,9 @@ export default function Home() {
                     <data value={product.price} className="text-2xl md:text-3xl font-bold text-accent">
                       {formatPrice(product.price)}
                     </data>
-                    <p className="text-xs text-gray-500">NO PIX</p>
+                    <p className="text-xs text-gray-500">
+                      até 3x de {formatPrice(product.price / 3)} sem juros
+                    </p>
                   </div>
                   <div className="flex flex-col gap-2">
                     <button 
