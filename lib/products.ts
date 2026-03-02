@@ -606,7 +606,7 @@ export const products: Product[] = [
     name: 'Caixa Pinguim Real 14x5,5" Latão Martelado',
     category: 'caixas',
     brand: 'pinguim',
-    price: 2399.00,
+    price: 3399.00,
     image: '/vintage-drumshop/produtos/pinguim-real-latao.jpg',
     badge: 'Destaque',
     description: 'Caixa Pinguim Real 14x5,5" em Latão Martelado com abafador interno. Corpo em latão de 1,2mm com corpo martelado, aros Power Hoop 2,3mm. Acabamento dourado único e elegante.',
