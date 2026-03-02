@@ -602,6 +602,28 @@ export const products: Product[] = [
     featured: true
   },
   {
+    id: 60,
+    name: 'Caixa Pinguim Real 14x5,5" Latão Martelado',
+    category: 'caixas',
+    brand: 'pinguim',
+    price: 2399.00,
+    image: '/vintage-drumshop/produtos/pinguim-real-latao.jpg',
+    badge: 'Destaque',
+    description: 'Caixa Pinguim Real 14x5,5" em Latão Martelado com abafador interno. Corpo em latão de 1,2mm com corpo martelado, aros Power Hoop 2,3mm. Acabamento dourado único e elegante.',
+    featured: true
+  },
+  {
+    id: 59,
+    name: 'Caixa Pinguim Imperador 14x6,5" Alumínio Preto Fosco',
+    category: 'caixas',
+    brand: 'pinguim',
+    price: 1999.00,
+    image: '/vintage-drumshop/produtos/pinguim-imperador-14x5.jpg',
+    badge: 'Novo',
+    description: 'Caixa Pinguim Imperador 14x6,5" em Alumínio Preto Fosco com abafador interno. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento exclusivo em preto fosco.',
+    featured: true
+  },
+  {
     id: 58,
     name: 'Caixa Pinguim Imperador 14x5" Alumínio Preto Fosco',
     category: 'caixas',
