@@ -11,7 +11,12 @@ import CategoryNav from '@/components/CategoryNav';
 
 export default function CaixasPage() {
   const { addToCart, toggleFavorite, favorites } = useCart();
-  const categoryProducts = products.filter(p => p.category === 'caixas');
+  const [filtro, setFiltro] = useState<'todas' | 'pinguim'>('todas');
+  
+  const allCaixas = products.filter(p => p.category === 'caixas');
+  const categoryProducts = filtro === 'pinguim' 
+    ? allCaixas.filter(p => p.brand === 'pinguim')
+    : allCaixas;
 
   const handleAddToCart = (productId: number) => {
     const product = products.find(p => p.id === productId);
@@ -30,11 +35,7 @@ export default function CaixasPage() {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      {/* Header com busca */}
-
       <Header showBackButton={true} />
-
-      {/* Menu de Categorias */}
       <CategoryNav currentCategory="caixas" />
 
       {/* Hero */}
@@ -52,9 +53,43 @@ export default function CaixasPage() {
         </div>
       </section>
 
-      {/* Produtos */}
-      <section className="py-20 bg-white">
+      {/* Subcategorias / Filtros */}
+      <div className="bg-white border-b border-gray-200 sticky top-[60px] md:top-[88px] z-40">
         <div className="container mx-auto px-4">
+          <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide">
+            <button
+              onClick={() => setFiltro('todas')}
+              className={`flex-shrink-0 px-5 py-2 rounded-full text-sm font-bold transition ${
+                filtro === 'todas'
+                  ? 'bg-accent text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              Todas as Caixas
+            </button>
+            <button
+              onClick={() => setFiltro('pinguim')}
+              className={`flex-shrink-0 px-5 py-2 rounded-full text-sm font-bold transition ${
+                filtro === 'pinguim'
+                  ? 'bg-accent text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              🐧 Pinguim
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Produtos */}
+      <section className="py-10 bg-white">
+        <div className="container mx-auto px-4">
+          {filtro === 'pinguim' && (
+            <div className="mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Caixas Pinguim</h2>
+              <p className="text-gray-500 text-sm mt-1">{categoryProducts.length} produto{categoryProducts.length !== 1 ? 's' : ''} encontrado{categoryProducts.length !== 1 ? 's' : ''}</p>
+            </div>
+          )}
           {categoryProducts.length === 0 ? (
             <div className="text-center py-16">
               <div className="bg-white rounded-2xl shadow-lg p-12 max-w-md mx-auto">
@@ -65,10 +100,7 @@ export default function CaixasPage() {
                 <p className="text-gray-600 mb-8">
                   Estamos atualizando nosso estoque. Em breve teremos novidades!
                 </p>
-                <Link
-                  href="/"
-                  className="inline-block bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition"
-                >
+                <Link href="/" className="inline-block bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition">
                   Voltar para Home
                 </Link>
               </div>
@@ -92,14 +124,9 @@ export default function CaixasPage() {
                       </span>
                     )}
                     <button 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleFavorite(product.id);
-                      }}
+                      onClick={(e) => { e.preventDefault(); toggleFavorite(product.id); }}
                       className={`absolute top-3 left-3 p-2 rounded-full transition shadow-lg ${
-                        favorites.includes(product.id)
-                          ? 'bg-accent text-white'
-                          : 'bg-white text-gray-400 hover:text-accent'
+                        favorites.includes(product.id) ? 'bg-accent text-white' : 'bg-white text-gray-400 hover:text-accent'
                       }`}
                     >
                       <Heart size={16} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
@@ -107,31 +134,23 @@ export default function CaixasPage() {
                   </Link>
                   <div className="p-4 md:p-5">
                     <p className="text-xs text-accent uppercase font-bold tracking-wider mb-1">
-                      {product.category}
+                      {product.brand === 'pinguim' ? 'Pinguim' : product.category}
                     </p>
                     <h3 className="font-bold text-sm md:text-base mb-2 line-clamp-2 text-gray-900 group-hover:text-accent transition leading-tight">
                       {product.name}
                     </h3>
                     <div className="mb-3">
-
                       {product.oldPrice && (
-
                         <data value={product.oldPrice} className="text-xs text-gray-400 line-through block">
-
                           {formatPrice(product.oldPrice)}
-
                         </data>
-
                       )}
-
                       <data value={product.price} className="text-2xl md:text-3xl font-bold text-accent">
-
                         {formatPrice(product.price)}
-
                       </data>
-
-                      <p className="text-xs text-gray-500">NO PIX</p>
-
+                      <p className="text-xs text-gray-500">
+                        até 3x de {formatPrice(product.price / 3)} sem juros
+                      </p>
                     </div>
                     <div className="flex flex-col gap-2">
                       <button 
@@ -146,7 +165,6 @@ export default function CaixasPage() {
                       >
                         Ver Produto
                       </Link>
-                      
                     </div>
                   </div>
                 </div>
