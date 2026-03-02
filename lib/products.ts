@@ -590,6 +590,17 @@ export const products: Product[] = [
     description: 'Caixa Pinguim Ice 14x5" em Alumínio Cromado com abafador interno. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento cromado de alta qualidade.',
     featured: true
   },
+  {
+    id: 56,
+    name: 'Caixa Pinguim Ice 14x6,5" Alumínio Cromado',
+    category: 'caixas',
+    brand: 'pinguim',
+    price: 1999.00,
+    image: '/vintage-drumshop/produtos/pinguim-ice-65.jpg',
+    badge: 'Novo',
+    description: 'Caixa Pinguim Ice 14x6,5" em Alumínio Cromado com abafador interno. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento cromado de alta qualidade.',
+    featured: true
+  },
 ];
 
 export const categories = [
