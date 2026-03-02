@@ -606,7 +606,7 @@ export const products: Product[] = [
     name: 'Caixa Pinguim Imperador 14x5" Alumínio Preto Fosco',
     category: 'caixas',
     brand: 'pinguim',
-    price: 1999.00,
+    price: 1899.00,
     image: '/vintage-drumshop/produtos/pinguim-imperador-14x5.jpg',
     badge: 'Novo',
     description: 'Caixa Pinguim Imperador 14x5" em Alumínio Preto Fosco com abafador interno. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento exclusivo em preto fosco.',
