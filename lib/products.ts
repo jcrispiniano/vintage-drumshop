@@ -568,6 +568,28 @@ export const products: Product[] = [
     description: 'Chave de afinação profissional RockKey Prime com design ergonômico',
     featured: false
   },
+  {
+    id: 54,
+    name: 'Caixa Pinguim Pollar 14x5,0" Madrepérola',
+    category: 'caixas',
+    brand: 'pinguim',
+    price: 2699.00,
+    image: '/vintage-drumshop/produtos/pinguim-madreperola.jpg',
+    badge: 'Destaque',
+    description: 'Caixa Pinguim Pollar 14x5,0" com acabamento em Madrepérola. Corpo em Cedro e Eucalipto em 03 folhas de 3mm cada, anéis de reforço em 02 folhas de 3mm cada, aros Power Hoop 2,3mm e abafador interno. Acabamento exclusivo em Madrepérola.',
+    featured: true
+  },
+  {
+    id: 55,
+    name: 'Caixa Pinguim Ice 14x5" Alumínio Cromado',
+    category: 'caixas',
+    brand: 'pinguim',
+    price: 1899.00,
+    image: '/vintage-drumshop/produtos/pinguim-ice.jpg',
+    badge: 'Novo',
+    description: 'Caixa Pinguim Ice 14x5" em Alumínio Cromado com abafador interno. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento cromado de alta qualidade.',
+    featured: true
+  },
 ];
 
 export const categories = [
