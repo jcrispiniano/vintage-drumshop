@@ -3,7 +3,7 @@
 import { ShoppingCart, Heart, Search, ArrowLeft, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { products, formatPrice } from '@/lib/products';
+import { products, formatPrice, contactInfo } from '@/lib/products';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import Sidebar from '@/components/Sidebar';
@@ -83,6 +83,23 @@ export default function Header({ showBackButton = false, currentCategory }: Head
 
       {/* Header fixo */}
       <header className="fixed top-0 left-0 right-0 z-[65] bg-white shadow-md">
+        {/* Top Bar - apenas desktop */}
+        <div className="hidden md:block bg-darkBg text-white py-2">
+          <div className="container mx-auto px-4 flex justify-between items-center text-sm">
+            <div className="flex space-x-4">
+              <span>{contactInfo.phoneFormatted}</span>
+              <span>{contactInfo.email}</span>
+            </div>
+            <a
+              href={contactInfo.instagram}
+              target="_blank"
+              rel="noopener noreferrer me"
+              className="hover:text-accent transition"
+            >
+              {contactInfo.instagramHandle}
+            </a>
+          </div>
+        </div>
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-4">
 
@@ -174,8 +191,8 @@ export default function Header({ showBackButton = false, currentCategory }: Head
         </div>
       </header>
 
-      {/* Espaçador para compensar header fixed + CategoryNav fixed */}
-      <div className="h-[104px] md:h-[132px]"></div>
+      {/* Espaçador para compensar header fixed + top bar + CategoryNav fixed */}
+      <div className="h-[104px] md:h-[166px]"></div>
     </>
   );
 }
