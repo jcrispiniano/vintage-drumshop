@@ -12,8 +12,8 @@ export default function CategoryNav({ currentCategory, stickyBelowHeader = false
   return (
     <nav aria-label="Categorias de produtos" className="fixed left-0 right-0 z-[64] bg-primary text-white shadow-lg overflow-visible top-[60px] md:top-[122px]">
       
-      <div className="container mx-auto px-4 overflow-visible">
-        <ul className="flex items-center justify-center gap-2 md:gap-4 py-3 relative overflow-visible" role="menubar">
+      <div className="w-full overflow-visible">
+        <ul className="flex items-center justify-center gap-1 md:gap-4 py-3 relative overflow-visible px-2" role="menubar">
           {/* Todos os Produtos com Dropdown - APENAS DESKTOP */}
           <li className="relative group hidden md:block" role="none">
             <span 

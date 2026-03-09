@@ -206,7 +206,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
                   href={`/produto/${relatedProduct.id}`}
                   className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition group"
                 >
-                  <div className="relative h-48 bg-orange-50 flex items-center justify-center">
+                  <div className="relative h-48 bg-white flex items-center justify-center">
                     <img 
                       src={relatedProduct.image}
                       alt={relatedProduct.name}
