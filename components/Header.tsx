@@ -101,10 +101,10 @@ export default function Header({ showBackButton = false, currentCategory }: Head
           </div>
         </div>
         <div className="container mx-auto px-4 py-3">
-          <div className="grid grid-cols-3 items-center gap-4">
+          <div className="flex items-center justify-between gap-4">
 
-            {/* Esquerda: Hambúrguer (mobile) ou Voltar (desktop) */}
-            <div className="flex items-center gap-2">
+            {/* Hambúrguer (mobile) ou Voltar (desktop) */}
+            <div className="flex items-center gap-2 flex-shrink-0">
               <button 
                 onClick={() => setIsSidebarOpen(prev => !prev)}
                 className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition text-primary"
@@ -120,19 +120,15 @@ export default function Header({ showBackButton = false, currentCategory }: Head
               )}
             </div>
 
-            {/* Centro: Logo sempre centralizado */}
-            <div className="flex justify-center">
-              <Link href="/" className="flex items-center">
-                <img 
-                  src="/vintage-drumshop/logo-small.png" 
-                  alt="Vintage Drum Shop" 
-                  className="h-10 md:h-20 w-auto cursor-pointer hover:opacity-80 transition"
-                />
-              </Link>
-            </div>
+            {/* Logo */}
+            <Link href="/" className="flex items-center flex-shrink-0">
+              <img 
+                src="/vintage-drumshop/logo-small.png" 
+                alt="Vintage Drum Shop" 
+                className="h-10 md:h-20 w-auto cursor-pointer hover:opacity-80 transition"
+              />
+            </Link>
 
-            {/* Direita: Busca + ícones */}
-            <div className="flex items-center gap-2 justify-end">
             {/* Busca - desktop e mobile */}
             <div className="flex-1 max-w-xl relative">
               <div className="relative">
@@ -191,7 +187,6 @@ export default function Header({ showBackButton = false, currentCategory }: Head
                 )}
               </Link>
             </div>
-            </div> {/* fecha div direita */}
           </div>
         </div>
       </header>
