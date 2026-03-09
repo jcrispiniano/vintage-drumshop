@@ -174,8 +174,8 @@ export default function Header({ showBackButton = false, currentCategory }: Head
         </div>
       </header>
 
-      {/* Espaçador para compensar header fixed */}
-      <div className="h-[60px] md:h-[88px]"></div>
+      {/* Espaçador para compensar header fixed + CategoryNav fixed */}
+      <div className="h-[104px] md:h-[132px]"></div>
     </>
   );
 }

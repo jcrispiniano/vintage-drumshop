@@ -416,8 +416,8 @@ export default function Home() {
         </nav>
       </header>
 
-      {/* Espaçador para compensar header fixed: mobile ~60px, desktop ~156px */}
-      <div className="h-[60px] md:h-[156px]"></div>
+      {/* Espaçador para compensar header fixed + CategoryNav mobile */}
+      <div className="h-[104px] md:h-[156px]"></div>
 
       {/* Category Navigation - Apenas Mobile */}
       <div className="md:hidden">

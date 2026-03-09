@@ -54,7 +54,7 @@ export default function CaixasPage() {
       </section>
 
       {/* Subcategorias / Filtros */}
-      <div className="bg-white border-b border-gray-200 sticky top-[60px] md:top-[88px] z-40">
+      <div className="bg-white border-b border-gray-200 sticky top-[104px] md:top-[132px] z-40">
         <div className="container mx-auto px-4">
           <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide">
             <button

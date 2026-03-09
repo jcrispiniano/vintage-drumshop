@@ -9,9 +9,9 @@ interface CategoryNavProps {
 }
 
 export default function CategoryNav({ currentCategory, stickyBelowHeader = false }: CategoryNavProps) {
-  // Removido comportamento sticky - barra fica estática
   return (
-    <nav aria-label="Categorias de produtos" className="bg-primary text-white shadow-lg overflow-visible">
+    <nav aria-label="Categorias de produtos" className="fixed left-0 right-0 z-[64] bg-primary text-white shadow-lg overflow-visible" style={{ top: '60px' }}>
+      
       <div className="container mx-auto px-4 overflow-visible">
         <ul className="flex items-center justify-center gap-2 md:gap-4 py-3 relative overflow-visible" role="menubar">
           {/* Todos os Produtos com Dropdown - APENAS DESKTOP */}
