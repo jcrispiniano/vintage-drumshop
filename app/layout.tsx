@@ -4,6 +4,7 @@ import './globals.css'
 import { CartProvider } from '@/contexts/CartContext'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' })
@@ -60,6 +61,7 @@ export default function RootLayout({
           </div>
         </CartProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
