@@ -100,6 +100,7 @@ export default function Header({ showBackButton = false, currentCategory }: Head
             </a>
           </div>
         </div>
+        <div className="bg-lightBg">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-4">
 
@@ -200,6 +201,7 @@ export default function Header({ showBackButton = false, currentCategory }: Head
               </Link>
             </div>
           </div>
+        </div>
         </div>
       </header>
 
