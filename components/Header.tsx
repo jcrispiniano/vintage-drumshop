@@ -2,19 +2,28 @@
 
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { products, formatPrice, contactInfo } from '@/lib/products';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import Sidebar from '@/components/Sidebar';
+import { motion } from 'framer-motion';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<typeof products>([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
   const { cartItems, favorites } = useCart();
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
@@ -77,7 +86,7 @@ export default function Header() {
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
       {/* Header fixo */}
-      <header className="fixed top-0 left-0 right-0 z-[65] bg-white shadow-md">
+      <header className={`fixed top-0 left-0 right-0 z-[65] transition-all duration-300 ${scrolled ? 'backdrop-blur-md bg-white/85 shadow-lg shadow-black/10' : 'bg-white shadow-md'}`}>
         {/* Top Bar - apenas desktop */}
         <div className="hidden md:block bg-darkBg text-white py-2">
           <div className="container mx-auto px-4 flex justify-between text-sm">
@@ -102,10 +111,12 @@ export default function Header() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center flex-shrink-0">
-              <img 
-                src="/logo-small.png" 
-                alt="Vintage Drum Shop" 
-                className="h-10 md:h-20 w-auto cursor-pointer hover:opacity-80 transition"
+              <motion.img
+                src="/logo-small.png"
+                alt="Vintage Drum Shop"
+                className="h-10 md:h-20 w-auto cursor-pointer"
+                whileHover={{ scale: 1.03 }}
+                transition={{ type: 'spring', stiffness: 400 }}
               />
             </Link>
 
@@ -149,35 +160,42 @@ export default function Header() {
             </div>
 
             {/* Ícones */}
-            <div className="flex gap-3 md:gap-4 flex-shrink-0">
-              <a
+            <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
+              <ThemeToggle />
+              <motion.a
                 href={contactInfo.instagram}
                 target="_blank"
                 rel="noopener noreferrer me"
                 className="flex flex-col items-center text-primary hover:text-accent transition"
                 aria-label="Seguir no Instagram"
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.92 }}
               >
                 <Instagram size={20} className="md:w-6 md:h-6" />
                 <span className="text-xs hidden md:inline">Instagram</span>
-              </a>
-              <Link href="/favoritos" className="text-primary hover:text-accent transition relative flex flex-col items-center" aria-label={`Favoritos (${favorites.length})`}>
-                <Heart size={20} className="md:w-6 md:h-6" fill={favorites.length > 0 ? 'currentColor' : 'none'} />
-                <span className="text-xs hidden md:inline">Favoritos</span>
-                {favorites.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {favorites.length}
-                  </span>
-                )}
-              </Link>
-              <Link href="/carrinho" className="text-primary hover:text-accent transition relative flex flex-col items-center" aria-label={`Carrinho (${cartItems.length})`}>
-                <ShoppingCart size={20} className="md:w-6 md:h-6" />
-                <span className="text-xs hidden md:inline">Carrinho</span>
-                {cartItems.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
-                  </span>
-                )}
-              </Link>
+              </motion.a>
+              <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.92 }}>
+                <Link href="/favoritos" className="text-primary hover:text-accent transition relative flex flex-col items-center" aria-label={`Favoritos (${favorites.length})`}>
+                  <Heart size={20} className="md:w-6 md:h-6" fill={favorites.length > 0 ? 'currentColor' : 'none'} />
+                  <span className="text-xs hidden md:inline">Favoritos</span>
+                  {favorites.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {favorites.length}
+                    </span>
+                  )}
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.92 }}>
+                <Link href="/carrinho" className="text-primary hover:text-accent transition relative flex flex-col items-center" aria-label={`Carrinho (${cartItems.length})`}>
+                  <ShoppingCart size={20} className="md:w-6 md:h-6" />
+                  <span className="text-xs hidden md:inline">Carrinho</span>
+                  {cartItems.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+                    </span>
+                  )}
+                </Link>
+              </motion.div>
             </div>
           </div>
         </div>

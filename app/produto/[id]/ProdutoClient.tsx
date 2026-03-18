@@ -21,7 +21,6 @@ export default function ProdutoClient({ product }: { product: Product }) {
       category: product.category,
       image: product.image
     });
-    alert('✅ Produto adicionado ao carrinho!');
   };
 
   const handleShare = () => {
@@ -33,7 +32,6 @@ export default function ProdutoClient({ product }: { product: Product }) {
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copiado para a área de transferência!');
     }
   };
 

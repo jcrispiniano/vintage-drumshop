@@ -6,6 +6,8 @@
   --color-accent: #FF6B35;
   --color-darkBg: #2C1810;
   --color-lightBg: #F5E6D3;
+  --color-warmGold: #C4872A;
+  --color-deepBrown: #3D1A0A;
 }
 
 :root {
@@ -44,6 +46,63 @@
   .animate-slide-in-right {
     animation: slide-in-right 0.3s ease-out;
   }
+}
+
+/* Dark mode CSS variables */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #F5E6D3;
+  --text-primary: #1a0a00;
+  --text-secondary: #555555;
+  --surface: #ffffff;
+  --border: #e5e7eb;
+}
+
+.dark {
+  --bg-primary: #1a0a00;
+  --bg-secondary: #2C1810;
+  --text-primary: #F5E6D3;
+  --text-secondary: #D2691E;
+  --surface: #3D1A0A;
+  --border: #5C3A1E;
+}
+
+/* Glassmorphism utilities */
+.glass {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.glass-dark {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(44, 24, 16, 0.85);
+}
+
+/* Warm gradient text */
+.text-gradient-warm {
+  background: linear-gradient(135deg, #FF6B35, #D2691E, #C4872A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Warm shadow */
+.shadow-warm {
+  box-shadow: 0 8px 32px rgba(139, 69, 19, 0.18);
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }
 
 html, body {
