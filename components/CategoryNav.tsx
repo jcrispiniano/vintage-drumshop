@@ -10,7 +10,7 @@ interface CategoryNavProps {
 
 export default function CategoryNav({ currentCategory, stickyBelowHeader = false }: CategoryNavProps) {
   return (
-    <nav aria-label="Categorias de produtos" className="fixed left-0 right-0 z-[64] bg-primary text-white shadow-lg overflow-visible top-[60px] md:top-[122px]">
+    <nav aria-label="Categorias de produtos" className="fixed left-0 right-0 z-[64] bg-primary text-white shadow-lg overflow-visible top-[56px] md:top-[122px]">
       
       <div className="w-full overflow-visible">
         <ul className="flex items-center justify-center gap-1 md:gap-4 py-3 relative overflow-visible px-2" role="menubar">
