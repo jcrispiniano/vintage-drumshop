@@ -4,7 +4,6 @@ import { products, formatPrice, contactInfo } from '@/lib/products';
 import Link from 'next/link';
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import InstagramFeed from '@/components/InstagramFeed';
 import OrganizationSchema from '@/components/schemas/OrganizationSchema';
 import CategoryNav from '@/components/CategoryNav';
 import Header from '@/components/Header';
@@ -437,35 +436,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Instagram */}
-        <section className="py-16 bg-gradient-to-br from-purple-50 to-pink-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-primary mb-4">
-                Siga no Instagram
-              </h2>
-              <a
-                href={contactInfo.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xl text-secondary hover:text-accent transition"
-              >
-                {contactInfo.instagramHandle}
-              </a>
-            </div>
-            <InstagramFeed />
-            <div className="text-center mt-8">
-              <a
-                href={contactInfo.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-full font-semibold hover:from-purple-600 hover:to-pink-600 transition"
-              >
-                Ver mais no Instagram →
-              </a>
-            </div>
-          </div>
-        </section>
       </main>
 
       <footer className="bg-darkBg text-white py-12">
