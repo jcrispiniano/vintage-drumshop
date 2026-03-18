@@ -1,6 +1,6 @@
 'use client';
 
-import { ShoppingCart, Heart, Search, ArrowLeft, Menu, Instagram } from 'lucide-react';
+import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { products, formatPrice, contactInfo } from '@/lib/products';
@@ -8,12 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import Sidebar from '@/components/Sidebar';
 
-interface HeaderProps {
-  showBackButton?: boolean;
-  currentCategory?: string;
-}
-
-export default function Header({ showBackButton = false, currentCategory }: HeaderProps) {
+export default function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<typeof products>([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -85,41 +80,25 @@ export default function Header({ showBackButton = false, currentCategory }: Head
       <header className="fixed top-0 left-0 right-0 z-[65] bg-white shadow-md">
         {/* Top Bar - apenas desktop */}
         <div className="hidden md:block bg-darkBg text-white py-2">
-          <div className="container mx-auto px-4 flex justify-between items-center text-sm">
+          <div className="container mx-auto px-4 flex justify-between text-sm">
             <div className="flex space-x-4">
               <span>{contactInfo.phoneFormatted}</span>
               <span>{contactInfo.email}</span>
+              <span>{contactInfo.instagramHandle}</span>
             </div>
-            <a
-              href={contactInfo.instagram}
-              target="_blank"
-              rel="noopener noreferrer me"
-              className="hover:text-accent transition"
-            >
-              {contactInfo.instagramHandle}
-            </a>
           </div>
         </div>
-        <div className="bg-lightBg">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between gap-4">
+        <div className="bg-lightBg py-2">
+          <div className="container mx-auto px-4 flex items-center justify-between gap-4">
 
-            {/* Hambúrguer (mobile) ou Voltar (desktop) */}
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <button 
-                onClick={() => setIsSidebarOpen(prev => !prev)}
-                className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition text-primary"
-                aria-label={isSidebarOpen ? 'Fechar menu' : 'Abrir menu'}
-              >
-                <Menu size={24} />
-              </button>
-              {showBackButton && (
-                <Link href="/" className="hidden md:flex items-center gap-2 text-primary hover:text-accent transition">
-                  <ArrowLeft size={24} />
-                  <span className="font-bold">Voltar</span>
-                </Link>
-              )}
-            </div>
+            {/* Hambúrguer (mobile only) */}
+            <button
+              onClick={() => setIsSidebarOpen(prev => !prev)}
+              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition text-primary"
+              aria-label={isSidebarOpen ? 'Fechar menu' : 'Abrir menu'}
+            >
+              <Menu size={24} />
+            </button>
 
             {/* Logo */}
             <Link href="/" className="flex items-center flex-shrink-0">
@@ -201,7 +180,6 @@ export default function Header({ showBackButton = false, currentCategory }: Head
               </Link>
             </div>
           </div>
-        </div>
         </div>
       </header>
 
