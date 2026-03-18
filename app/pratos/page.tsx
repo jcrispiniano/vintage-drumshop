@@ -1,12 +1,10 @@
 'use client';
 import { useState } from 'react';
 
-import { products, formatPrice } from '@/lib/products';
-import { Heart } from 'lucide-react';
-import Link from 'next/link';
-import { useCart } from '@/contexts/CartContext';
+import { products } from '@/lib/products';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
+import ProductCard from '@/components/ProductCard';
 
 type CymbalType = 'todos' | 'crash' | 'ride' | 'hihat' | 'effects';
 
@@ -32,7 +30,6 @@ const TYPE_LABELS: Record<CymbalType, string> = {
 };
 
 export default function PratosPage() {
-  const { addToCart, toggleFavorite, favorites } = useCart();
   const [activeType, setActiveType] = useState<CymbalType>('todos');
 
   const allPratos = products.filter(p => p.category === 'pratos');
@@ -43,21 +40,6 @@ export default function PratosPage() {
 
   const countByType = (type: Exclude<CymbalType, 'todos'>) =>
     allPratos.filter(p => getCymbalType(p.name) === type).length;
-
-  const handleAddToCart = (productId: number) => {
-    const product = products.find(p => p.id === productId);
-    if (product) {
-      addToCart({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        category: product.category,
-        image: product.image,
-        description: product.description,
-      });
-      alert('✅ Produto adicionado ao carrinho!');
-    }
-  };
 
   return (
     <div className="min-h-screen bg-orange-50">
@@ -124,78 +106,11 @@ export default function PratosPage() {
               </p>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                 {filtered.map(product => (
-                  <div
+                  <ProductCard
                     key={product.id}
-                    className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
-                  >
-                    <Link
-                      href={`/produto/${product.id}`}
-                      className="relative h-52 md:h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer"
-                    >
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
-                      />
-                      {product.badge && (
-                        <span className="absolute top-3 right-3 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
-                          {product.badge}
-                        </span>
-                      )}
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleFavorite(product.id);
-                        }}
-                        className={`absolute top-3 left-3 p-2 rounded-full transition shadow-lg ${
-                          favorites.includes(product.id)
-                            ? 'bg-accent text-white'
-                            : 'bg-white text-gray-400 hover:text-accent'
-                        }`}
-                      >
-                        <Heart size={16} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
-                      </button>
-                    </Link>
-                    <div className="p-4 md:p-5">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className="text-xs text-accent uppercase font-bold tracking-wider">
-                          {getBrandLabel(product.brand)}
-                        </p>
-                        <span className="text-xs text-gray-400">·</span>
-                        <p className="text-xs text-gray-400 capitalize">
-                          {TYPE_LABELS[getCymbalType(product.name)]}
-                        </p>
-                      </div>
-                      <h3 className="font-bold text-sm md:text-base mb-2 line-clamp-2 text-gray-900 group-hover:text-accent transition leading-tight">
-                        {product.name}
-                      </h3>
-                      <div className="mb-3">
-                        {product.oldPrice && (
-                          <data value={product.oldPrice} className="text-xs text-gray-400 line-through block">
-                            {formatPrice(product.oldPrice)}
-                          </data>
-                        )}
-                        <data value={product.price} className="text-2xl md:text-3xl font-bold text-accent">
-                          {formatPrice(product.price)}
-                        </data>
-                        <p className="text-xs text-gray-500">NO PIX</p>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <button
-                          onClick={() => handleAddToCart(product.id)}
-                          className="w-full bg-accent text-white py-2.5 md:py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md text-sm"
-                        >
-                          Adicionar ao Carrinho
-                        </button>
-                        <Link
-                          href={`/produto/${product.id}`}
-                          className="w-full border-2 border-accent text-accent py-2.5 md:py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block text-sm"
-                        >
-                          Ver Produto
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
+                    product={product}
+                    typeLabel={TYPE_LABELS[getCymbalType(product.name)]}
+                  />
                 ))}
               </div>
             </>
