@@ -3,11 +3,12 @@ import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '@/contexts/CartContext'
 import WhatsAppButton from '@/components/WhatsAppButton'
+import PageTransition from '@/components/PageTransition'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap', preload: true })
+const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair', display: 'swap', preload: false })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://vintagedrumshop.com.br'),
@@ -48,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="pt-BR" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
       <head>
         <link rel="alternate" hrefLang="pt-BR" href="https://vintagedrumshop.com.br" />
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
@@ -56,7 +57,9 @@ export default function RootLayout({
       <body className="antialiased overflow-x-hidden">
         <CartProvider>
           <div className="overflow-x-hidden w-full">
-            {children}
+            <PageTransition>
+              {children}
+            </PageTransition>
             <WhatsAppButton />
           </div>
         </CartProvider>
