@@ -206,16 +206,16 @@ export default function Home() {
               />
             </Link>
 
-            <div className="flex-1 max-w-md md:max-w-xl relative">
+            <div className="flex-1 max-w-xl relative">
               <div className="relative">
-                <input 
-                  type="text" 
-                  placeholder="Buscar produtos, marcas..." 
+                <input
+                  type="text"
+                  placeholder="Buscar produtos, marcas..."
                   value={searchTerm}
                   onChange={(e) => handleSearch(e.target.value)}
                   onFocus={() => searchResults.length > 0 && setShowSearchResults(true)}
                   onBlur={() => setTimeout(() => setShowSearchResults(false), 200)}
-                  className="w-full px-3 py-2 pr-10 text-sm md:text-base rounded-full border-2 border-gray-300 focus:border-accent outline-none"
+                  className="w-full px-4 py-2 pr-10 text-sm rounded-full border-2 border-gray-300 focus:border-accent outline-none"
                 />
                 <Search className="absolute right-3 top-2.5 text-gray-400 pointer-events-none" size={18} />
               </div>
