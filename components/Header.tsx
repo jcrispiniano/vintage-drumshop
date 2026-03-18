@@ -202,7 +202,7 @@ export default function Header() {
       </header>
 
       {/* Espaçador para compensar header fixed + top bar + CategoryNav fixed */}
-      <div className="h-[104px] md:h-[166px]"></div>
+      <div className="h-[100px] md:h-[166px]"></div>
     </>
   );
 }
