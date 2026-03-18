@@ -24,7 +24,6 @@ export default function FavoritosPage() {
         image: product.image,
         description: product.description,
       });
-      alert('✅ Produto adicionado ao carrinho!');
     }
   };
 

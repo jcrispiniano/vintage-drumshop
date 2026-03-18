@@ -1,19 +1,18 @@
 'use client';
 import { useState } from 'react';
 
-import { products, formatPrice } from '@/lib/products';
-import { Heart, Search } from 'lucide-react';
+import { products } from '@/lib/products';
+import { Search } from 'lucide-react';
 import Link from 'next/link';
-import { useCart } from '@/contexts/CartContext';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
+import ProductCard from '@/components/ProductCard';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
 function BuscaContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
-  const { addToCart, toggleFavorite, favorites } = useCart();
 
   // Buscar produtos
   let searchResults: typeof products = [];
@@ -55,21 +54,6 @@ function BuscaContent() {
       }
     }
   }
-
-  const handleAddToCart = (productId: number) => {
-    const product = products.find(p => p.id === productId);
-    if (product) {
-      addToCart({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        category: product.category,
-        image: product.image,
-        description: product.description,
-      });
-      alert('✅ Produto adicionado ao carrinho!');
-    }
-  };
 
   return (
     <div className="min-h-screen bg-orange-50">
@@ -154,58 +138,10 @@ function BuscaContent() {
 
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                 {searchResults.map(product => (
-                  <div key={product.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100">
-                    <Link href={`/produto/${product.id}`} className="relative h-52 md:h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer">
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
-                      />
-                      <button 
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleFavorite(product.id);
-                        }}
-                        className={`absolute top-3 left-3 p-2 rounded-full transition shadow-lg ${
-                          favorites.includes(product.id)
-                            ? 'bg-accent text-white'
-                            : 'bg-white text-gray-400 hover:text-accent'
-                        }`}
-                      >
-                        <Heart size={16} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
-                      </button>
-                    </Link>
-                    <div className="p-4 md:p-5">
-                      <p className="text-xs text-accent uppercase font-bold tracking-wider mb-1">{product.brand || product.category}</p>
-                      <h3 className="font-bold text-sm md:text-base mb-2 line-clamp-2 text-gray-900 group-hover:text-accent transition leading-tight">{product.name}</h3>
-                      <div className="mb-3">
-
-                        <data value={product.price} className="text-2xl md:text-3xl font-bold text-accent">
-
-                          {formatPrice(product.price)}
-
-                        </data>
-
-                        <p className="text-xs text-gray-500">NO PIX</p>
-
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <button
-                          onClick={() => handleAddToCart(product.id)}
-                          className="w-full bg-accent text-white py-2.5 md:py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md text-sm"
-                        >
-                          Adicionar ao Carrinho
-                        </button>
-                        <Link
-                          href={`/produto/${product.id}`}
-                          className="w-full border-2 border-accent text-accent py-2.5 md:py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block text-sm"
-                        >
-                          Ver Produto
-                        </Link>
-                        
-                      </div>
-                    </div>
-                  </div>
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                  />
                 ))}
               </div>
             </>

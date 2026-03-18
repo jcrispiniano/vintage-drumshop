@@ -109,10 +109,7 @@ export default function Home() {
 
       <Header />
 
-      {/* Category Navigation - Mobile Only */}
-      <div className="md:hidden">
-        <CategoryNav stickyBelowHeader={true} />
-      </div>
+      <CategoryNav />
 
       <main id="main-content">
         {/* Hero Banner */}
