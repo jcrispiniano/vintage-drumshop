@@ -1,6 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #8B4513;
+  --color-secondary: #D2691E;
+  --color-accent: #FF6B35;
+  --color-dark-bg: #2C1810;
+  --color-light-bg: #F5E6D3;
+}
 
 :root {
   --primary: #8B4513;
@@ -14,12 +20,12 @@
   .text-balance {
     text-wrap: balance;
   }
-  
+
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
