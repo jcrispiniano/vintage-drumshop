@@ -4,8 +4,8 @@
   --color-primary: #8B4513;
   --color-secondary: #D2691E;
   --color-accent: #FF6B35;
-  --color-dark-bg: #2C1810;
-  --color-light-bg: #F5E6D3;
+  --color-darkBg: #2C1810;
+  --color-lightBg: #F5E6D3;
 }
 
 :root {
