@@ -66,7 +66,9 @@ const itemVariants = {
 };
 
 export default function Home() {
-  const featuredProducts = products.filter(p => p.featured);
+  const featuredProducts = products
+    .filter(p => p.name.toLowerCase().includes('ride'))
+    .slice(0, 3);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(1);
 
