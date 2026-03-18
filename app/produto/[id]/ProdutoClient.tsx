@@ -39,7 +39,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Header showBackButton={true} />
+      <Header />
 
       {/* Produto */}
       <div className="container mx-auto px-4 py-12">

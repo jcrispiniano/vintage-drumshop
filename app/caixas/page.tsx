@@ -55,7 +55,7 @@ export default function CaixasPage() {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Header showBackButton={true} />
+      <Header />
       <CategoryNav currentCategory="caixas" />
 
       {/* Hero */}

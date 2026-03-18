@@ -60,7 +60,7 @@ export default function CarrinhoPage() {
     <div className="min-h-screen bg-orange-50">
       {/* Header */}
 
-      <Header showBackButton={true} />
+      <Header />
 
       <div className="container mx-auto px-4 py-8">
         {cartItems.length === 0 ? (

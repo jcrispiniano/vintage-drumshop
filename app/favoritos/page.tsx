@@ -32,7 +32,7 @@ export default function FavoritosPage() {
     <div className="min-h-screen bg-orange-50">
       {/* Header */}
 
-      <Header showBackButton={true} />
+      <Header />
 
       <div className="container mx-auto px-4 py-8">
         {favoriteProducts.length === 0 ? (

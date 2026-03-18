@@ -1,6 +1,6 @@
 'use client';
 
-import { ShoppingCart, Heart, Search, ArrowLeft, Menu } from 'lucide-react';
+import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { products, formatPrice, contactInfo } from '@/lib/products';
@@ -8,12 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import Sidebar from '@/components/Sidebar';
 
-interface HeaderProps {
-  showBackButton?: boolean;
-  currentCategory?: string;
-}
-
-export default function Header({ showBackButton = false, currentCategory }: HeaderProps) {
+export default function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<typeof products>([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -85,40 +80,25 @@ export default function Header({ showBackButton = false, currentCategory }: Head
       <header className="fixed top-0 left-0 right-0 z-[65] bg-white shadow-md">
         {/* Top Bar - apenas desktop */}
         <div className="hidden md:block bg-darkBg text-white py-2">
-          <div className="container mx-auto px-4 flex justify-between items-center text-sm">
+          <div className="container mx-auto px-4 flex justify-between text-sm">
             <div className="flex space-x-4">
               <span>{contactInfo.phoneFormatted}</span>
               <span>{contactInfo.email}</span>
+              <span>{contactInfo.instagramHandle}</span>
             </div>
-            <a
-              href={contactInfo.instagram}
-              target="_blank"
-              rel="noopener noreferrer me"
-              className="hover:text-accent transition"
-            >
-              {contactInfo.instagramHandle}
-            </a>
           </div>
         </div>
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between gap-4">
+        <div className="bg-lightBg py-2">
+          <div className="container mx-auto px-4 flex items-center justify-between gap-4">
 
-            {/* Hambúrguer (mobile) ou Voltar (desktop) */}
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <button 
-                onClick={() => setIsSidebarOpen(prev => !prev)}
-                className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition text-primary"
-                aria-label={isSidebarOpen ? 'Fechar menu' : 'Abrir menu'}
-              >
-                <Menu size={24} />
-              </button>
-              {showBackButton && (
-                <Link href="/" className="hidden md:flex items-center gap-2 text-primary hover:text-accent transition">
-                  <ArrowLeft size={24} />
-                  <span className="font-bold">Voltar</span>
-                </Link>
-              )}
-            </div>
+            {/* Hambúrguer (mobile only) */}
+            <button
+              onClick={() => setIsSidebarOpen(prev => !prev)}
+              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition text-primary"
+              aria-label={isSidebarOpen ? 'Fechar menu' : 'Abrir menu'}
+            >
+              <Menu size={24} />
+            </button>
 
             {/* Logo */}
             <Link href="/" className="flex items-center flex-shrink-0">
@@ -170,16 +150,28 @@ export default function Header({ showBackButton = false, currentCategory }: Head
 
             {/* Ícones */}
             <div className="flex gap-3 md:gap-4 flex-shrink-0">
-              <Link href="/favoritos" className="text-primary hover:text-accent transition relative" aria-label={`Favoritos (${favorites.length})`}>
-                <Heart size={24} fill={favorites.length > 0 ? 'currentColor' : 'none'} />
+              <a
+                href={contactInfo.instagram}
+                target="_blank"
+                rel="noopener noreferrer me"
+                className="flex flex-col items-center text-primary hover:text-accent transition"
+                aria-label="Seguir no Instagram"
+              >
+                <Instagram size={20} className="md:w-6 md:h-6" />
+                <span className="text-xs hidden md:inline">Instagram</span>
+              </a>
+              <Link href="/favoritos" className="text-primary hover:text-accent transition relative flex flex-col items-center" aria-label={`Favoritos (${favorites.length})`}>
+                <Heart size={20} className="md:w-6 md:h-6" fill={favorites.length > 0 ? 'currentColor' : 'none'} />
+                <span className="text-xs hidden md:inline">Favoritos</span>
                 {favorites.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                     {favorites.length}
                   </span>
                 )}
               </Link>
-              <Link href="/carrinho" className="text-primary hover:text-accent transition relative" aria-label={`Carrinho (${cartItems.length})`}>
-                <ShoppingCart size={24} />
+              <Link href="/carrinho" className="text-primary hover:text-accent transition relative flex flex-col items-center" aria-label={`Carrinho (${cartItems.length})`}>
+                <ShoppingCart size={20} className="md:w-6 md:h-6" />
+                <span className="text-xs hidden md:inline">Carrinho</span>
                 {cartItems.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                     {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
