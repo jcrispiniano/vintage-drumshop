@@ -15,7 +15,7 @@ export default function BreadcrumbSchema({ items }: BreadcrumbSchemaProps) {
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": `https://jcrispiniano.github.io/vintage-drumshop${item.url}`
+      "item": `https://vintagedrumshop.com.br${item.url}`
     }))
   };
 

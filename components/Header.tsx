@@ -123,7 +123,7 @@ export default function Header({ showBackButton = false, currentCategory }: Head
             {/* Logo */}
             <Link href="/" className="flex items-center flex-shrink-0">
               <img 
-                src="/vintage-drumshop/logo-small.png" 
+                src="/logo-small.png" 
                 alt="Vintage Drum Shop" 
                 className="h-10 md:h-20 w-auto cursor-pointer hover:opacity-80 transition"
               />

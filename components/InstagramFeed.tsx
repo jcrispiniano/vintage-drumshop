@@ -26,7 +26,7 @@ export default function InstagramFeed() {
       {
         id: '1',
         permalink: contactInfo.instagram,
-        media_url: '/vintage-drumshop/logo.png',
+        media_url: '/logo.png',
         media_type: 'IMAGE',
         caption: 'Confira nossas baquetas Wincent! 🥁',
         timestamp: new Date().toISOString(),
@@ -34,7 +34,7 @@ export default function InstagramFeed() {
       {
         id: '2',
         permalink: contactInfo.instagram,
-        media_url: '/vintage-drumshop/wincent-logo.png',
+        media_url: '/wincent-logo.png',
         media_type: 'IMAGE',
         caption: 'Novos pratos Istanbul chegando! 🎵',
         timestamp: new Date().toISOString(),
@@ -42,7 +42,7 @@ export default function InstagramFeed() {
       {
         id: '3',
         permalink: contactInfo.instagram,
-        media_url: '/vintage-drumshop/istanbul-logo.png',
+        media_url: '/istanbul-logo.png',
         media_type: 'IMAGE',
         caption: 'Promoção especial de fim de semana! 🔥',
         timestamp: new Date().toISOString(),
@@ -50,7 +50,7 @@ export default function InstagramFeed() {
       {
         id: '4',
         permalink: contactInfo.instagram,
-        media_url: '/vintage-drumshop/logo.png',
+        media_url: '/logo.png',
         media_type: 'IMAGE',
         caption: 'Novidades em breve! Stay tuned 🎶',
         timestamp: new Date().toISOString(),
@@ -58,7 +58,7 @@ export default function InstagramFeed() {
       {
         id: '5',
         permalink: contactInfo.instagram,
-        media_url: '/vintage-drumshop/wincent-logo.png',
+        media_url: '/wincent-logo.png',
         media_type: 'IMAGE',
         caption: 'Qualidade premium para bateristas profissionais 🥁',
         timestamp: new Date().toISOString(),
@@ -66,7 +66,7 @@ export default function InstagramFeed() {
       {
         id: '6',
         permalink: contactInfo.instagram,
-        media_url: '/vintage-drumshop/istanbul-logo.png',
+        media_url: '/istanbul-logo.png',
         media_type: 'IMAGE',
         caption: 'Som artesanal turco 🇹🇷',
         timestamp: new Date().toISOString(),
@@ -74,7 +74,7 @@ export default function InstagramFeed() {
       {
         id: '7',
         permalink: contactInfo.instagram,
-        media_url: '/vintage-drumshop/logo.png',
+        media_url: '/logo.png',
         media_type: 'IMAGE',
         caption: 'Vintage Drum Shop - Sua loja de confiança 🎵',
         timestamp: new Date().toISOString(),
@@ -82,7 +82,7 @@ export default function InstagramFeed() {
       {
         id: '8',
         permalink: contactInfo.instagram,
-        media_url: '/vintage-drumshop/logo.png',
+        media_url: '/logo.png',
         media_type: 'IMAGE',
         caption: 'Frete grátis acima de R$ 199! 🚚',
         timestamp: new Date().toISOString(),

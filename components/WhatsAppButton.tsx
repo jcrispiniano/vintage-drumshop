@@ -16,7 +16,7 @@ export default function WhatsAppButton() {
       title="Fale conosco pelo WhatsApp"
     >
       <img 
-        src="/vintage-drumshop/whatsapp-logo.png" 
+        src="/whatsapp-logo.png" 
         alt="WhatsApp" 
         className="w-16 h-16 md:w-20 md:h-20"
         style={{ filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.3))' }}

@@ -42,7 +42,7 @@ export default function CaixasPage() {
       <section className="relative text-white py-20 overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/vintage-drumshop/banner/caixas-hero.jpg')" }}
+          style={{ backgroundImage: "url('/banner/caixas-hero.jpg')" }}
         />
         <div className="absolute inset-0 bg-black/55" />
         <div className="relative container mx-auto px-4 text-center">

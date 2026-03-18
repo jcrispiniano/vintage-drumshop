@@ -165,7 +165,7 @@ export default function BaquetasPage() {
         {/* Imagem de fundo */}
         <div className="absolute inset-0">
           <img 
-            src="/vintage-drumshop/banner/wincent-bg.jpg" 
+            src="/banner/wincent-bg.jpg" 
             alt="Wincent Background"
             className="w-full h-full object-cover"
           />
@@ -258,7 +258,7 @@ export default function BaquetasPage() {
         {/* Imagem de fundo */}
         <div className="absolute inset-0">
           <img 
-            src="/vintage-drumshop/banner/dynabeat-bg.jpg" 
+            src="/banner/dynabeat-bg.jpg" 
             alt="Background Dynabeat"
             className="w-full h-full object-cover"
           />

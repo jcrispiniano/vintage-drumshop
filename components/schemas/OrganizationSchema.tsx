@@ -6,7 +6,7 @@ export default function OrganizationSchema() {
     "@type": "LocalBusiness",
     "name": "Vintage Drum Shop",
     "description": "Revenda oficial Wincent e Istanbul Agop em São Paulo. Especializada em baterias, pratos e acessórios para percussão profissional.",
-    "url": "https://jcrispiniano.github.io/vintage-drumshop",
+    "url": "https://vintagedrumshop.com.br",
     "telephone": contactInfo.phone,
     "email": contactInfo.email,
     "address": {
@@ -33,7 +33,7 @@ export default function OrganizationSchema() {
       contactInfo.instagram,
       contactInfo.whatsapp
     ],
-    "image": "https://jcrispiniano.github.io/vintage-drumshop/logo.png",
+    "image": "https://vintagedrumshop.com.br/logo.png",
     "priceRange": "R$ 50 - R$ 6000"
   };
 
