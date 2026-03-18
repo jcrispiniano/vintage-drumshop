@@ -82,7 +82,7 @@ export default function Header({ showBackButton = false, currentCategory }: Head
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
       {/* Header fixo */}
-      <header className="fixed top-0 left-0 right-0 z-[65] bg-darkBg shadow-md">
+      <header className="fixed top-0 left-0 right-0 z-[65] bg-white shadow-md">
         {/* Top Bar - apenas desktop */}
         <div className="hidden md:block bg-darkBg text-white py-2">
           <div className="container mx-auto px-4 flex justify-between items-center text-sm">
@@ -100,20 +100,21 @@ export default function Header({ showBackButton = false, currentCategory }: Head
             </a>
           </div>
         </div>
-        <div className="container mx-auto px-4 py-3">
+        <div className="bg-lightBg">
+        <div className="container mx-auto px-4 py-2">
           <div className="flex items-center justify-between gap-4">
 
             {/* Hambúrguer (mobile) ou Voltar (desktop) */}
             <div className="flex items-center gap-2 flex-shrink-0">
               <button 
                 onClick={() => setIsSidebarOpen(prev => !prev)}
-                className="md:hidden p-2 hover:bg-white/10 rounded-lg transition text-white"
+                className="md:hidden p-2 hover:bg-gray-200 rounded-lg transition text-primary"
                 aria-label={isSidebarOpen ? 'Fechar menu' : 'Abrir menu'}
               >
                 <Menu size={24} />
               </button>
               {showBackButton && (
-                <Link href="/" className="hidden md:flex items-center gap-2 text-white hover:text-accent transition">
+                <Link href="/" className="hidden md:flex items-center gap-2 text-primary hover:text-accent transition">
                   <ArrowLeft size={24} />
                   <span className="font-bold">Voltar</span>
                 </Link>
@@ -170,7 +171,7 @@ export default function Header({ showBackButton = false, currentCategory }: Head
 
             {/* Ícones */}
             <div className="flex gap-3 md:gap-4 flex-shrink-0">
-              <Link href="/favoritos" className="text-white hover:text-accent transition relative" aria-label={`Favoritos (${favorites.length})`}>
+              <Link href="/favoritos" className="text-primary hover:text-accent transition relative" aria-label={`Favoritos (${favorites.length})`}>
                 <Heart size={24} fill={favorites.length > 0 ? 'currentColor' : 'none'} />
                 {favorites.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -178,7 +179,7 @@ export default function Header({ showBackButton = false, currentCategory }: Head
                   </span>
                 )}
               </Link>
-              <Link href="/carrinho" className="text-white hover:text-accent transition relative" aria-label={`Carrinho (${cartItems.length})`}>
+              <Link href="/carrinho" className="text-primary hover:text-accent transition relative" aria-label={`Carrinho (${cartItems.length})`}>
                 <ShoppingCart size={24} />
                 {cartItems.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
@@ -188,6 +189,7 @@ export default function Header({ showBackButton = false, currentCategory }: Head
               </Link>
             </div>
           </div>
+        </div>
         </div>
       </header>
 
