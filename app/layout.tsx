@@ -8,24 +8,24 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://jcrispiniano.github.io/vintage-drumshop'),
+  metadataBase: new URL('https://vintagedrumshop.com.br'),
   title: 'Vintage Drum Shop - Baterias e Acessórios Profissionais',
   description: 'Revenda oficial Wincent e Istanbul Agop em São Paulo. A melhor seleção de baterias, pratos e acessórios musicais para percussionistas profissionais.',
   keywords: 'baterias, pratos, wincent, istanbul agop, drum shop, instrumentos musicais, são paulo, percussão',
   icons: {
-    icon: '/vintage-drumshop/logo.svg',
-    apple: '/vintage-drumshop/logo.png',
+    icon: '/logo.svg',
+    apple: '/logo.png',
   },
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: 'https://jcrispiniano.github.io/vintage-drumshop',
+    url: 'https://vintagedrumshop.com.br',
     title: 'Vintage Drum Shop - Percussão Profissional',
     description: 'Revenda oficial Wincent e Istanbul Agop em São Paulo',
     siteName: 'Vintage Drum Shop',
     images: [
       {
-        url: '/vintage-drumshop/logo.png',
+        url: '/logo.png',
         width: 1200,
         height: 630,
         alt: 'Vintage Drum Shop - Percussão Profissional',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Vintage Drum Shop - Percussão Profissional',
     description: 'Revenda oficial Wincent e Istanbul Agop em São Paulo',
-    images: ['/vintage-drumshop/logo.png'],
+    images: ['/logo.png'],
   },
 }
 
@@ -48,8 +48,8 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${inter.variable} ${playfair.variable}`}>
       <head>
-        <link rel="alternate" hrefLang="pt-BR" href="https://jcrispiniano.github.io/vintage-drumshop" />
-        <link rel="sitemap" type="application/xml" href="/vintage-drumshop/sitemap.xml" />
+        <link rel="alternate" hrefLang="pt-BR" href="https://vintagedrumshop.com.br" />
+        <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
       </head>
       <body className="antialiased overflow-x-hidden">
         <CartProvider>

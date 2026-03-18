@@ -31,10 +31,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     openGraph: {
       title: `${product.name} - ${brandName}`,
       description: product.description.substring(0, 200),
-      url: `https://jcrispiniano.github.io/vintage-drumshop/produto/${product.id}`,
+      url: `https://vintagedrumshop.com.br/produto/${product.id}`,
       images: [
         {
-          url: `https://jcrispiniano.github.io${product.image}`,
+          url: `https://vintagedrumshop.com.br${product.image}`,
           width: 800,
           height: 600,
           alt: product.name,
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       card: 'summary_large_image',
       title: `${product.name} - ${brandName}`,
       description: product.description.substring(0, 200),
-      images: [`https://jcrispiniano.github.io${product.image}`],
+      images: [`https://vintagedrumshop.com.br${product.image}`],
     },
   };
 }

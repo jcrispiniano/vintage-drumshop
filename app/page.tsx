@@ -11,39 +11,39 @@ import CategoryNav from '@/components/CategoryNav';
 
 const bannerSlides = [
   { 
-    image: '/vintage-drumshop/banner/slide-1.jpg',
+    image: '/banner/slide-1.jpg',
     alt: 'Baquetas Wincent profissionais - Linha completa de modelos 5A, 5B, 7A e mallets'
   },
   { 
-    image: '/vintage-drumshop/banner/slide-2.jpg',
+    image: '/banner/slide-2.jpg',
     alt: 'Pratos Istanbul Agop Traditional - Crafted in Turkey, sonoridade autêntica'
   },
   { 
-    image: '/vintage-drumshop/banner/slide-3.jpg',
+    image: '/banner/slide-3.jpg',
     alt: 'Coleção completa de baquetas Wincent - Precision, Jazz e modelos especiais'
   },
   { 
-    image: '/vintage-drumshop/banner/slide-4.jpg',
+    image: '/banner/slide-4.jpg',
     alt: 'Pratos Istanbul Agop Xist - Modernidade e versatilidade para todos os estilos'
   },
   { 
-    image: '/vintage-drumshop/banner/slide-5.jpg',
+    image: '/banner/slide-5.jpg',
     alt: 'Vassourinhas e Rods Wincent - Pro Brushes para jazz e estilos dinâmicos'
   },
   { 
-    image: '/vintage-drumshop/banner/slide-6.jpg',
+    image: '/banner/slide-6.jpg',
     alt: 'Setup completo com pratos Istanbul Agop - Crash, Ride e Hi-Hat profissionais'
   },
   { 
-    image: '/vintage-drumshop/banner/slide-7.jpg',
+    image: '/banner/slide-7.jpg',
     alt: 'Baquetas Dynabeat - Qualidade e custo-benefício para percussionistas'
   },
   { 
-    image: '/vintage-drumshop/banner/slide-8.jpg',
+    image: '/banner/slide-8.jpg',
     alt: 'Mallets Wincent - Dual Soft e Swoosh para percussão sinfônica'
   },
   { 
-    image: '/vintage-drumshop/banner/slide-9.jpg',
+    image: '/banner/slide-9.jpg',
     alt: 'Linha Signature Istanbul Agop - Joey Waronker, Mel Lewis e Special Jazz Edition'
   },
 ];
@@ -200,7 +200,7 @@ export default function Home() {
 
             <Link href="/" className="flex-shrink-0 flex items-center justify-center cursor-pointer">
               <img 
-                src="/vintage-drumshop/logo-small.png" 
+                src="/logo-small.png" 
                 alt="Vintage Drum Shop" 
                 className="h-10 md:h-20 w-auto object-contain hover:opacity-80 transition"
               />
@@ -570,7 +570,7 @@ export default function Home() {
               <div className="text-center flex flex-col h-full">
                 <div className="h-64 flex items-center justify-center mx-auto mb-6">
                   <img 
-                    src="/vintage-drumshop/wincent-logo.png" 
+                    src="/wincent-logo.png" 
                     alt="Wincent"
                     className="max-h-full w-auto object-contain group-hover:scale-110 transition"
                   />
@@ -593,7 +593,7 @@ export default function Home() {
               <div className="text-center flex flex-col h-full">
                 <div className="h-64 flex items-center justify-center mx-auto mb-6">
                   <img 
-                    src="/vintage-drumshop/istanbul-logo.png" 
+                    src="/istanbul-logo.png" 
                     alt="Istanbul Agop"
                     className="max-h-full w-auto object-contain group-hover:scale-110 transition"
                   />
@@ -799,7 +799,7 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <img 
-                src="/vintage-drumshop/logo-small.png" 
+                src="/logo-small.png" 
                 alt="Vintage Drum Shop — Percussão Profissional" 
                 className="h-20 w-auto mb-4"
               />

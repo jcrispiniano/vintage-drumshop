@@ -18,7 +18,7 @@ export default function ProductSchema({ product }: ProductSchemaProps) {
     "@type": "Product",
     "name": product.name,
     "description": product.description,
-    "image": `https://jcrispiniano.github.io${product.image}`,
+    "image": `https://vintagedrumshop.com.br${product.image}`,
     "brand": {
       "@type": "Brand",
       "name": product.brand === 'wincent' ? 'Wincent' : 
@@ -31,7 +31,7 @@ export default function ProductSchema({ product }: ProductSchemaProps) {
     "category": product.category,
     "offers": {
       "@type": "Offer",
-      "url": `https://jcrispiniano.github.io/vintage-drumshop/produto/${product.id}`,
+      "url": `https://vintagedrumshop.com.br/produto/${product.id}`,
       "priceCurrency": "BRL",
       "price": product.price.toFixed(2),
       "availability": "https://schema.org/InStock",

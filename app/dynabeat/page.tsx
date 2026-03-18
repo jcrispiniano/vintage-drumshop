@@ -41,7 +41,7 @@ export default function DynabeatPage() {
         {/* Imagem de fundo */}
         <div className="absolute inset-0">
           <img 
-            src="/vintage-drumshop/banner/dynabeat-bg.jpg" 
+            src="/banner/dynabeat-bg.jpg" 
             alt="Dynabeat Background"
             className="w-full h-full object-cover"
           />

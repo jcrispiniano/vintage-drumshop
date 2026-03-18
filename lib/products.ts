@@ -20,7 +20,7 @@ export const products: Product[] = [
     brand: 'istanbul',
     price: 2999.00,
     oldPrice: 3499.00,
-    image: '/vintage-drumshop/produtos/pratos/clap-stack-set.jpg',
+    image: '/produtos/pratos/clap-stack-set.jpg',
     badge: 'Effect',
     description: 'O Istanbul Agop Traditional Clap Stack Set é uma coleção indispensável para bateristas que buscam um som autêntico e versátil. Disponível em três tamanhos — 11", 13" e 15" — este conjunto é ideal para diversos estilos musicais, desde o jazz sutil até o rock enérgico. Com design clássico e acabamento de alta qualidade, oferece um som vibrante, cheio de nuances e caráter. A construção artesanal e as técnicas de martelagem especializadas proporcionam uma resposta rápida e um ataque explosivo.',
     featured: true
@@ -32,7 +32,7 @@ export const products: Product[] = [
     brand: 'istanbul',
     price: 2099.00,
     oldPrice: 2499.00,
-    image: '/vintage-drumshop/produtos/pratos/crash-19-xist-dry-dark-brilliant.jpg',
+    image: '/produtos/pratos/crash-19-xist-dry-dark-brilliant.jpg',
     badge: 'Novo',
     description: 'As linhas "Dry Dark" possuem características sonoras mais particulares, inclinação para ritmos mais modernos, como Worship, Drum N\' Bass e estilos que envolvem misturas com elementos eletrônicos. O Prato Istanbul Agop Xist Dry Dark Brilliant Crash 19" possui timbre grave, dark e trash, mas com um ataque brilhante e preciso. Prato com espessura fina, que ao atacado possui decay curto, mas cortante. Pelo seu martelamento profundo, pode ser até usado como ride quando tocado mais leve. É um dos queridinhos da marca. Cada prato é feito à mão, garantindo durabilidade e sonoridade exclusiva.',
     featured: true
@@ -44,7 +44,7 @@ export const products: Product[] = [
     brand: 'istanbul',
     price: 5499.00,
     oldPrice: 6299.00,
-    image: '/vintage-drumshop/produtos/pratos/ride-24-joey-waronker.jpg',
+    image: '/produtos/pratos/ride-24-joey-waronker.jpg',
     badge: 'Signature',
     description: 'O Prato Istanbul Agop "Joey Waronker" Signature Ride 24" é projetado para bateristas que buscam um som distintivo e poderoso. Com design elegante e acabamento impecável, oferece um som rico e profundo, perfeito para diversos estilos musicais, desde o jazz sofisticado até o rock enérgico. Sua construção artesanal e técnicas de martelagem especializadas garantem uma resposta rápida e um ataque impressionante. Desenvolvida para atender às exigências de músicos de alto nível, a série Signature combina tradição e inovação.',
     featured: true
@@ -56,7 +56,7 @@ export const products: Product[] = [
     brand: 'istanbul',
     price: 2099.00,
     oldPrice: 2399.00,
-    image: '/vintage-drumshop/produtos/pratos/trash-19-xist-ion-dark.jpg',
+    image: '/produtos/pratos/trash-19-xist-ion-dark.jpg',
     badge: 'Effect',
     description: 'A série XIST é a que possui mais modelos dentre as linhas da Istanbul Agop. Isso significa que as possibilidades que você pode alcançar com esses pratos não têm fim. Todos os pratos da série são feitos sob técnicas modernas de produção combinadas com processos tradicionais de fabricação de pratos manuais que oferecem aos bateristas uma seleção diversificada de sons, do clássico ao inovador. O Prato Istanbul Agop XIST "ION" Dark Trash 19" tem como característica principal sua complexidade que é diferente de todos os outros pratos da série. Possui resposta rápida ao toque e decay curto, com timbre grave e "trash". Sua complexidade permite que o baterista também possa usá-lo como ride, desde que toque de forma mais suave.',
     featured: true
@@ -67,7 +67,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 2799.00,
-    image: '/vintage-drumshop/produtos/pratos/hihat-15-xist-dry-dark-brilliant.jpg',
+    image: '/produtos/pratos/hihat-15-xist-dry-dark-brilliant.jpg',
     badge: 'Premium',
     description: 'As linhas "ION", "Dry Dark" e "Dry Dark Brilliant" possuem características sonoras mais particulares, com inclinação para ritmos mais modernos, como Worship, Drum N\' Bass e estilos que envolvem misturas com elementos eletrônicos. Têm timbres com corte rápido e decay curto, além de tonalidade mais grave e "trash". O Chimbal Istanbul Agop Xist Dry Dark Brilliant Hi-Hat 15" possui timbre grave, dark e trash, mas com um ataque brilhante e preciso. Prato "top" muito fino, combinado com um prato "bottom" médio-pesado, que também soa muito bem usado como stack. Quando não emparelhados, o prato superior cria um crash explosivo, porém seco.',
     featured: true
@@ -78,7 +78,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 5699.00,
-    image: '/vintage-drumshop/produtos/pratos/ride-24-special-jazz.jpg',
+    image: '/produtos/pratos/ride-24-special-jazz.jpg',
     badge: 'Premium',
     description: 'O Prato Istanbul Agop "Special Jazz Edition" Ride 24" é uma edição especial desenvolvida especificamente para bateristas de jazz que buscam um som autêntico e versátil. Liga Bronze B20, conhecida por sua durabilidade e qualidade sonora superior. Acabamento tradicional, com martelamento artesanal e lathing refinado, conferindo um visual clássico e sonoridade autêntica. Produção feita à mão na Turquia, garantindo a individualidade de cada peça. Com suas ranhuras características, este ride oferece um som quente, rico em harmônicos e com excelente definição de ponta de baqueta.',
     featured: true
@@ -89,7 +89,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 3999.00,
-    image: '/vintage-drumshop/produtos/pratos/hihat-14-special-jazz.jpg',
+    image: '/produtos/pratos/hihat-14-special-jazz.jpg',
     badge: 'Premium',
     description: 'O Chimbal Istanbul Agop "Special Jazz Edition" Hi-Hat 14" faz parte da linha especial desenvolvida para bateristas de jazz que buscam autenticidade sonora. Com liga Bronze B20 e acabamento tradicional com lathing refinado e ranhuras características, oferece um som clássico e versátil. Produzido à mão na Turquia, garante qualidade artesanal e sonoridade única. Perfeito para quem busca aquele "chick" definido e wash controlado do jazz tradicional.',
     featured: true
@@ -100,7 +100,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 3999.00,
-    image: '/vintage-drumshop/produtos/pratos/hihat-15-traditional-jazz.jpg',
+    image: '/produtos/pratos/hihat-15-traditional-jazz.jpg',
     badge: 'Premium',
     description: 'Istanbul Agop Traditional Jazz Hi-Hats, das versões de 14″ e 15″, mostrando o acabamento tradicional, o trabalho manual com bronze B20 e o look artesanal característico. A série Traditional Jazz é parte da linha Traditional, que exibe excelência artesanal com afinação lathe em ambos os lados, resultando em timbres ricos, ressonantes e altamente musicais',
     featured: false
@@ -111,7 +111,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 3599.00,
-    image: '/vintage-drumshop/produtos/pratos/hihat-14-traditional-jazz.jpg',
+    image: '/produtos/pratos/hihat-14-traditional-jazz.jpg',
     badge: 'Premium',
     description: 'Istanbul Agop Traditional Jazz Hi-Hats, das versões de 14″ e 15″, mostrando o acabamento tradicional, o trabalho manual com bronze B20 e o look artesanal característico. A série Traditional Jazz é parte da linha Traditional, que exibe excelência artesanal com afinação lathe em ambos os lados, resultando em timbres ricos, ressonantes e altamente musicais',
     featured: false
@@ -122,7 +122,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 4499.00,
-    image: '/vintage-drumshop/produtos/pratos/ride-22-mel-lewis.jpg',
+    image: '/produtos/pratos/ride-22-mel-lewis.jpg',
     badge: 'Signature',
     description: 'Liga (Alloy): Bronze B20 (níquel-estanho), feito à mão e com acabamento polido (brilliant/glossy). Fabricado com base em protótipos usados por Mel Lewis, em prol de autenticidade sonora e estética clássica turca',
     featured: false
@@ -133,7 +133,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 3999.00,
-    image: '/vintage-drumshop/produtos/pratos/ride-22-traditional-dark.jpg',
+    image: '/produtos/pratos/ride-22-traditional-dark.jpg',
     badge: 'Novo',
     description: 'Istanbul Agop 22″ Traditional Dark Ride, um belo prato feito à mão com acabamento tradicional, ideal para seu visual e sonoridade únicos. Material: Bronze B20 (níquel e estanho). Acabamento: Latonado (lathed) por cima e por baixo, com aparência tradicional, artesanal e visual clássico. Feito à mão: Sim, cada exemplar é hand-hammered por artesãos turcos',
     featured: false
@@ -144,7 +144,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 3699.00,
-    image: '/vintage-drumshop/produtos/pratos/ride-21-traditional-dark.jpg',
+    image: '/produtos/pratos/ride-21-traditional-dark.jpg',
     badge: 'Novo',
     description: 'Istanbul Agop 21″ Traditional Dark Ride, um belo prato feito à mão com acabamento tradicional, ideal para seu visual e sonoridade únicos. Material: Bronze B20 (níquel e estanho). Acabamento: Latonado (lathed) por cima e por baixo, com aparência tradicional, artesanal e visual clássico. Feito à mão: Sim, cada exemplar é hand-hammered por artesãos turcos',
     featured: false
@@ -155,7 +155,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 4599.00,
-    image: '/vintage-drumshop/produtos/pratos/crash-24-traditional-dark.jpg',
+    image: '/produtos/pratos/crash-24-traditional-dark.jpg',
     badge: 'Novo',
     description: 'Istanbul Agop 24″ Traditional Dark Crash, um belo prato feito à mão com acabamento tradicional, ideal para seu visual e sonoridade únicos. Material: Bronze B20 (níquel e estanho). Acabamento: Latonado (lathed) por cima e por baixo, com aparência tradicional, artesanal e visual clássico. Feito à mão: Sim, cada exemplar é hand-hammered por artesãos turcos',
     featured: false
@@ -166,7 +166,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 3699.00,
-    image: '/vintage-drumshop/produtos/pratos/ride-21-traditional-medium.jpg',
+    image: '/produtos/pratos/ride-21-traditional-medium.jpg',
     badge: 'Novo',
     description: 'Istanbul Agop 21″ Traditional Medium Ride, um belo prato feito à mão com acabamento tradicional, ideal para seu visual e sonoridade únicos. Material: Bronze B20 (níquel e estanho). Acabamento: Latonado (lathed) por cima e por baixo, com aparência tradicional, artesanal e visual clássico. Feito à mão: Sim, cada exemplar é hand-hammered por artesãos turcos',
     featured: false
@@ -177,7 +177,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 2149.00,
-    image: '/vintage-drumshop/produtos/pratos/crash-16-traditional-medium.jpg',
+    image: '/produtos/pratos/crash-16-traditional-medium.jpg',
     badge: 'Novo',
     description: 'A SÉRIE TRADITIONAL - Os pratos da série Traditional são completamente torneados na parte superior e inferior, produzindo tons ricos e quentes e uma presença altamente musical. Eles estão disponíveis em gramaturas que variam de paperthin a heavy, oferecendo uma ampla variedade de opções para complementar qualquer estilo de música. É uma série que tem uma sonoridade versátil, funcionando muito bem para praticamente todos os estilos. CARACTERÍSTICAS DO PRATO - O Prato Istanbul Agop Traditional Medium Crash 16" possui sonoridade média, com espessura também média. É um prato com ataque cortante, que combina muito bem com pratos de diversas séries. Bem pronunciado, possui bom volume e tem timbre diferenciado, mesmo tendo aquela sobra dark que a série Traditional costuma ter como característica marcante. CONSTRUÇÃO DE ALTA QUALIDADE - Cada prato da Istanbul Agop é feito à mão, assegurando não apenas durabilidade, mas também uma sonoridade única que se adapta ao seu estilo musical. A marca Istanbul Agop exemplifica a excelência artesanal da marca, garantindo um instrumento robusto e de destaque em qualquer performance. Transforme suas performances e descubra novas texturas sonoras com o Prato Istanbul Agop Traditional Medium Crash 16"',
     featured: false
@@ -188,7 +188,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 3399.00,
-    image: '/vintage-drumshop/produtos/pratos/crash-20-traditional-medium.jpg',
+    image: '/produtos/pratos/crash-20-traditional-medium.jpg',
     badge: 'Novo',
     description: 'A SÉRIE TRADITIONAL - Os pratos da série Traditional são completamente torneados na parte superior e inferior, produzindo tons ricos e quentes e uma presença altamente musical. Eles estão disponíveis em gramaturas que variam de paperthin a heavy, oferecendo uma ampla variedade de opções para complementar qualquer estilo de música. É uma série que tem uma sonoridade versátil, funcionando muito bem para praticamente todos os estilos. CARACTERÍSTICAS DO PRATO - O Prato Istanbul Agop Traditional Medium Crash possui sonoridade média, com espessura também média. É um prato com ataque cortante, que combina muito bem com pratos de diversas séries. Bem pronunciado, possui bom volume e tem timbre diferenciado, mesmo tendo aquela sobra dark que a série Traditional costuma ter como característica marcante. CONSTRUÇÃO DE ALTA QUALIDADE - Cada prato da Istanbul Agop é feito à mão, assegurando não apenas durabilidade, mas também uma sonoridade única que se adapta ao seu estilo musical. A marca Istanbul Agop exemplifica a excelência artesanal da marca, garantindo um instrumento robusto e de destaque em qualquer performance. Transforme suas performances e descubra novas texturas sonoras com o Prato Istanbul Agop Traditional Medium Crash 20"',
     featured: false
@@ -199,7 +199,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 2999.00,
-    image: '/vintage-drumshop/produtos/pratos/crash-19-traditional-medium.jpg',
+    image: '/produtos/pratos/crash-19-traditional-medium.jpg',
     badge: 'Novo',
     description: 'A SÉRIE TRADITIONAL - Os pratos da série Traditional são completamente torneados na parte superior e inferior, produzindo tons ricos e quentes e uma presença altamente musical. Eles estão disponíveis em gramaturas que variam de paperthin a heavy, oferecendo uma ampla variedade de opções para complementar qualquer estilo de música. É uma série que tem uma sonoridade versátil, funcionando muito bem para praticamente todos os estilos. CARACTERÍSTICAS DO PRATO - O Prato Istanbul Agop Traditional Medium Crash possui sonoridade média, com espessura também média. É um prato com ataque cortante, que combina muito bem com pratos de diversas séries. Bem pronunciado, possui bom volume e tem timbre diferenciado, mesmo tendo aquela sobra dark que a série Traditional costuma ter como característica marcante. CONSTRUÇÃO DE ALTA QUALIDADE - Cada prato da Istanbul Agop é feito à mão, assegurando não apenas durabilidade, mas também uma sonoridade única que se adapta ao seu estilo musical. A marca Istanbul Agop exemplifica a excelência artesanal da marca, garantindo um instrumento robusto e de destaque em qualquer performance. Transforme suas performances e descubra novas texturas sonoras com o Prato Istanbul Agop Traditional Medium Crash 19"',
     featured: false
@@ -210,7 +210,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 2499.00,
-    image: '/vintage-drumshop/produtos/pratos/crash-18-traditional-medium.jpg',
+    image: '/produtos/pratos/crash-18-traditional-medium.jpg',
     badge: 'Novo',
     description: 'A SÉRIE TRADITIONAL - Os pratos da série Traditional são completamente torneados na parte superior e inferior, produzindo tons ricos e quentes e uma presença altamente musical. Eles estão disponíveis em gramaturas que variam de paperthin a heavy, oferecendo uma ampla variedade de opções para complementar qualquer estilo de música. É uma série que tem uma sonoridade versátil, funcionando muito bem para praticamente todos os estilos. CARACTERÍSTICAS DO PRATO - O Prato Istanbul Agop Traditional Medium Crash possui sonoridade média, com espessura também média. É um prato com ataque cortante, que combina muito bem com pratos de diversas séries. Bem pronunciado, possui bom volume e tem timbre diferenciado, mesmo tendo aquela sobra dark que a série Traditional costuma ter como característica marcante. CONSTRUÇÃO DE ALTA QUALIDADE - Cada prato da Istanbul Agop é feito à mão, assegurando não apenas durabilidade, mas também uma sonoridade única que se adapta ao seu estilo musical. A marca Istanbul Agop exemplifica a excelência artesanal da marca, garantindo um instrumento robusto e de destaque em qualquer performance. Transforme suas performances e descubra novas texturas sonoras com o Prato Istanbul Agop Traditional Medium Crash 18"',
     featured: false
@@ -221,7 +221,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 2299.00,
-    image: '/vintage-drumshop/produtos/pratos/crash-17-traditional-medium.jpg',
+    image: '/produtos/pratos/crash-17-traditional-medium.jpg',
     badge: 'Novo',
     description: 'A SÉRIE TRADITIONAL - Os pratos da série Traditional são completamente torneados na parte superior e inferior, produzindo tons ricos e quentes e uma presença altamente musical. Eles estão disponíveis em gramaturas que variam de paperthin a heavy, oferecendo uma ampla variedade de opções para complementar qualquer estilo de música. É uma série que tem uma sonoridade versátil, funcionando muito bem para praticamente todos os estilos. CARACTERÍSTICAS DO PRATO - O Prato Istanbul Agop Traditional Medium Crash possui sonoridade média, com espessura também média. É um prato com ataque cortante, que combina muito bem com pratos de diversas séries. Bem pronunciado, possui bom volume e tem timbre diferenciado, mesmo tendo aquela sobra dark que a série Traditional costuma ter como característica marcante. CONSTRUÇÃO DE ALTA QUALIDADE - Cada prato da Istanbul Agop é feito à mão, assegurando não apenas durabilidade, mas também uma sonoridade única que se adapta ao seu estilo musical. A marca Istanbul Agop exemplifica a excelência artesanal da marca, garantindo um instrumento robusto e de destaque em qualquer performance. Transforme suas performances e descubra novas texturas sonoras com o Prato Istanbul Agop Traditional Medium Crash 17"',
     featured: false
@@ -232,7 +232,7 @@ export const products: Product[] = [
     category: 'pratos',
     brand: 'istanbul',
     price: 2999.00,
-    image: '/vintage-drumshop/produtos/pratos/crash-22-power-brilliant.jpg',
+    image: '/produtos/pratos/crash-22-power-brilliant.jpg',
     badge: 'Novo',
     description: 'Prato crash com projeção e brilho excepcional da série Xist. Com acabamento brilhante e peso médio-pesado, oferece alta projeção e corte para performances que exigem volume. Ideal para rock, metal e estilos mais enérgicos.',
     featured: true
@@ -243,15 +243,15 @@ export const products: Product[] = [
     category: 'caixas',
     brand: 'pinguim',
     price: 2099.00,
-    image: '/vintage-drumshop/produtos/caixa-pinguim-real.jpg',
+    image: '/produtos/caixa-pinguim-real.jpg',
     images: [
-      '/vintage-drumshop/produtos/pinguim-1.jpg',
-      '/vintage-drumshop/produtos/pinguim-2.jpg',
-      '/vintage-drumshop/produtos/pinguim-3.jpg',
-      '/vintage-drumshop/produtos/pinguim-4.jpg',
-      '/vintage-drumshop/produtos/pinguim-5.jpg',
-      '/vintage-drumshop/produtos/pinguim-6.jpg',
-      '/vintage-drumshop/produtos/pinguim-7.jpg',
+      '/produtos/pinguim-1.jpg',
+      '/produtos/pinguim-2.jpg',
+      '/produtos/pinguim-3.jpg',
+      '/produtos/pinguim-4.jpg',
+      '/produtos/pinguim-5.jpg',
+      '/produtos/pinguim-6.jpg',
+      '/produtos/pinguim-7.jpg',
     ],
     badge: 'Destaque',
     description: 'Caixa profissional em alumínio com som definido',
@@ -274,7 +274,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5bp.jpg',
+    image: '/produtos/baquetas/w-5bp.jpg',
     description: 'Baqueta profissional 5B linha Precision em madeira hickory selecionada, equilíbrio perfeito e durabilidade superior',
     featured: true
   },
@@ -284,7 +284,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-sd2.jpg',
+    image: '/produtos/baquetas/w-sd2.jpg',
     description: 'Baqueta profissional SD2 Round Tip em madeira hickory, versátil para todos os estilos',
     featured: false
   },
@@ -294,7 +294,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-55f.jpg',
+    image: '/produtos/baquetas/w-55f.jpg',
     description: 'Baqueta profissional 55F Standard em madeira hickory selecionada',
     featured: false
   },
@@ -304,7 +304,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-7a.jpg',
+    image: '/produtos/baquetas/w-7a.jpg',
     description: 'Baqueta profissional 7A Standard em madeira hickory, leve e ágil',
     featured: true
   },
@@ -314,7 +314,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-rock.jpg',
+    image: '/produtos/baquetas/w-rock.jpg',
     description: 'Baqueta profissional ROCK em madeira hickory, resistente para toques pesados',
     featured: false
   },
@@ -324,7 +324,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5bxl.jpg',
+    image: '/produtos/baquetas/w-5bxl.jpg',
     description: 'Baqueta profissional 5B Extra Long em madeira hickory, maior alcance e potência',
     featured: true
   },
@@ -334,7 +334,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5axl.jpg',
+    image: '/produtos/baquetas/w-5axl.jpg',
     description: 'Baqueta profissional 5A Extra Long em madeira hickory selecionada',
     featured: false
   },
@@ -344,7 +344,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5bcw.jpg',
+    image: '/produtos/baquetas/w-5bcw.jpg',
     description: 'Baqueta profissional 5B acabamento branco em madeira hickory',
     featured: false
   },
@@ -354,7 +354,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5a.jpg',
+    image: '/produtos/baquetas/w-5a.jpg',
     description: 'Baqueta profissional 5A Standard em madeira hickory, versátil e equilibrada',
     featured: true
   },
@@ -364,7 +364,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'dynabeat',
     price: 80.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-bd5a.jpg',
+    image: '/produtos/baquetas/w-bd5a.jpg',
     description: 'Baqueta linha Dynabeat 5A em madeira hickory, excelente custo-benefício',
     featured: false
   },
@@ -374,7 +374,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5acb.jpg',
+    image: '/produtos/baquetas/w-5acb.jpg',
     description: 'Baqueta profissional 5A acabamento preto em madeira hickory',
     featured: false
   },
@@ -384,7 +384,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 310.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-33m.jpg',
+    image: '/produtos/baquetas/w-33m.jpg',
     description: 'Vassoura profissional Wincent 33M Medium com cerdas retráteis',
     featured: false
   },
@@ -394,7 +394,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 170.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-19a.jpg',
+    image: '/produtos/baquetas/w-19a.jpg',
     description: 'Rods de bambu profissionais Wincent 19A, som suave e articulado',
     featured: false
   },
@@ -404,7 +404,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 310.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-ds.jpg',
+    image: '/produtos/baquetas/w-ds.jpg',
     description: 'Mallets profissionais Dual Soft com cabeça macia para sons suaves',
     featured: false
   },
@@ -414,7 +414,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5bcb.jpg',
+    image: '/produtos/baquetas/w-5bcb.jpg',
     description: 'Baqueta profissional 5B acabamento preto em madeira hickory',
     featured: false
   },
@@ -424,7 +424,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'dynabeat',
     price: 80.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-bd5b.jpg',
+    image: '/produtos/baquetas/w-bd5b.jpg',
     description: 'Baqueta linha Dynabeat 5B em madeira hickory, ótimo custo-benefício',
     featured: false
   },
@@ -434,7 +434,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-sd4.jpg',
+    image: '/produtos/baquetas/w-sd4.jpg',
     description: 'Baqueta profissional SD4 Barrel Tip em madeira hickory selecionada',
     featured: false
   },
@@ -444,7 +444,7 @@ export const products: Product[] = [
     category: 'estudo',
     brand: 'wincent',
     price: 280.00,
-    image: '/vintage-drumshop/produtos/baquetas/pad-6.jpg',
+    image: '/produtos/baquetas/pad-6.jpg',
     description: 'Pad de estudo Wincent 6 polegadas com superfície realista para prática',
     featured: false
   },
@@ -454,7 +454,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 310.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-ss.jpg',
+    image: '/produtos/baquetas/w-ss.jpg',
     description: 'Mallets profissionais Swoosh Soft para sons suaves e expressivos',
     featured: false
   },
@@ -464,7 +464,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5acw.jpg',
+    image: '/produtos/baquetas/w-5acw.jpg',
     description: 'Baqueta profissional 5A acabamento branco em madeira hickory',
     featured: false
   },
@@ -474,7 +474,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 170.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-19p.jpg',
+    image: '/produtos/baquetas/w-19p.jpg',
     description: 'Rods de bambu profissionais Wincent 19P com som equilibrado',
     featured: false
   },
@@ -484,7 +484,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5a-jazz.jpg',
+    image: '/produtos/baquetas/w-5a-jazz.jpg',
     description: 'Baqueta profissional 5A JAZZ em madeira hickory para jazz e estilos leves',
     featured: false
   },
@@ -494,7 +494,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5b-standard.jpg',
+    image: '/produtos/baquetas/w-5b-standard.jpg',
     description: 'Baqueta profissional 5B Standard em madeira hickory, versátil para todos os estilos',
     featured: false
   },
@@ -504,7 +504,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 119.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-5a-precision.jpg',
+    image: '/produtos/baquetas/w-5a-precision.jpg',
     description: 'Baqueta profissional 5A linha Precision em madeira hickory selecionada',
     featured: false
   },
@@ -514,7 +514,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 310.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-40h.jpg',
+    image: '/produtos/baquetas/w-40h.jpg',
     description: 'Vassoura profissional Wincent 40 Heavy com cerdas retráteis para volume intenso',
     featured: false
   },
@@ -524,7 +524,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 170.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-19r.jpg',
+    image: '/produtos/baquetas/w-19r.jpg',
     description: 'Rods de bambu profissionais Wincent 19R com excelente controle',
     featured: false
   },
@@ -534,7 +534,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'wincent',
     price: 310.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-29l.jpg',
+    image: '/produtos/baquetas/w-29l.jpg',
     description: 'Vassoura profissional Wincent 29 Light com cerdas retráteis para sons delicados',
     featured: false
   },
@@ -544,7 +544,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'dynabeat',
     price: 80.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-bd7a.jpg',
+    image: '/produtos/baquetas/w-bd7a.jpg',
     description: 'Baqueta linha Dynabeat 7A em madeira hickory, leve e ágil com ótimo custo-benefício',
     featured: false
   },
@@ -554,7 +554,7 @@ export const products: Product[] = [
     category: 'baquetas',
     brand: 'dynabeat',
     price: 80.00,
-    image: '/vintage-drumshop/produtos/baquetas/w-bd2b.jpg',
+    image: '/produtos/baquetas/w-bd2b.jpg',
     description: 'Baqueta linha Dynabeat 2B em madeira hickory americana, extra pesada com excelente custo-benefício',
     featured: false
   },
@@ -564,7 +564,7 @@ export const products: Product[] = [
     category: 'acessorios',
     brand: 'rockkey',
     price: 50.00,
-    image: '/vintage-drumshop/produtos/baquetas/rockkey.jpg',
+    image: '/produtos/baquetas/rockkey.jpg',
     description: 'Chave de afinação profissional RockKey Prime com design ergonômico',
     featured: false
   },
@@ -574,7 +574,7 @@ export const products: Product[] = [
     category: 'caixas',
     brand: 'pinguim',
     price: 2699.00,
-    image: '/vintage-drumshop/produtos/pinguim-madreperola.jpg',
+    image: '/produtos/pinguim-madreperola.jpg',
     badge: 'Destaque',
     description: 'Caixa Pinguim Pollar 14x5,0" com acabamento em Madrepérola. Corpo em Cedro e Eucalipto em 03 folhas de 3mm cada, anéis de reforço em 02 folhas de 3mm cada, aros Power Hoop 2,3mm e abafador interno. Acabamento exclusivo em Madrepérola.',
     featured: true
@@ -585,7 +585,7 @@ export const products: Product[] = [
     category: 'caixas',
     brand: 'pinguim',
     price: 1899.00,
-    image: '/vintage-drumshop/produtos/pinguim-ice.jpg',
+    image: '/produtos/pinguim-ice.jpg',
     badge: 'Novo',
     description: 'Caixa Pinguim Ice 14x5" em Alumínio Cromado com abafador interno. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento cromado de alta qualidade.',
     featured: true
@@ -596,7 +596,7 @@ export const products: Product[] = [
     category: 'caixas',
     brand: 'pinguim',
     price: 1999.00,
-    image: '/vintage-drumshop/produtos/pinguim-ice-65.jpg',
+    image: '/produtos/pinguim-ice-65.jpg',
     badge: 'Novo',
     description: 'Caixa Pinguim Ice 14x6,5" em Alumínio Cromado com abafador interno. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento cromado de alta qualidade.',
     featured: true
@@ -607,7 +607,7 @@ export const products: Product[] = [
     category: 'caixas',
     brand: 'pinguim',
     price: 3499.00,
-    image: '/vintage-drumshop/produtos/pinguim-real-cobre.jpg',
+    image: '/produtos/pinguim-real-cobre.jpg',
     badge: 'Destaque',
     description: 'Caixa Pinguim Real 14x5,5" em Cobre Martelado com abafador interno. Corpo em cobre de 1,2mm com corpo martelado, aros Power Hoop 2,3mm. Acabamento em cobre único e sofisticado.',
     featured: true
@@ -618,7 +618,7 @@ export const products: Product[] = [
     category: 'caixas',
     brand: 'pinguim',
     price: 3399.00,
-    image: '/vintage-drumshop/produtos/pinguim-real-latao.jpg',
+    image: '/produtos/pinguim-real-latao.jpg',
     badge: 'Destaque',
     description: 'Caixa Pinguim Real 14x5,5" em Latão Martelado com abafador interno. Corpo em latão de 1,2mm com corpo martelado, aros Power Hoop 2,3mm. Acabamento dourado único e elegante.',
     featured: true
@@ -629,7 +629,7 @@ export const products: Product[] = [
     category: 'caixas',
     brand: 'pinguim',
     price: 1999.00,
-    image: '/vintage-drumshop/produtos/pinguim-imperador-14x5.jpg',
+    image: '/produtos/pinguim-imperador-14x5.jpg',
     badge: 'Novo',
     description: 'Caixa Pinguim Imperador 14x6,5" em Alumínio Preto Fosco com abafador interno. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento exclusivo em preto fosco.',
     featured: true
@@ -640,7 +640,7 @@ export const products: Product[] = [
     category: 'caixas',
     brand: 'pinguim',
     price: 1899.00,
-    image: '/vintage-drumshop/produtos/pinguim-imperador-14x5.jpg',
+    image: '/produtos/pinguim-imperador-14x5.jpg',
     badge: 'Novo',
     description: 'Caixa Pinguim Imperador 14x5" em Alumínio Preto Fosco com abafador interno. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento exclusivo em preto fosco.',
     featured: true
@@ -651,7 +651,7 @@ export const products: Product[] = [
     category: 'caixas',
     brand: 'pinguim',
     price: 1799.00,
-    image: '/vintage-drumshop/produtos/pinguim-imperador.jpg',
+    image: '/produtos/pinguim-imperador.jpg',
     badge: 'Novo',
     description: 'Caixa Piccolo Pinguim Imperador 13x3,5" em Alumínio Preto Fosco. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento exclusivo em preto fosco.',
     featured: true

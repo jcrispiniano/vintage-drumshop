@@ -38,7 +38,7 @@ export default function WincentPage() {
         {/* Imagem de fundo */}
         <div className="absolute inset-0">
           <img 
-            src="/vintage-drumshop/banner/wincent-bg.jpg" 
+            src="/banner/wincent-bg.jpg" 
             alt="Wincent Background"
             className="w-full h-full object-cover"
           />
