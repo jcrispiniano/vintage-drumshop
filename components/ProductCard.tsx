@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Heart } from 'lucide-react';
 import { formatPrice } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
+import { motion } from 'framer-motion';
 
 interface Product {
   id: number;
@@ -50,11 +51,14 @@ export default function ProductCard({ product, typeLabel, showInstallments = fal
       image: product.image,
       description: product.description,
     });
-    alert('✅ Produto adicionado ao carrinho!');
   };
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100">
+    <motion.div
+      className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 group"
+      whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(139,69,19,0.15)' }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+    >
       <Link
         href={`/produto/${product.id}`}
         className="relative h-52 md:h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer"
@@ -65,7 +69,7 @@ export default function ProductCard({ product, typeLabel, showInstallments = fal
           className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
         />
         {product.badge && (
-          <span className="absolute top-3 right-3 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+          <span className="absolute top-3 right-3 bg-gradient-to-r from-accent to-secondary text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
             {product.badge}
           </span>
         )}
@@ -115,12 +119,14 @@ export default function ProductCard({ product, typeLabel, showInstallments = fal
         </div>
 
         <div className="flex flex-col gap-2">
-          <button
+          <motion.button
             onClick={handleAddToCart}
-            className="w-full bg-accent text-white py-2.5 md:py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md text-sm"
+            className="w-full bg-accent text-white py-2.5 md:py-3 rounded-lg font-bold shadow-md text-sm"
+            whileHover={{ backgroundColor: '#D2691E' }}
+            whileTap={{ scale: 0.96 }}
           >
             Adicionar ao Carrinho
-          </button>
+          </motion.button>
           <Link
             href={`/produto/${product.id}`}
             className="w-full border-2 border-accent text-accent py-2.5 md:py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block text-sm"
@@ -129,6 +135,6 @@ export default function ProductCard({ product, typeLabel, showInstallments = fal
           </Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
