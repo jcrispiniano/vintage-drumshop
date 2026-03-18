@@ -10,7 +10,7 @@ export default function DynabeatPage() {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Header showBackButton={true} />
+      <Header />
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero com imagem de fundo */}

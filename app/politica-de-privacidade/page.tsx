@@ -8,7 +8,7 @@ export default function PoliticaPrivacidadePage() {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Header showBackButton={true} />
+      <Header />
       <CategoryNav currentCategory="" />
 
       <main id="main-content" className="container mx-auto px-4 py-12">
