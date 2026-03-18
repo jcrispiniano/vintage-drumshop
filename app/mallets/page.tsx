@@ -13,7 +13,7 @@ export default function MalletsPage() {
 
   return (
     <div className="min-h-screen bg-orange-50">
-      <Header showBackButton={true} />
+      <Header />
       <CategoryNav currentCategory="baquetas" />
 
       <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16">
