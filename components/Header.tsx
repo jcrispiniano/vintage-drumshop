@@ -1,6 +1,6 @@
 'use client';
 
-import { ShoppingCart, Heart, Search, ArrowLeft, Menu } from 'lucide-react';
+import { ShoppingCart, Heart, Search, ArrowLeft, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { products, formatPrice, contactInfo } from '@/lib/products';
@@ -170,16 +170,28 @@ export default function Header({ showBackButton = false, currentCategory }: Head
 
             {/* Ícones */}
             <div className="flex gap-3 md:gap-4 flex-shrink-0">
-              <Link href="/favoritos" className="text-primary hover:text-accent transition relative" aria-label={`Favoritos (${favorites.length})`}>
-                <Heart size={24} fill={favorites.length > 0 ? 'currentColor' : 'none'} />
+              <a
+                href={contactInfo.instagram}
+                target="_blank"
+                rel="noopener noreferrer me"
+                className="flex flex-col items-center text-primary hover:text-accent transition"
+                aria-label="Seguir no Instagram"
+              >
+                <Instagram size={20} className="md:w-6 md:h-6" />
+                <span className="text-xs hidden md:inline">Instagram</span>
+              </a>
+              <Link href="/favoritos" className="text-primary hover:text-accent transition relative flex flex-col items-center" aria-label={`Favoritos (${favorites.length})`}>
+                <Heart size={20} className="md:w-6 md:h-6" fill={favorites.length > 0 ? 'currentColor' : 'none'} />
+                <span className="text-xs hidden md:inline">Favoritos</span>
                 {favorites.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                     {favorites.length}
                   </span>
                 )}
               </Link>
-              <Link href="/carrinho" className="text-primary hover:text-accent transition relative" aria-label={`Carrinho (${cartItems.length})`}>
-                <ShoppingCart size={24} />
+              <Link href="/carrinho" className="text-primary hover:text-accent transition relative flex flex-col items-center" aria-label={`Carrinho (${cartItems.length})`}>
+                <ShoppingCart size={20} className="md:w-6 md:h-6" />
+                <span className="text-xs hidden md:inline">Carrinho</span>
                 {cartItems.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                     {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
