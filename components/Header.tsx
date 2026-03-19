@@ -137,7 +137,7 @@ export default function Header() {
               </div>
 
               {showSearchResults && searchResults.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-gray-200 rounded-2xl shadow-xl z-50 max-h-96 overflow-y-auto">
+                <div className="fixed md:absolute top-[56px] md:top-full left-2 right-2 md:left-0 md:right-0 mt-0 md:mt-2 bg-white border-2 border-gray-200 rounded-2xl shadow-xl z-50 max-h-96 overflow-y-auto">
                   {searchResults.map(product => (
                     <Link
                       key={product.id}
