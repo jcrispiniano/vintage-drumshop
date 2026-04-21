@@ -4,9 +4,7 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   const isAdminDashboard = pathname.startsWith('/admin/dashboard')
-  const isAdminApi =
-    pathname.startsWith('/api/admin/products') ||
-    pathname.startsWith('/api/admin/upload')
+  const isAdminApi = pathname.startsWith('/api/admin/')
 
   if (isAdminDashboard || isAdminApi) {
     const session = req.cookies.get('admin_session')
@@ -22,5 +20,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/dashboard/:path*', '/api/admin/products/:path*', '/api/admin/upload'],
+  matcher: ['/admin/dashboard/:path*', '/api/admin/:path*'],
 }

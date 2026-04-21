@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Plus, Edit, Trash2, LogOut, Package, Eye, EyeOff, Search } from 'lucide-react'
+import { Plus, Edit, Trash2, LogOut, Package, Eye, EyeOff, Search, ImageIcon } from 'lucide-react'
 
 interface DbProduct {
   id: number
@@ -141,6 +141,13 @@ export default function AdminDashboardPage() {
               className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
+          <Link
+            href="/admin/dashboard/migrar-imagens"
+            className="flex items-center gap-2 border border-gray-300 text-gray-600 hover:bg-gray-50 font-semibold px-4 py-2.5 rounded-lg text-sm transition whitespace-nowrap"
+          >
+            <ImageIcon size={15} />
+            Migrar Imagens
+          </Link>
           <Link
             href="/admin/dashboard/novo"
             className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition whitespace-nowrap"
