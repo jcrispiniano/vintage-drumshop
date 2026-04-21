@@ -50,6 +50,27 @@ create policy "Qualquer pessoa pode ler produtos ativos"
   using (active = true);
 
 -- ============================================================
+-- Storage: bucket público para imagens de produtos
+-- ============================================================
+
+-- 1. Crie o bucket manualmente em: Storage > New bucket
+--    Nome: produtos | Public bucket: ON
+--
+-- 2. Execute as policies abaixo para liberar acesso público de leitura:
+
+create policy "Imagens de produtos são públicas"
+  on storage.objects for select
+  using (bucket_id = 'produtos');
+
+create policy "Service role pode fazer upload"
+  on storage.objects for insert
+  with check (bucket_id = 'produtos');
+
+create policy "Service role pode deletar imagens"
+  on storage.objects for delete
+  using (bucket_id = 'produtos');
+
+-- ============================================================
 -- Variáveis de ambiente necessárias no Vercel
 -- ============================================================
 -- NEXT_PUBLIC_SUPABASE_URL      → Configurações > API > Project URL

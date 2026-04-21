@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Save } from 'lucide-react'
+import { ArrowLeft, Save, Upload, X, ImageIcon } from 'lucide-react'
 
 const CATEGORIES = [
   'acessorios', 'bags', 'baquetas', 'baterias', 'caixas',
@@ -44,6 +44,138 @@ const emptyForm: FormData = {
   description: '', featured: false, active: true,
 }
 
+function ImageUploader({
+  value,
+  category,
+  onChange,
+}: {
+  value: string
+  category: string
+  onChange: (url: string) => void
+}) {
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState('')
+  const [dragging, setDragging] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  async function uploadFile(file: File) {
+    setUploading(true)
+    setUploadError('')
+
+    const fd = new FormData()
+    fd.append('file', file)
+    fd.append('category', category)
+
+    const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+    const data = await res.json()
+
+    if (!res.ok) {
+      setUploadError(data.error ?? 'Erro ao enviar imagem.')
+    } else {
+      onChange(data.url)
+    }
+    setUploading(false)
+  }
+
+  function handleFiles(files: FileList | null) {
+    if (!files?.length) return
+    uploadFile(files[0])
+  }
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    setDragging(false)
+    handleFiles(e.dataTransfer.files)
+  }, [category])
+
+  return (
+    <div className="space-y-3">
+      <label className="label">Imagem do produto *</label>
+
+      {/* Drop zone */}
+      <div
+        onClick={() => inputRef.current?.click()}
+        onDrop={handleDrop}
+        onDragOver={e => { e.preventDefault(); setDragging(true) }}
+        onDragLeave={() => setDragging(false)}
+        className={`relative flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl p-6 cursor-pointer transition ${
+          dragging
+            ? 'border-orange-400 bg-orange-50'
+            : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'
+        }`}
+      >
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={e => handleFiles(e.target.files)}
+        />
+
+        {uploading ? (
+          <>
+            <div className="w-8 h-8 border-2 border-orange-400 border-t-transparent rounded-full animate-spin" />
+            <p className="text-sm text-gray-500">Enviando imagem...</p>
+          </>
+        ) : (
+          <>
+            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+              <Upload size={18} className="text-orange-500" />
+            </div>
+            <p className="text-sm font-semibold text-gray-700">Clique ou arraste a imagem aqui</p>
+            <p className="text-xs text-gray-400">PNG, JPG, WEBP — máx. 5MB</p>
+          </>
+        )}
+      </div>
+
+      {uploadError && (
+        <p className="text-red-600 text-xs bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+          {uploadError}
+        </p>
+      )}
+
+      {/* Preview + URL manual */}
+      {value && (
+        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+          <img
+            src={value}
+            alt="Preview"
+            className="w-16 h-16 object-contain rounded-lg border border-gray-200 bg-white flex-shrink-0"
+            onError={e => { (e.target as HTMLImageElement).src = '/logo.svg' }}
+          />
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-semibold text-gray-700 mb-1">Imagem selecionada</p>
+            <p className="text-xs text-gray-400 truncate">{value}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => onChange('')}
+            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition flex-shrink-0"
+            title="Remover imagem"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
+
+      {/* Fallback: URL manual */}
+      <details className="group">
+        <summary className="text-xs text-gray-400 cursor-pointer hover:text-gray-600 transition select-none">
+          Ou informe a URL manualmente
+        </summary>
+        <div className="mt-2">
+          <input
+            value={value}
+            onChange={e => onChange(e.target.value)}
+            placeholder="https://... ou /produtos/categoria/imagem.jpg"
+            className="input font-mono text-xs"
+          />
+        </div>
+      </details>
+    </div>
+  )
+}
+
 export default function ProductForm({ initialData, mode }: ProductFormProps) {
   const [form, setForm] = useState<FormData>({ ...emptyForm, ...initialData })
   const [saving, setSaving] = useState(false)
@@ -56,6 +188,10 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!form.image.trim()) {
+      setError('Adicione uma imagem ao produto.')
+      return
+    }
     setSaving(true)
     setError('')
 
@@ -119,7 +255,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
                 required
                 value={form.name}
                 onChange={e => set('name', e.target.value)}
-                placeholder="Ex: Prato Istanbul Agop Xist Crash 18&quot;"
+                placeholder='Ex: Prato Istanbul Agop Xist Crash 18"'
                 className="input"
               />
             </div>
@@ -192,33 +328,16 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
 
           {/* Image & badge */}
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-5">
-            <h2 className="font-bold text-gray-800 text-sm uppercase tracking-wide">Imagem e Badge</h2>
+            <h2 className="font-bold text-gray-800 text-sm uppercase tracking-wide flex items-center gap-2">
+              <ImageIcon size={16} />
+              Imagem e Badge
+            </h2>
 
-            <div>
-              <label className="label">Caminho da imagem *</label>
-              <input
-                required
-                value={form.image}
-                onChange={e => set('image', e.target.value)}
-                placeholder="/produtos/pratos/nome-do-produto.jpg"
-                className="input font-mono text-sm"
-              />
-              <p className="text-xs text-gray-400 mt-1">
-                Faça upload da imagem para a pasta <code className="bg-gray-100 px-1 rounded">public/produtos/</code> e informe o caminho aqui.
-              </p>
-            </div>
-
-            {form.image && (
-              <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
-                <img
-                  src={form.image}
-                  alt="Preview"
-                  className="w-16 h-16 object-contain rounded border border-gray-200 bg-white"
-                  onError={e => { (e.target as HTMLImageElement).src = '/logo.svg' }}
-                />
-                <p className="text-sm text-gray-500">Preview da imagem</p>
-              </div>
-            )}
+            <ImageUploader
+              value={form.image}
+              category={form.category}
+              onChange={url => set('image', url)}
+            />
 
             <div>
               <label className="label">Badge <span className="text-gray-400 font-normal">opcional</span></label>
