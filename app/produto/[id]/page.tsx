@@ -1,28 +1,29 @@
-import { products, formatPrice } from '@/lib/products';
+import { formatPrice } from '@/lib/products';
+import { getAllProductIds, getProductById } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import ProdutoClient from './ProdutoClient';
 
 export async function generateStaticParams() {
-  return products.map(product => ({
-    id: product.id.toString()
-  }));
+  const ids = await getAllProductIds();
+  return ids.map(id => ({ id: id.toString() }));
 }
+
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const productId = parseInt(id);
-  const product = products.find(p => p.id === productId);
+  const product = await getProductById(parseInt(id));
 
-  if (!product) {
-    return {
-      title: 'Produto não encontrado | Vintage Drum Shop',
-    };
-  }
+  if (!product) return { title: 'Produto não encontrado | Vintage Drum Shop' };
 
-  const brandName = product.brand === 'wincent' ? 'Wincent' : 
+  const brandName = product.brand === 'wincent' ? 'Wincent' :
                     product.brand === 'istanbul' ? 'Istanbul Agop' :
                     product.brand === 'dynabeat' ? 'Dynabeat' : 'Vintage Drum Shop';
+
+  const imageUrl = product.image.startsWith('http')
+    ? product.image
+    : `https://vintagedrumshop.com.br${product.image}`;
 
   return {
     title: `${product.name} | Vintage Drum Shop`,
@@ -32,32 +33,22 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       title: `${product.name} - ${brandName}`,
       description: product.description.substring(0, 200),
       url: `https://vintagedrumshop.com.br/produto/${product.id}`,
-      images: [
-        {
-          url: `https://vintagedrumshop.com.br${product.image}`,
-          width: 800,
-          height: 600,
-          alt: product.name,
-        },
-      ],
+      images: [{ url: imageUrl, width: 800, height: 600, alt: product.name }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${product.name} - ${brandName}`,
       description: product.description.substring(0, 200),
-      images: [`https://vintagedrumshop.com.br${product.image}`],
+      images: [imageUrl],
     },
   };
 }
 
 export default async function ProdutoPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const productId = parseInt(id);
-  const product = products.find(p => p.id === productId);
+  const product = await getProductById(parseInt(id));
 
-  if (!product) {
-    notFound();
-  }
+  if (!product) notFound();
 
   return <ProdutoClient product={product} />;
 }
