@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-import { products } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
@@ -26,6 +26,7 @@ const SERIE_LABELS: Record<SerieFilter, string> = {
 };
 
 export default function CaixasPage() {
+  const products = useProductsStore(state => state.products);
   const [filtro, setFiltro] = useState<SerieFilter>('todas');
 
   const allCaixas = products.filter(p => p.category === 'caixas');

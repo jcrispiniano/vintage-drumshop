@@ -1,12 +1,13 @@
 'use client';
 import { useState } from 'react';
-import { products } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import ProductCard, { brandLabel } from '@/components/ProductCard';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 
 export default function PecasPage() {
+  const products = useProductsStore(state => state.products);
   const [activeBrand, setActiveBrand] = useState('todas');
 
   const allProducts = products.filter(p => p.category === 'pecas');

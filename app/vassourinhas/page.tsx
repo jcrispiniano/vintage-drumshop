@@ -1,11 +1,12 @@
 'use client';
-import { products } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 
 export default function VassourinhasPage() {
+  const products = useProductsStore(state => state.products);
   const vassouras = products.filter(p =>
     p.category === 'baquetas' &&
     (p.name.toLowerCase().includes('brush') || p.name.toLowerCase().includes('vassoura'))

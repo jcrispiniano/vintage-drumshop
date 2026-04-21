@@ -1,6 +1,7 @@
 'use client';
 
-import { products, formatPrice, contactInfo } from '@/lib/products';
+import { formatPrice, contactInfo } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import Link from 'next/link';
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
@@ -66,6 +67,7 @@ const itemVariants = {
 };
 
 export default function Home() {
+  const products = useProductsStore(state => state.products);
   const featuredProducts = products
     .filter(p => p.name.toLowerCase().includes('ride'))
     .slice(0, 3);

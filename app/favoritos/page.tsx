@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { Heart, Trash2, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
-import { products, formatPrice } from '@/lib/products';
+import { formatPrice } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import Header from '@/components/Header';
 
 export default function FavoritosPage() {
+  const products = useProductsStore(state => state.products);
   const { favorites, toggleFavorite, addToCart } = useCart();
   
   const favoriteProducts = products.filter(p => favorites.includes(p.id));
