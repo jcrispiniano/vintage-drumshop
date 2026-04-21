@@ -1,7 +1,8 @@
 'use client';
 import { useState } from 'react';
 
-import { products } from '@/lib/products';
+import { Product } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import { Search } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -11,11 +12,12 @@ import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
 function BuscaContent() {
+  const products = useProductsStore(state => state.products);
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
 
   // Buscar produtos
-  let searchResults: typeof products = [];
+  let searchResults: Product[] = [];
   let searchType = 'exact'; // exact, brand, category, none
   
   if (query.length >= 2) {

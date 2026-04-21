@@ -4,6 +4,7 @@ import './globals.css'
 import { CartProvider } from '@/contexts/CartContext'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import PageTransition from '@/components/PageTransition'
+import ProductsInitializer from '@/components/ProductsInitializer'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
@@ -56,6 +57,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased overflow-x-hidden">
         <CartProvider>
+          <ProductsInitializer />
           <div className="overflow-x-hidden w-full">
             <PageTransition>
               {children}

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { products } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -25,6 +25,7 @@ const TYPE_LABELS: Record<StickType, string> = {
 };
 
 export default function WincentPage() {
+  const products = useProductsStore(state => state.products);
   const [activeType, setActiveType] = useState<StickType>('todos');
 
   const allProducts = products.filter(p => p.brand === 'wincent' && p.category === 'baquetas');

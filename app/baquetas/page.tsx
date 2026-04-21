@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-import { products } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import ProductCard from '@/components/ProductCard';
@@ -32,6 +32,7 @@ const TYPE_LABELS: Record<StickType, string> = {
 };
 
 export default function BaquetasPage() {
+  const products = useProductsStore(state => state.products);
   const [activeType, setActiveType] = useState<StickType>('todos');
   const [activeBrand, setActiveBrand] = useState<BrandFilter>('todas');
 

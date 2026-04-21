@@ -1,11 +1,12 @@
 'use client';
-import { products } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 
 export default function DynabeatPage() {
+  const products = useProductsStore(state => state.products);
   const dynabeatProducts = products.filter(p => p.brand === 'dynabeat');
 
   return (
