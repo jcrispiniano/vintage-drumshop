@@ -4,7 +4,9 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   const isAdminDashboard = pathname.startsWith('/admin/dashboard')
-  const isAdminApi = pathname.startsWith('/api/admin/')
+  // /api/admin/auth é a rota de login — não deve ser protegida
+  const isAdminApi =
+    pathname.startsWith('/api/admin/') && !pathname.startsWith('/api/admin/auth')
 
   if (isAdminDashboard || isAdminApi) {
     const session = req.cookies.get('admin_session')
