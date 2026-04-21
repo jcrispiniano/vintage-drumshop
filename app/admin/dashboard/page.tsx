@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Plus, Edit, Trash2, LogOut, Package, Eye, EyeOff, Search, RefreshCw } from 'lucide-react'
+import { Plus, Edit, Trash2, LogOut, Package, Eye, EyeOff, Search } from 'lucide-react'
 
 interface DbProduct {
   id: number
@@ -25,8 +25,6 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
   const [deleting, setDeleting] = useState<number | null>(null)
-  const [fixingUrls, setFixingUrls] = useState(false)
-  const [fixResult, setFixResult] = useState('')
   const router = useRouter()
 
   async function loadProducts() {
@@ -47,20 +45,6 @@ export default function AdminDashboardPage() {
   }
 
   useEffect(() => { loadProducts() }, [])
-
-  async function handleFixUrls() {
-    setFixingUrls(true)
-    setFixResult('')
-    const res = await fetch('/api/admin/fix-urls', { method: 'POST' })
-    const data = await res.json()
-    if (res.ok) {
-      setFixResult(`✓ ${data.updated} URLs atualizadas. ${data.stillLocal} produto(s) ainda com caminho local.`)
-      if (data.stillLocal === 0) loadProducts()
-    } else {
-      setFixResult(`Erro: ${data.error}`)
-    }
-    setFixingUrls(false)
-  }
 
   async function handleDelete(id: number, name: string) {
     if (!confirm(`Excluir "${name}"?`)) return
@@ -145,13 +129,6 @@ export default function AdminDashboardPage() {
           ))}
         </div>
 
-        {/* Fix URLs banner */}
-        {fixResult && (
-          <div className={`mb-4 px-4 py-3 rounded-lg text-sm font-medium ${fixResult.startsWith('✓') ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-600 border border-red-200'}`}>
-            {fixResult}
-          </div>
-        )}
-
         {/* Toolbar */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1">
@@ -164,14 +141,6 @@ export default function AdminDashboardPage() {
               className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
-          <button
-            onClick={handleFixUrls}
-            disabled={fixingUrls}
-            className="flex items-center gap-2 border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100 font-semibold px-4 py-2.5 rounded-lg text-sm transition whitespace-nowrap disabled:opacity-50"
-          >
-            <RefreshCw size={15} className={fixingUrls ? 'animate-spin' : ''} />
-            {fixingUrls ? 'Corrigindo...' : 'Corrigir URLs das imagens'}
-          </button>
           <Link
             href="/admin/dashboard/novo"
             className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition whitespace-nowrap"
