@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
+import { put } from '@vercel/blob'
 
-const BUCKET = 'produtos'
 const MAX_SIZE_MB = 5
 
 export async function POST(req: NextRequest) {
-  if (!isSupabaseConfigured()) {
-    return NextResponse.json({ error: 'Supabase não configurado' }, { status: 503 })
-  }
-
   const formData = await req.formData()
   const file = formData.get('file') as File | null
   const category = (formData.get('category') as string) || 'outros'
@@ -26,31 +21,17 @@ export async function POST(req: NextRequest) {
   }
 
   const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
-  const timestamp = Date.now()
   const safeName = file.name
     .replace(/\.[^/.]+$/, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .slice(0, 40)
-  const path = `${category}/${safeName}-${timestamp}.${ext}`
+  const pathname = `produtos/${category}/${safeName}-${Date.now()}.${ext}`
 
-  const arrayBuffer = await file.arrayBuffer()
-  const buffer = Buffer.from(arrayBuffer)
+  const blob = await put(pathname, file, {
+    access: 'public',
+    contentType: file.type,
+  })
 
-  const { data, error } = await supabaseAdmin.storage
-    .from(BUCKET)
-    .upload(path, buffer, {
-      contentType: file.type,
-      upsert: false,
-    })
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
-  }
-
-  const { data: { publicUrl } } = supabaseAdmin.storage
-    .from(BUCKET)
-    .getPublicUrl(data.path)
-
-  return NextResponse.json({ url: publicUrl })
+  return NextResponse.json({ url: blob.url })
 }

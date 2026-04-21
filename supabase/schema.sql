@@ -50,30 +50,10 @@ create policy "Qualquer pessoa pode ler produtos ativos"
   using (active = true);
 
 -- ============================================================
--- Storage: bucket público para imagens de produtos
--- ============================================================
-
--- 1. Crie o bucket manualmente em: Storage > New bucket
---    Nome: produtos | Public bucket: ON
---
--- 2. Execute as policies abaixo para liberar acesso público de leitura:
-
-create policy "Imagens de produtos são públicas"
-  on storage.objects for select
-  using (bucket_id = 'produtos');
-
-create policy "Service role pode fazer upload"
-  on storage.objects for insert
-  with check (bucket_id = 'produtos');
-
-create policy "Service role pode deletar imagens"
-  on storage.objects for delete
-  using (bucket_id = 'produtos');
-
--- ============================================================
 -- Variáveis de ambiente necessárias no Vercel
 -- ============================================================
--- NEXT_PUBLIC_SUPABASE_URL      → Configurações > API > Project URL
--- NEXT_PUBLIC_SUPABASE_ANON_KEY → Configurações > API > anon public
--- SUPABASE_SERVICE_ROLE_KEY     → Configurações > API > service_role (secret)
+-- NEXT_PUBLIC_SUPABASE_URL      → Supabase > Settings > API > Project URL
+-- NEXT_PUBLIC_SUPABASE_ANON_KEY → Supabase > Settings > API > anon public
+-- SUPABASE_SERVICE_ROLE_KEY     → Supabase > Settings > API > service_role (secret)
 -- ADMIN_PASSWORD                → Senha de acesso ao painel /admin (ex: MinhaS3nh@)
+-- BLOB_READ_WRITE_TOKEN         → Vercel > Storage > Blob Store > Settings (gerado automaticamente ao conectar o store ao projeto)
