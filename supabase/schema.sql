@@ -52,7 +52,8 @@ create policy "Qualquer pessoa pode ler produtos ativos"
 -- ============================================================
 -- Variáveis de ambiente necessárias no Vercel
 -- ============================================================
--- NEXT_PUBLIC_SUPABASE_URL      → Configurações > API > Project URL
--- NEXT_PUBLIC_SUPABASE_ANON_KEY → Configurações > API > anon public
--- SUPABASE_SERVICE_ROLE_KEY     → Configurações > API > service_role (secret)
+-- NEXT_PUBLIC_SUPABASE_URL      → Supabase > Settings > API > Project URL
+-- NEXT_PUBLIC_SUPABASE_ANON_KEY → Supabase > Settings > API > anon public
+-- SUPABASE_SERVICE_ROLE_KEY     → Supabase > Settings > API > service_role (secret)
 -- ADMIN_PASSWORD                → Senha de acesso ao painel /admin (ex: MinhaS3nh@)
+-- BLOB_READ_WRITE_TOKEN         → Vercel > Storage > Blob Store > Settings (gerado automaticamente ao conectar o store ao projeto)

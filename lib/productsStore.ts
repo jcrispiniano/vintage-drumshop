@@ -8,6 +8,7 @@ interface ProductsState {
 }
 
 export const useProductsStore = create<ProductsState>((set) => ({
+  // Inicia com produtos estáticos; ProductsInitializer substitui pelo Supabase
   products: staticProducts,
   loaded: false,
   setProducts: (products) => set({ products, loaded: true }),
