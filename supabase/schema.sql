@@ -15,8 +15,9 @@ create table if not exists public.products (
   images      text[],
   badge       text,
   description text        not null,
-  featured    boolean     not null default false,
-  active      boolean     not null default true,
+  featured      boolean     not null default false,
+  active        boolean     not null default true,
+  out_of_stock  boolean     not null default false,
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );
