@@ -48,6 +48,51 @@ export default function CategoryNav({ currentCategory, stickyBelowHeader = false
           {['baterias', 'pratos', 'caixas', 'peles', 'baquetas', 'acessorios'].map(catId => {
             const cat = categories.find(c => c.id === catId);
             if (!cat) return null;
+            // Caixas tem dropdown com marcas
+            if (cat.id === 'caixas') {
+              return (
+                <li key={cat.id} className="relative group">
+                  <Link
+                    href="/caixas"
+                    className={`block px-3 md:px-4 py-2 transition whitespace-nowrap text-sm md:text-base ${
+                      currentCategory === cat.id
+                        ? 'bg-secondary'
+                        : 'hover:bg-secondary'
+                    }`}
+                  >
+                    {cat.name}
+                  </Link>
+                  <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[9999]">
+                    <ul className="py-2">
+                      <li>
+                        <Link
+                          href="/caixas"
+                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
+                        >
+                          Todas as Caixas
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="/caixas?marca=pinguim"
+                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
+                        >
+                          Pinguim
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="/caixas?marca=toreli"
+                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
+                        >
+                          Toreli Pinguim
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              );
+            }
             // Pratos tem dropdown com Istanbul
             if (cat.id === 'pratos') {
               return (

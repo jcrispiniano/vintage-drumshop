@@ -656,6 +656,50 @@ export const products: Product[] = [
     description: 'Caixa Piccolo Pinguim Imperador 13x3,5" em Alumínio Preto Fosco. Corpo em alumínio de 1,8mm, aros Power Hoop 2,3mm e acabamento exclusivo em preto fosco.',
     featured: true
   },
+  {
+    id: 62,
+    name: 'Caixa Toreli Pinguim Pro 14x5,5" Aço Inox',
+    category: 'caixas',
+    brand: 'toreli',
+    price: 1890.00,
+    image: '',
+    badge: 'Destaque',
+    description: 'A Caixa Toreli Pinguim Pro 14x5,5" em Aço Inox é a escolha ideal para bateristas que buscam um som brilhante, articulado e com grande projeção. Corpo em aço inoxidável de alta qualidade, aros Power Hoop 2,3mm e acabamento polido que garante durabilidade excepcional. A tensão uniforme proporciona afinação precisa e estável em qualquer estilo musical.',
+    featured: true
+  },
+  {
+    id: 63,
+    name: 'Caixa Toreli Pinguim Pro 14x6,5" Aço Inox',
+    category: 'caixas',
+    brand: 'toreli',
+    price: 1990.00,
+    image: '',
+    badge: 'Destaque',
+    description: 'A Caixa Toreli Pinguim Pro 14x6,5" em Aço Inox combina profundidade e brilho em um instrumento de alta performance. Com corpo mais profundo de 6,5", oferece mais sustain e uma resposta mais grave, ideal para rock, pop e estilos que exigem presença sonora. Aros Power Hoop 2,3mm e acabamento polido.',
+    featured: true
+  },
+  {
+    id: 64,
+    name: 'Caixa Toreli Pinguim Elite 14x5" Alumínio Natural',
+    category: 'caixas',
+    brand: 'toreli',
+    price: 1690.00,
+    image: '',
+    badge: 'Novo',
+    description: 'A Caixa Toreli Pinguim Elite 14x5" em Alumínio Natural é leve, responsiva e extremamente versátil. Corpo em alumínio de 1,8mm com acabamento natural fosco, aros Power Hoop 2,3mm e resposta rápida ao toque. Perfeita para bateristas que buscam agilidade e articulação em qualquer gênero musical.',
+    featured: true
+  },
+  {
+    id: 65,
+    name: 'Caixa Toreli Pinguim Elite 14x6" Bronze Martelado',
+    category: 'caixas',
+    brand: 'toreli',
+    price: 2290.00,
+    image: '',
+    badge: 'Premium',
+    description: 'A Caixa Toreli Pinguim Elite 14x6" em Bronze Martelado é um instrumento sofisticado com sonoridade quente e cheia de caráter. O corpo martelado em bronze proporciona um timbre único com ataque definido e sustain equilibrado. Aros Power Hoop 2,3mm e acabamento artesanal que torna cada caixa única.',
+    featured: true
+  },
 ];
 
 export const categories = [
