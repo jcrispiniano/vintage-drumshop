@@ -6,10 +6,11 @@ export interface Product {
   price: number;
   oldPrice?: number;
   image: string;
-  images?: string[]; // Galeria adicional de imagens
+  images?: string[];
   badge?: string;
   description: string;
   featured?: boolean;
+  outOfStock?: boolean;
 }
 
 export const products: Product[] = [

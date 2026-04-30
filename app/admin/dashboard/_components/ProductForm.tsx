@@ -31,6 +31,7 @@ interface FormData {
   description: string
   featured: boolean
   active: boolean
+  outOfStock: boolean
 }
 
 interface ProductFormProps {
@@ -41,7 +42,7 @@ interface ProductFormProps {
 const emptyForm: FormData = {
   name: '', category: 'pratos', brand: 'istanbul',
   price: '', oldPrice: '', image: '', badge: '',
-  description: '', featured: false, active: true,
+  description: '', featured: false, active: true, outOfStock: false,
 }
 
 function ImageUploader({
@@ -206,6 +207,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
       description: form.description.trim(),
       featured: form.featured,
       active: form.active,
+      outOfStock: form.outOfStock,
     }
 
     const url = mode === 'edit' && initialData?.id
@@ -375,6 +377,18 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
                 <div>
                   <p className="text-sm font-semibold text-gray-800">Produto ativo</p>
                   <p className="text-xs text-gray-400">Desative para ocultar o produto do site sem excluir</p>
+                </div>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.outOfStock}
+                  onChange={e => set('outOfStock', e.target.checked)}
+                  className="w-4 h-4 accent-red-500"
+                />
+                <div>
+                  <p className="text-sm font-semibold text-gray-800">Esgotado</p>
+                  <p className="text-xs text-gray-400">Exibe "Esgotado" no card e desativa o botão de compra</p>
                 </div>
               </label>
             </div>
