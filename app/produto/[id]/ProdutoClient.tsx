@@ -51,10 +51,10 @@ export default function ProdutoClient({ product }: { product: Product }) {
               className="relative aspect-square flex items-center justify-center cursor-pointer group"
               onClick={() => setIsImageExpanded(true)}
             >
-              <img 
+              <img
                 src={currentImage}
                 alt={product.name}
-                className="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
+                className="max-h-full max-w-full object-contain transition-transform group-hover:scale-105 mix-blend-multiply"
               />
               {product.badge && (
                 <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
@@ -225,7 +225,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
                       <img
                         src={relatedProduct.image}
                         alt={relatedProduct.name}
-                        className={`h-32 w-auto object-contain group-hover:scale-110 transition ${relatedProduct.soldOut ? 'opacity-40 grayscale' : ''}`}
+                        className={`h-32 w-auto object-contain group-hover:scale-110 transition mix-blend-multiply ${relatedProduct.soldOut ? 'opacity-40 grayscale' : ''}`}
                       />
                       {relatedProduct.soldOut && (
                         <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-fit bg-gray-900/85 text-white px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">

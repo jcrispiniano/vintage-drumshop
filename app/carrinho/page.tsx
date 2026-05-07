@@ -100,7 +100,7 @@ export default function CarrinhoPage() {
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="w-full h-full object-contain p-1 sm:p-2"
+                          className="w-full h-full object-contain p-1 sm:p-2 mix-blend-multiply"
                           onError={(e) => {
                             const img = e.currentTarget;
                             img.style.display = 'none';
