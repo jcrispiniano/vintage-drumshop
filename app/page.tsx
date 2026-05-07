@@ -303,7 +303,7 @@ export default function Home() {
                   href: '/pratos', cta: 'Ver Pratos Istanbul →'
                 },
                 {
-                  logo: '/torelli-logo.png', alt: 'Torelli', label: 'Revenda Autorizada',
+                  logo: 'https://uhruevemqsmwamem.public.blob.vercel-storage.com/torelli-logo.png', alt: 'Torelli', label: 'Revenda Autorizada',
                   desc: 'Marca brasileira referência em percussão, hardware e acessórios. Tradição, robustez e excelente custo-benefício para bateristas de todos os níveis.',
                   href: '/busca?q=torelli', cta: 'Ver Produtos Torelli →'
                 },
