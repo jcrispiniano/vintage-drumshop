@@ -325,7 +325,7 @@ export default function Home() {
                       <motion.img
                         src={brand.logo}
                         alt={brand.alt}
-                        className="max-h-full w-auto object-contain"
+                        className="max-h-full w-auto object-contain mix-blend-multiply"
                         whileHover={{ scale: 1.08, rotate: -1 }}
                         transition={{ type: 'spring', stiffness: 300 }}
                       />
