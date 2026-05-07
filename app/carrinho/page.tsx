@@ -92,56 +92,68 @@ export default function CarrinhoPage() {
             {/* Lista de Produtos */}
             <div className="lg:col-span-2 space-y-4">
               {cartItems.map(item => (
-                <div key={item.id} className="bg-white rounded-xl shadow-md p-6">
-                  <div className="flex gap-6">
+                <div key={item.id} className="bg-white rounded-xl shadow-md p-3 sm:p-6">
+                  <div className="flex gap-3 sm:gap-6">
                     {/* Imagem */}
-                    <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                       {item.image ? (
-                        <img 
-                          src={item.image} 
+                        <img
+                          src={item.image}
                           alt={item.name}
-                          className="w-full h-full object-contain p-2"
+                          className="w-full h-full object-contain p-1 sm:p-2"
+                          onError={(e) => {
+                            const img = e.currentTarget;
+                            img.style.display = 'none';
+                            const fallback = img.nextElementSibling as HTMLElement | null;
+                            if (fallback) fallback.style.display = 'flex';
+                          }}
                         />
-                      ) : (
-                        <ShoppingCart className="text-gray-300" size={32} />
-                      )}
+                      ) : null}
+                      <div
+                        className={`${item.image ? 'hidden' : 'flex'} w-full h-full items-center justify-center`}
+                      >
+                        <ShoppingCart className="text-gray-300" size={28} />
+                      </div>
                     </div>
 
                     {/* Detalhes */}
-                    <div className="flex-1">
-                      <p className="text-xs text-accent font-bold uppercase mb-1">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] sm:text-xs text-accent font-bold uppercase mb-1">
                         {item.category}
                       </p>
-                      <h3 className="font-bold text-lg mb-2">{item.name}</h3>
-                      <p className="text-2xl font-bold text-accent">
+                      <h3 className="font-bold text-sm sm:text-lg mb-2 line-clamp-2">{item.name}</h3>
+                      <p className="text-lg sm:text-2xl font-bold text-accent">
                         {formatPrice(item.price)}
                       </p>
                     </div>
 
                     {/* Quantidade e Remover */}
-                    <div className="flex flex-col items-end justify-between">
+                    <div className="flex flex-col items-end justify-between flex-shrink-0">
                       <button
                         onClick={() => removeFromCart(item.id)}
-                        className="text-red-500 hover:text-red-700 transition p-2"
+                        className="text-red-500 hover:text-red-700 transition p-1.5 sm:p-2"
+                        aria-label="Remover item"
                       >
-                        <Trash2 size={20} />
+                        <Trash2 size={18} />
                       </button>
 
-                      <div className="flex items-center gap-2 bg-gray-100 rounded-lg">
+                      <div className="flex items-center gap-1 sm:gap-2 bg-gray-100 rounded-lg">
                         <button
                           onClick={() => handleUpdateQuantity(item.id, -1)}
-                          className="p-2 hover:text-accent transition"
+                          className="p-1.5 sm:p-2 hover:text-accent transition"
+                          aria-label="Diminuir quantidade"
                         >
-                          <Minus size={16} />
+                          <Minus size={14} />
                         </button>
-                        <span className="font-bold w-8 text-center">
+                        <span className="font-bold w-6 sm:w-8 text-center text-sm sm:text-base">
                           {item.quantity}
                         </span>
                         <button
                           onClick={() => handleUpdateQuantity(item.id, 1)}
-                          className="p-2 hover:text-accent transition"
+                          className="p-1.5 sm:p-2 hover:text-accent transition"
+                          aria-label="Aumentar quantidade"
                         >
-                          <Plus size={16} />
+                          <Plus size={14} />
                         </button>
                       </div>
                     </div>
@@ -152,17 +164,17 @@ export default function CarrinhoPage() {
 
             {/* Resumo do Pedido */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl shadow-lg p-6 sticky top-24">
-                <h2 className="text-xl font-bold mb-6">Resumo do Pedido</h2>
-                
+              <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:sticky lg:top-24">
+                <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Resumo do Pedido</h2>
+
                 <div className="space-y-3 mb-6">
-                  <div className="flex justify-between text-gray-600">
+                  <div className="flex justify-between gap-2 text-gray-600 text-sm sm:text-base">
                     <span>Subtotal</span>
-                    <span className="font-semibold">{formatPrice(subtotal)}</span>
+                    <span className="font-semibold whitespace-nowrap">{formatPrice(subtotal)}</span>
                   </div>
-                  <div className="flex justify-between text-gray-600">
+                  <div className="flex justify-between gap-2 text-gray-600 text-sm sm:text-base">
                     <span>Frete</span>
-                    <span className="font-semibold">
+                    <span className="font-semibold whitespace-nowrap">
                       {shipping === 0 ? 'GRÁTIS' : formatPrice(shipping)}
                     </span>
                   </div>
@@ -174,9 +186,9 @@ export default function CarrinhoPage() {
                 </div>
 
                 <div className="border-t pt-4 mb-6">
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg font-bold">Total</span>
-                    <span className="text-2xl font-bold text-accent">
+                  <div className="flex justify-between items-center gap-2">
+                    <span className="text-base sm:text-lg font-bold">Total</span>
+                    <span className="text-xl sm:text-2xl font-bold text-accent whitespace-nowrap">
                       {formatPrice(total)}
                     </span>
                   </div>

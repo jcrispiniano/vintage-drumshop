@@ -44,6 +44,7 @@ export async function GET(request: Request) {
     badge: p.badge ?? undefined,
     description: p.description,
     featured: p.featured ?? false,
+    soldOut: p.sold_out ?? false,
   }))
 
   return NextResponse.json(normalized)

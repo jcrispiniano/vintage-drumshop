@@ -16,6 +16,7 @@ interface Product {
   brand: string;
   badge?: string;
   description: string;
+  soldOut?: boolean;
 }
 
 interface ProductCardProps {
@@ -66,9 +67,14 @@ export default function ProductCard({ product, typeLabel, showInstallments = fal
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
+          className={`w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
         />
-        {product.badge && (
+        {product.soldOut && (
+          <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-fit bg-gray-900/85 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">
+            Esgotado
+          </span>
+        )}
+        {!product.soldOut && product.badge && (
           <span className="absolute top-3 right-3 bg-gradient-to-r from-accent to-secondary text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
             {product.badge}
           </span>
@@ -119,14 +125,24 @@ export default function ProductCard({ product, typeLabel, showInstallments = fal
         </div>
 
         <div className="flex flex-col gap-2">
-          <motion.button
-            onClick={handleAddToCart}
-            className="w-full bg-accent text-white py-2.5 md:py-3 rounded-lg font-bold shadow-md text-sm"
-            whileHover={{ backgroundColor: '#D2691E' }}
-            whileTap={{ scale: 0.96 }}
-          >
-            Adicionar ao Carrinho
-          </motion.button>
+          {product.soldOut ? (
+            <button
+              type="button"
+              disabled
+              className="w-full bg-gray-300 text-gray-600 py-2.5 md:py-3 rounded-lg font-bold shadow-md text-sm cursor-not-allowed"
+            >
+              Produto Esgotado
+            </button>
+          ) : (
+            <motion.button
+              onClick={handleAddToCart}
+              className="w-full bg-accent text-white py-2.5 md:py-3 rounded-lg font-bold shadow-md text-sm"
+              whileHover={{ backgroundColor: '#D2691E' }}
+              whileTap={{ scale: 0.96 }}
+            >
+              Adicionar ao Carrinho
+            </motion.button>
+          )}
           <Link
             href={`/produto/${product.id}`}
             className="w-full border-2 border-accent text-accent py-2.5 md:py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block text-sm"

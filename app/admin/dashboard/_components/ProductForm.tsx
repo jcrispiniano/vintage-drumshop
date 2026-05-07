@@ -7,9 +7,8 @@ import { ArrowLeft, Save, Upload, X, ImageIcon } from 'lucide-react'
 
 const CATEGORIES = [
   'acessorios', 'bags', 'baquetas', 'baterias', 'caixas',
-  'cajon', 'dynabeat', 'estudo', 'ferragens', 'kids',
-  'livros', 'mallets', 'pecas', 'peles', 'pratos',
-  'vassourinhas', 'wincent',
+  'dynabeat', 'ferragens', 'mallets', 'pecas', 'peles',
+  'pratos', 'vassourinhas', 'wincent',
 ]
 
 const BRANDS = [
@@ -31,6 +30,7 @@ interface FormData {
   description: string
   featured: boolean
   active: boolean
+  soldOut: boolean
 }
 
 interface ProductFormProps {
@@ -41,7 +41,7 @@ interface ProductFormProps {
 const emptyForm: FormData = {
   name: '', category: 'pratos', brand: 'istanbul',
   price: '', oldPrice: '', image: '', badge: '',
-  description: '', featured: false, active: true,
+  description: '', featured: false, active: true, soldOut: false,
 }
 
 function ImageUploader({
@@ -206,6 +206,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
       description: form.description.trim(),
       featured: form.featured,
       active: form.active,
+      soldOut: form.soldOut,
     }
 
     const url = mode === 'edit' && initialData?.id
@@ -375,6 +376,18 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
                 <div>
                   <p className="text-sm font-semibold text-gray-800">Produto ativo</p>
                   <p className="text-xs text-gray-400">Desative para ocultar o produto do site sem excluir</p>
+                </div>
+              </label>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.soldOut}
+                  onChange={e => set('soldOut', e.target.checked)}
+                  className="w-4 h-4 accent-orange-500"
+                />
+                <div>
+                  <p className="text-sm font-semibold text-gray-800">Produto esgotado</p>
+                  <p className="text-xs text-gray-400">Mantém o produto visível, mas impede a compra</p>
                 </div>
               </label>
             </div>

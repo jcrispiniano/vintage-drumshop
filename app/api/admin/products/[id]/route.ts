@@ -59,5 +59,6 @@ function toDbRow(body: Record<string, unknown>) {
     description: body.description,
     featured: body.featured ?? false,
     active: body.active ?? true,
+    sold_out: body.soldOut ?? false,
   }
 }
