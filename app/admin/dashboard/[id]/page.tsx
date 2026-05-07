@@ -16,6 +16,7 @@ interface DbProduct {
   description: string
   featured: boolean
   active: boolean
+  sold_out?: boolean
 }
 
 export default function EditProductPage() {
@@ -73,6 +74,7 @@ export default function EditProductPage() {
         description: product.description,
         featured: product.featured,
         active: product.active,
+        soldOut: product.sold_out ?? false,
       }}
     />
   )

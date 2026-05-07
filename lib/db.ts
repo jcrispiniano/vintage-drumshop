@@ -14,6 +14,7 @@ function normalize(row: Record<string, unknown>): Product {
     badge: (row.badge as string) ?? undefined,
     description: row.description as string,
     featured: (row.featured as boolean) ?? false,
+    soldOut: (row.sold_out as boolean) ?? false,
   }
 }
 

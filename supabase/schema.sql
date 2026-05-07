@@ -17,9 +17,14 @@ create table if not exists public.products (
   description text        not null,
   featured    boolean     not null default false,
   active      boolean     not null default true,
+  sold_out    boolean     not null default false,
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );
+
+-- Migração para bases existentes (idempotente)
+alter table public.products
+  add column if not exists sold_out boolean not null default false;
 
 -- Trigger para atualizar updated_at automaticamente
 create or replace function public.set_updated_at()

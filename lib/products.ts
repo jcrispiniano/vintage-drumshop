@@ -10,6 +10,7 @@ export interface Product {
   badge?: string;
   description: string;
   featured?: boolean;
+  soldOut?: boolean;
 }
 
 export const products: Product[] = [
@@ -441,7 +442,7 @@ export const products: Product[] = [
   {
     id: 41,
     name: 'Wincent Pad de estudo 6"',
-    category: 'estudo',
+    category: 'acessorios',
     brand: 'wincent',
     price: 280.00,
     image: '',
@@ -668,10 +669,6 @@ export const categories = [
   { id: 'ferragens', name: 'Ferragens' },
   { id: 'bags', name: 'Bags, Cases e Capas' },
   { id: 'pecas', name: 'Peças de Reparo e Manutenção' },
-  { id: 'cajon', name: 'Cajón' },
-  { id: 'estudo', name: 'Estudo' },
-  { id: 'kids', name: 'Kids Musicalização Infantil' },
-  { id: 'livros', name: 'Livros, DVDs e CDs' },
 ];
 
 export function formatPrice(price: number): string {

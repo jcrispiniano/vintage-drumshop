@@ -2,18 +2,21 @@
 
 import Link from 'next/link';
 import { ArrowLeft, Heart, ShoppingCart, Share2, X, ZoomIn, Menu } from 'lucide-react';
-import { Product, formatPrice, contactInfo, products } from '@/lib/products';
+import { Product, formatPrice, contactInfo } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
 import Header from '@/components/Header';
 
 export default function ProdutoClient({ product }: { product: Product }) {
   const { addToCart, toggleFavorite, favorites } = useCart();
+  const allProducts = useProductsStore(state => state.products);
   const isFavorite = favorites.includes(product.id);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [currentImage, setCurrentImage] = useState(product.image);
 
   const handleAddToCart = () => {
+    if (product.soldOut) return;
     addToCart({
       id: product.id,
       name: product.name,
@@ -125,13 +128,24 @@ export default function ProdutoClient({ product }: { product: Product }) {
                 </p>
               </div>
 
+              {product.soldOut && (
+                <div className="mb-4 bg-gray-900 text-white text-center py-3 px-4 rounded-lg font-bold uppercase tracking-wider text-sm shadow-lg">
+                  Produto Esgotado
+                </div>
+              )}
+
               <div className="flex gap-4 mb-6">
-                <button 
+                <button
                   onClick={handleAddToCart}
-                  className="flex-1 bg-accent text-white py-4 px-6 rounded-lg font-bold hover:bg-secondary transition shadow-lg flex items-center justify-center gap-2"
+                  disabled={product.soldOut}
+                  className={`flex-1 py-4 px-6 rounded-lg font-bold transition shadow-lg flex items-center justify-center gap-2 ${
+                    product.soldOut
+                      ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                      : 'bg-accent text-white hover:bg-secondary'
+                  }`}
                 >
                   <ShoppingCart size={20} />
-                  Adicionar ao Carrinho
+                  {product.soldOut ? 'Indisponível' : 'Adicionar ao Carrinho'}
                 </button>
                 <button 
                   onClick={() => toggleFavorite(product.id)}
@@ -192,37 +206,47 @@ export default function ProdutoClient({ product }: { product: Product }) {
         </div>
 
         {/* Produtos Relacionados */}
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Produtos Relacionados</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products
-              .filter(p => p.category === product.category && p.id !== product.id)
-              .slice(0, 4)
-              .map(relatedProduct => (
-                <Link 
-                  key={relatedProduct.id}
-                  href={`/produto/${relatedProduct.id}`}
-                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition group"
-                >
-                  <div className="relative h-48 bg-white flex items-center justify-center">
-                    <img 
-                      src={relatedProduct.image}
-                      alt={relatedProduct.name}
-                      className="h-32 w-auto object-contain group-hover:scale-110 transition"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-bold text-sm mb-2 line-clamp-2">
-                      {relatedProduct.name}
-                    </h3>
-                    <p className="text-lg font-bold text-accent">
-                      {formatPrice(relatedProduct.price)}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-          </div>
-        </div>
+        {(() => {
+          const related = allProducts
+            .filter(p => p.category === product.category && p.id !== product.id && p.image)
+            .slice(0, 4);
+          if (related.length === 0) return null;
+          return (
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Produtos Relacionados</h2>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {related.map(relatedProduct => (
+                  <Link
+                    key={relatedProduct.id}
+                    href={`/produto/${relatedProduct.id}`}
+                    className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition group"
+                  >
+                    <div className="relative h-48 bg-white flex items-center justify-center">
+                      <img
+                        src={relatedProduct.image}
+                        alt={relatedProduct.name}
+                        className={`h-32 w-auto object-contain group-hover:scale-110 transition ${relatedProduct.soldOut ? 'opacity-40 grayscale' : ''}`}
+                      />
+                      {relatedProduct.soldOut && (
+                        <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-fit bg-gray-900/85 text-white px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">
+                          Esgotado
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-bold text-sm mb-2 line-clamp-2">
+                        {relatedProduct.name}
+                      </h3>
+                      <p className="text-lg font-bold text-accent">
+                        {formatPrice(relatedProduct.price)}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Modal Lightbox */}
