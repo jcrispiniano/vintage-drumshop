@@ -290,7 +290,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {[
                 {
                   logo: '/wincent-logo.png', alt: 'Wincent', label: 'Revenda Autorizada',
@@ -302,10 +302,15 @@ export default function Home() {
                   desc: 'Pratos artesanais turcos feitos à mão há gerações. Som único, rico em harmônicos e usado pelos maiores bateristas do mundo.',
                   href: '/pratos', cta: 'Ver Pratos Istanbul →'
                 },
+                {
+                  logo: 'https://uhruevemqsmwamem.public.blob.vercel-storage.com/torelli-logo.png', alt: 'Torelli', label: 'Revenda Autorizada',
+                  desc: 'Marca brasileira referência em percussão, hardware e acessórios. Tradição, robustez e excelente custo-benefício para bateristas de todos os níveis.',
+                  href: '/busca?q=torelli', cta: 'Ver Produtos Torelli →'
+                },
               ].map((brand, i) => (
                 <motion.div
                   key={i}
-                  className="bg-lightBg p-12 rounded-2xl shadow-xl border-2 border-gray-100 hover:border-accent transition relative"
+                  className="bg-lightBg p-8 md:p-10 rounded-2xl shadow-xl border-2 border-gray-100 hover:border-accent transition relative"
                   whileHover={{ y: -6 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   initial={{ opacity: 0, y: 30 }}
@@ -316,7 +321,7 @@ export default function Home() {
                     OFICIAL
                   </span>
                   <div className="text-center flex flex-col h-full">
-                    <div className="h-64 flex items-center justify-center mx-auto mb-6">
+                    <div className="h-48 flex items-center justify-center mx-auto mb-6">
                       <motion.img
                         src={brand.logo}
                         alt={brand.alt}

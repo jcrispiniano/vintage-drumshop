@@ -12,9 +12,10 @@ const CATEGORIES = [
 ]
 
 const BRANDS = [
-  'istanbul', 'wincent', 'dynabeat', 'evans', 'remo',
-  'pearl', 'tama', 'dw', 'mapex', 'yamaha',
-  'sonor', 'gretsch', 'ludwig', 'zildjian', 'sabian', 'meinl', 'outro',
+  'istanbul', 'wincent', 'dynabeat', 'torelli', 'pinguim',
+  'evans', 'remo', 'pearl', 'tama', 'dw', 'mapex',
+  'yamaha', 'sonor', 'gretsch', 'ludwig', 'zildjian',
+  'sabian', 'meinl', 'rockkey', 'outro',
 ]
 
 const BADGES = ['Novo', 'Premium', 'Signature', 'Effect', 'Oferta', 'Destaque', '']
