@@ -54,6 +54,20 @@ npm run build
 npm run build
 ```
 
+## 🗄️ Banco de dados (Supabase)
+
+O schema fica em `supabase/schema.sql` e pode ser rodado quantas vezes for
+preciso no **SQL Editor** do projeto Supabase.
+
+**Se o painel `/admin` mostrar um erro como**
+`Could not find the 'sold_out' column of 'products' in the schema cache`,
+a base está sem uma coluna que o código já usa. Rode
+`supabase/migrations/001_add_sold_out.sql` (ou o `schema.sql` inteiro) no SQL
+Editor — ele adiciona as colunas faltantes e recarrega o cache de schema da API.
+
+Enquanto a migração não é aplicada, a API do admin salva o produto sem a coluna
+ausente em vez de falhar, e registra um aviso no log do servidor.
+
 ## 📦 Deploy GitHub Pages
 
 O site está configurado para deploy automático no GitHub Pages:

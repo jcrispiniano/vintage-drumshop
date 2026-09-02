@@ -1,6 +1,7 @@
 -- ============================================================
 -- Vintage Drum Shop — Schema Supabase
--- Execute este SQL no SQL Editor do seu projeto Supabase
+-- Execute este SQL no SQL Editor do seu projeto Supabase.
+-- O arquivo é idempotente: pode ser rodado quantas vezes for preciso.
 -- ============================================================
 
 -- Tabela de produtos
@@ -22,9 +23,19 @@ create table if not exists public.products (
   updated_at  timestamptz not null default now()
 );
 
+-- ------------------------------------------------------------
 -- Migração para bases existentes (idempotente)
+-- Rode este bloco se o admin acusar
+-- "Could not find the 'sold_out' column of 'products' in the schema cache"
+-- ------------------------------------------------------------
 alter table public.products
   add column if not exists sold_out boolean not null default false;
+
+alter table public.products
+  add column if not exists images text[];
+
+-- Recarrega o cache de schema do PostgREST para a API enxergar as colunas novas
+notify pgrst, 'reload schema';
 
 -- Trigger para atualizar updated_at automaticamente
 create or replace function public.set_updated_at()
@@ -34,6 +45,8 @@ begin
   return new;
 end;
 $$;
+
+drop trigger if exists products_updated_at on public.products;
 
 create trigger products_updated_at
   before update on public.products
@@ -49,6 +62,8 @@ create index if not exists products_active_idx   on public.products (active);
 -- Leitura pública; escrita apenas via service_role (servidor)
 -- ============================================================
 alter table public.products enable row level security;
+
+drop policy if exists "Qualquer pessoa pode ler produtos ativos" on public.products;
 
 create policy "Qualquer pessoa pode ler produtos ativos"
   on public.products for select
