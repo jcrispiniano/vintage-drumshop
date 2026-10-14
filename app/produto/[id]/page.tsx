@@ -1,8 +1,10 @@
 import { formatPrice } from '@/lib/products';
 import { getAllProductIds, getProductById } from '@/lib/db';
+import { brandLabel } from '@/lib/brands';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import ProdutoClient from './ProdutoClient';
+import ProductSchema from '@/components/schemas/ProductSchema';
 
 export async function generateStaticParams() {
   const ids = await getAllProductIds();
@@ -17,9 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   if (!product) return { title: 'Produto não encontrado | Vintage Drum Shop' };
 
-  const brandName = product.brand === 'wincent' ? 'Wincent' :
-                    product.brand === 'istanbul' ? 'Istanbul Agop' :
-                    product.brand === 'dynabeat' ? 'Dynabeat' : 'Vintage Drum Shop';
+  const brandName = brandLabel(product.brand);
 
   const imageUrl = product.image.startsWith('http')
     ? product.image
@@ -50,5 +50,10 @@ export default async function ProdutoPage({ params }: { params: Promise<{ id: st
 
   if (!product) notFound();
 
-  return <ProdutoClient product={product} />;
+  return (
+    <>
+      <ProductSchema product={product} />
+      <ProdutoClient key={product.id} product={product} />
+    </>
+  );
 }

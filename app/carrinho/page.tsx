@@ -1,6 +1,4 @@
 'use client';
-import { useState } from 'react';
-
 import { Trash2, Plus, Minus, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
@@ -50,7 +48,7 @@ export default function CarrinhoPage() {
     const encodedMessage = encodeURIComponent(message);
     
     // Monta o link do WhatsApp
-    const whatsappUrl = `https://wa.me/5511947397347?text=${encodedMessage}`;
+    const whatsappUrl = `${contactInfo.whatsapp}?text=${encodedMessage}`;
     
     // Abre o WhatsApp
     window.open(whatsappUrl, '_blank');

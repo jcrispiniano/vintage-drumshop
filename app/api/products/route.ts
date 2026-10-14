@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { products as staticProducts } from '@/lib/products'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
+import { normalizeProduct } from '@/lib/productRow'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -32,20 +33,7 @@ export async function GET(request: Request) {
     return NextResponse.json(filtered)
   }
 
-  const normalized = (data ?? []).map((p: Record<string, unknown>) => ({
-    id: p.id,
-    name: p.name,
-    category: p.category,
-    brand: p.brand,
-    price: Number(p.price),
-    oldPrice: p.old_price ? Number(p.old_price) : undefined,
-    image: p.image,
-    images: p.images ?? undefined,
-    badge: p.badge ?? undefined,
-    description: p.description,
-    featured: p.featured ?? false,
-    soldOut: p.sold_out ?? false,
-  }))
+  const normalized = (data ?? []).map(normalizeProduct)
 
   return NextResponse.json(normalized)
 }

@@ -1,22 +1,6 @@
 import { products as staticProducts, Product } from '@/lib/products'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
-
-function normalize(row: Record<string, unknown>): Product {
-  return {
-    id: row.id as number,
-    name: row.name as string,
-    category: row.category as string,
-    brand: row.brand as string,
-    price: Number(row.price),
-    oldPrice: row.old_price ? Number(row.old_price) : undefined,
-    image: row.image as string,
-    images: (row.images as string[]) ?? undefined,
-    badge: (row.badge as string) ?? undefined,
-    description: row.description as string,
-    featured: (row.featured as boolean) ?? false,
-    soldOut: (row.sold_out as boolean) ?? false,
-  }
-}
+import { normalizeProduct as normalize } from '@/lib/productRow'
 
 export async function getAllProducts(): Promise<Product[]> {
   if (!isSupabaseConfigured()) return staticProducts

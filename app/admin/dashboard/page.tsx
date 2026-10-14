@@ -44,6 +44,7 @@ export default function AdminDashboardPage() {
     setLoading(false)
   }
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
   useEffect(() => { loadProducts() }, [])
 
   async function handleDelete(id: number, name: string) {
@@ -62,7 +63,7 @@ export default function AdminDashboardPage() {
     const res = await fetch(`/api/admin/products/${product.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...product, oldPrice: product.old_price, active: !product.active }),
+      body: JSON.stringify({ active: !product.active }),
     })
     if (res.ok) {
       setProducts(prev =>

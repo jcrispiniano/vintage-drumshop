@@ -1,84 +1,62 @@
 # 🥁 Vintage Drum Shop
 
-Site profissional Next.js com TypeScript e Tailwind CSS para loja de baterias e acessórios musicais.
+Loja online da Vintage Drum Shop (baterias, pratos e acessórios), feita em Next.js e publicada na Vercel em https://vintagedrumshop.com.br.
 
 ## ✨ Tecnologias
 
-- **Next.js 15** - Framework React com SSR e SSG
-- **TypeScript** - Tipagem estática
-- **Tailwind CSS** - Utility-first CSS
-- **Lucide React** - Ícones modernos
-- **Framer Motion** - Animações (preparado)
-- **Zustand** - State management (preparado)
+- **Next.js 16** (App Router) + **TypeScript**
+- **Tailwind CSS 4**
+- **Supabase**: banco de produtos, editados pelo painel `/admin`
+- **Vercel Blob**: upload de imagens dos produtos
+- **Zustand**: carrinho e favoritos (persistidos no navegador)
+- **Framer Motion**, **Lucide React**
+- **Vercel Analytics** e **Speed Insights**
 
-## 🎯 Funcionalidades
-
-- ✅ Design moderno e responsivo
-- ✅ Sistema de carrinho React
-- ✅ Sistema de favoritos
-- ✅ Busca de produtos
-- ✅ Integração com WhatsApp
-- ✅ Otimizado para GitHub Pages
-- ✅ TypeScript para type safety
-- ✅ Tailwind para styling rápido
-- ✅ Componentes reutilizáveis
+O checkout é feito pelo WhatsApp: o carrinho monta a mensagem do pedido.
 
 ## 📁 Estrutura
 
 ```
-vintage-drum-shop/
-├── app/
-│   ├── layout.tsx          # Layout principal
-│   ├── page.tsx            # Homepage
-│   └── globals.css         # Estilos globais
-├── components/             # Componentes reutilizáveis (preparado)
-├── lib/
-│   └── products.ts         # Base de dados de produtos
-├── public/                 # Assets estáticos
-└── next.config.js          # Config Next.js + GitHub Pages
+app/
+├── (categorias)/page.tsx   # /baterias, /pratos, /caixas, ...
+├── produto/[id]/           # Página de produto (ISR, revalida a cada 60s)
+├── admin/                  # Login e painel de produtos
+├── api/products            # Lista pública de produtos
+├── api/admin/*             # CRUD de produtos e upload (protegido)
+├── sitemap.ts, robots.ts   # SEO
+components/                 # Header, ProductCard, CategoryNav, ...
+lib/
+├── products.ts             # Produtos estáticos (fallback sem Supabase) + contatos
+├── db.ts                   # Leitura de produtos (Supabase → fallback estático)
+├── adminSession.ts         # Sessão do admin assinada (HMAC)
+proxy.ts                    # Protege /admin/dashboard e /api/admin
+supabase/schema.sql         # Schema e RLS da tabela products
 ```
+
+## 🔑 Variáveis de ambiente
+
+| Variável | Uso |
+| --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | URL do projeto Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Chave pública (leitura) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Chave de serviço (escrita pelo painel) |
+| `ADMIN_PASSWORD` | Senha do `/admin`. **Obrigatória**: sem ela o login fica desativado |
+| `ADMIN_SESSION_SECRET` | Opcional. Segredo que assina o cookie de sessão (padrão: `ADMIN_PASSWORD`) |
+| `BLOB_READ_WRITE_TOKEN` | Criada pela Vercel ao conectar o Blob Store |
+
+Sem as variáveis do Supabase o site funciona com os produtos de `lib/products.ts`.
 
 ## 🚀 Desenvolvimento
 
 ```bash
-# Instalar dependências
 npm install
-
-# Rodar em desenvolvimento
-npm run dev
-
-# Build para produção
-npm run build
-
-# Export estático para GitHub Pages
+npm run dev     # http://localhost:3000
+npm run lint
 npm run build
 ```
 
-## 📦 Deploy GitHub Pages
-
-O site está configurado para deploy automático no GitHub Pages:
-
-1. Push para main
-2. GitHub Actions faz build automaticamente
-3. Site fica disponível em: https://jcrispiniano.github.io/vintage-drumshop/
-
-## 🎨 Customização
-
-- **Cores**: Edite `tailwind.config.ts`
-- **Produtos**: Edite `lib/products.ts`
-- **Componentes**: Adicione em `components/`
-
 ## 📱 Contato
 
-- WhatsApp: (11) 96440-5519
-- E-mail: contato@vintagedrumshop.com
-- São Paulo - SP
-
-## 🏆 Marcas Oficiais
-
-- **Wincent** - Revenda Autorizada
-- **Istanbul Cymbals** - Distribuidor Oficial
-
----
-
-Desenvolvido com ❤️ para Vintage Drum Shop
+- WhatsApp: (11) 94739-7347
+- E-mail: drumshopvintage@gmail.com
+- Instagram: [@vintage.drumshop](https://www.instagram.com/vintage.drumshop)

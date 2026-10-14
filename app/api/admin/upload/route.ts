@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 
-const MAX_SIZE_MB = 5
+// Funções da Vercel aceitam no máximo 4,5MB de corpo na requisição
+const MAX_SIZE_MB = 4
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
   const file = formData.get('file') as File | null
-  const category = (formData.get('category') as string) || 'outros'
+  const category =
+    String(formData.get('category') ?? '').toLowerCase().replace(/[^a-z0-9-]/g, '') || 'outros'
 
   if (!file) {
     return NextResponse.json({ error: 'Nenhum arquivo enviado' }, { status: 400 })
@@ -20,7 +22,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: `Tamanho máximo: ${MAX_SIZE_MB}MB` }, { status: 400 })
   }
 
-  const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+  const ext = file.name.split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg'
   const safeName = file.name
     .replace(/\.[^/.]+$/, '')
     .toLowerCase()

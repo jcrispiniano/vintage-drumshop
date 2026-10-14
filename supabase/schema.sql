@@ -35,6 +35,7 @@ begin
 end;
 $$;
 
+drop trigger if exists products_updated_at on public.products;
 create trigger products_updated_at
   before update on public.products
   for each row execute function public.set_updated_at();
@@ -50,6 +51,7 @@ create index if not exists products_active_idx   on public.products (active);
 -- ============================================================
 alter table public.products enable row level security;
 
+drop policy if exists "Qualquer pessoa pode ler produtos ativos" on public.products;
 create policy "Qualquer pessoa pode ler produtos ativos"
   on public.products for select
   using (active = true);
@@ -60,5 +62,6 @@ create policy "Qualquer pessoa pode ler produtos ativos"
 -- NEXT_PUBLIC_SUPABASE_URL      → Supabase > Settings > API > Project URL
 -- NEXT_PUBLIC_SUPABASE_ANON_KEY → Supabase > Settings > API > anon public
 -- SUPABASE_SERVICE_ROLE_KEY     → Supabase > Settings > API > service_role (secret)
--- ADMIN_PASSWORD                → Senha de acesso ao painel /admin (ex: MinhaS3nh@)
+-- ADMIN_PASSWORD                → Senha de acesso ao painel /admin (obrigatória — sem ela o login fica desativado)
+-- ADMIN_SESSION_SECRET          → (opcional) segredo para assinar o cookie de sessão; padrão: ADMIN_PASSWORD
 -- BLOB_READ_WRITE_TOKEN         → Vercel > Storage > Blob Store > Settings (gerado automaticamente ao conectar o store ao projeto)

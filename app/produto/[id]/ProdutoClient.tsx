@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowLeft, Heart, ShoppingCart, Share2, X, ZoomIn, Menu } from 'lucide-react';
+import { Heart, ShoppingCart, Share2, X, ZoomIn } from 'lucide-react';
 import { Product, formatPrice, contactInfo } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
 import Header from '@/components/Header';
+import { brandLabel } from '@/lib/brands';
 
 export default function ProdutoClient({ product }: { product: Product }) {
   const { addToCart, toggleFavorite, favorites } = useCart();
@@ -22,19 +23,21 @@ export default function ProdutoClient({ product }: { product: Product }) {
       name: product.name,
       price: product.price,
       category: product.category,
-      image: product.image
+      image: product.image,
+      description: product.description
     });
   };
 
   const handleShare = () => {
     if (navigator.share) {
+      // AbortError quando o usuário cancela o compartilhamento
       navigator.share({
         title: product.name,
         text: product.description,
         url: window.location.href
-      });
+      }).catch(() => {});
     } else {
-      navigator.clipboard.writeText(window.location.href);
+      navigator.clipboard?.writeText(window.location.href).catch(() => {});
     }
   };
 
@@ -108,7 +111,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
           <div>
             <div className="bg-white rounded-2xl p-8 shadow-lg mb-6">
               <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
-                {product.brand === 'istanbul' ? 'Istanbul Agop' : product.brand === 'wincent' ? 'Wincent' : product.category}
+                {brandLabel(product.brand)}
               </p>
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
                 {product.name}
@@ -262,7 +265,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
             <X size={24} />
           </button>
           <img 
-            src={product.image}
+            src={currentImage}
             alt={product.name}
             className="max-h-[90vh] max-w-[90vw] object-contain"
             onClick={(e) => e.stopPropagation()}

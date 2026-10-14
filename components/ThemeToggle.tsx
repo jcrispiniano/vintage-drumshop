@@ -9,6 +9,8 @@ export default function ThemeToggle() {
   useEffect(() => {
     const stored = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Lido no efeito (e não no useState) para não divergir do HTML do servidor
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDark(stored === 'dark' || (!stored && prefersDark));
   }, []);
 

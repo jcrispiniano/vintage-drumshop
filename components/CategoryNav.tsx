@@ -5,10 +5,9 @@ import { categories } from '@/lib/products';
 
 interface CategoryNavProps {
   currentCategory?: string;
-  stickyBelowHeader?: boolean;
 }
 
-export default function CategoryNav({ currentCategory, stickyBelowHeader = false }: CategoryNavProps) {
+export default function CategoryNav({ currentCategory }: CategoryNavProps) {
   return (
     <nav aria-label="Categorias de produtos" className="fixed left-0 right-0 z-[64] bg-primary text-white shadow-lg overflow-visible top-[56px] md:top-[122px]">
       

@@ -1,14 +1,15 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Save, Upload, X, ImageIcon } from 'lucide-react'
 
+// Precisa bater com os filtros das páginas de categoria (p.category === '...').
+// Mallets e vassourinhas são baquetas; Wincent e Dynabeat são marcas.
 const CATEGORIES = [
-  'acessorios', 'bags', 'baquetas', 'baterias', 'caixas',
-  'dynabeat', 'ferragens', 'mallets', 'pecas', 'peles',
-  'pratos', 'vassourinhas', 'wincent',
+  'acessorios', 'bags', 'baquetas', 'baterias', 'caixas', 'cajon',
+  'estudo', 'ferragens', 'kids', 'livros', 'pecas', 'peles', 'pratos',
 ]
 
 const BRANDS = [
@@ -67,15 +68,20 @@ function ImageUploader({
     fd.append('file', file)
     fd.append('category', category)
 
-    const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
-    const data = await res.json()
-
-    if (!res.ok) {
-      setUploadError(data.error ?? 'Erro ao enviar imagem.')
-    } else {
-      onChange(data.url)
+    try {
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+      // Respostas de erro da plataforma (ex.: 413) podem não ser JSON
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setUploadError(data.error ?? `Erro ao enviar imagem (HTTP ${res.status}).`)
+      } else {
+        onChange(data.url)
+      }
+    } catch {
+      setUploadError('Falha de conexão ao enviar imagem.')
+    } finally {
+      setUploading(false)
     }
-    setUploading(false)
   }
 
   function handleFiles(files: FileList | null) {
@@ -83,11 +89,11 @@ function ImageUploader({
     uploadFile(files[0])
   }
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
+  function handleDrop(e: React.DragEvent) {
     e.preventDefault()
     setDragging(false)
     handleFiles(e.dataTransfer.files)
-  }, [category])
+  }
 
   return (
     <div className="space-y-3">
@@ -124,7 +130,7 @@ function ImageUploader({
               <Upload size={18} className="text-orange-500" />
             </div>
             <p className="text-sm font-semibold text-gray-700">Clique ou arraste a imagem aqui</p>
-            <p className="text-xs text-gray-400">PNG, JPG, WEBP — máx. 5MB</p>
+            <p className="text-xs text-gray-400">PNG, JPG, WEBP — máx. 4MB</p>
           </>
         )}
       </div>
@@ -201,9 +207,10 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
       category: form.category,
       brand: form.brand,
       price: parseFloat(form.price),
-      oldPrice: form.oldPrice ? parseFloat(form.oldPrice) : undefined,
+      // null (e não undefined) para que a edição consiga limpar esses campos
+      oldPrice: form.oldPrice ? parseFloat(form.oldPrice) : null,
       image: form.image.trim(),
-      badge: form.badge || undefined,
+      badge: form.badge || null,
       description: form.description.trim(),
       featured: form.featured,
       active: form.active,
@@ -214,20 +221,24 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
       ? `/api/admin/products/${initialData.id}`
       : '/api/admin/products'
 
-    const res = await fetch(url, {
-      method: mode === 'edit' ? 'PUT' : 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
+    try {
+      const res = await fetch(url, {
+        method: mode === 'edit' ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
 
-    if (res.ok) {
-      router.push('/admin/dashboard')
-      router.refresh()
-    } else {
-      const data = await res.json()
+      if (res.ok) {
+        router.push('/admin/dashboard')
+        router.refresh()
+        return
+      }
+      const data = await res.json().catch(() => ({}))
       setError(data.error ?? 'Erro ao salvar produto.')
-      setSaving(false)
+    } catch {
+      setError('Falha de conexão ao salvar produto.')
     }
+    setSaving(false)
   }
 
   return (
@@ -266,7 +277,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
               <div>
                 <label className="label">Categoria *</label>
                 <select required value={form.category} onChange={e => set('category', e.target.value)} className="input">
-                  {CATEGORIES.map(c => (
+                  {[...new Set([...CATEGORIES, form.category])].map(c => (
                     <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
                   ))}
                 </select>

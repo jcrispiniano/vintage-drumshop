@@ -5,6 +5,9 @@ import { Heart } from 'lucide-react';
 import { formatPrice } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 import { motion } from 'framer-motion';
+import { brandLabel } from '@/lib/brands';
+
+export { brandLabel };
 
 interface Product {
   id: number;
@@ -25,20 +28,6 @@ interface ProductCardProps {
   typeLabel?: string;
   /** Show installment text instead of "NO PIX" */
   showInstallments?: boolean;
-}
-
-const BRAND_LABELS: Record<string, string> = {
-  istanbul: 'Istanbul Agop',
-  wincent: 'Wincent',
-  dynabeat: 'Dynabeat',
-  torelli: 'Torelli',
-  pinguim: 'Pinguim',
-  dw: 'DW',
-  rockkey: 'RockKey',
-};
-
-export function brandLabel(brand: string) {
-  return BRAND_LABELS[brand] ?? brand.charAt(0).toUpperCase() + brand.slice(1);
 }
 
 export default function ProductCard({ product, typeLabel, showInstallments = false }: ProductCardProps) {

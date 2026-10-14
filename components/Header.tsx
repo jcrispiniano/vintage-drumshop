@@ -3,7 +3,8 @@
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { products, formatPrice, contactInfo } from '@/lib/products';
+import { Product, formatPrice, contactInfo } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import Sidebar from '@/components/Sidebar';
@@ -12,12 +13,13 @@ import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Header() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState<typeof products>([]);
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
   const { cartItems, favorites } = useCart();
+  const products = useProductsStore(state => state.products);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);

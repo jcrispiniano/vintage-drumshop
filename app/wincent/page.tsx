@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { useProductsStore } from '@/lib/productsStore';
 import ProductCard from '@/components/ProductCard';
-import Link from 'next/link';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 
