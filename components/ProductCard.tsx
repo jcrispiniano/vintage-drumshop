@@ -1,10 +1,14 @@
 'use client';
 
+import SmartImage from '@/components/SmartImage';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
-import { formatPrice } from '@/lib/products';
+import { formatPrice, productImage } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 import { motion } from 'framer-motion';
+import { brandLabel } from '@/lib/brands';
+
+export { brandLabel };
 
 interface Product {
   id: number;
@@ -25,20 +29,6 @@ interface ProductCardProps {
   typeLabel?: string;
   /** Show installment text instead of "NO PIX" */
   showInstallments?: boolean;
-}
-
-const BRAND_LABELS: Record<string, string> = {
-  istanbul: 'Istanbul Agop',
-  wincent: 'Wincent',
-  dynabeat: 'Dynabeat',
-  torelli: 'Torelli',
-  pinguim: 'Pinguim',
-  dw: 'DW',
-  rockkey: 'RockKey',
-};
-
-export function brandLabel(brand: string) {
-  return BRAND_LABELS[brand] ?? brand.charAt(0).toUpperCase() + brand.slice(1);
 }
 
 export default function ProductCard({ product, typeLabel, showInstallments = false }: ProductCardProps) {
@@ -65,10 +55,12 @@ export default function ProductCard({ product, typeLabel, showInstallments = fal
         href={`/produto/${product.id}`}
         className="relative h-52 md:h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer"
       >
-        <img
-          src={product.image}
+        <SmartImage
+          src={productImage(product.image)}
           alt={product.name}
-          className={`w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
+          fill
+          sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+          className={`object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
         />
         {product.soldOut && (
           <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-fit bg-gray-900/85 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">

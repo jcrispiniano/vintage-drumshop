@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { SESSION_COOKIE, verifySessionToken } from '@/lib/adminSession'
 
-export function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   const isAdminDashboard = pathname.startsWith('/admin/dashboard')
@@ -9,8 +10,8 @@ export function middleware(req: NextRequest) {
     pathname.startsWith('/api/admin/') && !pathname.startsWith('/api/admin/auth')
 
   if (isAdminDashboard || isAdminApi) {
-    const session = req.cookies.get('admin_session')
-    if (session?.value !== 'authenticated') {
+    const authenticated = await verifySessionToken(req.cookies.get(SESSION_COOKIE)?.value)
+    if (!authenticated) {
       if (isAdminApi) {
         return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
       }

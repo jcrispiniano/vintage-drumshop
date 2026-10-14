@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
+import { toDbRow, writeProductRow } from '@/lib/productRow'
 
 export async function GET() {
   if (!isSupabaseConfigured()) {
@@ -21,30 +22,14 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
+  const { row, error: validationError } = toDbRow(body)
+  if (validationError) return NextResponse.json({ error: validationError }, { status: 400 })
 
-  const { data, error } = await supabaseAdmin
-    .from('products')
-    .insert([toDbRow(body)])
-    .select()
-    .single()
+  const { data, error } = await writeProductRow(
+    r => supabaseAdmin.from('products').insert([r]).select().single(),
+    row
+  )
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json(data, { status: 201 })
-}
-
-function toDbRow(body: Record<string, unknown>) {
-  return {
-    name: body.name,
-    category: body.category,
-    brand: body.brand,
-    price: Number(body.price),
-    old_price: body.oldPrice ? Number(body.oldPrice) : null,
-    image: body.image,
-    images: body.images ?? null,
-    badge: body.badge || null,
-    description: body.description,
-    featured: body.featured ?? false,
-    active: body.active ?? true,
-    sold_out: body.soldOut ?? false,
-  }
 }

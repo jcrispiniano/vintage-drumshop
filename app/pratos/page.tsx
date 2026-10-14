@@ -16,10 +16,6 @@ function getCymbalType(name: string): Exclude<CymbalType, 'todos'> {
   return 'effects';
 }
 
-function getBrandLabel(brand: string) {
-  if (brand === 'istanbul') return 'Istanbul Agop';
-  return brand.charAt(0).toUpperCase() + brand.slice(1);
-}
 
 const TYPE_LABELS: Record<CymbalType, string> = {
   todos: 'Todos',

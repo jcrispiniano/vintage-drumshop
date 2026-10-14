@@ -1,12 +1,5 @@
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  description: string;
-  brand: string;
-  category: string;
-}
+import type { Product } from '@/lib/products';
+import { brandLabel } from '@/lib/brands';
 
 interface ProductSchemaProps {
   product: Product;
@@ -18,15 +11,10 @@ export default function ProductSchema({ product }: ProductSchemaProps) {
     "@type": "Product",
     "name": product.name,
     "description": product.description,
-    "image": `https://vintagedrumshop.com.br${product.image}`,
+    "image": product.image.startsWith('http') ? product.image : `https://vintagedrumshop.com.br${product.image}`,
     "brand": {
       "@type": "Brand",
-      "name": product.brand === 'wincent' ? 'Wincent' : 
-             product.brand === 'istanbul' ? 'Istanbul Agop' :
-             product.brand === 'dynabeat' ? 'Dynabeat' :
-             product.brand === 'pinguim' ? 'Pinguim' :
-             product.brand === 'dw' ? 'DW' :
-             product.brand === 'rockkey' ? 'RockKey' : 'Vintage Drum Shop'
+      "name": brandLabel(product.brand)
     },
     "category": product.category,
     "offers": {
@@ -34,7 +22,7 @@ export default function ProductSchema({ product }: ProductSchemaProps) {
       "url": `https://vintagedrumshop.com.br/produto/${product.id}`,
       "priceCurrency": "BRL",
       "price": product.price.toFixed(2),
-      "availability": "https://schema.org/InStock",
+      "availability": product.soldOut ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
       "seller": {
         "@type": "Organization",
         "name": "Vintage Drum Shop"

@@ -1,12 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowLeft, Heart, ShoppingCart, Share2, X, ZoomIn, Menu } from 'lucide-react';
-import { Product, formatPrice, contactInfo } from '@/lib/products';
+import { Heart, ShoppingCart, Share2, X, ZoomIn } from 'lucide-react';
+import { Product, formatPrice, contactInfo, productImage } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
 import Header from '@/components/Header';
+import SmartImage from '@/components/SmartImage';
+import { brandLabel } from '@/lib/brands';
 
 export default function ProdutoClient({ product }: { product: Product }) {
   const { addToCart, toggleFavorite, favorites } = useCart();
@@ -22,19 +24,21 @@ export default function ProdutoClient({ product }: { product: Product }) {
       name: product.name,
       price: product.price,
       category: product.category,
-      image: product.image
+      image: product.image,
+      description: product.description
     });
   };
 
   const handleShare = () => {
     if (navigator.share) {
+      // AbortError quando o usuário cancela o compartilhamento
       navigator.share({
         title: product.name,
         text: product.description,
         url: window.location.href
-      });
+      }).catch(() => {});
     } else {
-      navigator.clipboard.writeText(window.location.href);
+      navigator.clipboard?.writeText(window.location.href).catch(() => {});
     }
   };
 
@@ -51,10 +55,13 @@ export default function ProdutoClient({ product }: { product: Product }) {
               className="relative aspect-square flex items-center justify-center cursor-pointer group"
               onClick={() => setIsImageExpanded(true)}
             >
-              <img 
-                src={currentImage}
+              <SmartImage
+                src={productImage(currentImage)}
                 alt={product.name}
-                className="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
+                fill
+                priority
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-contain transition-transform group-hover:scale-105"
               />
               {product.badge && (
                 <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
@@ -74,14 +81,16 @@ export default function ProdutoClient({ product }: { product: Product }) {
                 {/* Imagem principal */}
                 <button
                   onClick={() => setCurrentImage(product.image)}
-                  className={`aspect-square rounded-lg overflow-hidden border-2 transition ${
+                  className={`relative aspect-square rounded-lg overflow-hidden border-2 transition ${
                     currentImage === product.image ? 'border-accent' : 'border-gray-200 hover:border-accent'
                   }`}
                 >
-                  <img 
-                    src={product.image}
+                  <SmartImage
+                    src={productImage(product.image)}
                     alt={`${product.name} - principal`}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(min-width: 1024px) 12vw, 25vw"
+                    className="object-cover"
                   />
                 </button>
                 {/* Imagens adicionais */}
@@ -89,14 +98,16 @@ export default function ProdutoClient({ product }: { product: Product }) {
                   <button
                     key={index}
                     onClick={() => setCurrentImage(img)}
-                    className={`aspect-square rounded-lg overflow-hidden border-2 transition ${
+                    className={`relative aspect-square rounded-lg overflow-hidden border-2 transition ${
                       currentImage === img ? 'border-accent' : 'border-gray-200 hover:border-accent'
                     }`}
                   >
-                    <img 
+                    <SmartImage
                       src={img}
                       alt={`${product.name} - ${index + 1}`}
-                      className="w-full h-full object-cover"
+                      fill
+                      sizes="(min-width: 1024px) 12vw, 25vw"
+                      className="object-cover"
                     />
                   </button>
                 ))}
@@ -108,7 +119,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
           <div>
             <div className="bg-white rounded-2xl p-8 shadow-lg mb-6">
               <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
-                {product.brand === 'istanbul' ? 'Istanbul Agop' : product.brand === 'wincent' ? 'Wincent' : product.category}
+                {brandLabel(product.brand)}
               </p>
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
                 {product.name}
@@ -222,11 +233,15 @@ export default function ProdutoClient({ product }: { product: Product }) {
                     className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition group"
                   >
                     <div className="relative h-48 bg-white flex items-center justify-center">
-                      <img
-                        src={relatedProduct.image}
-                        alt={relatedProduct.name}
-                        className={`h-32 w-auto object-contain group-hover:scale-110 transition ${relatedProduct.soldOut ? 'opacity-40 grayscale' : ''}`}
-                      />
+                      <div className="relative h-32 w-full">
+                        <SmartImage
+                          src={relatedProduct.image}
+                          alt={relatedProduct.name}
+                          fill
+                          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                          className={`object-contain group-hover:scale-110 transition ${relatedProduct.soldOut ? 'opacity-40 grayscale' : ''}`}
+                        />
+                      </div>
                       {relatedProduct.soldOut && (
                         <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-fit bg-gray-900/85 text-white px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">
                           Esgotado
@@ -261,8 +276,9 @@ export default function ProdutoClient({ product }: { product: Product }) {
           >
             <X size={24} />
           </button>
+          {/* eslint-disable-next-line @next/next/no-img-element -- zoom usa a imagem original */}
           <img 
-            src={product.image}
+            src={productImage(currentImage)}
             alt={product.name}
             className="max-h-[90vh] max-w-[90vw] object-contain"
             onClick={(e) => e.stopPropagation()}

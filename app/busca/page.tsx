@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 
 import { Product } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
@@ -72,7 +71,7 @@ function BuscaContent() {
           </div>
           {query && (
             <p className="text-xl text-gray-300">
-              Buscando por: <span className="font-bold text-accent">"{query}"</span>
+              Buscando por: <span className="font-bold text-accent">“{query}”</span>
             </p>
           )}
         </div>
@@ -101,7 +100,7 @@ function BuscaContent() {
                   Produto não disponível
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Infelizmente não temos <strong>"{query}"</strong> disponível no momento ou ainda não trabalhamos com este produto.
+                  Infelizmente não temos <strong>“{query}”</strong> disponível no momento ou ainda não trabalhamos com este produto.
                 </p>
                 <p className="text-sm text-gray-500 mb-8">
                   Tente buscar por outras marcas ou produtos:
@@ -125,15 +124,15 @@ function BuscaContent() {
                 </h2>
                 {searchType === 'brand' ? (
                   <p className="text-gray-600">
-                    Mostrando produtos da marca <span className="font-bold text-accent">"{query}"</span>
+                    Mostrando produtos da marca <span className="font-bold text-accent">“{query}”</span>
                   </p>
                 ) : searchType === 'category' ? (
                   <p className="text-gray-600">
-                    Mostrando produtos da categoria <span className="font-bold text-accent">"{query}"</span>
+                    Mostrando produtos da categoria <span className="font-bold text-accent">“{query}”</span>
                   </p>
                 ) : (
                   <p className="text-gray-600">
-                    Mostrando resultados para "{query}"
+                    Mostrando resultados para “{query}”
                   </p>
                 )}
               </div>
