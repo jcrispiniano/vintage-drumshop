@@ -3,7 +3,7 @@
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Product, formatPrice, contactInfo } from '@/lib/products';
+import { Product, formatPrice, contactInfo, productImage } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
@@ -144,7 +144,7 @@ export default function Header() {
                       onClick={() => { setShowSearchResults(false); setSearchTerm(''); }}
                     >
                       <div className="w-16 h-16 flex-shrink-0 bg-lightBg rounded-lg overflow-hidden">
-                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                        <img src={productImage(product.image)} alt={product.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="font-semibold text-sm truncate">{product.name}</h4>

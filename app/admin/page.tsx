@@ -22,6 +22,9 @@ export default function AdminLoginPage() {
 
     if (res.ok) {
       router.push('/admin/dashboard')
+    } else if (res.status === 429) {
+      setError('Muitas tentativas. Aguarde alguns minutos e tente novamente.')
+      setLoading(false)
     } else {
       setError('Senha incorreta. Tente novamente.')
       setLoading(false)

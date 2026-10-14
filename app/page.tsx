@@ -1,6 +1,6 @@
 'use client';
 
-import { formatPrice, contactInfo } from '@/lib/products';
+import { formatPrice, contactInfo, productImage } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import Link from 'next/link';
 import { useState, useRef } from 'react';
@@ -374,7 +374,7 @@ export default function Home() {
                       </div>
                       <Link href={`/produto/${product.id}`} className="block relative h-44 md:h-56 bg-white overflow-hidden">
                         <img
-                          src={product.image}
+                          src={productImage(product.image)}
                           alt={product.name}
                           className="w-full h-full object-contain p-3 md:p-6 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
                         />

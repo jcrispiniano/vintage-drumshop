@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Heart, ShoppingCart, Share2, X, ZoomIn } from 'lucide-react';
-import { Product, formatPrice, contactInfo } from '@/lib/products';
+import { Product, formatPrice, contactInfo, productImage } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
@@ -55,7 +55,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
               onClick={() => setIsImageExpanded(true)}
             >
               <img 
-                src={currentImage}
+                src={productImage(currentImage)}
                 alt={product.name}
                 className="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
               />
@@ -265,7 +265,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
             <X size={24} />
           </button>
           <img 
-            src={currentImage}
+            src={productImage(currentImage)}
             alt={product.name}
             className="max-h-[90vh] max-w-[90vw] object-contain"
             onClick={(e) => e.stopPropagation()}

@@ -688,3 +688,7 @@ export const contactInfo = {
   address: 'São Paulo - SP',
   hours: 'Seg-Sex: 9h-18h | Sáb: 9h-13h'
 };
+// Produtos sem foto (ex.: fallback estático) usam o logo em vez de <img src=""> quebrado
+export function productImage(src?: string): string {
+  return src || '/logo.svg';
+}

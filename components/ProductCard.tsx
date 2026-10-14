@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
-import { formatPrice } from '@/lib/products';
+import { formatPrice, productImage } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 import { motion } from 'framer-motion';
 import { brandLabel } from '@/lib/brands';
@@ -55,7 +55,7 @@ export default function ProductCard({ product, typeLabel, showInstallments = fal
         className="relative h-52 md:h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer"
       >
         <img
-          src={product.image}
+          src={productImage(product.image)}
           alt={product.name}
           className={`w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
         />
