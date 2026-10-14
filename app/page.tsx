@@ -1,5 +1,6 @@
 'use client';
 
+import SmartImage from '@/components/SmartImage';
 import { formatPrice, contactInfo, productImage } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import Link from 'next/link';
@@ -156,18 +157,24 @@ export default function Home() {
               {/* Animated banner carousel - desktop */}
               <div className="relative h-64 md:h-96 hidden md:block overflow-hidden rounded-3xl shadow-2xl">
                 <AnimatePresence initial={false} custom={direction}>
-                  <motion.img
+                  <motion.div
                     key={currentSlide}
-                    src={bannerSlides[currentSlide].image}
-                    alt={bannerSlides[currentSlide].alt}
                     custom={direction}
                     variants={slideVariants}
                     initial="enter"
                     animate="center"
                     exit="exit"
                     transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
+                    className="absolute inset-0"
+                  >
+                    <SmartImage
+                      src={bannerSlides[currentSlide].image}
+                      alt={bannerSlides[currentSlide].alt}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover"
+                    />
+                  </motion.div>
                 </AnimatePresence>
 
                 {/* Arrow controls */}
@@ -321,15 +328,19 @@ export default function Home() {
                     OFICIAL
                   </span>
                   <div className="text-center flex flex-col h-full">
-                    <div className="h-48 flex items-center justify-center mx-auto mb-6">
-                      <motion.img
+                    <motion.div
+                      className="relative h-48 w-full mb-6"
+                      whileHover={{ scale: 1.08, rotate: -1 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
+                    >
+                      <SmartImage
                         src={brand.logo}
                         alt={brand.alt}
-                        className="max-h-full w-auto object-contain mix-blend-multiply"
-                        whileHover={{ scale: 1.08, rotate: -1 }}
-                        transition={{ type: 'spring', stiffness: 300 }}
+                        fill
+                        sizes="(min-width: 768px) 33vw, 100vw"
+                        className="object-contain mix-blend-multiply"
                       />
-                    </div>
+                    </motion.div>
                     <p className="text-accent font-bold text-sm tracking-wide uppercase mb-3">{brand.label}</p>
                     <p className="text-gray-600 mb-6 leading-relaxed">{brand.desc}</p>
                     <Link href={brand.href} className="bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition w-full block text-center mt-auto">
@@ -373,10 +384,12 @@ export default function Home() {
                         {discount}% OFF
                       </div>
                       <Link href={`/produto/${product.id}`} className="block relative h-44 md:h-56 bg-white overflow-hidden">
-                        <img
+                        <SmartImage
                           src={productImage(product.image)}
                           alt={product.name}
-                          className="w-full h-full object-contain p-3 md:p-6 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
+                          fill
+                          sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                          className="object-contain p-3 md:p-6 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply"
                         />
                       </Link>
                     </div>
@@ -451,9 +464,11 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <img
+              <SmartImage
                 src="/logo-small.png"
                 alt="Vintage Drum Shop — Percussão Profissional"
+                width={225}
+                height={400}
                 className="h-20 w-auto mb-4"
               />
               <p className="text-sm text-gray-300">

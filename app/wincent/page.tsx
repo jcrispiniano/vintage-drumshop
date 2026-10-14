@@ -1,4 +1,5 @@
 'use client';
+import SmartImage from '@/components/SmartImage';
 import { useState } from 'react';
 import { useProductsStore } from '@/lib/productsStore';
 import ProductCard from '@/components/ProductCard';
@@ -43,7 +44,7 @@ export default function WincentPage() {
       {/* Hero com imagem de fundo */}
       <section className="relative bg-gray-900 text-white py-16 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/banner/wincent-bg.jpg" alt="Wincent Background" className="w-full h-full object-cover" />
+          <SmartImage src="/banner/wincent-bg.jpg" alt="Wincent Background" fill priority sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">

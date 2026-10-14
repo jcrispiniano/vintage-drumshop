@@ -1,5 +1,6 @@
 'use client';
 
+import SmartImage from '@/components/SmartImage';
 import Link from 'next/link';
 import { Heart } from 'lucide-react';
 import { formatPrice, productImage } from '@/lib/products';
@@ -54,10 +55,12 @@ export default function ProductCard({ product, typeLabel, showInstallments = fal
         href={`/produto/${product.id}`}
         className="relative h-52 md:h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer"
       >
-        <img
+        <SmartImage
           src={productImage(product.image)}
           alt={product.name}
-          className={`w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
+          fill
+          sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+          className={`object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
         />
         {product.soldOut && (
           <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-fit bg-gray-900/85 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">

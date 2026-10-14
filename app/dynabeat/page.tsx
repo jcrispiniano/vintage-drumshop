@@ -1,4 +1,5 @@
 'use client';
+import SmartImage from '@/components/SmartImage';
 import { useProductsStore } from '@/lib/productsStore';
 import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
@@ -17,7 +18,7 @@ export default function DynabeatPage() {
       {/* Hero com imagem de fundo */}
       <section className="relative bg-gray-900 text-white py-16 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="/banner/dynabeat-bg.jpg" alt="Dynabeat Background" className="w-full h-full object-cover" />
+          <SmartImage src="/banner/dynabeat-bg.jpg" alt="Dynabeat Background" fill priority sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">

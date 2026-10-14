@@ -144,6 +144,7 @@ function ImageUploader({
       {/* Preview + URL manual */}
       {value && (
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+          {/* eslint-disable-next-line @next/next/no-img-element -- prévia de URL qualquer no admin */}
           <img
             src={value}
             alt="Preview"

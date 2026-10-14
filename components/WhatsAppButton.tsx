@@ -1,5 +1,6 @@
 'use client';
 
+import SmartImage from '@/components/SmartImage';
 import { contactInfo } from '@/lib/products';
 import { motion } from 'framer-motion';
 
@@ -25,8 +26,10 @@ export default function WhatsAppButton() {
           animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <img
+        <SmartImage
           src="/whatsapp-logo.png"
+          width={80}
+          height={80}
           alt="WhatsApp"
           className="w-16 h-16 md:w-20 md:h-20 relative z-10"
           style={{ filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.3))' }}

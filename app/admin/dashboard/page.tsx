@@ -187,6 +187,7 @@ export default function AdminDashboardPage() {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden">
+                              {/* eslint-disable-next-line @next/next/no-img-element -- prévia de URL qualquer no admin */}
                               <img
                                 src={product.image}
                                 alt={product.name}

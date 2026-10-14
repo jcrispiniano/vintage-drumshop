@@ -1,5 +1,6 @@
 'use client';
 
+import SmartImage from '@/components/SmartImage';
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
@@ -109,13 +110,16 @@ export default function Header() {
 
             {/* Logo */}
             <Link href="/" className="flex items-center flex-shrink-0">
-              <motion.img
-                src="/logo-small.png"
-                alt="Vintage Drum Shop"
-                className="h-10 md:h-20 w-auto cursor-pointer"
-                whileHover={{ scale: 1.03 }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              />
+              <motion.div whileHover={{ scale: 1.03 }} transition={{ type: 'spring', stiffness: 400 }}>
+                <SmartImage
+                  src="/logo-small.png"
+                  alt="Vintage Drum Shop"
+                  width={225}
+                  height={400}
+                  priority
+                  className="h-10 md:h-20 w-auto cursor-pointer"
+                />
+              </motion.div>
             </Link>
 
             {/* Busca - desktop e mobile */}
@@ -143,8 +147,8 @@ export default function Header() {
                       className="flex items-center gap-3 p-3 hover:bg-lightBg border-b border-gray-100 last:border-b-0 transition"
                       onClick={() => { setShowSearchResults(false); setSearchTerm(''); }}
                     >
-                      <div className="w-16 h-16 flex-shrink-0 bg-lightBg rounded-lg overflow-hidden">
-                        <img src={productImage(product.image)} alt={product.name} className="w-full h-full object-cover" />
+                      <div className="relative w-16 h-16 flex-shrink-0 bg-lightBg rounded-lg overflow-hidden">
+                        <SmartImage src={productImage(product.image)} alt={product.name} fill sizes="64px" className="object-cover" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="font-semibold text-sm truncate">{product.name}</h4>

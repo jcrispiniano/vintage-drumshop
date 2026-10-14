@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import { contactInfo } from '@/lib/products';
 import Header from '@/components/Header';
+import SmartImage from '@/components/SmartImage';
 
 export default function CarrinhoPage() {
   const { cartItems, updateQuantity, removeFromCart } = useCart();
@@ -93,25 +94,18 @@ export default function CarrinhoPage() {
                 <div key={item.id} className="bg-white rounded-xl shadow-md p-3 sm:p-6">
                   <div className="flex gap-3 sm:gap-6">
                     {/* Imagem */}
-                    <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <div className="relative w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
                       {item.image ? (
-                        <img
+                        <SmartImage
                           src={item.image}
                           alt={item.name}
-                          className="w-full h-full object-contain p-1 sm:p-2"
-                          onError={(e) => {
-                            const img = e.currentTarget;
-                            img.style.display = 'none';
-                            const fallback = img.nextElementSibling as HTMLElement | null;
-                            if (fallback) fallback.style.display = 'flex';
-                          }}
+                          fill
+                          sizes="96px"
+                          className="object-contain p-1 sm:p-2"
                         />
-                      ) : null}
-                      <div
-                        className={`${item.image ? 'hidden' : 'flex'} w-full h-full items-center justify-center`}
-                      >
+                      ) : (
                         <ShoppingCart className="text-gray-300" size={28} />
-                      </div>
+                      )}
                     </div>
 
                     {/* Detalhes */}
