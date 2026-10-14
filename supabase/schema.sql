@@ -25,6 +25,8 @@ create table if not exists public.products (
 -- Migração para bases existentes (idempotente)
 alter table public.products
   add column if not exists sold_out boolean not null default false;
+alter table public.products
+  add column if not exists images text[];
 
 -- Trigger para atualizar updated_at automaticamente
 create or replace function public.set_updated_at()
@@ -55,6 +57,9 @@ drop policy if exists "Qualquer pessoa pode ler produtos ativos" on public.produ
 create policy "Qualquer pessoa pode ler produtos ativos"
   on public.products for select
   using (active = true);
+
+-- Recarrega o cache de schema da API (PostgREST) após mudanças de colunas
+notify pgrst, 'reload schema';
 
 -- ============================================================
 -- Variáveis de ambiente necessárias no Vercel

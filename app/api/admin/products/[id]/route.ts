@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
-import { toDbRow } from '@/lib/productRow'
+import { toDbRow, writeProductRow } from '@/lib/productRow'
 
 type Params = { params: Promise<{ id: string }> }
 
@@ -28,12 +28,10 @@ export async function PUT(req: Request, { params }: Params) {
   const { row, error: validationError } = toDbRow(body, true)
   if (validationError) return NextResponse.json({ error: validationError }, { status: 400 })
 
-  const { data, error } = await supabaseAdmin
-    .from('products')
-    .update(row)
-    .eq('id', id)
-    .select()
-    .single()
+  const { data, error } = await writeProductRow(
+    r => supabaseAdmin.from('products').update(r).eq('id', id).select().single(),
+    row
+  )
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json(data)

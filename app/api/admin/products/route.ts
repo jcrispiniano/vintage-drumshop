@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
-import { toDbRow } from '@/lib/productRow'
+import { toDbRow, writeProductRow } from '@/lib/productRow'
 
 export async function GET() {
   if (!isSupabaseConfigured()) {
@@ -25,11 +25,10 @@ export async function POST(req: Request) {
   const { row, error: validationError } = toDbRow(body)
   if (validationError) return NextResponse.json({ error: validationError }, { status: 400 })
 
-  const { data, error } = await supabaseAdmin
-    .from('products')
-    .insert([row])
-    .select()
-    .single()
+  const { data, error } = await writeProductRow(
+    r => supabaseAdmin.from('products').insert([r]).select().single(),
+    row
+  )
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   return NextResponse.json(data, { status: 201 })
