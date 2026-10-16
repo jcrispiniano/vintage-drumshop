@@ -203,7 +203,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
               </li>
               <li className="flex items-center gap-3">
                 <Truck size={18} className="text-primary" aria-hidden />
-                <span><strong className="text-ink">Frete grátis</strong> em compras acima de R$ {paymentTerms.freeShippingFrom}</span>
+                <span><strong className="text-ink">Enviamos para todo o Brasil</strong> · frete calculado pelo seu CEP</span>
               </li>
             </ul>
           </div>

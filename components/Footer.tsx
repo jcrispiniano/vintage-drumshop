@@ -16,7 +16,7 @@ export default function Footer() {
         <ul className="container mx-auto grid grid-cols-1 gap-3 px-4 py-5 text-sm sm:grid-cols-3">
           <li><strong className="text-white">{Math.round(paymentTerms.pixDiscount * 100)}% de desconto</strong> no Pix ou boleto</li>
           <li><strong className="text-white">Até {paymentTerms.maxInstallments}x sem juros</strong> no cartão</li>
-          <li><strong className="text-white">Frete grátis</strong> acima de R$ {paymentTerms.freeShippingFrom}</li>
+          <li><strong className="text-white">Enviamos para todo o Brasil</strong> · frete pelo CEP</li>
         </ul>
       </div>
 

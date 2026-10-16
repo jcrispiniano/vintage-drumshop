@@ -31,7 +31,7 @@ export const quoteCompany = {
 export const DEFAULT_PAYMENT = 'A combinar'
 
 export const DEFAULT_NOTES =
-  'O valor final terá um desconto de 5% no Pix ou até 6x sem juros no cartão; a partir de 7x tem o acréscimo da taxa. As duas condições contêm frete grátis!'
+  'O valor final terá um desconto de 5% no Pix ou até 6x sem juros no cartão; a partir de 7x tem o acréscimo da taxa.'
 
 export function emptyItem(): QuoteItem {
   return { description: '', price: 0, payment: DEFAULT_PAYMENT, qty: 1, gift: false }

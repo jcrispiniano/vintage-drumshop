@@ -682,8 +682,7 @@ export function formatPrice(price: number): string {
 // Condições comerciais exibidas na loja (benefícios, cards e página de produto)
 export const paymentTerms = {
   pixDiscount: 0.05,
-  maxInstallments: 3,
-  freeShippingFrom: 199,
+  maxInstallments: 6,
 };
 
 export function pixPrice(price: number): number {

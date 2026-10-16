@@ -136,7 +136,7 @@ export default function Header() {
       <div className="border-b border-line bg-cream text-ink">
         <p className="container mx-auto flex items-center justify-center gap-x-2 px-4 py-2 text-center text-xs tracking-wide md:text-[13px]">
           Pague no Pix e ganhe <span className="coupon text-primary">{pixOff}% OFF</span>
-          <span className="hidden sm:inline">· até {paymentTerms.maxInstallments}x sem juros · frete grátis acima de R$ {paymentTerms.freeShippingFrom}</span>
+          <span className="hidden sm:inline">· ou em até {paymentTerms.maxInstallments}x sem juros no cartão</span>
         </p>
       </div>
 

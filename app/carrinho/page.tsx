@@ -9,8 +9,6 @@ import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import SmartImage from '@/components/SmartImage';
 
-const SHIPPING_FEE = 29.9;
-
 const steps = [
   { title: 'Envie o pedido', text: 'O WhatsApp abre com a lista do pedido pronta.' },
   { title: 'Confirmamos tudo', text: 'Conferimos estoque e frete para o seu CEP.' },
@@ -42,10 +40,9 @@ export default function CarrinhoPage() {
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const freeShipping = subtotal >= paymentTerms.freeShippingFrom;
-  const shipping = freeShipping ? 0 : SHIPPING_FEE;
-  const total = subtotal + shipping;
-  const totalPix = pixPrice(subtotal) + shipping;
+  // Frete é cotado pelo CEP no WhatsApp, então o total é só dos produtos
+  const total = subtotal;
+  const totalPix = pixPrice(subtotal);
   const savings = total - totalPix;
   const installments = paymentTerms.maxInstallments;
 
@@ -60,7 +57,7 @@ export default function CarrinhoPage() {
     message += '━━━━━━━━━━━━━━━\n';
     message += `*Total no Pix:* ${formatPrice(totalPix)}\n`;
     message += `*Ou no cartão:* ${formatPrice(total)} em até ${installments}x de ${formatPrice(total / installments)}\n`;
-    message += `*Frete:* ${freeShipping ? 'grátis' : `${formatPrice(shipping)} (a confirmar pelo CEP)`}\n\n`;
+    message += '*Frete:* a calcular pelo CEP\n\n';
     message += 'Gostaria de finalizar este pedido! Meu CEP é: ';
 
     window.open(`${contactInfo.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
@@ -166,7 +163,7 @@ export default function CarrinhoPage() {
                   </div>
                   <div className="flex justify-between gap-2 text-ink-soft">
                     <dt>Frete</dt>
-                    <dd className="font-semibold text-ink">{freeShipping ? 'Grátis' : `${formatPrice(shipping)}*`}</dd>
+                    <dd className="font-semibold text-ink">A calcular</dd>
                   </div>
                   {savings > 0 && (
                     <div className="flex justify-between gap-2 text-ink-soft">
@@ -175,12 +172,6 @@ export default function CarrinhoPage() {
                     </div>
                   )}
                 </dl>
-                {!freeShipping && (
-                  <p className="mt-3 rounded-md bg-cream p-2.5 text-xs text-ink">
-                    Faltam <strong>{formatPrice(paymentTerms.freeShippingFrom - subtotal)}</strong> para o frete grátis.
-                    <span className="block text-ink-soft">*Valor estimado; confirmamos pelo seu CEP.</span>
-                  </p>
-                )}
 
                 <div className="mt-5 border-t border-line pt-4 tabular-nums">
                   <p className="flex items-baseline justify-between gap-2">
@@ -190,6 +181,7 @@ export default function CarrinhoPage() {
                   <p className="mt-1 text-right text-xs text-ink-soft">
                     ou {formatPrice(total)} em até {installments}x de {formatPrice(total / installments)} sem juros
                   </p>
+                  <p className="mt-1 text-right text-xs text-ink-soft">+ frete, calculado pelo seu CEP</p>
                 </div>
 
                 <button
