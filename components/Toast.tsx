@@ -20,13 +20,13 @@ export default function Toast({ message, onClose, duration = 3500 }: ToastProps)
   }, [duration, onClose]);
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-[200] sm:left-6 sm:right-auto sm:w-[360px]" role="status">
+    <div className="fixed left-4 right-4 top-[72px] z-[200] sm:bottom-6 sm:left-6 sm:right-auto sm:top-auto sm:w-[360px]" role="status">
       <motion.div
-        initial={{ y: 24, opacity: 0 }}
+        initial={{ y: -16, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 24, opacity: 0 }}
+        exit={{ y: -16, opacity: 0 }}
         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="overflow-hidden rounded-xl bg-ink text-white shadow-[0_16px_40px_-12px_rgba(0,0,0,0.5)]"
+        className="overflow-hidden rounded-xl bg-ink text-white shadow-[0_16px_40px_-12px_rgba(0,0,0,0.5)] ring-1 ring-[#E9B872]/50"
       >
         <div className="flex items-center gap-3 p-4">
           <CheckCircle className="flex-shrink-0 text-[#E9B872]" size={22} aria-hidden />

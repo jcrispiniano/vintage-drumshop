@@ -98,18 +98,10 @@ export default function ProdutoClient({ product }: { product: Product }) {
 
             <button
               type="button"
-              className="group relative aspect-square w-full flex-1 cursor-zoom-in overflow-hidden rounded-xl bg-cream"
+              className="group relative aspect-square w-full flex-1 cursor-zoom-in overflow-hidden rounded-xl bg-white ring-1 ring-line"
               onClick={() => setIsImageExpanded(true)}
               aria-label="Ampliar imagem"
             >
-              <SmartImage
-                src={productImage(currentImage)}
-                alt=""
-                fill
-                sizes="10vw"
-                className="scale-110 object-cover opacity-60 blur-2xl"
-                aria-hidden
-              />
               <SmartImage
                 src={productImage(currentImage)}
                 alt={product.name}

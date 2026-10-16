@@ -31,20 +31,25 @@ export default function PriceBlock({ price, oldPrice, size = 'card' }: PriceBloc
         </data>
         <span className={`font-semibold uppercase text-ink ${isPage ? 'text-sm' : 'text-[11px]'}`}>no Pix</span>
       </p>
-      <p className={`text-ink-soft mt-1 ${isPage ? 'text-sm' : 'text-xs leading-snug'}`}>
-        <data value={price} className="font-semibold text-ink">{formatPrice(price)}</data>
-        {' '}em até{' '}
-        <span className="font-semibold text-ink">
-          {installments}x de {formatPrice(price / installments)}
-        </span>
-        {isPage ? (
+      {isPage ? (
+        <p className="mt-1 text-sm text-ink-soft">
+          <data value={price} className="font-semibold text-ink">{formatPrice(price)}</data>
+          {' '}em até{' '}
+          <span className="font-semibold text-ink">
+            {installments}x de {formatPrice(price / installments)}
+          </span>
           <span className="ml-2 align-middle inline-block rounded bg-cream px-1.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-ink">
             sem juros
           </span>
-        ) : (
-          ' sem juros'
-        )}
-      </p>
+        </p>
+      ) : (
+        // No card, só a parcela; o preço cheio do cartão fica na página do produto
+        <p className="mt-1 text-xs leading-snug text-ink-soft">
+          ou <span className="whitespace-nowrap font-semibold text-ink">{installments}x de {formatPrice(price / installments)}</span>{' '}
+          <span className="whitespace-nowrap">sem juros</span>
+          <data value={price} className="sr-only"> ({formatPrice(price)} no cartão)</data>
+        </p>
+      )}
     </div>
   );
 }

@@ -121,7 +121,7 @@ function Hero() {
       </div>
 
       <div className="flex flex-col justify-center border-b-[3px] border-brass px-5 py-10 text-white md:order-1 md:border-b-0 md:border-r-[3px] md:px-10 lg:px-16">
-        <h1 className="text-[2.5rem] font-semibold uppercase leading-[1.02] lg:text-6xl">
+        <h1 className="text-[2.5rem] font-semibold uppercase leading-[1.12] lg:text-6xl">
           <span className="block">Pratos turcos feitos à mão.</span>
           <span className="block text-[#E9B872]">Baquetas suecas.</span>
           <span className="block">Em São Paulo.</span>
@@ -296,14 +296,16 @@ export default function Home() {
             <p className="mt-5 max-w-md text-[#E9D9C2]">
               Cada prato tem um timbre. Comece pelo som que você procura e, se ficar entre dois, pergunte pra gente pelo WhatsApp.
             </p>
-            <ul className="mt-8 flex flex-wrap gap-2">
+            <ul className="mt-8 max-w-md divide-y divide-white/15 border-y border-white/15">
               {TIMBRES.map(t => (
                 <li key={t.id}>
                   <Link
                     href={`/pratos?timbre=${t.id}`}
-                    className="inline-flex h-11 items-center rounded-full px-5 text-sm font-bold uppercase tracking-wide ring-1 ring-white/40 transition hover:bg-white hover:text-ink"
+                    className="group flex min-h-12 items-center gap-4 py-3 transition hover:text-[#E9B872]"
                   >
-                    {t.label}
+                    <span className="w-24 flex-shrink-0 font-display text-lg font-semibold uppercase tracking-wide">{t.label}</span>
+                    <span className="flex-1 text-sm text-[#E9D9C2]">{t.hint}</span>
+                    <ArrowRight size={18} className="flex-shrink-0 text-[#E9B872] transition-transform group-hover:translate-x-1" aria-hidden />
                   </Link>
                 </li>
               ))}
@@ -312,7 +314,7 @@ export default function Home() {
               href={`${contactInfo.whatsapp}?text=${encodeURIComponent('Olá! Estou em dúvida sobre o som de um prato.')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-[#E9B872] hover:underline"
+              className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#E9B872] hover:underline"
             >
               <MessageCircle size={18} aria-hidden /> Tirar dúvida sobre um prato
             </a>

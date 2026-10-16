@@ -2,7 +2,7 @@
 import SmartImage from '@/components/SmartImage';
 import { useState } from 'react';
 import { useProductsStore } from '@/lib/productsStore';
-import ProductCard from '@/components/ProductCard';
+import CatalogGrid from '@/components/CatalogGrid';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 
@@ -42,7 +42,7 @@ export default function WincentPage() {
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero com imagem de fundo */}
-      <section className="relative overflow-hidden border-b-[3px] border-brass bg-ink py-24 text-white md:py-36">
+      <section className="relative overflow-hidden border-b-[3px] border-brass bg-ink py-14 text-white md:py-20">
         <div className="absolute inset-0">
           <SmartImage src="/fotos/hero-wincent.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-[rgba(28,17,10,0.5)]"></div>
@@ -54,12 +54,12 @@ export default function WincentPage() {
       </section>
 
       {/* Filtros por tipo */}
-      <div className="bg-white border-b border-gray-200 sticky top-[108px] md:top-[124px] z-40">
+      <div className="bg-white border-b border-line sticky top-[108px] md:top-[124px] z-40">
         <div className="container mx-auto px-4">
-          <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide">
+          <div className="flex gap-2 py-2.5 overflow-x-auto scrollbar-hide">
             <button
               onClick={() => setActiveType('todos')}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${activeType === 'todos' ? 'bg-ink text-white' : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'}`}
+              className={`flex h-11 flex-shrink-0 items-center px-4 rounded-full text-sm font-semibold transition ${activeType === 'todos' ? 'bg-ink text-white' : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'}`}
             >
               Todos ({allProducts.length})
             </button>
@@ -70,7 +70,7 @@ export default function WincentPage() {
                 <button
                   key={type}
                   onClick={() => setActiveType(type)}
-                  className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${activeType === type ? 'bg-ink text-white' : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'}`}
+                  className={`flex h-11 flex-shrink-0 items-center px-4 rounded-full text-sm font-semibold transition ${activeType === type ? 'bg-ink text-white' : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'}`}
                 >
                   {TYPE_LABELS[type]} ({count})
                 </button>
@@ -81,16 +81,13 @@ export default function WincentPage() {
       </div>
 
       {/* Produtos */}
-      <section className="py-10 md:py-12">
-        <div className="container mx-auto px-4">
-          <h2 className="mb-6 font-sans text-sm font-normal tracking-normal text-ink-soft">{filtered.length} {filtered.length === 1 ? 'produto' : 'produtos'} encontrados</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {filtered.map(product => (
-              <ProductCard key={product.id} product={product} typeLabel={TYPE_LABELS[getStickType(product.name)]} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <CatalogGrid
+        products={filtered}
+        categoryName="Baquetas Wincent"
+        totalInCategory={allProducts.length}
+        onClearFilters={() => setActiveType('todos')}
+        typeLabel={p => TYPE_LABELS[getStickType(p.name)]}
+      />
 
       {/* CTA */}
       <section className="py-20 bg-gradient-to-r from-red-900 via-red-800 to-red-900 text-white">

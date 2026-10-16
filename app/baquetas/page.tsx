@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useProductsStore } from '@/lib/productsStore';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
-import ProductCard from '@/components/ProductCard';
+import CatalogGrid from '@/components/CatalogGrid';
 
 type StickType = 'todos' | 'baquetas' | 'vassourinhas' | 'rods' | 'mallets';
 type BrandFilter = 'todas' | 'wincent' | 'dynabeat';
@@ -59,7 +59,7 @@ export default function BaquetasPage() {
       {/* Hero */}
       <section className="category-hero category-hero--photo" style={{ '--hero-img': "url('/fotos/banner-baquetas.jpg')" } as React.CSSProperties}>
         <div className="container mx-auto px-4 text-center">
-          <h1 className="category-hero__title">Baquetas Profissionais</h1>
+          <h1 className="category-hero__title">Baquetas</h1>
           <p className="category-hero__lead">
             Wincent · Dynabeat — qualidade e precisão para cada estilo
           </p>
@@ -67,7 +67,7 @@ export default function BaquetasPage() {
       </section>
 
       {/* Filtros — sticky */}
-      <div className="bg-white border-b border-gray-200 sticky top-[108px] md:top-[124px] z-40">
+      <div className="bg-white border-b border-line sticky top-[108px] md:top-[124px] z-40">
         <div className="container mx-auto px-4 py-3 space-y-2">
           {/* Linha 1: Tipo */}
           <div className="flex gap-2 overflow-x-auto scrollbar-hide">
@@ -94,13 +94,13 @@ export default function BaquetasPage() {
 
           {/* Linha 2: Marca — só aparece se há mais de uma marca */}
           {availableBrands.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-              <span className="flex-shrink-0 text-xs text-gray-400 self-center pr-1">Marca:</span>
+            <div className="flex items-center gap-2 overflow-x-auto border-t border-line py-2.5 scrollbar-hide" role="group" aria-label="Filtrar por marca">
+              <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Marca</span>
               <button
                 onClick={() => setActiveBrand('todas')}
-                className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold transition ${
+                className={`flex h-11 flex-shrink-0 items-center px-4 rounded-full text-sm font-semibold transition ${
                   activeBrand === 'todas'
-                    ? 'bg-gray-800 text-white'
+                    ? 'bg-ink text-white'
                     : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
                 }`}
               >
@@ -110,9 +110,9 @@ export default function BaquetasPage() {
                 <button
                   key={brand}
                   onClick={() => setActiveBrand(brand)}
-                  className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold transition ${
+                  className={`flex h-11 flex-shrink-0 items-center px-4 rounded-full text-sm font-semibold transition ${
                     activeBrand === brand
-                      ? 'bg-gray-800 text-white'
+                      ? 'bg-ink text-white'
                       : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
                   }`}
                 >
@@ -125,30 +125,13 @@ export default function BaquetasPage() {
       </div>
 
       {/* Grid de produtos */}
-      <section className="py-10 md:py-12">
-        <div className="container mx-auto px-4">
-          {filtered.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-gray-500 text-lg">Nenhum produto com esses filtros no momento.</p>
-            </div>
-          ) : (
-            <>
-              <h2 className="mb-6 font-sans text-sm font-normal tracking-normal text-ink-soft">
-                {filtered.length} {filtered.length === 1 ? 'produto' : 'produtos'} encontrados
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-                {filtered.map(product => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    typeLabel={TYPE_LABELS[getStickType(product.name)]}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      </section>
+      <CatalogGrid
+        products={filtered}
+        categoryName="Baquetas"
+        totalInCategory={allBaquetas.length}
+        onClearFilters={() => { setActiveType('todos'); setActiveBrand('todas'); }}
+        typeLabel={p => TYPE_LABELS[getStickType(p.name)]}
+      />
     </div>
   );
 }

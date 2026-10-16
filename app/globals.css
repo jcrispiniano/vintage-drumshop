@@ -131,12 +131,12 @@
     linear-gradient(0deg, rgba(28, 17, 10, 0.78), rgba(28, 17, 10, 0.45)),
     var(--hero-img) center 40% / cover no-repeat,
     var(--color-ink);
-  padding: 6rem 0 5rem;
+  padding: 3.5rem 0 3rem;
 }
 
 @media (min-width: 768px) {
   .category-hero--photo {
-    padding: 9rem 0 8rem;
+    padding: 5rem 0 4.5rem;
   }
 }
 

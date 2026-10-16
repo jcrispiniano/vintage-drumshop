@@ -1,7 +1,6 @@
 'use client';
 import { useProductsStore } from '@/lib/productsStore';
-import ProductCard from '@/components/ProductCard';
-import Link from 'next/link';
+import CatalogGrid from '@/components/CatalogGrid';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 
@@ -24,26 +23,11 @@ export default function VassourinhasPage() {
         </div>
       </section>
 
-      <section className="py-10 md:py-12">
-        <div className="container mx-auto px-4">
-          {vassouras.length === 0 ? (
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">Sem disponibilidade no momento</h2>
-              <p className="text-gray-600 mb-8">Em breve teremos novidades!</p>
-              <Link href="/baquetas" className="inline-block bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition">Ver todas as Baquetas</Link>
-            </div>
-          ) : (
-            <>
-              <h2 className="mb-6 font-sans text-sm font-normal tracking-normal text-ink-soft">{vassouras.length} {vassouras.length === 1 ? 'produto' : 'produtos'} encontrados</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-                {vassouras.map(product => (
-                  <ProductCard key={product.id} product={product} typeLabel="Vassourinha" />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      </section>
+      <CatalogGrid
+        products={vassouras}
+        categoryName="Vassourinhas"
+        typeLabel={() => 'Vassourinha'}
+      />
     </div>
   );
 }

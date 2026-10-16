@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import { Product, formatPrice, contactInfo, productImage, paymentTerms, pixPrice } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
+import { searchScore } from '@/lib/productText';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import Sidebar from '@/components/Sidebar';
@@ -45,14 +46,13 @@ function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {
       return;
     }
 
-    const filtered = products.filter(product =>
-      product.name.toLowerCase().includes(term.toLowerCase()) ||
-      product.category.toLowerCase().includes(term.toLowerCase()) ||
-      product.brand?.toLowerCase().includes(term.toLowerCase()) ||
-      product.description.toLowerCase().includes(term.toLowerCase())
-    );
+    const ranked = products
+      .map(product => ({ product, score: searchScore(product, term) }))
+      .filter(r => r.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(r => r.product);
 
-    setSearchResults(filtered.slice(0, 8));
+    setSearchResults(ranked.slice(0, 8));
     setShowSearchResults(true);
   };
 

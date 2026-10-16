@@ -1,7 +1,7 @@
 'use client';
 import SmartImage from '@/components/SmartImage';
 import { useProductsStore } from '@/lib/productsStore';
-import ProductCard from '@/components/ProductCard';
+import CatalogGrid from '@/components/CatalogGrid';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
@@ -16,7 +16,7 @@ export default function DynabeatPage() {
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero com imagem de fundo */}
-      <section className="relative overflow-hidden border-b-[3px] border-brass bg-ink py-24 text-white md:py-36">
+      <section className="relative overflow-hidden border-b-[3px] border-brass bg-ink py-14 text-white md:py-20">
         <div className="absolute inset-0">
           <SmartImage src="/fotos/banner-dynabeat.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-[rgba(28,17,10,0.5)]"></div>
@@ -28,24 +28,11 @@ export default function DynabeatPage() {
       </section>
 
       {/* Produtos */}
-      <section className="py-10 md:py-12">
-        <div className="container mx-auto px-4">
-          {dynabeatProducts.length === 0 ? (
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">Sem disponibilidade no momento</h2>
-              <p className="text-gray-600 mb-8">Estamos atualizando nosso estoque. Em breve teremos novidades!</p>
-              <Link href="/" className="inline-block bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition">Voltar para Home</Link>
-            </div>
-          ) : (
-            <>
-              <h2 className="mb-6 font-sans text-sm font-normal tracking-normal text-ink-soft">{dynabeatProducts.length} {dynabeatProducts.length === 1 ? 'produto' : 'produtos'} encontrados</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-                {dynabeatProducts.map(product => <ProductCard key={product.id} product={product} typeLabel="Baqueta" />)}
-              </div>
-            </>
-          )}
-        </div>
-      </section>
+      <CatalogGrid
+        products={dynabeatProducts}
+        categoryName="Baquetas Dynabeat"
+        typeLabel={() => 'Baqueta'}
+      />
 
       {/* CTA */}
       <section className="py-20 bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900 text-white">

@@ -29,11 +29,13 @@ interface ProductCardProps {
   product: Product;
   /** Secondary label shown after brand (tipo, série, etc.) */
   typeLabel?: string;
+  /** Etiquetas extras ao lado do tamanho (ex.: timbre do prato) */
+  tags?: string[];
   /** Mantido por compatibilidade: o parcelamento agora aparece sempre. */
   showInstallments?: boolean;
 }
 
-export default function ProductCard({ product, typeLabel }: ProductCardProps) {
+export default function ProductCard({ product, typeLabel, tags = [] }: ProductCardProps) {
   const { addToCart, toggleFavorite, favorites } = useCart();
   const isFavorite = favorites.includes(product.id);
   const off = discountPercent(product.price, product.oldPrice);
@@ -106,9 +108,12 @@ export default function ProductCard({ product, typeLabel }: ProductCardProps) {
             {title}
           </Link>
         </h3>
-        {(size || product.audio) && (
+        {(size || product.audio || tags.length > 0) && (
           <p className="mb-3 -mt-0.5 flex flex-wrap gap-1.5">
             {size && <span className="inline-block rounded bg-paper px-1.5 py-0.5 text-xs font-bold tabular-nums text-ink ring-1 ring-line">{size}</span>}
+            {tags.map(tag => (
+              <span key={tag} className="inline-block rounded bg-cream px-1.5 py-0.5 text-xs font-semibold text-ink">{tag}</span>
+            ))}
             {product.audio && (
               <span className="inline-flex items-center gap-1 rounded bg-cream px-1.5 py-0.5 text-xs font-bold text-ink">
                 <Headphones size={12} aria-hidden /> Com áudio
@@ -134,7 +139,7 @@ export default function ProductCard({ product, typeLabel }: ProductCardProps) {
             type="button"
             onClick={handleAddToCart}
             aria-label={`Comprar ${product.name}`}
-            className="flex h-11 w-full items-center justify-center gap-2 rounded-md bg-accent text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary active:scale-[0.98]"
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-md bg-white text-sm font-bold uppercase tracking-wide text-accent ring-1 ring-accent/60 transition-colors hover:bg-accent hover:text-white active:scale-[0.98]"
           >
             <ShoppingCart size={16} aria-hidden />
             Comprar
