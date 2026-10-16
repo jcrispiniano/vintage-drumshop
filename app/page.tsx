@@ -134,7 +134,7 @@ function Hero() {
           <span className="block">Em São Paulo.</span>
         </h1>
         <p className="mt-5 max-w-md text-base leading-relaxed text-[#F0E3D0] lg:text-lg">
-          Revenda oficial Wincent, Istanbul Agop e Torelli. Você escolhe aqui e fecha o pedido direto com a loja pelo WhatsApp.
+          Baterias, pratos e acessórios escolhidos por quem toca. Monte seu pedido aqui e feche direto com a loja pelo WhatsApp.
         </p>
         {/* Condições em destaque logo na primeira dobra */}
         <ul className="mt-6 hidden flex-wrap gap-2 md:flex" aria-label="Condições de pagamento">

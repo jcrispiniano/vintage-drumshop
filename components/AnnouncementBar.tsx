@@ -23,11 +23,6 @@ const messages: { key: string; text: string; node: ReactNode }[] = [
     text: 'Enviamos para todo o Brasil',
     node: <><strong className="font-bold">Enviamos para todo o Brasil</strong> · frete pelo CEP</>,
   },
-  {
-    key: 'revenda',
-    text: 'Revenda oficial Wincent, Istanbul Agop e Torelli',
-    node: <><strong className="font-bold">Revenda oficial</strong> Wincent, Istanbul Agop e Torelli</>,
-  },
 ];
 
 /**
