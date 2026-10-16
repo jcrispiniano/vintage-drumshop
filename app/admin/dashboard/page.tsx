@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Plus, Edit, Trash2, LogOut, Package, Eye, EyeOff, Search } from 'lucide-react'
+import { Plus, Edit, Trash2, Package, Eye, EyeOff, Search } from 'lucide-react'
+import AdminHeader from './_components/AdminHeader'
 
 interface DbProduct {
   id: number
@@ -72,10 +73,6 @@ export default function AdminDashboardPage() {
     }
   }
 
-  async function handleLogout() {
-    await fetch('/api/admin/auth', { method: 'DELETE' })
-    router.push('/admin')
-  }
 
   const filtered = products.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -85,32 +82,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-gray-900 text-white px-6 py-4 flex items-center justify-between shadow-lg">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">🥁</span>
-          <div>
-            <h1 className="font-bold text-lg leading-none">Vintage Drum Shop</h1>
-            <p className="text-gray-400 text-xs">Painel Admin</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            target="_blank"
-            className="text-gray-400 hover:text-white text-sm transition hidden sm:block"
-          >
-            Ver site →
-          </Link>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 text-gray-400 hover:text-white text-sm transition"
-          >
-            <LogOut size={16} />
-            Sair
-          </button>
-        </div>
-      </header>
+      <AdminHeader />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Stats bar */}
