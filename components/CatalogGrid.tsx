@@ -7,9 +7,9 @@ import ProductCard from '@/components/ProductCard';
 import { Product, contactInfo } from '@/lib/products';
 import { productSizeValue } from '@/lib/productText';
 
-type SortKey = 'relevancia' | 'menor-preco' | 'maior-preco' | 'tamanho';
+export type SortKey = 'relevancia' | 'menor-preco' | 'maior-preco' | 'tamanho';
 
-const SORTS: { id: SortKey; label: string }[] = [
+export const SORTS: { id: SortKey; label: string }[] = [
   { id: 'relevancia', label: 'Destaques' },
   { id: 'menor-preco', label: 'Menor preço' },
   { id: 'maior-preco', label: 'Maior preço' },
@@ -36,6 +36,13 @@ interface CatalogGridProps {
   tags?: (p: Product) => string[];
   /** Palavra usada na contagem: "prato", "produto"... */
   noun?: [singular: string, plural: string];
+  /** Opcional: a página controla ordem e tamanho (ex.: para guardar na URL) */
+  sort?: SortKey;
+  onSortChange?: (sort: SortKey) => void;
+  size?: number | null;
+  onSizeChange?: (size: number | null) => void;
+  /** false quando a página desenha o filtro de tamanho no próprio painel */
+  showSizeFilter?: boolean;
 }
 
 /** Grade de produtos com ordenação, filtro de tamanho e "ver mais". */
@@ -47,10 +54,19 @@ export default function CatalogGrid({
   typeLabel,
   tags,
   noun = ['produto', 'produtos'],
+  sort: sortProp,
+  onSortChange,
+  size: sizeProp,
+  onSizeChange,
+  showSizeFilter = true,
 }: CatalogGridProps) {
-  const [sort, setSort] = useState<SortKey>('relevancia');
-  const [size, setSize] = useState<number | null>(null);
+  const [sortState, setSortState] = useState<SortKey>('relevancia');
+  const [sizeState, setSizeState] = useState<number | null>(null);
   const [limit, setLimit] = useState(PAGE_SIZE);
+  const sort = sortProp ?? sortState;
+  const size = sizeProp !== undefined ? sizeProp : sizeState;
+  const setSort = (v: SortKey) => { setSortState(v); onSortChange?.(v); };
+  const setSize = (v: number | null) => { setSizeState(v); onSizeChange?.(v); };
 
   const sizes = useMemo(() => {
     const values = products.map(p => productSizeValue(p.name)).filter((v): v is number => v !== null);
@@ -124,7 +140,7 @@ export default function CatalogGrid({
           </label>
         </div>
 
-        {sizes.length >= 3 && (
+        {showSizeFilter && sizes.length >= 3 && (
           <div className="-mx-4 mb-6 flex items-center gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide" role="group" aria-label="Filtrar por tamanho">
             <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Tamanho</span>
             <button type="button" onClick={() => { setSize(null); setLimit(PAGE_SIZE); }} aria-pressed={size === null} className={chip(size === null)}>

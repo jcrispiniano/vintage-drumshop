@@ -131,12 +131,12 @@
     linear-gradient(0deg, rgba(28, 17, 10, 0.78), rgba(28, 17, 10, 0.45)),
     var(--hero-img) center 40% / cover no-repeat,
     var(--color-ink);
-  padding: 3.5rem 0 3rem;
+  padding: 2.5rem 0 2.25rem;
 }
 
 @media (min-width: 768px) {
   .category-hero--photo {
-    padding: 5rem 0 4.5rem;
+    padding: 3.5rem 0 3.25rem;
   }
 }
 
@@ -157,5 +157,4 @@
   margin-inline: auto;
 }
 
-/* Valor do cupom/benefício na barra de aviso (padrão "PRIMEIRA" da referência). */
 

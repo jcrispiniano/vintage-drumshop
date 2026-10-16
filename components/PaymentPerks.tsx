@@ -1,11 +1,10 @@
 import { BadgePercent, CreditCard, Truck } from 'lucide-react';
-import { paymentTerms } from '@/lib/products';
+import { paymentTerms, pixOffLabel } from '@/lib/products';
 
 /** Faixa de benefícios da home: desconto no Pix e parcelamento em destaque, como na referência. */
 export default function PaymentPerks() {
-  const pixOff = Math.round(paymentTerms.pixDiscount * 100);
   const perks = [
-    { icon: BadgePercent, big: `${pixOff}% OFF`, small: 'no Pix ou boleto' },
+    { icon: BadgePercent, big: pixOffLabel, small: 'pagando no Pix' },
     { icon: CreditCard, big: `${paymentTerms.maxInstallments}x sem juros`, small: 'no cartão de crédito' },
     { icon: Truck, big: 'Todo o Brasil', small: 'frete calculado pelo CEP' },
   ];

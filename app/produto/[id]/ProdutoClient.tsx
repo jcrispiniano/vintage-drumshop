@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
-import { Product, contactInfo, discountPercent, formatPrice, paymentTerms, pixPrice, productImage } from '@/lib/products';
+import { Product, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
@@ -195,7 +195,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
             <ul className="mt-6 space-y-3 text-sm text-ink-soft">
               <li className="flex items-center gap-3">
                 <BadgePercent size={18} className="text-primary" aria-hidden />
-                <span><strong className="text-ink">{Math.round(paymentTerms.pixDiscount * 100)}% de desconto</strong> no Pix ou boleto</span>
+                <span><strong className="text-ink">{pixOffLabel}</strong> pagando no Pix</span>
               </li>
               <li className="flex items-center gap-3">
                 <CreditCard size={18} className="text-primary" aria-hidden />

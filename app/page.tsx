@@ -1,7 +1,7 @@
 'use client';
 
 import SmartImage from '@/components/SmartImage';
-import { categories, contactInfo, paymentTerms } from '@/lib/products';
+import { categories, contactInfo, paymentTerms, pixOffLabel } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { TIMBRES } from '@/lib/productText';
 import Link from 'next/link';
@@ -100,7 +100,7 @@ function Hero() {
 
         {/* No celular o texto fica abaixo da foto: as condições aparecem já sobre a imagem */}
         <p className="absolute right-4 top-4 rounded-lg bg-[#E9B872] px-3 py-2 text-right leading-none text-ink shadow-lg md:hidden" aria-hidden>
-          <strong className="block font-display text-2xl font-semibold uppercase">{Math.round(paymentTerms.pixDiscount * 100)}% OFF <span className="text-sm">no Pix</span></strong>
+          <strong className="block font-display text-2xl font-semibold uppercase">{pixOffLabel} <span className="text-sm">no Pix</span></strong>
           <span className="mt-1 block text-sm font-bold">ou {paymentTerms.maxInstallments}x sem juros</span>
         </p>
 
@@ -139,7 +139,7 @@ function Hero() {
         {/* Condições em destaque logo na primeira dobra */}
         <ul className="mt-6 hidden flex-wrap gap-2 md:flex" aria-label="Condições de pagamento">
           <li className="flex items-baseline gap-1.5 rounded-md bg-[#E9B872] px-3.5 py-2 text-ink">
-            <strong className="font-display text-2xl font-semibold uppercase leading-none">{Math.round(paymentTerms.pixDiscount * 100)}% OFF</strong>
+            <strong className="font-display text-2xl font-semibold uppercase leading-none">{pixOffLabel}</strong>
             <span className="text-sm font-semibold">no Pix</span>
           </li>
           <li className="flex items-baseline gap-1.5 rounded-md px-3.5 py-2 ring-1 ring-[#E9B872]">

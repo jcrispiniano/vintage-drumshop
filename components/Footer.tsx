@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Instagram, Mail, MessageCircle, Phone } from 'lucide-react';
 import SmartImage from '@/components/SmartImage';
-import { categories, contactInfo, paymentTerms } from '@/lib/products';
+import { categories, contactInfo, paymentTerms, pixOffLabel } from '@/lib/products';
 
 export default function Footer() {
   const pathname = usePathname();
@@ -14,7 +14,7 @@ export default function Footer() {
     <footer className="mt-auto bg-ink text-[#E9D9C2]">
       <div className="border-b border-white/10">
         <ul className="container mx-auto grid grid-cols-1 gap-3 px-4 py-5 text-sm sm:grid-cols-3">
-          <li><strong className="text-white">{Math.round(paymentTerms.pixDiscount * 100)}% de desconto</strong> no Pix ou boleto</li>
+          <li><strong className="text-white">{pixOffLabel}</strong> pagando no Pix</li>
           <li><strong className="text-white">Até {paymentTerms.maxInstallments}x sem juros</strong> no cartão</li>
           <li><strong className="text-white">Enviamos para todo o Brasil</strong> · frete pelo CEP</li>
         </ul>

@@ -1,23 +1,31 @@
 'use client';
-import { Trash2, Plus, Minus, ShoppingCart, Undo2 } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingCart, Undo2, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import type { CartItem } from '@/lib/cartStore';
-import { categories, contactInfo, formatPrice, paymentTerms, pixPrice, productImage } from '@/lib/products';
+import { categories, contactInfo, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage } from '@/lib/products';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import SmartImage from '@/components/SmartImage';
 
 const steps = [
   { title: 'Envie o pedido', text: 'O WhatsApp abre com a lista do pedido pronta.' },
-  { title: 'Confirmamos tudo', text: 'Conferimos estoque e frete para o seu CEP.' },
-  { title: 'Pague no Pix', text: `Com ${Math.round(paymentTerms.pixDiscount * 100)}% de desconto, ou em até ${paymentTerms.maxInstallments}x sem juros.` },
+  { title: 'Confirmamos tudo', text: 'Conferimos estoque e o frete para o seu CEP.' },
+  { title: 'Pague só depois', text: `${pixOffLabel} no Pix, ou em até ${paymentTerms.maxInstallments}x sem juros no cartão.` },
 ];
+
+/** Formata enquanto digita: 01310100 → 01310-100 */
+function formatCep(value: string) {
+  const digits = value.replace(/\D/g, '').slice(0, 8);
+  return digits.length > 5 ? `${digits.slice(0, 5)}-${digits.slice(5)}` : digits;
+}
 
 export default function CarrinhoPage() {
   const { cartItems, updateQuantity, removeFromCart, addToCart } = useCart();
   const [removed, setRemoved] = useState<CartItem | null>(null);
+  const [cep, setCep] = useState('');
+  const cepComplete = cep.replace(/\D/g, '').length === 8;
 
   // A opção de desfazer some sozinha depois de alguns segundos
   useEffect(() => {
@@ -47,18 +55,17 @@ export default function CarrinhoPage() {
   const installments = paymentTerms.maxInstallments;
 
   const handleCheckout = () => {
-    let message = '🛒 *Pedido - Vintage Drum Shop*\n\n';
+    let message = '*Pedido - Vintage Drum Shop*\n\n';
 
     cartItems.forEach(item => {
       message += `*${item.quantity}x* ${item.name}\n`;
       message += `${formatPrice(pixPrice(item.price))} no Pix (${formatPrice(item.price)} no cartão) cada\n\n`;
     });
 
-    message += '━━━━━━━━━━━━━━━\n';
     message += `*Total no Pix:* ${formatPrice(totalPix)}\n`;
-    message += `*Ou no cartão:* ${formatPrice(total)} em até ${installments}x de ${formatPrice(total / installments)}\n`;
-    message += '*Frete:* a calcular pelo CEP\n\n';
-    message += 'Gostaria de finalizar este pedido! Meu CEP é: ';
+    message += `*Ou no cartão:* ${formatPrice(total)} em até ${installments}x de ${formatPrice(total / installments)} sem juros\n`;
+    message += cepComplete ? `*CEP para o frete:* ${cep}\n\n` : '*Frete:* a calcular\n\n';
+    message += cepComplete ? 'Gostaria de finalizar este pedido!' : 'Gostaria de finalizar este pedido! Meu CEP é: ';
 
     window.open(`${contactInfo.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
   };
@@ -98,7 +105,7 @@ export default function CarrinhoPage() {
             </ul>
           </div>
         ) : (
-          <div className="grid gap-8 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             <section aria-label="Itens do carrinho" className="space-y-3 lg:col-span-2">
               {cartItems.map(item => (
                 <article key={item.id} className="flex gap-3 rounded-xl bg-white p-3 ring-1 ring-line sm:gap-5 sm:p-5">
@@ -111,9 +118,9 @@ export default function CarrinhoPage() {
                     <h2 className="mb-2 line-clamp-2 text-sm font-semibold leading-tight text-ink sm:text-base">
                       <Link href={`/produto/${item.id}`} className="hover:text-accent">{item.name}</Link>
                     </h2>
-                    <p className="tabular-nums">
+                    <p className="flex flex-wrap items-baseline gap-x-1 tabular-nums">
                       <span className="text-lg font-bold text-accent sm:text-xl">{formatPrice(pixPrice(item.price))}</span>
-                      <span className="ml-1 text-xs font-semibold uppercase text-ink">no Pix</span>
+                      <span className="text-xs font-semibold uppercase text-ink">no Pix</span>
                     </p>
                     <p className="text-xs text-ink-soft tabular-nums">{formatPrice(item.price)} no cartão</p>
                   </div>
@@ -161,13 +168,9 @@ export default function CarrinhoPage() {
                     <dt>Subtotal</dt>
                     <dd className="font-semibold text-ink">{formatPrice(subtotal)}</dd>
                   </div>
-                  <div className="flex justify-between gap-2 text-ink-soft">
-                    <dt>Frete</dt>
-                    <dd className="font-semibold text-ink">A calcular</dd>
-                  </div>
                   {savings > 0 && (
                     <div className="flex justify-between gap-2 text-ink-soft">
-                      <dt>Desconto Pix ({Math.round(paymentTerms.pixDiscount * 100)}%)</dt>
+                      <dt>Desconto no Pix ({pixOffLabel})</dt>
                       <dd className="font-semibold text-primary">− {formatPrice(savings)}</dd>
                     </div>
                   )}
@@ -181,21 +184,30 @@ export default function CarrinhoPage() {
                   <p className="mt-1 text-right text-xs text-ink-soft">
                     ou {formatPrice(total)} em até {installments}x de {formatPrice(total / installments)} sem juros
                   </p>
-                  <p className="mt-1 text-right text-xs text-ink-soft">+ frete, calculado pelo seu CEP</p>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={handleCheckout}
-                  className="mt-5 flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#167a42] text-base font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#11643a]"
-                >
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                  </svg>
-                  Finalizar no WhatsApp
-                </button>
+                <div className="mt-5 rounded-lg bg-paper p-3.5">
+                  <label htmlFor="cep" className="flex items-baseline justify-between gap-2 text-sm font-semibold text-ink">
+                    Frete
+                    <span className="text-xs font-normal text-ink-soft">calculado pela loja</span>
+                  </label>
+                  <input
+                    id="cep"
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="postal-code"
+                    placeholder="Seu CEP (opcional)"
+                    value={cep}
+                    onChange={(e) => setCep(formatCep(e.target.value))}
+                    className="mt-2 h-11 w-full rounded-md border border-line bg-white px-3 text-base tabular-nums text-ink placeholder:text-ink-soft outline-none transition focus:border-accent"
+                    aria-describedby="cep-ajuda"
+                  />
+                  <p id="cep-ajuda" className="mt-1.5 text-xs text-ink-soft">
+                    {cepComplete ? 'Vai junto no pedido para a loja cotar o envio.' : 'Informe para receber o valor do frete já na primeira resposta.'}
+                  </p>
+                </div>
 
-                <ol className="mt-6 space-y-3 border-t border-line pt-5">
+                <ol className="mt-5 space-y-3">
                   {steps.map((step, i) => (
                     <li key={step.title} className="flex gap-3 text-sm">
                       <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-cream text-xs font-bold text-ink">{i + 1}</span>
@@ -206,7 +218,24 @@ export default function CarrinhoPage() {
                     </li>
                   ))}
                 </ol>
-                <p className="mt-4 text-xs text-ink-soft">Atendimento {contactInfo.hours}.</p>
+
+                <p className="mt-5 flex items-start gap-2 text-sm text-ink">
+                  <ShieldCheck size={18} className="mt-0.5 flex-shrink-0 text-[#167a42]" aria-hidden />
+                  <span><strong>Nada é cobrado agora.</strong> Você só paga depois de confirmar tudo com a loja.</span>
+                </p>
+
+                <button
+                  type="button"
+                  onClick={handleCheckout}
+                  className="mt-4 flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#167a42] text-base font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#11643a]"
+                >
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                  </svg>
+                  Finalizar no WhatsApp
+                </button>
+
+                <p className="mt-2 text-center text-xs text-ink-soft">Atendimento {contactInfo.hours}</p>
 
                 <Link href="/" className="mt-5 block text-center text-sm font-semibold text-accent hover:underline">
                   Continuar comprando

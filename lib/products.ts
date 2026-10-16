@@ -685,6 +685,9 @@ export const paymentTerms = {
   maxInstallments: 6,
 };
 
+/** Rótulo único da condição do Pix, usado em toda a loja (o desconto vale só no Pix). */
+export const pixOffLabel = `${Math.round(paymentTerms.pixDiscount * 100)}% OFF`;
+
 export function pixPrice(price: number): number {
   return Math.round(price * (1 - paymentTerms.pixDiscount) * 100) / 100;
 }

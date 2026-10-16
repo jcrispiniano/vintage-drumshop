@@ -1,17 +1,15 @@
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
-import { paymentTerms } from '@/lib/products';
+import { paymentTerms, pixOffLabel } from '@/lib/products';
 
 const INTERVAL_MS = 3500;
-
-const pixOff = Math.round(paymentTerms.pixDiscount * 100);
 
 const messages: { key: string; text: string; node: ReactNode }[] = [
   {
     key: 'pix',
-    text: `${pixOff}% OFF pagando no Pix ou boleto`,
-    node: <><strong className="font-bold">{pixOff}% OFF</strong> pagando no Pix ou boleto</>,
+    text: `${pixOffLabel} pagando no Pix`,
+    node: <><strong className="font-bold">{pixOffLabel}</strong> pagando no Pix</>,
   },
   {
     key: 'parcelas',
