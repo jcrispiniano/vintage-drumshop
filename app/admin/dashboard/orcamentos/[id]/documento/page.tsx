@@ -95,7 +95,7 @@ export default function DocumentoOrcamentoPage() {
       >
         {/* Marca d'água: a logo bem clara atrás da tabela, como no modelo */}
         {/* eslint-disable-next-line @next/next/no-img-element -- img comum imprime com fidelidade */}
-        <img src="/logo-documento.png" alt="" aria-hidden className="pointer-events-none absolute left-1/2 top-[95mm] w-[150mm] -translate-x-1/2 opacity-[0.06]" />
+        <img src="/logo-vintage.png" alt="" aria-hidden className="pointer-events-none absolute left-1/2 top-[92mm] w-[160mm] -translate-x-1/2 opacity-[0.07]" />
 
         <header className="relative flex items-start justify-between gap-8">
           <div className="min-w-0 flex-1 pt-2">
@@ -110,7 +110,7 @@ export default function DocumentoOrcamentoPage() {
             <p className="mt-1 text-[12px] font-semibold tracking-wide opacity-70" style={{ color: MAROON }}>{quoteNumber(quote.id)}</p>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element -- img comum imprime com fidelidade */}
-          <img src="/logo-documento.png" alt="Vintage Drum Shop" className="mt-1 w-[52mm] flex-shrink-0 opacity-80" />
+          <img src="/logo-vintage.png" alt="Vintage Drum Shop" className="-mt-2 w-[60mm] flex-shrink-0" />
         </header>
 
         <table className="relative mt-[12mm] w-full border-collapse text-[12.5px] leading-snug">

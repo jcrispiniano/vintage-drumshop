@@ -164,7 +164,7 @@ export default function AdminDashboardPage() {
                                 src={product.image}
                                 alt={product.name}
                                 className="w-full h-full object-contain p-1"
-                                onError={e => { (e.target as HTMLImageElement).src = '/logo.svg' }}
+                                onError={e => { (e.target as HTMLImageElement).src = '/placeholder-produto.jpg' }}
                               />
                             </div>
                             <div className="min-w-0">

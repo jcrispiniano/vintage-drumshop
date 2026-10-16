@@ -215,7 +215,7 @@ function ImageUploader({
             src={value}
             alt="Preview"
             className="w-16 h-16 object-contain rounded-lg border border-gray-200 bg-white flex-shrink-0"
-            onError={e => { (e.target as HTMLImageElement).src = '/logo.svg' }}
+            onError={e => { (e.target as HTMLImageElement).src = '/placeholder-produto.jpg' }}
           />
           <div className="flex-1 min-w-0">
             <p className="text-xs font-semibold text-gray-700 mb-1">Imagem selecionada</p>

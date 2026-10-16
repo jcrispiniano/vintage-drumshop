@@ -707,5 +707,5 @@ export const contactInfo = {
 };
 // Produtos sem foto (ex.: fallback estático) usam o logo em vez de <img src=""> quebrado
 export function productImage(src?: string): string {
-  return src || '/logo.svg';
+  return src || '/placeholder-produto.jpg';
 }

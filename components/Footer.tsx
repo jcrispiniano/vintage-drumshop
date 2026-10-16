@@ -22,13 +22,15 @@ export default function Footer() {
 
       <div className="container mx-auto grid gap-10 px-4 py-12 md:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
         <div>
-          <SmartImage
-            src="/logo-header.png"
-            alt="Vintage Drum Shop"
-            width={120}
-            height={88}
-            className="mb-4 h-16 w-auto brightness-0 invert sepia-[.35]"
-          />
+          <div className="mb-5 inline-block rounded-xl bg-cream px-4 py-3">
+            <SmartImage
+              src="/logo-vintage-header.png"
+              alt="Vintage Drum Shop"
+              width={440}
+              height={338}
+              className="h-24 w-auto"
+            />
+          </div>
           <p className="max-w-xs text-sm leading-relaxed">
             Revenda oficial Wincent, Istanbul Agop e Torelli. Baterias, pratos e acessórios escolhidos por quem toca.
           </p>

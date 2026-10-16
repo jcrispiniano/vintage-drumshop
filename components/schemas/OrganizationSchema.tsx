@@ -33,7 +33,7 @@ export default function OrganizationSchema() {
       contactInfo.instagram,
       contactInfo.whatsapp
     ],
-    "image": "https://vintagedrumshop.com.br/logo.png",
+    "image": "https://vintagedrumshop.com.br/logo-vintage.png",
     "priceRange": "R$ 50 - R$ 6000"
   };
 

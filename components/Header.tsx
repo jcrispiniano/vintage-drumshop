@@ -153,12 +153,12 @@ export default function Header() {
 
           <Link href="/" className="flex-shrink-0" aria-label="Vintage Drum Shop — página inicial">
             <SmartImage
-              src="/logo-header.png"
+              src="/logo-vintage-header.png"
               alt="Vintage Drum Shop"
-              width={180}
-              height={131}
+              width={440}
+              height={338}
               priority
-              className="h-11 w-auto md:h-14"
+              className="h-12 w-auto md:h-[68px]"
             />
           </Link>
 
