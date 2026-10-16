@@ -133,10 +133,11 @@ export default function Header() {
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
 
       {/* Barra de aviso (padrão "Primeira compra? ... PRIMEIRA" da referência) */}
-      <div className="border-b border-line bg-cream text-ink">
-        <p className="container mx-auto flex items-center justify-center gap-x-2 px-4 py-2 text-center text-xs tracking-wide md:text-[13px]">
-          Pague no Pix e ganhe <span className="coupon text-primary">{pixOff}% OFF</span>
-          <span className="hidden sm:inline">· ou em até {paymentTerms.maxInstallments}x sem juros no cartão</span>
+      <div className="bg-primary text-white">
+        <p className="container mx-auto flex flex-wrap items-center justify-center gap-x-2 px-4 py-2.5 text-center text-[13px] tracking-wide md:text-[15px]">
+          <span><strong className="font-bold">{pixOff}% OFF</strong> no Pix<span className="hidden sm:inline"> ou boleto</span></span>
+          <span aria-hidden className="text-[#E9B872]">✦</span>
+          <span><strong className="font-bold">{paymentTerms.maxInstallments}x sem juros</strong><span className="hidden sm:inline"> no cartão</span></span>
         </p>
       </div>
 

@@ -158,11 +158,4 @@
 }
 
 /* Valor do cupom/benefício na barra de aviso (padrão "PRIMEIRA" da referência). */
-.coupon {
-  display: inline-block;
-  border: 1px dashed currentColor;
-  border-radius: 4px;
-  padding: 0 0.4rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
+

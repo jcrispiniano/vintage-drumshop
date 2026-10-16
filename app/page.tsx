@@ -1,7 +1,7 @@
 'use client';
 
 import SmartImage from '@/components/SmartImage';
-import { categories, contactInfo } from '@/lib/products';
+import { categories, contactInfo, paymentTerms } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { TIMBRES } from '@/lib/productText';
 import Link from 'next/link';
@@ -10,6 +10,7 @@ import OrganizationSchema from '@/components/schemas/OrganizationSchema';
 import CategoryNav from '@/components/CategoryNav';
 import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
+import PaymentPerks from '@/components/PaymentPerks';
 import { ArrowRight, ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
 
 // Fotos do ensaio da Vintage (public/fotos)
@@ -97,6 +98,12 @@ function Hero() {
           </div>
         ))}
 
+        {/* No celular o texto fica abaixo da foto: as condições aparecem já sobre a imagem */}
+        <p className="absolute right-4 top-4 rounded-lg bg-[#E9B872] px-3 py-2 text-right leading-none text-ink shadow-lg md:hidden" aria-hidden>
+          <strong className="block font-display text-2xl font-semibold uppercase">{Math.round(paymentTerms.pixDiscount * 100)}% OFF <span className="text-sm">no Pix</span></strong>
+          <span className="mt-1 block text-sm font-bold">ou {paymentTerms.maxInstallments}x sem juros</span>
+        </p>
+
         <div className="absolute bottom-4 left-4 flex items-center gap-1 rounded-full bg-ink/75 p-1 backdrop-blur-sm">
           <button
             type="button"
@@ -129,6 +136,17 @@ function Hero() {
         <p className="mt-5 max-w-md text-base leading-relaxed text-[#F0E3D0] lg:text-lg">
           Revenda oficial Wincent, Istanbul Agop e Torelli. Você escolhe aqui e fecha o pedido direto com a loja pelo WhatsApp.
         </p>
+        {/* Condições em destaque logo na primeira dobra */}
+        <ul className="mt-6 hidden flex-wrap gap-2 md:flex" aria-label="Condições de pagamento">
+          <li className="flex items-baseline gap-1.5 rounded-md bg-[#E9B872] px-3.5 py-2 text-ink">
+            <strong className="font-display text-2xl font-semibold uppercase leading-none">{Math.round(paymentTerms.pixDiscount * 100)}% OFF</strong>
+            <span className="text-sm font-semibold">no Pix</span>
+          </li>
+          <li className="flex items-baseline gap-1.5 rounded-md px-3.5 py-2 ring-1 ring-[#E9B872]">
+            <strong className="font-display text-2xl font-semibold uppercase leading-none text-[#E9B872]">{paymentTerms.maxInstallments}x sem juros</strong>
+            <span className="text-sm font-semibold text-[#F0E3D0]">no cartão</span>
+          </li>
+        </ul>
         <div className="mt-8 flex flex-wrap gap-3">
           <a
             href="#categorias"
@@ -213,6 +231,7 @@ export default function Home() {
 
       <main id="main-content">
         <Hero />
+        <PaymentPerks />
 
         {/* Compre por categoria: fotos grandes do ensaio */}
         <section id="categorias" className="scroll-mt-32 py-12 md:py-20" aria-labelledby="categorias-titulo">
