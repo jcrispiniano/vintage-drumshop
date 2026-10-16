@@ -47,7 +47,7 @@ const brands = [
     href: '/pratos', cta: 'Ver pratos Istanbul',
   },
   {
-    logo: 'https://uhruevemqsmwamem.public.blob.vercel-storage.com/torelli-logo.png', name: 'Torelli', label: 'Revenda autorizada',
+    logo: '/torelli-logo-wide.png', name: 'Torelli', label: 'Revenda autorizada',
     desc: 'Marca brasileira de percussão, ferragens e acessórios com ótimo custo-benefício.',
     href: '/busca?q=torelli', cta: 'Ver produtos Torelli',
   },
