@@ -2,6 +2,9 @@ import { brandLabel } from '@/lib/brands';
 
 /** Tamanhos em polegadas citados no nome: 'Clap Stack (11"/13"/15")' → '11/13/15"'. */
 export function productSizes(name: string): string | null {
+  // Caixas e tambores: diâmetro × profundidade ("14×6,5")
+  const dims = name.match(/(\d{1,2}(?:[.,]\d)?)\s*[x×]\s*(\d{1,2}(?:[.,]\d)?)/i);
+  if (dims) return `${dims[1]}×${dims[2]}"`;
   const sizes = [...name.matchAll(/(\d{1,2}(?:[.,]\d)?)\s*(?:"|”|″|'')/g)].map(m => m[1].replace(',', '.'));
   const unique = [...new Set(sizes)];
   if (unique.length === 0 || unique.length > 3) return null;

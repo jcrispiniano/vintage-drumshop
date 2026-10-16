@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Headphones, Heart, ShoppingCart } from 'lucide-react';
 import { discountPercent, productImage } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
-import { brandLabel } from '@/lib/brands';
+import { brandLabel, isGenericBrand } from '@/lib/brands';
 import { productSizes, shortTitle } from '@/lib/productText';
 
 export { brandLabel };
@@ -90,9 +90,15 @@ export default function ProductCard({ product, typeLabel }: ProductCardProps) {
       </button>
 
       <div className="flex flex-1 flex-col border-t border-line p-3 md:p-4">
-        <p className="mb-1 truncate text-[11px] font-semibold uppercase tracking-wider text-primary">
-          {brandLabel(product.brand)}
-          {typeLabel && <span className="hidden font-normal text-ink-soft sm:inline"> · {typeLabel}</span>}
+        <p className="mb-1 min-h-[1.25em] truncate text-[11px] font-semibold uppercase tracking-wider text-primary">
+          {isGenericBrand(product.brand) ? (
+            typeLabel && <span className="font-normal text-ink-soft">{typeLabel}</span>
+          ) : (
+            <>
+              {brandLabel(product.brand)}
+              {typeLabel && <span className="hidden font-normal text-ink-soft sm:inline"> · {typeLabel}</span>}
+            </>
+          )}
         </p>
 
         <h3 className="mb-2 line-clamp-2 min-h-[2.5em] text-sm font-semibold leading-tight text-ink md:text-[15px]">

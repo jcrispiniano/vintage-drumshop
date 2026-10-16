@@ -12,7 +12,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import PriceBlock from '@/components/PriceBlock';
 import ProductCard from '@/components/ProductCard';
 import SmartImage from '@/components/SmartImage';
-import { brandLabel } from '@/lib/brands';
+import { brandLabel, isGenericBrand } from '@/lib/brands';
 import { categories } from '@/lib/products';
 
 export default function ProdutoClient({ product }: { product: Product }) {
@@ -132,7 +132,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
           {/* Informações e compra */}
           <div className="lg:pt-4">
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
-              {brandLabel(product.brand)}
+              {!isGenericBrand(product.brand) && brandLabel(product.brand)}
               {product.badge && <span className="ml-2 rounded bg-cream px-1.5 py-0.5 text-ink">{product.badge}</span>}
             </p>
             <h1 className="mb-6 text-3xl font-semibold uppercase leading-[1.1] text-ink md:text-4xl">
