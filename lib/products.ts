@@ -678,6 +678,22 @@ export function formatPrice(price: number): string {
   });
 }
 
+// Condições comerciais exibidas na loja (benefícios, cards e página de produto)
+export const paymentTerms = {
+  pixDiscount: 0.05,
+  maxInstallments: 3,
+  freeShippingFrom: 199,
+};
+
+export function pixPrice(price: number): number {
+  return Math.round(price * (1 - paymentTerms.pixDiscount) * 100) / 100;
+}
+
+export function discountPercent(price: number, oldPrice?: number): number {
+  if (!oldPrice || oldPrice <= price) return 0;
+  return Math.round((1 - price / oldPrice) * 100);
+}
+
 export const contactInfo = {
   phone: '+55 11 94739-7347',
   phoneFormatted: '(11) 94739-7347',

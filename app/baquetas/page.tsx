@@ -52,22 +52,22 @@ export default function BaquetasPage() {
     ).length;
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
       <Header />
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero */}
-      <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16">
+      <section className="category-hero">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">Baquetas Profissionais</h1>
-          <p className="text-xl text-gray-300">
+          <h1 className="category-hero__title">Baquetas Profissionais</h1>
+          <p className="category-hero__lead">
             Wincent · Dynabeat — qualidade e precisão para cada estilo
           </p>
         </div>
       </section>
 
       {/* Filtros — sticky */}
-      <div className="bg-white border-b border-gray-200 sticky top-[104px] md:top-[132px] z-40">
+      <div className="bg-white border-b border-gray-200 sticky top-[108px] md:top-[124px] z-40">
         <div className="container mx-auto px-4 py-3 space-y-2">
           {/* Linha 1: Tipo */}
           <div className="flex gap-2 overflow-x-auto scrollbar-hide">
@@ -82,8 +82,8 @@ export default function BaquetasPage() {
                   onClick={() => setActiveType(type)}
                   className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition ${
                     activeType === type
-                      ? 'bg-accent text-white shadow-md'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-ink text-white'
+                      : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
                   }`}
                 >
                   {TYPE_LABELS[type]} ({count})
@@ -101,7 +101,7 @@ export default function BaquetasPage() {
                 className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold transition ${
                   activeBrand === 'todas'
                     ? 'bg-gray-800 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
                 }`}
               >
                 Todas
@@ -113,7 +113,7 @@ export default function BaquetasPage() {
                   className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold transition ${
                     activeBrand === brand
                       ? 'bg-gray-800 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
                   }`}
                 >
                   {getBrandLabel(brand)}
@@ -125,11 +125,10 @@ export default function BaquetasPage() {
       </div>
 
       {/* Grid de produtos */}
-      <section className="py-12 bg-white">
+      <section className="py-10 md:py-12">
         <div className="container mx-auto px-4">
           {filtered.length === 0 ? (
             <div className="text-center py-16">
-              <div className="text-5xl mb-4">🥁</div>
               <p className="text-gray-500 text-lg">Nenhum produto com esses filtros no momento.</p>
             </div>
           ) : (

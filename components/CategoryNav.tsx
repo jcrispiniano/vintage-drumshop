@@ -1,175 +1,84 @@
 'use client';
 
 import Link from 'next/link';
+import { ChevronDown } from 'lucide-react';
 import { categories } from '@/lib/products';
 
 interface CategoryNavProps {
   currentCategory?: string;
 }
 
+const MAIN = ['baterias', 'pratos', 'caixas', 'peles', 'baquetas', 'acessorios'];
+
+const SUBMENUS: Record<string, { href: string; label: string }[]> = {
+  pratos: [
+    { href: '/pratos', label: 'Todos os pratos' },
+    { href: '/pratos#istanbul-agop', label: 'Istanbul Agop' },
+  ],
+  baquetas: [
+    { href: '/baquetas', label: 'Todas as baquetas' },
+    { href: '/wincent', label: 'Wincent' },
+    { href: '/dynabeat', label: 'Dynabeat' },
+    { href: '/vassourinhas', label: 'Vassourinhas' },
+    { href: '/mallets', label: 'Mallets' },
+  ],
+};
+
+const linkBase =
+  'relative flex h-11 items-center gap-1 whitespace-nowrap px-3 font-display text-[15px] font-medium uppercase tracking-wide transition-colors md:px-4';
+
+function Dropdown({ items }: { items: { href: string; label: string }[] }) {
+  return (
+    <div className="invisible absolute left-0 top-full z-[70] min-w-[220px] translate-y-1 rounded-b-lg bg-white py-2 opacity-0 shadow-[0_16px_32px_-12px_rgba(43,29,20,0.35)] ring-1 ring-line transition duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+      <ul>
+        {items.map(item => (
+          <li key={item.href}>
+            <Link href={item.href} className="block px-5 py-2 text-sm text-ink hover:bg-paper hover:text-accent">
+              {item.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function CategoryNav({ currentCategory }: CategoryNavProps) {
   return (
-    <nav aria-label="Categorias de produtos" className="fixed left-0 right-0 z-[64] bg-primary text-white shadow-lg overflow-visible top-[56px] md:top-[122px]">
-      
-      <div className="w-full overflow-visible">
-        <ul className="flex items-center justify-center gap-1 md:gap-4 py-3 relative overflow-visible px-2" role="menubar">
-          {/* Todos os Produtos com Dropdown - APENAS DESKTOP */}
-          <li className="relative group hidden md:block" role="none">
-            <span 
-              className="block px-3 md:px-4 py-2 hover:bg-secondary transition whitespace-nowrap text-sm md:text-base cursor-pointer"
-              role="menuitem"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Todos os Produtos ▾
-            </span>
-            {/* Dropdown */}
-            <div 
-              className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[250px] z-[9999]"
-              role="menu"
-            >
-              <ul className="py-2" role="none">
-                {categories.map(cat => (
-                  <li key={cat.id}>
-                    <Link 
-                      href={`/${cat.id}`}
-                      className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
-                    >
-                      {cat.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </li>
+    <nav
+      aria-label="Categorias de produtos"
+      className="sticky top-16 z-[64] border-b border-line bg-white md:top-20"
+    >
+      <ul className="container mx-auto flex items-center gap-1 overflow-x-auto px-2 scrollbar-hide md:justify-center md:overflow-visible">
+        <li className="group relative hidden md:block">
+          <button type="button" className={`${linkBase} text-ink hover:text-accent`} aria-haspopup="true">
+            Todos os produtos <ChevronDown size={14} aria-hidden />
+          </button>
+          <Dropdown items={categories.map(cat => ({ href: `/${cat.id}`, label: cat.name }))} />
+        </li>
 
-          {/* Categorias Principais - Ordem: Baterias, Pratos, Caixas, Peles, Baquetas, Acessórios */}
-          {['baterias', 'pratos', 'caixas', 'peles', 'baquetas', 'acessorios'].map(catId => {
-            const cat = categories.find(c => c.id === catId);
-            if (!cat) return null;
-            // Pratos tem dropdown com Istanbul
-            if (cat.id === 'pratos') {
-              return (
-                <li key={cat.id} className="relative group">
-                  <Link 
-                    href="/pratos"
-                    className={`block px-3 md:px-4 py-2 transition whitespace-nowrap text-sm md:text-base ${
-                      currentCategory === cat.id 
-                        ? 'bg-secondary' 
-                        : 'hover:bg-secondary'
-                    }`}
-                  >
-                    {cat.name}
-                  </Link>
-                  {/* Dropdown de marcas */}
-                  <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[9999]">
-                    <ul className="py-2">
-                      <li>
-                        <Link 
-                          href="/pratos#todas-baquetas"
-                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
-                        >
-                          Todos os Pratos
-                        </Link>
-                      </li>
-                      <li>
-                        <Link 
-                          href="/pratos#istanbul-agop"
-                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
-                        >
-                          Istanbul Agop
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              );
-            }
-            
-            // Baquetas tem dropdown com Wincent
-            if (cat.id === 'baquetas') {
-              return (
-                <li key={cat.id} className="relative group">
-                  <Link 
-                    href="/baquetas"
-                    className={`block px-3 md:px-4 py-2 transition whitespace-nowrap text-sm md:text-base ${
-                      currentCategory === cat.id 
-                        ? 'bg-secondary' 
-                        : 'hover:bg-secondary'
-                    }`}
-                  >
-                    {cat.name}
-                  </Link>
-                  {/* Dropdown de marcas */}
-                  <div className="absolute left-0 top-full bg-lightBg text-gray-800 shadow-2xl rounded-b-lg border-2 border-primary opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-[9999]">
-                    <ul className="py-2">
-                      <li>
-                        <Link 
-                          href="/baquetas#todas-baquetas"
-                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
-                        >
-                          Todas as Baquetas
-                        </Link>
-                      </li>
-                      <li>
-                        <Link 
-                          href="/wincent"
-                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
-                        >
-                          Wincent
-                        </Link>
-                      </li>
-                      <li>
-                        <Link 
-                          href="/dynabeat"
-                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
-                        >
-                          Dynabeat
-                        </Link>
-                      </li>
-                      <li>
-                        <Link 
-                          href="/vassourinhas"
-                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
-                        >
-                          Vassourinhas
-                        </Link>
-                      </li>
-                      <li>
-                        <Link 
-                          href="/mallets"
-                          className="block px-6 py-2 hover:text-primary transition text-sm font-medium"
-                        >
-                          Mallets
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              );
-            }
-            
-            // Outras categorias normais
-            // Acessórios: esconder no mobile
-            const hiddenMobile = cat.id === 'acessorios' ? 'hidden md:block' : '';
-            
-            return (
-              <li key={cat.id} className={hiddenMobile}>
-                <Link 
-                  href={`/${cat.id}`}
-                  className={`block px-3 md:px-4 py-2 transition whitespace-nowrap text-sm md:text-base ${
-                    currentCategory === cat.id 
-                      ? 'bg-secondary' 
-                      : 'hover:bg-secondary'
-                  }`}
-                >
-                  {cat.name}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+        {MAIN.map(catId => {
+          const cat = categories.find(c => c.id === catId);
+          if (!cat) return null;
+          const active = currentCategory === cat.id;
+          const submenu = SUBMENUS[cat.id];
+
+          return (
+            <li key={cat.id} className={`group relative ${cat.id === 'acessorios' ? 'hidden md:block' : ''}`}>
+              <Link
+                href={`/${cat.id}`}
+                aria-current={active ? 'page' : undefined}
+                className={`${linkBase} ${active ? 'text-accent' : 'text-ink hover:text-accent'}`}
+              >
+                {cat.name}
+                {submenu && <ChevronDown size={14} aria-hidden className="hidden md:block" />}
+                {active && <span className="absolute inset-x-3 bottom-0 h-[3px] rounded-t bg-accent md:inset-x-4" aria-hidden />}
+              </Link>
+              {submenu && <div className="hidden md:block"><Dropdown items={submenu} /></div>}
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }

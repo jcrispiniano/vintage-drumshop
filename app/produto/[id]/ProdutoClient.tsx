@@ -1,14 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, ShoppingCart, Share2, X, ZoomIn } from 'lucide-react';
-import { Product, formatPrice, contactInfo, productImage } from '@/lib/products';
+import { BadgePercent, CreditCard, Heart, MessageCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
+import { Product, contactInfo, discountPercent, paymentTerms, productImage } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
 import Header from '@/components/Header';
+import CategoryNav from '@/components/CategoryNav';
+import Breadcrumb from '@/components/Breadcrumb';
+import PriceBlock from '@/components/PriceBlock';
+import ProductCard from '@/components/ProductCard';
 import SmartImage from '@/components/SmartImage';
 import { brandLabel } from '@/lib/brands';
+import { categories } from '@/lib/products';
 
 export default function ProdutoClient({ product }: { product: Product }) {
   const { addToCart, toggleFavorite, favorites } = useCart();
@@ -16,6 +21,14 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const isFavorite = favorites.includes(product.id);
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [currentImage, setCurrentImage] = useState(product.image);
+  const [shared, setShared] = useState(false);
+
+  const gallery = [product.image, ...(product.images ?? [])].filter(Boolean);
+  const off = discountPercent(product.price, product.oldPrice);
+  const category = categories.find(c => c.id === product.category);
+  const related = allProducts
+    .filter(p => p.category === product.category && p.id !== product.id && p.image)
+    .slice(0, 4);
 
   const handleAddToCart = () => {
     if (product.soldOut) return;
@@ -38,22 +51,56 @@ export default function ProdutoClient({ product }: { product: Product }) {
         url: window.location.href
       }).catch(() => {});
     } else {
-      navigator.clipboard?.writeText(window.location.href).catch(() => {});
+      navigator.clipboard?.writeText(window.location.href)
+        .then(() => { setShared(true); setTimeout(() => setShared(false), 2000); })
+        .catch(() => {});
     }
   };
 
-  return (
-    <div className="min-h-screen bg-orange-50">
-      <Header />
+  const whatsappHref = `${contactInfo.whatsapp}?text=${encodeURIComponent(`Olá! Tenho uma dúvida sobre: ${product.name}`)}`;
 
-      {/* Produto */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-2 gap-12 mb-12">
-          {/* Imagem */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg">
-            <div 
-              className="relative aspect-square flex items-center justify-center cursor-pointer group"
+  return (
+    <div className="min-h-screen bg-white">
+      <Header />
+      <CategoryNav currentCategory={product.category} />
+
+      <div className="container mx-auto px-4 pb-16 pt-6">
+        <Breadcrumb
+          items={[
+            { name: 'Início', url: '/' },
+            ...(category ? [{ name: category.name, url: `/${category.id}` }] : []),
+            { name: product.name, url: `/produto/${product.id}` },
+          ]}
+        />
+
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-14">
+          {/* Galeria: miniaturas à esquerda no desktop, abaixo no mobile */}
+          <div className="flex flex-col-reverse gap-3 md:flex-row md:items-start">
+            {gallery.length > 1 && (
+              <ul className="flex gap-2 overflow-x-auto scrollbar-hide md:w-20 md:flex-col md:overflow-visible">
+                {gallery.map((img, index) => (
+                  <li key={img + index} className="flex-shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentImage(img)}
+                      aria-label={`Ver imagem ${index + 1}`}
+                      aria-pressed={currentImage === img}
+                      className={`relative block h-16 w-16 overflow-hidden rounded-md bg-white ring-1 transition md:h-20 md:w-20 ${
+                        currentImage === img ? 'ring-2 ring-ink' : 'ring-line hover:ring-ink/50'
+                      }`}
+                    >
+                      <SmartImage src={productImage(img)} alt="" fill sizes="80px" className="object-contain p-1 mix-blend-multiply" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <button
+              type="button"
+              className="group relative aspect-square w-full flex-1 cursor-zoom-in overflow-hidden rounded-xl bg-white"
               onClick={() => setIsImageExpanded(true)}
+              aria-label="Ampliar imagem"
             >
               <SmartImage
                 src={productImage(currentImage)}
@@ -61,226 +108,144 @@ export default function ProdutoClient({ product }: { product: Product }) {
                 fill
                 priority
                 sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-contain transition-transform group-hover:scale-105"
+                className={`object-contain mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03] ${product.soldOut ? 'opacity-50 grayscale' : ''}`}
               />
-              {product.badge && (
-                <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
-                  {product.badge}
+              {off > 0 && !product.soldOut && (
+                <span className="absolute left-3 top-3 rounded bg-ink px-2.5 py-1.5 text-center text-xs font-bold leading-tight text-white">
+                  {off}%<br />OFF
                 </span>
               )}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3">
-                  <ZoomIn size={24} className="text-gray-900" />
-                </div>
-              </div>
-            </div>
-            
-            {/* Galeria de imagens */}
-            {product.images && product.images.length > 0 && (
-              <div className="mt-4 grid grid-cols-4 gap-2">
-                {/* Imagem principal */}
-                <button
-                  onClick={() => setCurrentImage(product.image)}
-                  className={`relative aspect-square rounded-lg overflow-hidden border-2 transition ${
-                    currentImage === product.image ? 'border-accent' : 'border-gray-200 hover:border-accent'
-                  }`}
-                >
-                  <SmartImage
-                    src={productImage(product.image)}
-                    alt={`${product.name} - principal`}
-                    fill
-                    sizes="(min-width: 1024px) 12vw, 25vw"
-                    className="object-cover"
-                  />
-                </button>
-                {/* Imagens adicionais */}
-                {product.images.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImage(img)}
-                    className={`relative aspect-square rounded-lg overflow-hidden border-2 transition ${
-                      currentImage === img ? 'border-accent' : 'border-gray-200 hover:border-accent'
-                    }`}
-                  >
-                    <SmartImage
-                      src={img}
-                      alt={`${product.name} - ${index + 1}`}
-                      fill
-                      sizes="(min-width: 1024px) 12vw, 25vw"
-                      className="object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
+              <span className="absolute bottom-3 right-3 rounded-full bg-white/90 p-2 text-ink opacity-0 shadow transition-opacity group-hover:opacity-100">
+                <ZoomIn size={20} aria-hidden />
+              </span>
+            </button>
           </div>
 
-          {/* Informações */}
-          <div>
-            <div className="bg-white rounded-2xl p-8 shadow-lg mb-6">
-              <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
-                {brandLabel(product.brand)}
-              </p>
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                {product.name}
-              </h1>
-              
-              <div className="mb-6">
-                {product.oldPrice && (
-                  <p className="text-gray-400 line-through text-xl mb-1">
-                    {formatPrice(product.oldPrice)}
-                  </p>
-                )}
-                <p className="text-5xl font-bold text-accent mb-2">
-                  {formatPrice(product.price)}
-                </p>
-                <p className="text-sm text-gray-600">
-                  ou 3x de {formatPrice(product.price / 3)} sem juros
-                </p>
-              </div>
+          {/* Informações e compra */}
+          <div className="lg:pt-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+              {brandLabel(product.brand)}
+              {product.badge && <span className="ml-2 rounded bg-cream px-1.5 py-0.5 text-ink">{product.badge}</span>}
+            </p>
+            <h1 className="mb-6 text-3xl font-semibold uppercase leading-[1.1] text-ink md:text-4xl">
+              {product.name}
+            </h1>
 
-              {product.soldOut && (
-                <div className="mb-4 bg-gray-900 text-white text-center py-3 px-4 rounded-lg font-bold uppercase tracking-wider text-sm shadow-lg">
-                  Produto Esgotado
-                </div>
-              )}
-
-              <div className="flex gap-4 mb-6">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={product.soldOut}
-                  className={`flex-1 py-4 px-6 rounded-lg font-bold transition shadow-lg flex items-center justify-center gap-2 ${
-                    product.soldOut
-                      ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                      : 'bg-accent text-white hover:bg-secondary'
-                  }`}
-                >
-                  <ShoppingCart size={20} />
-                  {product.soldOut ? 'Indisponível' : 'Adicionar ao Carrinho'}
-                </button>
-                <button 
-                  onClick={() => toggleFavorite(product.id)}
-                  className={`p-4 rounded-lg font-bold transition shadow-lg ${
-                    isFavorite
-                      ? 'bg-accent text-white'
-                      : 'bg-white text-gray-400 hover:text-accent border-2 border-gray-200'
-                  }`}
-                >
-                  <Heart size={24} fill={isFavorite ? 'currentColor' : 'none'} />
-                </button>
-                <button 
-                  onClick={handleShare}
-                  className="p-4 rounded-lg font-bold bg-white text-gray-400 hover:text-accent transition shadow-lg border-2 border-gray-200"
-                >
-                  <Share2 size={24} />
-                </button>
-              </div>
-
-              <div className="border-t pt-6">
-                <h3 className="font-bold text-lg mb-3">Benefícios</h3>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-center gap-2">
-                    ✓ Frete grátis para compras acima de R$ 199
-                  </li>
-                  <li className="flex items-center gap-2">
-                    ✓ Até 3x sem juros no cartão de crédito
-                  </li>
-                  <li className="flex items-center gap-2">
-                    ✓ 5% de desconto no PIX ou Boleto
-                  </li>
-                  <li className="flex items-center gap-2">
-                    ✓ SAC especializado via WhatsApp
-                  </li>
-                </ul>
-              </div>
+            <div className="border-y border-line py-5">
+              <PriceBlock price={product.price} oldPrice={product.oldPrice} size="page" />
             </div>
 
-            <a 
-              href={contactInfo.whatsapp}
+            <div className="mt-6 flex gap-3">
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                disabled={product.soldOut}
+                className={`flex h-14 flex-1 items-center justify-center gap-2 rounded-md text-base font-bold uppercase tracking-wide transition-colors ${
+                  product.soldOut
+                    ? 'cursor-not-allowed bg-line text-ink-soft'
+                    : 'bg-accent text-white hover:bg-secondary active:scale-[0.99]'
+                }`}
+              >
+                <ShoppingCart size={20} aria-hidden />
+                {product.soldOut ? 'Produto esgotado' : 'Comprar'}
+              </button>
+              <button
+                type="button"
+                onClick={() => toggleFavorite(product.id)}
+                aria-pressed={isFavorite}
+                aria-label={isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+                className={`flex h-14 w-14 items-center justify-center rounded-md ring-1 transition ${
+                  isFavorite ? 'text-accent ring-accent' : 'text-ink ring-line hover:ring-ink/50'
+                }`}
+              >
+                <Heart size={22} fill={isFavorite ? 'currentColor' : 'none'} />
+              </button>
+              <button
+                type="button"
+                onClick={handleShare}
+                aria-label={shared ? 'Link copiado' : 'Compartilhar'}
+                title={shared ? 'Link copiado' : 'Compartilhar'}
+                className="flex h-14 w-14 items-center justify-center rounded-md text-ink ring-1 ring-line transition hover:ring-ink/50"
+              >
+                <Share2 size={20} />
+              </button>
+            </div>
+
+            <a
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="block bg-green-500 text-white text-center py-4 px-6 rounded-lg font-bold hover:bg-green-600 transition shadow-lg"
+              className="mt-3 flex h-12 items-center justify-center gap-2 rounded-md bg-paper text-sm font-semibold text-ink ring-1 ring-line transition hover:ring-ink/40"
             >
+              <MessageCircle size={18} className="text-[#1f9d55]" aria-hidden />
               Tire suas dúvidas pelo WhatsApp
             </a>
+
+            <ul className="mt-6 space-y-3 text-sm text-ink-soft">
+              <li className="flex items-center gap-3">
+                <BadgePercent size={18} className="text-primary" aria-hidden />
+                <span><strong className="text-ink">{Math.round(paymentTerms.pixDiscount * 100)}% de desconto</strong> no Pix ou boleto</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <CreditCard size={18} className="text-primary" aria-hidden />
+                <span>Até <strong className="text-ink">{paymentTerms.maxInstallments}x sem juros</strong> no cartão de crédito</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Truck size={18} className="text-primary" aria-hidden />
+                <span><strong className="text-ink">Frete grátis</strong> em compras acima de R$ {paymentTerms.freeShippingFrom}</span>
+              </li>
+            </ul>
           </div>
         </div>
 
         {/* Descrição */}
-        <div className="bg-white rounded-2xl p-8 shadow-lg mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Descrição do Produto</h2>
-          <div className="prose max-w-none">
-            <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-              {product.description}
-            </p>
-          </div>
-        </div>
+        <section className="mx-auto mt-14 max-w-3xl border-t-2 border-ink pt-8">
+          <h2 className="mb-4 text-2xl font-semibold uppercase text-ink">Descrição</h2>
+          <p className="whitespace-pre-line leading-relaxed text-ink-soft">
+            {product.description}
+          </p>
+        </section>
 
-        {/* Produtos Relacionados */}
-        {(() => {
-          const related = allProducts
-            .filter(p => p.category === product.category && p.id !== product.id && p.image)
-            .slice(0, 4);
-          if (related.length === 0) return null;
-          return (
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Produtos Relacionados</h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {related.map(relatedProduct => (
-                  <Link
-                    key={relatedProduct.id}
-                    href={`/produto/${relatedProduct.id}`}
-                    className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition group"
-                  >
-                    <div className="relative h-48 bg-white flex items-center justify-center">
-                      <div className="relative h-32 w-full">
-                        <SmartImage
-                          src={relatedProduct.image}
-                          alt={relatedProduct.name}
-                          fill
-                          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                          className={`object-contain group-hover:scale-110 transition ${relatedProduct.soldOut ? 'opacity-40 grayscale' : ''}`}
-                        />
-                      </div>
-                      {relatedProduct.soldOut && (
-                        <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-fit bg-gray-900/85 text-white px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">
-                          Esgotado
-                        </span>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-sm mb-2 line-clamp-2">
-                        {relatedProduct.name}
-                      </h3>
-                      <p className="text-lg font-bold text-accent">
-                        {formatPrice(relatedProduct.price)}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+        {related.length > 0 && (
+          <section className="mt-16">
+            <div className="mb-6 flex items-end justify-between gap-4">
+              <h2 className="text-2xl font-semibold uppercase text-ink md:text-3xl">Veja também</h2>
+              {category && (
+                <Link href={`/${category.id}`} className="text-sm font-semibold text-accent hover:underline">
+                  Ver tudo em {category.name}
+                </Link>
+              )}
             </div>
-          );
-        })()}
+            <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+              {related.map(relatedProduct => (
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
-      {/* Modal Lightbox */}
       {isImageExpanded && (
-        <div 
-          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center bg-ink/95 p-4"
           onClick={() => setIsImageExpanded(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={product.name}
         >
-          <button 
+          <button
+            type="button"
             onClick={() => setIsImageExpanded(false)}
-            className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition"
+            aria-label="Fechar"
+            className="absolute right-4 top-4 rounded-full bg-white/10 p-3 text-white transition hover:bg-white/20"
           >
             <X size={24} />
           </button>
           {/* eslint-disable-next-line @next/next/no-img-element -- zoom usa a imagem original */}
-          <img 
+          <img
             src={productImage(currentImage)}
             alt={product.name}
-            className="max-h-[90vh] max-w-[90vw] object-contain"
+            className="max-h-[90vh] max-w-[90vw] rounded-lg bg-white object-contain"
             onClick={(e) => e.stopPropagation()}
           />
         </div>

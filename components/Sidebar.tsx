@@ -81,7 +81,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </nav>
 
             {/* Footer da Sidebar */}
-            <div className="p-4 border-t border-gray-200 bg-orange-50">
+            <div className="p-4 border-t border-gray-200 bg-paper">
               <p className="text-xs text-gray-600 text-center">{contactInfo.phoneFormatted}</p>
               <p className="text-xs text-gray-600 text-center">{contactInfo.email}</p>
             </div>

@@ -11,7 +11,7 @@ export default function DynabeatPage() {
   const dynabeatProducts = products.filter(p => p.brand === 'dynabeat');
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
       <Header />
       <CategoryNav currentCategory="baquetas" />
 
@@ -22,17 +22,16 @@ export default function DynabeatPage() {
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">Dynabeat</h1>
+          <h1 className="category-hero__title drop-shadow-lg">Dynabeat</h1>
           <p className="text-xl text-white drop-shadow-md">Baquetas de alta qualidade com excelente custo-benefício</p>
         </div>
       </section>
 
       {/* Produtos */}
-      <section className="py-12 bg-white">
+      <section className="py-10 md:py-12">
         <div className="container mx-auto px-4">
           {dynabeatProducts.length === 0 ? (
             <div className="text-center py-16">
-              <div className="text-6xl mb-4">🥁</div>
               <h2 className="text-2xl font-bold text-gray-900 mb-3">Sem disponibilidade no momento</h2>
               <p className="text-gray-600 mb-8">Estamos atualizando nosso estoque. Em breve teremos novidades!</p>
               <Link href="/" className="inline-block bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition">Voltar para Home</Link>

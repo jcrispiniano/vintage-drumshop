@@ -38,7 +38,7 @@ export default function CaixasPage() {
     allCaixas.filter(p => getCaixaSerie(p.name) === serie).length;
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
       <Header />
       <CategoryNav currentCategory="caixas" />
 
@@ -50,7 +50,7 @@ export default function CaixasPage() {
         />
         <div className="absolute inset-0 bg-black/55" />
         <div className="relative container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">Caixas Profissionais</h1>
+          <h1 className="category-hero__title">Caixas Profissionais</h1>
           <p className="text-xl text-gray-200">
             Pinguim — fabricação nacional de alto desempenho
           </p>
@@ -58,15 +58,15 @@ export default function CaixasPage() {
       </section>
 
       {/* Filtros por série — sticky */}
-      <div className="bg-white border-b border-gray-200 sticky top-[104px] md:top-[132px] z-40">
+      <div className="bg-white border-b border-gray-200 sticky top-[108px] md:top-[124px] z-40">
         <div className="container mx-auto px-4">
           <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide">
             <button
               onClick={() => setFiltro('todas')}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${
                 filtro === 'todas'
-                  ? 'bg-accent text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-ink text-white'
+                  : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
               }`}
             >
               Todas ({allCaixas.length})
@@ -80,8 +80,8 @@ export default function CaixasPage() {
                   onClick={() => setFiltro(serie)}
                   className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${
                     filtro === serie
-                      ? 'bg-accent text-white shadow-md'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-ink text-white'
+                      : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
                   }`}
                 >
                   {SERIE_LABELS[serie]} ({count})
@@ -93,12 +93,11 @@ export default function CaixasPage() {
       </div>
 
       {/* Produtos */}
-      <section className="py-12 bg-white">
+      <section className="py-10 md:py-12">
         <div className="container mx-auto px-4">
           {categoryProducts.length === 0 ? (
             <div className="text-center py-16">
               <div className="bg-white rounded-2xl shadow-lg p-12 max-w-md mx-auto">
-                <div className="text-6xl mb-4">🥁</div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
                   Sem disponibilidade no momento
                 </h2>

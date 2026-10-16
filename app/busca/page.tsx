@@ -57,13 +57,13 @@ function BuscaContent() {
   }
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
 
       <Header />
       <CategoryNav currentCategory="" />
 
       {/* Hero */}
-      <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16">
+      <section className="category-hero">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Search size={48} />

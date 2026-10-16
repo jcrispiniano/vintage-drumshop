@@ -37,7 +37,7 @@ export default function WincentPage() {
     allProducts.filter(p => getStickType(p.name) === type).length;
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
       <Header />
       <CategoryNav currentCategory="baquetas" />
 
@@ -48,18 +48,18 @@ export default function WincentPage() {
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">Wincent</h1>
+          <h1 className="category-hero__title drop-shadow-lg">Wincent</h1>
           <p className="text-xl text-white drop-shadow-md">Baquetas profissionais suecas com madeira de primeira qualidade</p>
         </div>
       </section>
 
       {/* Filtros por tipo */}
-      <div className="bg-white border-b border-gray-200 sticky top-[104px] md:top-[132px] z-40">
+      <div className="bg-white border-b border-gray-200 sticky top-[108px] md:top-[124px] z-40">
         <div className="container mx-auto px-4">
           <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide">
             <button
               onClick={() => setActiveType('todos')}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${activeType === 'todos' ? 'bg-accent text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${activeType === 'todos' ? 'bg-ink text-white' : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'}`}
             >
               Todos ({allProducts.length})
             </button>
@@ -70,7 +70,7 @@ export default function WincentPage() {
                 <button
                   key={type}
                   onClick={() => setActiveType(type)}
-                  className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${activeType === type ? 'bg-accent text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                  className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${activeType === type ? 'bg-ink text-white' : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'}`}
                 >
                   {TYPE_LABELS[type]} ({count})
                 </button>
@@ -81,7 +81,7 @@ export default function WincentPage() {
       </div>
 
       {/* Produtos */}
-      <section className="py-12 bg-white">
+      <section className="py-10 md:py-12">
         <div className="container mx-auto px-4">
           <p className="text-sm text-gray-400 mb-6">{filtered.length} {filtered.length === 1 ? 'produto' : 'produtos'} encontrados</p>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">

@@ -39,30 +39,30 @@ export default function PratosPage() {
     allPratos.filter(p => getCymbalType(p.name) === type).length;
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
       <Header />
       <CategoryNav currentCategory="pratos" />
 
       {/* Hero */}
-      <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16">
+      <section className="category-hero">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">Pratos Profissionais</h1>
-          <p className="text-xl text-gray-300">
+          <h1 className="category-hero__title">Pratos Profissionais</h1>
+          <p className="category-hero__lead">
             Istanbul Agop — artesanato turco feito à mão há gerações
           </p>
         </div>
       </section>
 
       {/* Filtros por tipo — sticky */}
-      <div className="bg-white border-b border-gray-200 sticky top-[104px] md:top-[132px] z-40">
+      <div className="bg-white border-b border-gray-200 sticky top-[108px] md:top-[124px] z-40">
         <div className="container mx-auto px-4">
           <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide">
             <button
               onClick={() => setActiveType('todos')}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${
                 activeType === 'todos'
-                  ? 'bg-accent text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-ink text-white'
+                  : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
               }`}
             >
               Todos ({allPratos.length})
@@ -76,8 +76,8 @@ export default function PratosPage() {
                   onClick={() => setActiveType(type)}
                   className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${
                     activeType === type
-                      ? 'bg-accent text-white shadow-md'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-ink text-white'
+                      : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
                   }`}
                 >
                   {TYPE_LABELS[type]} ({count})
@@ -89,11 +89,10 @@ export default function PratosPage() {
       </div>
 
       {/* Grid de produtos */}
-      <section className="py-12 bg-white">
+      <section className="py-10 md:py-12">
         <div className="container mx-auto px-4">
           {filtered.length === 0 ? (
             <div className="text-center py-16">
-              <div className="text-5xl mb-4">🥁</div>
               <p className="text-gray-500 text-lg">Nenhum produto nessa categoria no momento.</p>
             </div>
           ) : (

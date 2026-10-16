@@ -6,7 +6,7 @@ import { contactInfo } from '@/lib/products';
 export default function TrocasDevolucoes() {
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
       <Header />
       <CategoryNav currentCategory="" />
 
@@ -126,7 +126,7 @@ export default function TrocasDevolucoes() {
               <p className="mb-2">Horário de atendimento: {contactInfo.hours}</p>
             </address>
 
-            <div className="bg-orange-50 border-l-4 border-accent p-6 rounded-lg mt-8">
+            <div className="bg-cream p-6 rounded-xl mt-8">
               <p className="text-gray-700 font-semibold mb-2">📞 Atendimento rápido via WhatsApp</p>
               <p className="text-gray-600 mb-4">
                 Para um atendimento mais ágil, envie sua solicitação diretamente pelo WhatsApp.

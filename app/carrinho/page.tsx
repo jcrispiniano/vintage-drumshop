@@ -56,7 +56,7 @@ export default function CarrinhoPage() {
   };
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
       {/* Header */}
 
       <Header />
@@ -171,8 +171,8 @@ export default function CarrinhoPage() {
                     </span>
                   </div>
                   {subtotal < 199 && (
-                    <p className="text-xs text-gray-500 bg-orange-50 p-2 rounded">
-                      💡 Falta {formatPrice(199 - subtotal)} para frete grátis!
+                    <p className="text-xs text-ink-soft bg-cream p-2 rounded">
+                      Falta {formatPrice(199 - subtotal)} para frete grátis!
                     </p>
                   )}
                 </div>
