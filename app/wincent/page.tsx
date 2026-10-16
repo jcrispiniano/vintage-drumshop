@@ -44,7 +44,7 @@ export default function WincentPage() {
       {/* Hero com imagem de fundo */}
       <section className="relative overflow-hidden border-b-[3px] border-brass bg-ink py-24 text-white md:py-36">
         <div className="absolute inset-0">
-          <SmartImage src="/fotos/banner-wincent.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
+          <SmartImage src="/fotos/hero-wincent.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-[rgba(28,17,10,0.5)]"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">

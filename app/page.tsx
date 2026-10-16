@@ -12,25 +12,25 @@ import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 import { ArrowRight, ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
 
-// Fotos do ensaio da Vintage com o Daniel (public/fotos)
+// Fotos do ensaio da Vintage (public/fotos)
 const heroSlides = [
-  { image: '/fotos/hero-daniel-pratos.jpg', alt: 'Daniel sentado no pufe de couro segurando um prato Istanbul Agop', position: '50% 30%' },
-  { image: '/fotos/hero-daniel-baquetas.jpg', alt: 'Daniel recolhendo baquetas espalhadas pelo chão ao lado de um prato Istanbul', position: '50% 50%' },
-  { image: '/fotos/hero-daniel-caixas.jpg', alt: 'Daniel no pufe de couro ao lado de uma pilha de caixas de bateria', position: '50% 45%' },
-  { image: '/fotos/hero-pratos-xist.jpg', alt: 'Daniel atrás de pratos Istanbul Agop Xist', position: '50% 40%' },
-  { image: '/fotos/hero-caixa-ludwig.jpg', alt: 'Daniel segurando uma caixa de bateria cromada', position: '50% 45%' },
-  { image: '/fotos/hero-daniel-wincent.jpg', alt: 'Daniel com baquetas Wincent pretas e brancas à frente do rosto', position: '50% 35%' },
+  { image: '/fotos/hero-baquetas-couro.jpg', alt: 'Baquetas Wincent sobre o sofá de couro, com um prato ao fundo', position: '50% 60%' },
+  { image: '/fotos/hero-caixa-martelada.jpg', alt: 'Caixa de bateria com casco martelado cromado', position: '50% 50%' },
+  { image: '/fotos/hero-daniel-baquetas.jpg', alt: 'Daniel recolhendo baquetas espalhadas ao lado de um prato Istanbul Agop', position: '50% 50%' },
+  { image: '/fotos/hero-wincent.jpg', alt: 'Baquetas Wincent 5A e 5B empilhadas', position: '50% 50%' },
+  { image: '/fotos/hero-caixa-preta.jpg', alt: 'Caixa de bateria preta com detalhes em latão', position: '50% 55%' },
+  { image: '/fotos/hero-baquetas-mesa.jpg', alt: 'Baquetas Wincent e Dynabeat espalhadas sobre a mesa', position: '50% 50%' },
 ];
 
 const SLIDE_MS = 6000;
 
 // Foto de cada atalho de categoria (independe de haver produto com foto cadastrado)
 const CATEGORY_PHOTOS: Record<string, { image: string; position?: string }> = {
-  pratos: { image: '/fotos/cat-pratos.jpg', position: '50% 40%' },
+  pratos: { image: '/fotos/cat-pratos-pufe.jpg', position: '50% 55%' },
   baquetas: { image: '/fotos/cat-baquetas.jpg' },
-  caixas: { image: '/fotos/cat-caixas.jpg', position: '50% 55%' },
+  caixas: { image: '/fotos/cat-caixas-sofa.jpg', position: '50% 70%' },
   peles: { image: '/fotos/cat-peles.jpg', position: '50% 45%' },
-  baterias: { image: '/fotos/cat-baterias.jpg', position: '50% 40%' },
+  baterias: { image: '/fotos/cat-baterias-kit.jpg', position: '50% 30%' },
   acessorios: { image: '/fotos/cat-acessorios.jpg' },
 };
 const CATEGORY_ORDER = ['pratos', 'baquetas', 'caixas', 'peles', 'baterias', 'acessorios'];
@@ -269,11 +269,11 @@ export default function Home() {
           />
           <PhotoPanel
             href="/wincent"
-            image="/fotos/ed-wincent.jpg"
-            alt="Daniel segurando baquetas Wincent diante da câmera"
+            image="/fotos/ed-wincent-couro.jpg"
+            alt="Baquetas Wincent sobre o sofá de couro, com pratos ao fundo"
             title="Wincent"
             text="Baquetas suecas com madeira selecionada e equilíbrio para todos os estilos."
-            position="50% 35%"
+            position="50% 70%"
           />
         </section>
 
