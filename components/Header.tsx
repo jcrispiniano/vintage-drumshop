@@ -4,12 +4,13 @@ import SmartImage from '@/components/SmartImage';
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
-import { Product, formatPrice, contactInfo, productImage, paymentTerms, pixPrice } from '@/lib/products';
+import { Product, formatPrice, contactInfo, productImage, pixPrice } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { searchScore } from '@/lib/productText';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import Sidebar from '@/components/Sidebar';
+import AnnouncementBar from '@/components/AnnouncementBar';
 
 const redirectMap: { [key: string]: string } = {
   'baterias': '/baterias', 'bateria': '/baterias',
@@ -126,20 +127,12 @@ export default function Header() {
   const closeSidebar = useCallback(() => setIsSidebarOpen(false), []);
   const { cartItems, favorites } = useCart();
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const pixOff = Math.round(paymentTerms.pixDiscount * 100);
 
   return (
     <>
       <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
 
-      {/* Barra de aviso (padrão "Primeira compra? ... PRIMEIRA" da referência) */}
-      <div className="bg-primary text-white">
-        <p className="container mx-auto flex flex-wrap items-center justify-center gap-x-2 px-4 py-2.5 text-center text-[13px] tracking-wide md:text-[15px]">
-          <span><strong className="font-bold">{pixOff}% OFF</strong> no Pix<span className="hidden sm:inline"> ou boleto</span></span>
-          <span aria-hidden className="text-[#E9B872]">✦</span>
-          <span><strong className="font-bold">{paymentTerms.maxInstallments}x sem juros</strong><span className="hidden sm:inline"> no cartão</span></span>
-        </p>
-      </div>
+      <AnnouncementBar />
 
       <header className="sticky top-0 z-[65] border-b border-line bg-white">
         <div className="container mx-auto flex h-16 items-center gap-3 px-4 md:h-20 md:gap-8">
