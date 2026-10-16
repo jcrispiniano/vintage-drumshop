@@ -67,49 +67,52 @@
   animation: shimmer 1.5s infinite;
 }
 
-/* clip (e não hidden) para não criar um scroll container e quebrar position: sticky */
-html, body {
-  scroll-behavior: smooth;
-  overflow-x: clip;
-  max-width: 100%;
-}
+/* Estilos de elemento ficam em @layer base para as classes utilitárias poderem sobrescrevê-los */
+@layer base {
+  /* clip (e não hidden) para não criar um scroll container e quebrar position: sticky */
+  html, body {
+    scroll-behavior: smooth;
+    overflow-x: clip;
+    max-width: 100%;
+  }
 
-body {
-  font-family: var(--font-sans);
-  background: var(--color-paper);
-  color: var(--color-ink);
-}
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
 
-h1, h2 {
-  font-family: var(--font-display);
-  letter-spacing: 0.01em;
-  text-wrap: balance;
-}
+  h1, h2 {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+  }
 
-h3, h4, h5, h6 {
-  font-family: var(--font-sans);
-}
+  h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+  }
 
-::selection {
-  background: var(--color-accent);
-  color: #fff;
-}
+  ::selection {
+    background: var(--color-accent);
+    color: #fff;
+  }
 
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
 
-input, textarea {
-  caret-color: var(--color-accent);
-}
+  input, textarea {
+    caret-color: var(--color-accent);
+  }
 
-a {
-  text-underline-offset: 3px;
-}
+  a {
+    text-underline-offset: 3px;
+  }
 
-* {
-  scrollbar-color: #c9b69c transparent;
+  * {
+    scrollbar-color: #c9b69c transparent;
+  }
 }
 
 /* Banner das páginas de categoria: faixa espresso com filete de latão. */
@@ -120,6 +123,21 @@ a {
   color: #fff;
   padding: 3rem 0 2.75rem;
   border-bottom: 3px solid var(--color-brass);
+}
+
+/* Variante com foto do ensaio: --hero-img definido na página */
+.category-hero--photo {
+  background:
+    linear-gradient(0deg, rgba(28, 17, 10, 0.78), rgba(28, 17, 10, 0.45)),
+    var(--hero-img) center 40% / cover no-repeat,
+    var(--color-ink);
+  padding: 6rem 0 5rem;
+}
+
+@media (min-width: 768px) {
+  .category-hero--photo {
+    padding: 9rem 0 8rem;
+  }
 }
 
 .category-hero__title {

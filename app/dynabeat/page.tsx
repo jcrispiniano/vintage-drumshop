@@ -16,10 +16,10 @@ export default function DynabeatPage() {
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero com imagem de fundo */}
-      <section className="relative bg-gray-900 text-white py-16 overflow-hidden">
+      <section className="relative overflow-hidden border-b-[3px] border-brass bg-ink py-24 text-white md:py-36">
         <div className="absolute inset-0">
-          <SmartImage src="/banner/dynabeat-bg.jpg" alt="Dynabeat Background" fill priority sizes="100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-black/40"></div>
+          <SmartImage src="/fotos/banner-dynabeat.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
+          <div className="absolute inset-0 bg-[rgba(28,17,10,0.5)]"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="category-hero__title drop-shadow-lg">Dynabeat</h1>
@@ -38,7 +38,7 @@ export default function DynabeatPage() {
             </div>
           ) : (
             <>
-              <p className="text-sm text-gray-400 mb-6">{dynabeatProducts.length} {dynabeatProducts.length === 1 ? 'produto' : 'produtos'} encontrados</p>
+              <h2 className="mb-6 font-sans text-sm font-normal tracking-normal text-ink-soft">{dynabeatProducts.length} {dynabeatProducts.length === 1 ? 'produto' : 'produtos'} encontrados</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                 {dynabeatProducts.map(product => <ProductCard key={product.id} product={product} typeLabel="Baqueta" />)}
               </div>

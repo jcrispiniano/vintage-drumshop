@@ -36,10 +36,10 @@ export default function Footer() {
 
         <nav aria-label="Categorias">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-white">Categorias</h2>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-0.5 text-sm">
             {categories.slice(0, 6).map(cat => (
               <li key={cat.id}>
-                <Link href={`/${cat.id}`} className="hover:text-white hover:underline">{cat.name}</Link>
+                <Link href={`/${cat.id}`} className="inline-flex min-h-9 items-center hover:text-white hover:underline">{cat.name}</Link>
               </li>
             ))}
           </ul>
@@ -47,11 +47,11 @@ export default function Footer() {
 
         <nav aria-label="Institucional">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-white">Atendimento</h2>
-          <ul className="space-y-2 text-sm">
-            <li><Link href="/trocas-e-devolucoes" className="hover:text-white hover:underline">Trocas e devoluções</Link></li>
-            <li><Link href="/politica-de-privacidade" className="hover:text-white hover:underline">Política de privacidade</Link></li>
-            <li><Link href="/termos-de-uso" className="hover:text-white hover:underline">Termos de uso</Link></li>
-            <li><Link href="/favoritos" className="hover:text-white hover:underline">Meus favoritos</Link></li>
+          <ul className="space-y-0.5 text-sm">
+            <li><Link href="/trocas-e-devolucoes" className="inline-flex min-h-9 items-center hover:text-white hover:underline">Trocas e devoluções</Link></li>
+            <li><Link href="/politica-de-privacidade" className="inline-flex min-h-9 items-center hover:text-white hover:underline">Política de privacidade</Link></li>
+            <li><Link href="/termos-de-uso" className="inline-flex min-h-9 items-center hover:text-white hover:underline">Termos de uso</Link></li>
+            <li><Link href="/favoritos" className="inline-flex min-h-9 items-center hover:text-white hover:underline">Meus favoritos</Link></li>
           </ul>
         </nav>
 

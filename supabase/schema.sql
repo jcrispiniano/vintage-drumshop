@@ -13,6 +13,7 @@ create table if not exists public.products (
   old_price   numeric(10, 2),
   image       text        not null,
   images      text[],
+  audio       text,
   badge       text,
   description text        not null,
   featured    boolean     not null default false,
@@ -27,6 +28,8 @@ alter table public.products
   add column if not exists sold_out boolean not null default false;
 alter table public.products
   add column if not exists images text[];
+alter table public.products
+  add column if not exists audio text;
 
 -- Trigger para atualizar updated_at automaticamente
 create or replace function public.set_updated_at()

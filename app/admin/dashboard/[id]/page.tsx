@@ -17,6 +17,7 @@ interface DbProduct {
   featured: boolean
   active: boolean
   sold_out?: boolean
+  audio?: string | null
 }
 
 export default function EditProductPage() {
@@ -75,6 +76,7 @@ export default function EditProductPage() {
         featured: product.featured,
         active: product.active,
         soldOut: product.sold_out ?? false,
+        audio: product.audio ?? '',
       }}
     />
   )

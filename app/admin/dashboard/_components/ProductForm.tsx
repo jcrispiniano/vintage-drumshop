@@ -33,6 +33,7 @@ interface FormData {
   featured: boolean
   active: boolean
   soldOut: boolean
+  audio: string
 }
 
 interface ProductFormProps {
@@ -43,7 +44,72 @@ interface ProductFormProps {
 const emptyForm: FormData = {
   name: '', category: 'pratos', brand: 'istanbul',
   price: '', oldPrice: '', image: '', badge: '',
-  description: '', featured: false, active: true, soldOut: false,
+  description: '', featured: false, active: true, soldOut: false, audio: '',
+}
+
+function AudioUploader({
+  value,
+  category,
+  onChange,
+}: {
+  value: string
+  category: string
+  onChange: (url: string) => void
+}) {
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState('')
+
+  async function uploadFile(file: File) {
+    setUploading(true)
+    setUploadError('')
+    const fd = new FormData()
+    fd.append('file', file)
+    fd.append('category', category)
+    try {
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) setUploadError(data.error ?? `Erro ao enviar áudio (HTTP ${res.status}).`)
+      else onChange(data.url)
+    } catch {
+      setUploadError('Falha de conexão ao enviar áudio.')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      <label className="label">
+        Áudio do produto <span className="text-gray-400 font-normal">opcional · MP3 ou M4A até 4MB, de 5 a 15 segundos</span>
+      </label>
+      <div className="flex flex-wrap items-center gap-3">
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">
+          <Upload size={16} /> {uploading ? 'Enviando...' : 'Enviar áudio'}
+          <input
+            type="file"
+            accept="audio/*"
+            className="sr-only"
+            disabled={uploading}
+            onChange={e => e.target.files?.[0] && uploadFile(e.target.files[0])}
+          />
+        </label>
+        {value && (
+          <button type="button" onClick={() => onChange('')} className="text-sm text-red-600 hover:underline">
+            Remover áudio
+          </button>
+        )}
+      </div>
+      <input
+        type="url"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder="ou cole o link do áudio"
+        className="input"
+      />
+      {value && <audio controls src={value} className="w-full" preload="none" />}
+      {uploadError && <p className="text-sm text-red-600">{uploadError}</p>}
+    </div>
+  )
 }
 
 function ImageUploader({
@@ -216,6 +282,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
       featured: form.featured,
       active: form.active,
       soldOut: form.soldOut,
+      audio: form.audio.trim() || null,
     }
 
     const url = mode === 'edit' && initialData?.id
@@ -344,13 +411,19 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-5">
             <h2 className="font-bold text-gray-800 text-sm uppercase tracking-wide flex items-center gap-2">
               <ImageIcon size={16} />
-              Imagem e Badge
+              Imagem, áudio e badge
             </h2>
 
             <ImageUploader
               value={form.image}
               category={form.category}
               onChange={url => set('image', url)}
+            />
+
+            <AudioUploader
+              value={form.audio}
+              category={form.category}
+              onChange={url => set('audio', url)}
             />
 
             <div>

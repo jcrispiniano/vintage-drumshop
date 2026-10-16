@@ -17,7 +17,7 @@ export default function VassourinhasPage() {
       <Header />
       <CategoryNav currentCategory="baquetas" />
 
-      <section className="category-hero">
+      <section className="category-hero category-hero--photo" style={{ '--hero-img': "url('/images/brushes-wincent-collection.jpg')" } as React.CSSProperties}>
         <div className="container mx-auto px-4 text-center">
           <h1 className="category-hero__title">Vassourinhas</h1>
           <p className="category-hero__lead">Brushes Wincent para sons suaves e dinâmicos</p>
@@ -34,7 +34,7 @@ export default function VassourinhasPage() {
             </div>
           ) : (
             <>
-              <p className="text-sm text-gray-400 mb-6">{vassouras.length} {vassouras.length === 1 ? 'produto' : 'produtos'} encontrados</p>
+              <h2 className="mb-6 font-sans text-sm font-normal tracking-normal text-ink-soft">{vassouras.length} {vassouras.length === 1 ? 'produto' : 'produtos'} encontrados</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                 {vassouras.map(product => (
                   <ProductCard key={product.id} product={product} typeLabel="Vassourinha" />

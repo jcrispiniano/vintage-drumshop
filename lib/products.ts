@@ -11,6 +11,7 @@ export interface Product {
   description: string;
   featured?: boolean;
   soldOut?: boolean;
+  audio?: string; // URL de um áudio curto do produto ("Ouça antes de comprar")
 }
 
 export const products: Product[] = [

@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { BadgePercent, CreditCard, Heart, MessageCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
-import { Product, contactInfo, discountPercent, paymentTerms, productImage } from '@/lib/products';
+import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
+import { Product, contactInfo, discountPercent, formatPrice, paymentTerms, pixPrice, productImage } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
@@ -64,7 +64,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
       <Header />
       <CategoryNav currentCategory={product.category} />
 
-      <div className="container mx-auto px-4 pb-16 pt-6">
+      <div className="container mx-auto px-4 pb-28 pt-6 md:pb-16">
         <Breadcrumb
           items={[
             { name: 'Início', url: '/' },
@@ -89,7 +89,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
                         currentImage === img ? 'ring-2 ring-ink' : 'ring-line hover:ring-ink/50'
                       }`}
                     >
-                      <SmartImage src={productImage(img)} alt="" fill sizes="80px" className="object-contain p-1 mix-blend-multiply" />
+                      <SmartImage src={productImage(img)} alt="" fill sizes="80px" className="object-cover" />
                     </button>
                   </li>
                 ))}
@@ -98,17 +98,25 @@ export default function ProdutoClient({ product }: { product: Product }) {
 
             <button
               type="button"
-              className="group relative aspect-square w-full flex-1 cursor-zoom-in overflow-hidden rounded-xl bg-white"
+              className="group relative aspect-square w-full flex-1 cursor-zoom-in overflow-hidden rounded-xl bg-cream"
               onClick={() => setIsImageExpanded(true)}
               aria-label="Ampliar imagem"
             >
+              <SmartImage
+                src={productImage(currentImage)}
+                alt=""
+                fill
+                sizes="10vw"
+                className="scale-110 object-cover opacity-60 blur-2xl"
+                aria-hidden
+              />
               <SmartImage
                 src={productImage(currentImage)}
                 alt={product.name}
                 fill
                 priority
                 sizes="(min-width: 1024px) 50vw, 100vw"
-                className={`object-contain mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-[1.03] ${product.soldOut ? 'opacity-50 grayscale' : ''}`}
+                className={`object-contain transition-transform duration-500 ease-out group-hover:scale-[1.03] ${product.soldOut ? 'opacity-50 grayscale' : ''}`}
               />
               {off > 0 && !product.soldOut && (
                 <span className="absolute left-3 top-3 rounded bg-ink px-2.5 py-1.5 text-center text-xs font-bold leading-tight text-white">
@@ -134,6 +142,17 @@ export default function ProdutoClient({ product }: { product: Product }) {
             <div className="border-y border-line py-5">
               <PriceBlock price={product.price} oldPrice={product.oldPrice} size="page" />
             </div>
+
+            {product.audio && (
+              <div className="mt-5 rounded-lg bg-cream p-4">
+                <p className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink">
+                  <Headphones size={18} className="text-primary" aria-hidden /> Ouça antes de comprar
+                </p>
+                <audio controls preload="none" src={product.audio} className="w-full" aria-label={`Áudio de ${product.name}`}>
+                  Seu navegador não toca áudio.
+                </audio>
+              </div>
+            )}
 
             <div className="mt-6 flex gap-3">
               <button
@@ -199,7 +218,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
         </div>
 
         {/* Descrição */}
-        <section className="mx-auto mt-14 max-w-3xl border-t-2 border-ink pt-8">
+        <section className="mx-auto mt-14 max-w-[68ch] border-t-2 border-ink pt-8">
           <h2 className="mb-4 text-2xl font-semibold uppercase text-ink">Descrição</h2>
           <p className="whitespace-pre-line leading-relaxed text-ink-soft">
             {product.description}
@@ -224,6 +243,23 @@ export default function ProdutoClient({ product }: { product: Product }) {
           </section>
         )}
       </div>
+
+      {/* Barra de compra fixa no celular */}
+      {!product.soldOut && (
+        <div className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-line bg-white/95 px-4 py-3 backdrop-blur md:hidden">
+          <p className="min-w-0 flex-1 leading-tight tabular-nums">
+            <span className="block text-lg font-bold text-accent">{formatPrice(pixPrice(product.price))}</span>
+            <span className="text-xs text-ink-soft">no Pix · ou {paymentTerms.maxInstallments}x sem juros</span>
+          </p>
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className="flex h-12 items-center gap-2 rounded-md bg-accent px-6 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary"
+          >
+            <ShoppingCart size={18} aria-hidden /> Comprar
+          </button>
+        </div>
+      )}
 
       {isImageExpanded && (
         <div

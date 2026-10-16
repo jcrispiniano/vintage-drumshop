@@ -63,7 +63,7 @@ export default function BagsPage() {
             </div>
           ) : (
             <>
-              <p className="text-sm text-gray-400 mb-6">{filtered.length} {filtered.length === 1 ? 'produto' : 'produtos'} encontrados</p>
+              <h2 className="mb-6 font-sans text-sm font-normal tracking-normal text-ink-soft">{filtered.length} {filtered.length === 1 ? 'produto' : 'produtos'} encontrados</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                 {filtered.map(product => <ProductCard key={product.id} product={product} />)}
               </div>

@@ -43,15 +43,15 @@ export default function CaixasPage() {
       <CategoryNav currentCategory="caixas" />
 
       {/* Hero */}
-      <section className="relative text-white py-20 overflow-hidden">
+      <section className="relative overflow-hidden border-b-[3px] border-brass py-24 text-white md:py-36">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/banner/caixas-hero.jpg')" }}
+          style={{ backgroundImage: "url('/fotos/banner-caixas.jpg')" }}
         />
-        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-[rgba(28,17,10,0.55)]" />
         <div className="relative container mx-auto px-4 text-center">
           <h1 className="category-hero__title">Caixas Profissionais</h1>
-          <p className="text-xl text-gray-200">
+          <p className="category-hero__lead">
             Pinguim — fabricação nacional de alto desempenho
           </p>
         </div>
@@ -111,9 +111,9 @@ export default function CaixasPage() {
             </div>
           ) : (
             <>
-              <p className="text-sm text-gray-400 mb-6">
+              <h2 className="mb-6 font-sans text-sm font-normal tracking-normal text-ink-soft">
                 {categoryProducts.length} {categoryProducts.length === 1 ? 'produto' : 'produtos'} encontrados
-              </p>
+              </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                 {categoryProducts.map(product => (
                   <ProductCard

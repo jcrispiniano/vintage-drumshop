@@ -3,7 +3,7 @@
 import SmartImage from '@/components/SmartImage';
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Product, formatPrice, contactInfo, productImage, paymentTerms, pixPrice } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { useRouter } from 'next/navigation';
@@ -76,7 +76,7 @@ function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {
         id={`busca-${variant}`}
         type="search"
         autoComplete="off"
-        placeholder={isMobile ? 'Olá, o que você procura?' : 'Buscar produtos, marcas...'}
+        placeholder="Olá, o que você procura?"
         value={searchTerm}
         onChange={(e) => handleSearch(e.target.value)}
         onFocus={() => searchResults.length > 0 && setShowSearchResults(true)}
@@ -90,7 +90,7 @@ function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {
       <button
         type="submit"
         aria-label="Buscar"
-        className={`absolute right-1 top-1/2 -translate-y-1/2 p-2 ${isMobile ? 'text-cream' : 'text-ink-soft hover:text-accent'}`}
+        className={`absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center ${isMobile ? 'text-cream' : 'text-ink-soft hover:text-accent'}`}
       >
         <Search size={isMobile ? 22 : 18} />
       </button>
@@ -123,13 +123,14 @@ function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {
 
 export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const closeSidebar = useCallback(() => setIsSidebarOpen(false), []);
   const { cartItems, favorites } = useCart();
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const pixOff = Math.round(paymentTerms.pixDiscount * 100);
 
   return (
     <>
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
 
       {/* Barra de aviso (padrão "Primeira compra? ... PRIMEIRA" da referência) */}
       <div className="border-b border-line bg-cream text-ink">
@@ -143,7 +144,7 @@ export default function Header() {
         <div className="container mx-auto flex h-16 items-center gap-3 px-4 md:h-20 md:gap-8">
           <button
             onClick={() => setIsSidebarOpen(prev => !prev)}
-            className="-ml-2 rounded-md p-2 text-ink transition hover:bg-paper md:hidden"
+            className="-ml-2 flex h-11 w-11 items-center justify-center rounded-md text-ink transition hover:bg-paper md:hidden"
             aria-label={isSidebarOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={isSidebarOpen}
           >
@@ -170,26 +171,26 @@ export default function Header() {
               href={contactInfo.instagram}
               target="_blank"
               rel="noopener noreferrer me"
-              className="hidden rounded-md p-2 text-ink transition hover:text-accent lg:block"
+              className="hidden h-11 w-11 items-center justify-center rounded-md text-ink transition hover:text-accent lg:flex"
               aria-label="Instagram da Vintage Drum Shop"
             >
               <Instagram size={22} />
             </a>
             <Link
               href="/favoritos"
-              className="relative rounded-md p-2 text-ink transition hover:text-accent"
+              className="relative flex h-11 w-11 items-center justify-center rounded-md text-ink transition hover:text-accent"
               aria-label={`Favoritos (${favorites.length})`}
             >
               <Heart size={22} fill={favorites.length > 0 ? 'currentColor' : 'none'} />
               {favorites.length > 0 && (
-                <span className="absolute right-0 top-0 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 text-[11px] font-bold text-white">
+                <span className="absolute right-0.5 top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 text-[11px] font-bold text-white">
                   {favorites.length}
                 </span>
               )}
             </Link>
             <Link
               href="/carrinho"
-              className="flex items-center gap-1.5 rounded-md p-2 text-ink transition hover:text-accent"
+              className="flex h-11 items-center gap-1.5 rounded-md px-2 text-ink transition hover:text-accent"
               aria-label={`Carrinho (${cartCount} ${cartCount === 1 ? 'item' : 'itens'})`}
             >
               <ShoppingCart size={24} />

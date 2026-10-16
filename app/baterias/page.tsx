@@ -21,7 +21,7 @@ export default function BateriasPage() {
       <Header />
       <CategoryNav currentCategory="baterias" />
 
-      <section className="category-hero">
+      <section className="category-hero category-hero--photo" style={{ '--hero-img': "url('/fotos/banner-baterias.jpg')" } as React.CSSProperties}>
         <div className="container mx-auto px-4 text-center">
           <h1 className="category-hero__title">Baterias Profissionais</h1>
           <p className="category-hero__lead">Baterias completas para todos os estilos musicais</p>
@@ -62,7 +62,7 @@ export default function BateriasPage() {
             </div>
           ) : (
             <>
-              <p className="text-sm text-gray-400 mb-6">{filtered.length} {filtered.length === 1 ? 'produto' : 'produtos'} encontrados</p>
+              <h2 className="mb-6 font-sans text-sm font-normal tracking-normal text-ink-soft">{filtered.length} {filtered.length === 1 ? 'produto' : 'produtos'} encontrados</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                 {filtered.map(product => <ProductCard key={product.id} product={product} />)}
               </div>

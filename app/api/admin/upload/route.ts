@@ -14,8 +14,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Nenhum arquivo enviado' }, { status: 400 })
   }
 
-  if (!file.type.startsWith('image/')) {
-    return NextResponse.json({ error: 'Apenas imagens são permitidas' }, { status: 400 })
+  const isAudio = file.type.startsWith('audio/')
+  if (!file.type.startsWith('image/') && !isAudio) {
+    return NextResponse.json({ error: 'Envie uma imagem ou um áudio (MP3, M4A)' }, { status: 400 })
   }
 
   if (file.size > MAX_SIZE_MB * 1024 * 1024) {
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .slice(0, 40)
-  const pathname = `produtos/${category}/${safeName}-${Date.now()}.${ext}`
+  const pathname = `${isAudio ? 'audios' : 'produtos'}/${category}/${safeName}-${Date.now()}.${ext}`
 
   const blob = await put(pathname, file, {
     access: 'public',

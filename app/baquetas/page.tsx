@@ -57,7 +57,7 @@ export default function BaquetasPage() {
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero */}
-      <section className="category-hero">
+      <section className="category-hero category-hero--photo" style={{ '--hero-img': "url('/fotos/banner-baquetas.jpg')" } as React.CSSProperties}>
         <div className="container mx-auto px-4 text-center">
           <h1 className="category-hero__title">Baquetas Profissionais</h1>
           <p className="category-hero__lead">
@@ -133,9 +133,9 @@ export default function BaquetasPage() {
             </div>
           ) : (
             <>
-              <p className="text-sm text-gray-400 mb-6">
+              <h2 className="mb-6 font-sans text-sm font-normal tracking-normal text-ink-soft">
                 {filtered.length} {filtered.length === 1 ? 'produto' : 'produtos'} encontrados
-              </p>
+              </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                 {filtered.map(product => (
                   <ProductCard
