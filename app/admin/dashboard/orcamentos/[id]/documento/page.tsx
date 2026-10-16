@@ -106,7 +106,7 @@ export default function DocumentoOrcamentoPage() {
             <p className="mt-1 text-[12px] font-semibold tracking-wide opacity-70" style={{ color: MAROON }}>{quoteNumber(quote.id)}</p>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element -- img comum imprime com fidelidade */}
-          <img src="/fotos/cat-caixas-sofa.jpg" alt="" className="h-[62mm] w-[48mm] flex-shrink-0 object-cover" />
+          <img src="/logo-documento.png" alt="Vintage Drum Shop" className="mt-1 w-[52mm] flex-shrink-0" />
         </header>
 
         <table className="mt-[12mm] w-full border-collapse text-[12.5px] leading-snug">
@@ -151,7 +151,7 @@ export default function DocumentoOrcamentoPage() {
           <div className="h-[3px] w-full" style={{ backgroundColor: MAROON }} />
           <div className="mt-[6mm] flex items-center gap-[8mm]">
             {/* eslint-disable-next-line @next/next/no-img-element -- img comum imprime com fidelidade */}
-            <img src="/logo-header.png" alt="Vintage Drum Shop" className="h-[22mm] w-auto flex-shrink-0" />
+            <img src="/logo-documento.png" alt="" className="h-[22mm] w-auto flex-shrink-0" />
             <div className="h-[18mm] w-[2px] flex-shrink-0 bg-[#2B1D14]" />
             <p className="text-[24px] font-bold tracking-[-0.01em]" style={{ color: MAROON }}>{quoteCompany.instagram}</p>
             <div className="ml-auto text-[17px] leading-tight" style={{ color: MAROON }}>
