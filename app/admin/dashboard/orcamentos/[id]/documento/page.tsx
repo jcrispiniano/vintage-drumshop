@@ -9,7 +9,7 @@ import { formatPrice } from '@/lib/products'
 
 // Cores do modelo do Canva
 const MAROON = '#6B2511'
-const PAPER = '#ECE4D9'
+const PAPER = '#EDE2D1'
 
 /** Texto curto do orçamento para mandar no WhatsApp junto com o PDF. */
 function whatsappText(quote: Quote) {
@@ -93,7 +93,11 @@ export default function DocumentoOrcamentoPage() {
         className="quote-sheet relative mx-auto flex min-h-[297mm] w-[210mm] max-w-full flex-col overflow-hidden px-[16mm] pb-[12mm] pt-[16mm] font-sans text-[#2B1D14] shadow-xl print:shadow-none"
         style={{ backgroundColor: PAPER, backgroundImage: 'radial-gradient(120% 80% at 20% 10%, rgba(255,255,255,0.35), transparent 60%), radial-gradient(90% 70% at 90% 100%, rgba(120,90,60,0.08), transparent 70%)' }}
       >
-        <header className="flex items-start justify-between gap-8">
+        {/* Marca d'água: a logo bem clara atrás da tabela, como no modelo */}
+        {/* eslint-disable-next-line @next/next/no-img-element -- img comum imprime com fidelidade */}
+        <img src="/logo-documento.png" alt="" aria-hidden className="pointer-events-none absolute left-1/2 top-[95mm] w-[150mm] -translate-x-1/2 opacity-[0.06]" />
+
+        <header className="relative flex items-start justify-between gap-8">
           <div className="min-w-0 flex-1 pt-2">
             <h1 className="font-sans text-[64px] font-extrabold leading-none tracking-[-0.03em]" style={{ color: MAROON }}>
               Cotação
@@ -106,10 +110,10 @@ export default function DocumentoOrcamentoPage() {
             <p className="mt-1 text-[12px] font-semibold tracking-wide opacity-70" style={{ color: MAROON }}>{quoteNumber(quote.id)}</p>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element -- img comum imprime com fidelidade */}
-          <img src="/logo-documento.png" alt="Vintage Drum Shop" className="mt-1 w-[52mm] flex-shrink-0" />
+          <img src="/logo-documento.png" alt="Vintage Drum Shop" className="mt-1 w-[52mm] flex-shrink-0 opacity-80" />
         </header>
 
-        <table className="mt-[12mm] w-full border-collapse text-[12.5px] leading-snug">
+        <table className="relative mt-[12mm] w-full border-collapse text-[12.5px] leading-snug">
           <thead>
             <tr style={{ backgroundColor: MAROON }} className="text-white">
               <th className={`${cell} w-[34%] text-[14px] font-bold`}>Item</th>
@@ -151,7 +155,7 @@ export default function DocumentoOrcamentoPage() {
           <div className="h-[3px] w-full" style={{ backgroundColor: MAROON }} />
           <div className="mt-[6mm] flex items-center gap-[8mm]">
             {/* eslint-disable-next-line @next/next/no-img-element -- img comum imprime com fidelidade */}
-            <img src="/logo-documento.png" alt="" className="h-[22mm] w-auto flex-shrink-0" />
+            <img src="/logo-v.png" alt="" className="h-[22mm] w-[22mm] flex-shrink-0 object-contain" />
             <div className="h-[18mm] w-[2px] flex-shrink-0 bg-[#2B1D14]" />
             <p className="text-[24px] font-bold tracking-[-0.01em]" style={{ color: MAROON }}>{quoteCompany.instagram}</p>
             <div className="ml-auto text-[17px] leading-tight" style={{ color: MAROON }}>
