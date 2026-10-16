@@ -70,7 +70,7 @@ function Hero() {
 
   return (
     <section
-      className="grid bg-ink md:h-[min(78vh,720px)] md:min-h-[560px] md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"
+      className="grid bg-ink md:min-h-[min(78vh,720px)] md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"
       aria-roledescription="carrossel"
       aria-label="Destaques"
       onMouseEnter={() => setPaused(true)}
@@ -79,7 +79,7 @@ function Hero() {
       onBlur={() => setPaused(false)}
     >
       {/* Foto: em cima no celular, à direita no desktop */}
-      <div className="relative aspect-square overflow-hidden sm:aspect-[4/3] md:order-2 md:aspect-auto md:h-full">
+      <div className="relative aspect-square overflow-hidden sm:aspect-[4/3] md:order-2 md:aspect-auto">
         {heroSlides.map((slide, i) => (
           <div
             key={slide.image}
@@ -127,8 +127,8 @@ function Hero() {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center border-b-[3px] border-brass px-5 py-10 text-white md:order-1 md:border-b-0 md:border-r-[3px] md:px-10 lg:px-16">
-        <h1 className="text-[2.5rem] font-semibold uppercase leading-[1.12] lg:text-6xl">
+      <div className="flex flex-col justify-center border-b-[3px] border-brass px-5 py-10 text-white md:order-1 md:border-b-0 md:border-r-[3px] md:px-10 xl:px-14">
+        <h1 className="text-[2.5rem] font-semibold uppercase leading-[1.12] lg:text-5xl 2xl:text-6xl">
           <span className="block">Pratos turcos feitos à mão.</span>
           <span className="block text-[#E9B872]">Baquetas suecas.</span>
           <span className="block">Em São Paulo.</span>
