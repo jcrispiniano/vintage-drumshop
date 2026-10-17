@@ -37,12 +37,12 @@ export const useCartStore = create<CartStore>()(
             cartItems: state.cartItems.map(i =>
               i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
             ),
-            toastMessage: `${item.name} - Quantidade atualizada!`,
+            toastMessage: `Quantidade atualizada|${item.name}`,
           }));
         } else {
           set(state => ({
             cartItems: [...state.cartItems, { ...item, quantity: 1 }],
-            toastMessage: `${item.name} adicionado ao carrinho!`,
+            toastMessage: `Adicionado ao carrinho|${item.name}`,
           }));
         }
       },

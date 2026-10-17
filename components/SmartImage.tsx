@@ -3,7 +3,7 @@
 import Image, { ImageProps } from 'next/image';
 import { useState } from 'react';
 
-const FALLBACK = '/logo.svg';
+const FALLBACK = '/placeholder-produto.jpg';
 // Precisa bater com images.remotePatterns em next.config.js
 const BLOB_HOST = /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\//;
 

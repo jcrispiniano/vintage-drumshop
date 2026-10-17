@@ -1,7 +1,7 @@
 'use client';
 import SmartImage from '@/components/SmartImage';
 import { useProductsStore } from '@/lib/productsStore';
-import ProductCard from '@/components/ProductCard';
+import CatalogGrid from '@/components/CatalogGrid';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
@@ -11,42 +11,28 @@ export default function DynabeatPage() {
   const dynabeatProducts = products.filter(p => p.brand === 'dynabeat');
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
       <Header />
       <CategoryNav currentCategory="baquetas" />
 
       {/* Hero com imagem de fundo */}
-      <section className="relative bg-gray-900 text-white py-16 overflow-hidden">
+      <section className="relative overflow-hidden border-b-[3px] border-brass bg-ink py-14 text-white md:py-20">
         <div className="absolute inset-0">
-          <SmartImage src="/banner/dynabeat-bg.jpg" alt="Dynabeat Background" fill priority sizes="100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-black/40"></div>
+          <SmartImage src="/fotos/banner-dynabeat.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
+          <div className="absolute inset-0 bg-[rgba(28,17,10,0.5)]"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 drop-shadow-lg">Dynabeat</h1>
+          <h1 className="category-hero__title drop-shadow-lg">Dynabeat</h1>
           <p className="text-xl text-white drop-shadow-md">Baquetas de alta qualidade com excelente custo-benefício</p>
         </div>
       </section>
 
       {/* Produtos */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          {dynabeatProducts.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="text-6xl mb-4">🥁</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">Sem disponibilidade no momento</h2>
-              <p className="text-gray-600 mb-8">Estamos atualizando nosso estoque. Em breve teremos novidades!</p>
-              <Link href="/" className="inline-block bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition">Voltar para Home</Link>
-            </div>
-          ) : (
-            <>
-              <p className="text-sm text-gray-400 mb-6">{dynabeatProducts.length} {dynabeatProducts.length === 1 ? 'produto' : 'produtos'} encontrados</p>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-                {dynabeatProducts.map(product => <ProductCard key={product.id} product={product} typeLabel="Baqueta" />)}
-              </div>
-            </>
-          )}
-        </div>
-      </section>
+      <CatalogGrid
+        products={dynabeatProducts}
+        categoryName="Baquetas Dynabeat"
+        typeLabel={() => 'Baqueta'}
+      />
 
       {/* CTA */}
       <section className="py-20 bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900 text-white">

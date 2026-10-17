@@ -1,209 +1,247 @@
 'use client';
-import { Trash2, Plus, Minus, ShoppingCart } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingCart, Undo2, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
-import { contactInfo } from '@/lib/products';
+import type { CartItem } from '@/lib/cartStore';
+import { categories, contactInfo, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage } from '@/lib/products';
 import Header from '@/components/Header';
+import CategoryNav from '@/components/CategoryNav';
 import SmartImage from '@/components/SmartImage';
 
-export default function CarrinhoPage() {
-  const { cartItems, updateQuantity, removeFromCart } = useCart();
+const steps = [
+  { title: 'Envie o pedido', text: 'O WhatsApp abre com a lista do pedido pronta.' },
+  { title: 'Confirmamos tudo', text: 'Conferimos estoque e o frete para o seu CEP.' },
+  { title: 'Pague só depois', text: `${pixOffLabel} no Pix, ou em até ${paymentTerms.maxInstallments}x sem juros no cartão.` },
+];
 
-  const handleUpdateQuantity = (id: number, delta: number) => {
-    const item = cartItems.find(i => i.id === id);
-    if (item) {
-      updateQuantity(id, item.quantity + delta);
-    }
+/** Formata enquanto digita: 01310100 → 01310-100 */
+function formatCep(value: string) {
+  const digits = value.replace(/\D/g, '').slice(0, 8);
+  return digits.length > 5 ? `${digits.slice(0, 5)}-${digits.slice(5)}` : digits;
+}
+
+export default function CarrinhoPage() {
+  const { cartItems, updateQuantity, removeFromCart, addToCart } = useCart();
+  const [removed, setRemoved] = useState<CartItem | null>(null);
+  const [cep, setCep] = useState('');
+  const cepComplete = cep.replace(/\D/g, '').length === 8;
+
+  // A opção de desfazer some sozinha depois de alguns segundos
+  useEffect(() => {
+    if (!removed) return;
+    const t = setTimeout(() => setRemoved(null), 6000);
+    return () => clearTimeout(t);
+  }, [removed]);
+
+  const handleRemove = (item: CartItem) => {
+    removeFromCart(item.id);
+    setRemoved(item);
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(price);
+  const handleUndo = () => {
+    if (!removed) return;
+    const { quantity, ...rest } = removed;
+    addToCart(rest);
+    if (quantity > 1) updateQuantity(rest.id, quantity);
+    setRemoved(null);
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = subtotal > 199 ? 0 : 29.90;
-  const total = subtotal + shipping;
+  // Frete é cotado pelo CEP no WhatsApp, então o total é só dos produtos
+  const total = subtotal;
+  const totalPix = pixPrice(subtotal);
+  const savings = total - totalPix;
+  const installments = paymentTerms.maxInstallments;
 
   const handleCheckout = () => {
-    // Monta a mensagem do WhatsApp
-    let message = '🛒 *Pedido - Vintage Drum Shop*\n\n';
-    
-    // Lista os produtos
+    let message = '*Pedido - Vintage Drum Shop*\n\n';
+
     cartItems.forEach(item => {
       message += `*${item.quantity}x* ${item.name}\n`;
-      message += `${formatPrice(item.price)} cada\n`;
-      message += `Subtotal: ${formatPrice(item.price * item.quantity)}\n\n`;
+      message += `${formatPrice(pixPrice(item.price))} no Pix (${formatPrice(item.price)} no cartão) cada\n\n`;
     });
-    
-    // Totais
-    message += '━━━━━━━━━━━━━━━\n';
-    message += `*Subtotal:* ${formatPrice(subtotal)}\n`;
-    message += `*Frete:* ${shipping === 0 ? 'GRÁTIS 🎉' : formatPrice(shipping)}\n`;
-    message += `*TOTAL:* ${formatPrice(total)}\n\n`;
-    message += '💬 Gostaria de finalizar este pedido!';
-    
-    // Codifica a mensagem para URL
-    const encodedMessage = encodeURIComponent(message);
-    
-    // Monta o link do WhatsApp
-    const whatsappUrl = `${contactInfo.whatsapp}?text=${encodedMessage}`;
-    
-    // Abre o WhatsApp
-    window.open(whatsappUrl, '_blank');
+
+    message += `*Total no Pix:* ${formatPrice(totalPix)}\n`;
+    message += `*Ou no cartão:* ${formatPrice(total)} em até ${installments}x de ${formatPrice(total / installments)} sem juros\n`;
+    message += cepComplete ? `*CEP para o frete:* ${cep}\n\n` : '*Frete:* a calcular\n\n';
+    message += cepComplete ? 'Gostaria de finalizar este pedido!' : 'Gostaria de finalizar este pedido! Meu CEP é: ';
+
+    window.open(`${contactInfo.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
+  const categoryName = (id: string) => categories.find(c => c.id === id)?.name ?? id;
+
   return (
-    <div className="min-h-screen bg-orange-50">
-      {/* Header */}
-
+    <div className="min-h-screen bg-paper">
       <Header />
+      <CategoryNav />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pb-16 pt-8">
+        <h1 className="mb-6 text-3xl font-semibold uppercase text-ink md:text-4xl">Seu carrinho</h1>
+
+        {removed && (
+          <div role="status" className="mb-4 flex items-center justify-between gap-3 rounded-lg bg-ink px-4 py-3 text-sm text-white">
+            <span className="min-w-0 truncate">Removido: {removed.name}</span>
+            <button type="button" onClick={handleUndo} className="flex flex-shrink-0 items-center gap-1.5 font-bold text-[#E9B872] hover:underline">
+              <Undo2 size={16} aria-hidden /> Desfazer
+            </button>
+          </div>
+        )}
+
         {cartItems.length === 0 ? (
-          /* Estado Vazio */
-          <div className="max-w-md mx-auto text-center py-16">
-            <div className="bg-white rounded-2xl shadow-lg p-12">
-              <div className="mb-6">
-                <div className="inline-flex items-center justify-center w-32 h-32 bg-gray-100 rounded-full">
-                  <ShoppingCart size={64} className="text-gray-300" />
-                </div>
-              </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                Este carrinho está vazio.
-              </h2>
-              <p className="text-gray-600 mb-8">
-                Adicione produtos ao seu carrinho para continuar comprando
-              </p>
-              <Link
-                href="/"
-                className="inline-block bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition"
-              >
-                Continuar Comprando
-              </Link>
-            </div>
+          <div className="mx-auto max-w-lg py-10 text-center">
+            <ShoppingCart size={48} className="mx-auto mb-5 text-primary" aria-hidden />
+            <h2 className="mb-2 text-2xl font-semibold uppercase text-ink">Banco vazio por aqui</h2>
+            <p className="mb-8 text-ink-soft">Seu carrinho ainda não tem nada. Comece por uma das categorias:</p>
+            <ul className="flex flex-wrap justify-center gap-2">
+              {['pratos', 'baquetas', 'caixas'].map(id => (
+                <li key={id}>
+                  <Link href={`/${id}`} className="inline-flex h-11 items-center rounded-md bg-white px-5 text-sm font-semibold text-ink ring-1 ring-line transition hover:ring-ink/50">
+                    {categoryName(id)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         ) : (
-          /* Estado com Itens */
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Lista de Produtos */}
-            <div className="lg:col-span-2 space-y-4">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <section aria-label="Itens do carrinho" className="space-y-3 lg:col-span-2">
               {cartItems.map(item => (
-                <div key={item.id} className="bg-white rounded-xl shadow-md p-3 sm:p-6">
-                  <div className="flex gap-3 sm:gap-6">
-                    {/* Imagem */}
-                    <div className="relative w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
-                      {item.image ? (
-                        <SmartImage
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          sizes="96px"
-                          className="object-contain p-1 sm:p-2"
-                        />
-                      ) : (
-                        <ShoppingCart className="text-gray-300" size={28} />
-                      )}
-                    </div>
+                <article key={item.id} className="flex gap-3 rounded-xl bg-white p-3 ring-1 ring-line sm:gap-5 sm:p-5">
+                  <Link href={`/produto/${item.id}`} className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-paper sm:h-28 sm:w-28">
+                    <SmartImage src={productImage(item.image)} alt={item.name} fill sizes="112px" className="object-cover" />
+                  </Link>
 
-                    {/* Detalhes */}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[10px] sm:text-xs text-accent font-bold uppercase mb-1">
-                        {item.category}
-                      </p>
-                      <h3 className="font-bold text-sm sm:text-lg mb-2 line-clamp-2">{item.name}</h3>
-                      <p className="text-lg sm:text-2xl font-bold text-accent">
-                        {formatPrice(item.price)}
-                      </p>
-                    </div>
-
-                    {/* Quantidade e Remover */}
-                    <div className="flex flex-col items-end justify-between flex-shrink-0">
-                      <button
-                        onClick={() => removeFromCart(item.id)}
-                        className="text-red-500 hover:text-red-700 transition p-1.5 sm:p-2"
-                        aria-label="Remover item"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-
-                      <div className="flex items-center gap-1 sm:gap-2 bg-gray-100 rounded-lg">
-                        <button
-                          onClick={() => handleUpdateQuantity(item.id, -1)}
-                          className="p-1.5 sm:p-2 hover:text-accent transition"
-                          aria-label="Diminuir quantidade"
-                        >
-                          <Minus size={14} />
-                        </button>
-                        <span className="font-bold w-6 sm:w-8 text-center text-sm sm:text-base">
-                          {item.quantity}
-                        </span>
-                        <button
-                          onClick={() => handleUpdateQuantity(item.id, 1)}
-                          className="p-1.5 sm:p-2 hover:text-accent transition"
-                          aria-label="Aumentar quantidade"
-                        >
-                          <Plus size={14} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Resumo do Pedido */}
-            <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 lg:sticky lg:top-24">
-                <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Resumo do Pedido</h2>
-
-                <div className="space-y-3 mb-6">
-                  <div className="flex justify-between gap-2 text-gray-600 text-sm sm:text-base">
-                    <span>Subtotal</span>
-                    <span className="font-semibold whitespace-nowrap">{formatPrice(subtotal)}</span>
-                  </div>
-                  <div className="flex justify-between gap-2 text-gray-600 text-sm sm:text-base">
-                    <span>Frete</span>
-                    <span className="font-semibold whitespace-nowrap">
-                      {shipping === 0 ? 'GRÁTIS' : formatPrice(shipping)}
-                    </span>
-                  </div>
-                  {subtotal < 199 && (
-                    <p className="text-xs text-gray-500 bg-orange-50 p-2 rounded">
-                      💡 Falta {formatPrice(199 - subtotal)} para frete grátis!
+                  <div className="min-w-0 flex-1">
+                    <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-primary">{categoryName(item.category)}</p>
+                    <h2 className="mb-2 line-clamp-2 text-sm font-semibold leading-tight text-ink sm:text-base">
+                      <Link href={`/produto/${item.id}`} className="hover:text-accent">{item.name}</Link>
+                    </h2>
+                    <p className="flex flex-wrap items-baseline gap-x-1 tabular-nums">
+                      <span className="text-lg font-bold text-accent sm:text-xl">{formatPrice(pixPrice(item.price))}</span>
+                      <span className="text-xs font-semibold uppercase text-ink">no Pix</span>
                     </p>
-                  )}
-                </div>
-
-                <div className="border-t pt-4 mb-6">
-                  <div className="flex justify-between items-center gap-2">
-                    <span className="text-base sm:text-lg font-bold">Total</span>
-                    <span className="text-xl sm:text-2xl font-bold text-accent whitespace-nowrap">
-                      {formatPrice(total)}
-                    </span>
+                    <p className="text-xs text-ink-soft tabular-nums">{formatPrice(item.price)} no cartão</p>
                   </div>
+
+                  <div className="flex flex-shrink-0 flex-col items-end justify-between gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleRemove(item)}
+                      className="flex h-11 w-11 items-center justify-center rounded-md text-ink-soft transition hover:bg-paper hover:text-accent"
+                      aria-label={`Remover ${item.name}`}
+                    >
+                      <Trash2 size={18} />
+                    </button>
+
+                    <div className="flex items-center rounded-md ring-1 ring-line">
+                      <button
+                        type="button"
+                        onClick={() => item.quantity > 1 ? updateQuantity(item.id, item.quantity - 1) : handleRemove(item)}
+                        className="flex h-11 w-11 items-center justify-center text-ink transition hover:text-accent"
+                        aria-label={`Diminuir quantidade de ${item.name}`}
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="w-7 text-center font-bold tabular-nums" aria-live="polite">{item.quantity}</span>
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        className="flex h-11 w-11 items-center justify-center text-ink transition hover:text-accent"
+                        aria-label={`Aumentar quantidade de ${item.name}`}
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </section>
+
+            <aside className="lg:col-span-1">
+              <div className="rounded-xl bg-white p-5 ring-1 ring-line sm:p-6 lg:sticky lg:top-32">
+                <h2 className="mb-5 text-xl font-semibold uppercase text-ink">Resumo</h2>
+
+                <dl className="space-y-2.5 text-sm tabular-nums">
+                  <div className="flex justify-between gap-2 text-ink-soft">
+                    <dt>Subtotal</dt>
+                    <dd className="font-semibold text-ink">{formatPrice(subtotal)}</dd>
+                  </div>
+                  {savings > 0 && (
+                    <div className="flex justify-between gap-2 text-ink-soft">
+                      <dt>Desconto no Pix ({pixOffLabel})</dt>
+                      <dd className="font-semibold text-primary">− {formatPrice(savings)}</dd>
+                    </div>
+                  )}
+                </dl>
+
+                <div className="mt-5 border-t border-line pt-4 tabular-nums">
+                  <p className="flex items-baseline justify-between gap-2">
+                    <span className="text-sm font-semibold uppercase text-ink">Total no Pix</span>
+                    <span className="text-3xl font-bold text-accent">{formatPrice(totalPix)}</span>
+                  </p>
+                  <p className="mt-1 text-right text-xs text-ink-soft">
+                    ou {formatPrice(total)} em até {installments}x de {formatPrice(total / installments)} sem juros
+                  </p>
                 </div>
 
-                <button 
+                <div className="mt-5 rounded-lg bg-paper p-3.5">
+                  <label htmlFor="cep" className="flex items-baseline justify-between gap-2 text-sm font-semibold text-ink">
+                    Frete
+                    <span className="text-xs font-normal text-ink-soft">calculado pela loja</span>
+                  </label>
+                  <input
+                    id="cep"
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="postal-code"
+                    placeholder="Seu CEP (opcional)"
+                    value={cep}
+                    onChange={(e) => setCep(formatCep(e.target.value))}
+                    className="mt-2 h-11 w-full rounded-md border border-line bg-white px-3 text-base tabular-nums text-ink placeholder:text-ink-soft outline-none transition focus:border-accent"
+                    aria-describedby="cep-ajuda"
+                  />
+                  <p id="cep-ajuda" className="mt-1.5 text-xs text-ink-soft">
+                    {cepComplete ? 'Vai junto no pedido para a loja cotar o envio.' : 'Informe para receber o valor do frete já na primeira resposta.'}
+                  </p>
+                </div>
+
+                <ol className="mt-5 space-y-3">
+                  {steps.map((step, i) => (
+                    <li key={step.title} className="flex gap-3 text-sm">
+                      <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-cream text-xs font-bold text-ink">{i + 1}</span>
+                      <span>
+                        <strong className="block text-ink">{step.title}</strong>
+                        <span className="text-ink-soft">{step.text}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+
+                <p className="mt-5 flex items-start gap-2 text-sm text-ink">
+                  <ShieldCheck size={18} className="mt-0.5 flex-shrink-0 text-[#167a42]" aria-hidden />
+                  <span><strong>Nada é cobrado agora.</strong> Você só paga depois de confirmar tudo com a loja.</span>
+                </p>
+
+                <button
+                  type="button"
                   onClick={handleCheckout}
-                  className="w-full bg-green-500 text-white py-4 rounded-lg font-bold hover:bg-green-600 transition shadow-lg mb-3 flex items-center justify-center gap-2"
+                  className="mt-4 flex h-14 w-full items-center justify-center gap-2 rounded-md bg-[#167a42] text-base font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#11643a]"
                 >
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                   </svg>
                   Finalizar no WhatsApp
                 </button>
-                
-                <Link
-                  href="/"
-                  className="block text-center text-gray-600 hover:text-accent transition"
-                >
-                  Continuar Comprando
+
+                <p className="mt-2 text-center text-xs text-ink-soft">Atendimento {contactInfo.hours}</p>
+
+                <Link href="/" className="mt-5 block text-center text-sm font-semibold text-accent hover:underline">
+                  Continuar comprando
                 </Link>
               </div>
-            </div>
+            </aside>
           </div>
         )}
       </div>

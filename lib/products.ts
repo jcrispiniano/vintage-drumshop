@@ -11,6 +11,7 @@ export interface Product {
   description: string;
   featured?: boolean;
   soldOut?: boolean;
+  audio?: string; // URL de um áudio curto do produto ("Ouça antes de comprar")
 }
 
 export const products: Product[] = [
@@ -678,6 +679,24 @@ export function formatPrice(price: number): string {
   });
 }
 
+// Condições comerciais exibidas na loja (benefícios, cards e página de produto)
+export const paymentTerms = {
+  pixDiscount: 0.05,
+  maxInstallments: 6,
+};
+
+/** Rótulo único da condição do Pix, usado em toda a loja (o desconto vale só no Pix). */
+export const pixOffLabel = `${Math.round(paymentTerms.pixDiscount * 100)}% OFF`;
+
+export function pixPrice(price: number): number {
+  return Math.round(price * (1 - paymentTerms.pixDiscount) * 100) / 100;
+}
+
+export function discountPercent(price: number, oldPrice?: number): number {
+  if (!oldPrice || oldPrice <= price) return 0;
+  return Math.round((1 - price / oldPrice) * 100);
+}
+
 export const contactInfo = {
   phone: '+55 11 94739-7347',
   phoneFormatted: '(11) 94739-7347',
@@ -690,5 +709,5 @@ export const contactInfo = {
 };
 // Produtos sem foto (ex.: fallback estático) usam o logo em vez de <img src=""> quebrado
 export function productImage(src?: string): string {
-  return src || '/logo.svg';
+  return src || '/placeholder-produto.jpg';
 }

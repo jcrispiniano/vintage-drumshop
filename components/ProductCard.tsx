@@ -1,12 +1,13 @@
 'use client';
 
 import SmartImage from '@/components/SmartImage';
+import PriceBlock from '@/components/PriceBlock';
 import Link from 'next/link';
-import { Heart } from 'lucide-react';
-import { formatPrice, productImage } from '@/lib/products';
+import { Headphones, Heart, ShoppingCart } from 'lucide-react';
+import { discountPercent, productImage } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
-import { motion } from 'framer-motion';
-import { brandLabel } from '@/lib/brands';
+import { brandLabel, isGenericBrand } from '@/lib/brands';
+import { productSizes, shortTitle } from '@/lib/productText';
 
 export { brandLabel };
 
@@ -21,18 +22,26 @@ interface Product {
   badge?: string;
   description: string;
   soldOut?: boolean;
+  audio?: string;
 }
 
 interface ProductCardProps {
   product: Product;
   /** Secondary label shown after brand (tipo, série, etc.) */
   typeLabel?: string;
-  /** Show installment text instead of "NO PIX" */
+  /** Etiquetas extras ao lado do tamanho (ex.: timbre do prato) */
+  tags?: string[];
+  /** Mantido por compatibilidade: o parcelamento agora aparece sempre. */
   showInstallments?: boolean;
 }
 
-export default function ProductCard({ product, typeLabel, showInstallments = false }: ProductCardProps) {
+export default function ProductCard({ product, typeLabel, tags = [] }: ProductCardProps) {
   const { addToCart, toggleFavorite, favorites } = useCart();
+  const isFavorite = favorites.includes(product.id);
+  const off = discountPercent(product.price, product.oldPrice);
+  const href = `/produto/${product.id}`;
+  const size = productSizes(product.name);
+  const title = shortTitle(product.name, product.brand);
 
   const handleAddToCart = () => {
     addToCart({
@@ -46,104 +55,97 @@ export default function ProductCard({ product, typeLabel, showInstallments = fal
   };
 
   return (
-    <motion.div
-      className="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 group"
-      whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(139,69,19,0.15)' }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-    >
-      <Link
-        href={`/produto/${product.id}`}
-        className="relative h-52 md:h-64 bg-white flex items-center justify-center overflow-hidden block cursor-pointer"
-      >
+    <div className="group relative flex h-full flex-col rounded-xl bg-white ring-1 ring-line transition-shadow duration-300 hover:shadow-[0_12px_28px_-12px_rgba(43,29,20,0.35)]">
+      <Link href={href} className="relative block aspect-square overflow-hidden rounded-t-xl bg-cream" tabIndex={-1} aria-hidden>
         <SmartImage
           src={productImage(product.image)}
-          alt={product.name}
+          alt=""
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-          className={`object-contain p-3 group-hover:scale-110 transition-transform duration-500 mix-blend-multiply ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
+          className={`object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
         />
-        {product.soldOut && (
-          <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-fit bg-gray-900/85 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase shadow-lg">
+        {product.soldOut ? (
+          <span className="absolute inset-x-0 top-1/2 mx-auto w-fit -translate-y-1/2 rounded bg-ink px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
             Esgotado
           </span>
-        )}
-        {!product.soldOut && product.badge && (
-          <span className="absolute top-3 right-3 bg-gradient-to-r from-accent to-secondary text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+        ) : off > 0 ? (
+          <span className="absolute left-3 top-3 rounded bg-ink px-2 py-1 text-center text-[11px] font-bold leading-tight text-white">
+            {off}%<br />OFF
+          </span>
+        ) : product.badge ? (
+          <span className="absolute left-3 top-3 rounded bg-cream px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-ink">
             {product.badge}
           </span>
-        )}
-        <button
-          onClick={(e) => { e.preventDefault(); toggleFavorite(product.id); }}
-          className={`absolute top-3 left-3 p-2 rounded-full transition shadow-lg ${
-            favorites.includes(product.id)
-              ? 'bg-accent text-white'
-              : 'bg-white text-gray-400 hover:text-accent'
-          }`}
-        >
-          <Heart size={16} fill={favorites.includes(product.id) ? 'currentColor' : 'none'} />
-        </button>
+        ) : null}
       </Link>
 
-      <div className="p-4 md:p-5">
-        <div className="flex items-center gap-2 mb-1 flex-wrap">
-          <p className="text-xs text-accent uppercase font-bold tracking-wider">
-            {brandLabel(product.brand)}
-          </p>
-          {typeLabel && (
+      <button
+        type="button"
+        onClick={() => toggleFavorite(product.id)}
+        aria-pressed={isFavorite}
+        aria-label={isFavorite ? `Remover ${product.name} dos favoritos` : `Favoritar ${product.name}`}
+        className={`absolute right-1.5 top-1.5 flex h-11 w-11 items-center justify-center rounded-full bg-white/85 backdrop-blur-sm transition ${
+          isFavorite ? 'text-accent' : 'text-ink-soft hover:text-accent'
+        }`}
+      >
+        <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
+      </button>
+
+      <div className="flex flex-1 flex-col border-t border-line p-3 md:p-4">
+        <p className="mb-1 min-h-[1.25em] truncate text-[11px] font-semibold uppercase tracking-wider text-primary">
+          {isGenericBrand(product.brand) ? (
+            typeLabel && <span className="font-normal text-ink-soft">{typeLabel}</span>
+          ) : (
             <>
-              <span className="text-xs text-gray-400">·</span>
-              <p className="text-xs text-gray-400">{typeLabel}</p>
+              {brandLabel(product.brand)}
+              {typeLabel && <span className="hidden font-normal text-ink-soft sm:inline"> · {typeLabel}</span>}
             </>
           )}
-        </div>
+        </p>
 
-        <h3 className="font-bold text-sm md:text-base mb-2 line-clamp-2 text-gray-900 group-hover:text-accent transition leading-tight">
-          {product.name}
-        </h3>
-
-        <div className="mb-3">
-          {product.oldPrice && (
-            <data value={product.oldPrice} className="text-xs text-gray-400 line-through block">
-              {formatPrice(product.oldPrice)}
-            </data>
-          )}
-          <data value={product.price} className="text-2xl md:text-3xl font-bold text-accent">
-            {formatPrice(product.price)}
-          </data>
-          <p className="text-xs text-gray-500">
-            {showInstallments
-              ? `até 3x de ${formatPrice(product.price / 3)} sem juros`
-              : 'NO PIX'}
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          {product.soldOut ? (
-            <button
-              type="button"
-              disabled
-              className="w-full bg-gray-300 text-gray-600 py-2.5 md:py-3 rounded-lg font-bold shadow-md text-sm cursor-not-allowed"
-            >
-              Produto Esgotado
-            </button>
-          ) : (
-            <motion.button
-              onClick={handleAddToCart}
-              className="w-full bg-accent text-white py-2.5 md:py-3 rounded-lg font-bold shadow-md text-sm"
-              whileHover={{ backgroundColor: '#D2691E' }}
-              whileTap={{ scale: 0.96 }}
-            >
-              Adicionar ao Carrinho
-            </motion.button>
-          )}
-          <Link
-            href={`/produto/${product.id}`}
-            className="w-full border-2 border-accent text-accent py-2.5 md:py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition text-center block text-sm"
-          >
-            Ver Produto
+        <h3 className="mb-2 line-clamp-2 min-h-[2.5em] text-sm font-semibold leading-tight text-ink md:text-[15px]">
+          <Link href={href} className="hover:text-accent" title={product.name}>
+            {title}
           </Link>
+        </h3>
+        {(size || product.audio || tags.length > 0) && (
+          <p className="mb-3 -mt-0.5 flex flex-wrap gap-1.5">
+            {size && <span className="inline-block rounded bg-paper px-1.5 py-0.5 text-xs font-bold tabular-nums text-ink ring-1 ring-line">{size}</span>}
+            {tags.map(tag => (
+              <span key={tag} className="inline-block rounded bg-cream px-1.5 py-0.5 text-xs font-semibold text-ink">{tag}</span>
+            ))}
+            {product.audio && (
+              <span className="inline-flex items-center gap-1 rounded bg-cream px-1.5 py-0.5 text-xs font-bold text-ink">
+                <Headphones size={12} aria-hidden /> Com áudio
+              </span>
+            )}
+          </p>
+        )}
+
+        <div className="mb-3 mt-auto">
+          <PriceBlock price={product.price} oldPrice={product.oldPrice} />
         </div>
+
+        {product.soldOut ? (
+          <button
+            type="button"
+            disabled
+            className="h-11 w-full cursor-not-allowed rounded-md bg-line text-sm font-bold uppercase tracking-wide text-ink-soft"
+          >
+            Esgotado
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            aria-label={`Comprar ${product.name}`}
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-md bg-white text-sm font-bold uppercase tracking-wide text-accent ring-1 ring-accent/60 transition-colors hover:bg-accent hover:text-white active:scale-[0.98]"
+          >
+            <ShoppingCart size={16} aria-hidden />
+            Comprar
+          </button>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -2,10 +2,9 @@
 import { useState } from 'react';
 
 import { useProductsStore } from '@/lib/productsStore';
-import Link from 'next/link';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
-import ProductCard from '@/components/ProductCard';
+import CatalogGrid from '@/components/CatalogGrid';
 
 type SerieFilter = 'todas' | 'real' | 'ice' | 'imperador' | 'pollar';
 
@@ -38,35 +37,35 @@ export default function CaixasPage() {
     allCaixas.filter(p => getCaixaSerie(p.name) === serie).length;
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
       <Header />
       <CategoryNav currentCategory="caixas" />
 
       {/* Hero */}
-      <section className="relative text-white py-20 overflow-hidden">
+      <section className="relative overflow-hidden border-b-[3px] border-brass py-14 text-white md:py-20">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/banner/caixas-hero.jpg')" }}
+          style={{ backgroundImage: "url('/fotos/banner-caixas.jpg')" }}
         />
-        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-[rgba(28,17,10,0.55)]" />
         <div className="relative container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">Caixas Profissionais</h1>
-          <p className="text-xl text-gray-200">
+          <h1 className="category-hero__title">Caixas</h1>
+          <p className="category-hero__lead">
             Pinguim — fabricação nacional de alto desempenho
           </p>
         </div>
       </section>
 
       {/* Filtros por série — sticky */}
-      <div className="bg-white border-b border-gray-200 sticky top-[104px] md:top-[132px] z-40">
+      <div className="bg-white border-b border-line sticky top-[108px] md:top-[124px] z-40">
         <div className="container mx-auto px-4">
-          <div className="flex gap-2 py-3 overflow-x-auto scrollbar-hide">
+          <div className="flex gap-2 py-2.5 overflow-x-auto scrollbar-hide">
             <button
               onClick={() => setFiltro('todas')}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${
+              className={`flex h-11 flex-shrink-0 items-center px-4 rounded-full text-sm font-semibold transition ${
                 filtro === 'todas'
-                  ? 'bg-accent text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-ink text-white'
+                  : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
               }`}
             >
               Todas ({allCaixas.length})
@@ -78,10 +77,10 @@ export default function CaixasPage() {
                 <button
                   key={serie}
                   onClick={() => setFiltro(serie)}
-                  className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition ${
+                  className={`flex h-11 flex-shrink-0 items-center px-4 rounded-full text-sm font-semibold transition ${
                     filtro === serie
-                      ? 'bg-accent text-white shadow-md'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-ink text-white'
+                      : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
                   }`}
                 >
                   {SERIE_LABELS[serie]} ({count})
@@ -93,42 +92,13 @@ export default function CaixasPage() {
       </div>
 
       {/* Produtos */}
-      <section className="py-12 bg-white">
-        <div className="container mx-auto px-4">
-          {categoryProducts.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="bg-white rounded-2xl shadow-lg p-12 max-w-md mx-auto">
-                <div className="text-6xl mb-4">🥁</div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                  Sem disponibilidade no momento
-                </h2>
-                <p className="text-gray-600 mb-8">
-                  Estamos atualizando nosso estoque. Em breve teremos novidades!
-                </p>
-                <Link href="/" className="inline-block bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition">
-                  Voltar para Home
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <>
-              <p className="text-sm text-gray-400 mb-6">
-                {categoryProducts.length} {categoryProducts.length === 1 ? 'produto' : 'produtos'} encontrados
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-                {categoryProducts.map(product => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    typeLabel={SERIE_LABELS[getCaixaSerie(product.name)]}
-                    showInstallments={true}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      </section>
+      <CatalogGrid
+        products={categoryProducts}
+        categoryName="Caixas"
+        totalInCategory={allCaixas.length}
+        onClearFilters={() => setFiltro('todas')}
+        typeLabel={p => SERIE_LABELS[getCaixaSerie(p.name)]}
+      />
     </div>
   );
 }

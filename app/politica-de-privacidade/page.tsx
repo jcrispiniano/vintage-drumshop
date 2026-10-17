@@ -6,7 +6,7 @@ import { contactInfo } from '@/lib/products';
 export default function PoliticaPrivacidadePage() {
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-paper">
       <Header />
       <CategoryNav currentCategory="" />
 

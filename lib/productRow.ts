@@ -15,6 +15,7 @@ export function normalizeProduct(row: Record<string, unknown>): Product {
     description: row.description as string,
     featured: (row.featured as boolean) ?? false,
     soldOut: (row.sold_out as boolean) ?? false,
+    audio: (row.audio as string) || undefined,
   }
 }
 
@@ -55,6 +56,7 @@ export function toDbRow(body: Record<string, unknown>, partial = false): { row: 
   if (has('featured')) row.featured = body.featured ?? false
   if (has('active')) row.active = body.active ?? true
   if (has('soldOut')) row.sold_out = body.soldOut ?? false
+  if (has('audio')) row.audio = typeof body.audio === 'string' && body.audio.trim() ? body.audio.trim() : null
 
   return { row }
 }
@@ -64,7 +66,7 @@ export function toDbRow(body: Record<string, unknown>, partial = false): { row: 
  * `supabase/schema.sql`. Se o PostgREST reclamar de uma delas, a gravação é
  * refeita sem a coluna em vez de falhar o salvamento inteiro.
  */
-const OPTIONAL_COLUMNS = ['sold_out', 'images']
+const OPTIONAL_COLUMNS = ['sold_out', 'images', 'audio']
 
 /** PGRST204 = "Could not find the 'x' column of 'products' in the schema cache". */
 function missingColumn(error: { code?: string; message?: string } | null) {
@@ -75,7 +77,7 @@ function missingColumn(error: { code?: string; message?: string } | null) {
 
 /**
  * Executa a gravação e, se a base ainda não tiver alguma coluna opcional,
- * tenta de novo sem ela. Rode `supabase/migrations/001_add_sold_out.sql`
+ * tenta de novo sem ela. Rode as migrações de `supabase/migrations/`
  * para deixar a base em dia.
  */
 export async function writeProductRow<T>(
@@ -91,7 +93,7 @@ export async function writeProductRow<T>(
 
     console.warn(
       `[products] coluna "${column}" não existe na base — salvando sem ela. ` +
-        'Execute supabase/migrations/001_add_sold_out.sql.'
+        'Execute as migrações em supabase/migrations/.'
     )
     const rest = { ...current }
     delete rest[column]

@@ -1,164 +1,66 @@
 'use client';
 
-import { Heart, Trash2, ShoppingCart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
-import { formatPrice } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import Header from '@/components/Header';
+import CategoryNav from '@/components/CategoryNav';
+import ProductCard from '@/components/ProductCard';
 
 export default function FavoritosPage() {
   const products = useProductsStore(state => state.products);
-  const { favorites, toggleFavorite, addToCart } = useCart();
-  
-  const favoriteProducts = products.filter(p => favorites.includes(p.id));
-  const recommendedProducts = products.filter(p => p.featured).slice(0, 3);
+  const { favorites } = useCart();
 
-  const handleAddToCart = (productId: number) => {
-    const product = products.find(p => p.id === productId);
-    if (product) {
-      addToCart({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        category: product.category,
-        image: product.image,
-        description: product.description,
-      });
-    }
-  };
+  const favoriteProducts = products.filter(p => favorites.includes(p.id));
+  const recommendedProducts = products.filter(p => p.featured).slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-orange-50">
-      {/* Header */}
-
+    <div className="min-h-screen bg-paper">
       <Header />
+      <CategoryNav />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pb-16 pt-8">
+        <h1 className="mb-2 text-3xl font-semibold uppercase text-ink md:text-4xl">Favoritos</h1>
+
         {favoriteProducts.length === 0 ? (
-          /* Estado Vazio */
-          <div className="max-w-md mx-auto text-center py-16">
-            <div className="bg-white rounded-2xl shadow-lg p-12">
-              <div className="mb-6">
-                <div className="inline-flex items-center justify-center w-32 h-32 bg-gray-100 rounded-full">
-                  <Heart size={64} className="text-gray-300" />
-                </div>
-              </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                Você não tem itens favoritos no momento
-              </h2>
-              <p className="text-gray-600 mb-8">
-                Explore nosso catálogo e adicione produtos aos seus favoritos
+          <>
+            <div className="mx-auto max-w-lg py-10 text-center">
+              <Heart size={44} className="mx-auto mb-5 text-primary" aria-hidden />
+              <h2 className="mb-2 text-2xl font-semibold uppercase text-ink">Nenhum favorito ainda</h2>
+              <p className="mb-8 text-ink-soft">
+                Toque no coração de um produto para guardar aqui e comparar depois.
               </p>
               <Link
-                href="/"
-                className="inline-block bg-accent text-white px-8 py-3 rounded-lg font-bold hover:bg-secondary transition"
+                href="/pratos"
+                className="inline-flex h-11 items-center rounded-md bg-accent px-6 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary"
               >
-                Ver Produtos
+                Ver pratos
               </Link>
             </div>
 
-            {/* Recomendações */}
-            <div className="mt-12">
-              <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">
-                Produtos em Destaque
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {recommendedProducts.map(product => (
-                  <div key={product.id} className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition">
-                    <div className="h-32 flex items-center justify-center mb-4">
-                      <div className="text-4xl font-bold text-primary/20">
-                        {product.name.substring(0, 2).toUpperCase()}
-                      </div>
-                    </div>
-                    <h4 className="font-bold text-sm mb-2 line-clamp-2">{product.name}</h4>
-                    <p className="text-accent font-bold mb-3">{formatPrice(product.price)}</p>
-                    <Link
-                      href={`/produto/${product.id}`}
-                      className="block text-center bg-accent text-white py-2 rounded-lg text-sm font-semibold hover:bg-secondary transition"
-                    >
-                      Ver Produto
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          /* Estado com Itens */
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-900">
-                {favoriteProducts.length} {favoriteProducts.length === 1 ? 'produto favorito' : 'produtos favoritos'}
-              </h2>
-              <p className="text-gray-600 mt-2">
-                Produtos que você marcou como favorito
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {favoriteProducts.map(product => (
-                <div
-                  key={product.id}
-                  className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group border border-gray-100"
-                >
-                  <div className="relative h-64 bg-white flex items-center justify-center overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
-                    <div className="text-5xl font-bold text-primary/10 group-hover:text-primary/20 transition">
-                      {product.name.substring(0, 2).toUpperCase()}
-                    </div>
-                    {product.badge && (
-                      <span className="absolute top-4 right-4 bg-accent text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
-                        {product.badge}
-                      </span>
-                    )}
-                    <button
-                      onClick={() => toggleFavorite(product.id)}
-                      className="absolute top-4 left-4 p-3 bg-accent text-white rounded-full hover:bg-red-600 transition shadow-lg"
-                    >
-                      <Heart size={18} fill="currentColor" />
-                    </button>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-xs text-accent uppercase font-bold tracking-wider mb-2">
-                      {product.category}
-                    </p>
-                    <h3 className="font-bold text-lg mb-3 line-clamp-2 text-gray-900 group-hover:text-accent transition">
-                      {product.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                      {product.description}
-                    </p>
-                    <div className="mb-4 flex items-baseline gap-2">
-                      {product.oldPrice && (
-                        <span className="text-sm text-gray-400 line-through">
-                          {formatPrice(product.oldPrice)}
-                        </span>
-                      )}
-                      <span className="text-3xl font-bold text-accent">
-                        {formatPrice(product.price)}
-                      </span>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleAddToCart(product.id)}
-                        className="flex-1 bg-accent text-white py-3 rounded-lg font-bold hover:bg-secondary transition shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-                      >
-                        <ShoppingCart size={18} />
-                        Adicionar
-                      </button>
-                      <button
-                        onClick={() => toggleFavorite(product.id)}
-                        className="p-3 border-2 border-red-200 text-red-500 rounded-lg hover:border-red-500 hover:bg-red-50 transition"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </div>
+            {recommendedProducts.length > 0 && (
+              <section className="mt-6" aria-labelledby="sugestoes-titulo">
+                <h2 id="sugestoes-titulo" className="mb-6 text-2xl font-semibold uppercase text-ink">Escolhas da casa</h2>
+                <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+                  {recommendedProducts.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
                 </div>
+              </section>
+            )}
+          </>
+        ) : (
+          <>
+            <p className="mb-8 text-ink-soft">
+              {favoriteProducts.length} {favoriteProducts.length === 1 ? 'produto guardado' : 'produtos guardados'}
+            </p>
+            <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+              {favoriteProducts.map(product => (
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
-          </div>
+          </>
         )}
       </div>
     </div>
