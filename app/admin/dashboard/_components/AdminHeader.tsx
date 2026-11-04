@@ -2,11 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LogOut, Package, FileText } from 'lucide-react'
+import { LogOut, Package, FileText, Users } from 'lucide-react'
 
 const TABS = [
   { href: '/admin/dashboard', label: 'Produtos', icon: Package },
   { href: '/admin/dashboard/orcamentos', label: 'Orçamentos', icon: FileText },
+  { href: '/admin/dashboard/clientes', label: 'Clientes', icon: Users },
 ]
 
 export default function AdminHeader() {
@@ -18,8 +19,8 @@ export default function AdminHeader() {
     router.push('/admin')
   }
 
-  // Orçamentos tem prefixo próprio; o resto do /admin/dashboard é a aba de produtos
-  const activeHref = pathname.startsWith('/admin/dashboard/orcamentos') ? TABS[1].href : TABS[0].href
+  // Orçamentos e Clientes têm prefixo próprio; o resto do /admin/dashboard é a aba de produtos
+  const activeHref = TABS.slice(1).find(tab => pathname.startsWith(tab.href))?.href ?? TABS[0].href
 
   return (
     <header className="bg-gray-900 text-white shadow-lg print:hidden">

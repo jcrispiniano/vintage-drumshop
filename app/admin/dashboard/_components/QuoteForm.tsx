@@ -3,10 +3,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, FileText, Gift, Plus, Search, Trash2 } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, FileText, Gift, Plus, Search, Trash2, X } from 'lucide-react'
 import AdminHeader from './AdminHeader'
 import { DEFAULT_NOTES, QuoteItem, emptyItem, itemTotal, quoteTotal, todayISO } from '@/lib/quote'
 import { formatPrice } from '@/lib/products'
+import { Customer, contactFromCustomer, formatWhatsapp } from '@/lib/customers'
 
 interface CatalogProduct {
   id: number
@@ -21,22 +22,28 @@ export interface QuoteFormData {
   quoteDate: string
   items: QuoteItem[]
   notes: string
+  /** Cliente do cadastro (aba Clientes). Sem ele, o servidor casa pelo contato ou cria um cliente novo. */
+  customerId: number | null
 }
 
 interface QuoteFormProps {
   mode: 'create' | 'edit'
   id?: number
   initialData?: QuoteFormData
+  /** Vindo de "Novo orçamento para este cliente" (?cliente=ID) */
+  initialCustomerId?: number | null
 }
 
 export function blankQuote(): QuoteFormData {
-  return { clientName: '', clientContact: '', quoteDate: todayISO(), items: [emptyItem()], notes: DEFAULT_NOTES }
+  return { clientName: '', clientContact: '', quoteDate: todayISO(), items: [emptyItem()], notes: DEFAULT_NOTES, customerId: null }
 }
 
-export default function QuoteForm({ mode, id, initialData }: QuoteFormProps) {
+export default function QuoteForm({ mode, id, initialData, initialCustomerId }: QuoteFormProps) {
   const router = useRouter()
   const [form, setForm] = useState<QuoteFormData>(initialData ?? blankQuote())
   const [catalog, setCatalog] = useState<CatalogProduct[]>([])
+  const [customers, setCustomers] = useState<Customer[]>([])
+  const [nameFocused, setNameFocused] = useState(false)
   const [search, setSearch] = useState('')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -46,7 +53,36 @@ export default function QuoteForm({ mode, id, initialData }: QuoteFormProps) {
       .then(res => (res.ok ? res.json() : []))
       .then(data => Array.isArray(data) && setCatalog(data))
       .catch(() => {})
-  }, [])
+
+    // Cadastro de clientes para sugerir no campo "Cliente" (sem a tabela, só não sugere)
+    fetch('/api/admin/customers')
+      .then(res => (res.ok ? res.json() : []))
+      .then((data: Customer[]) => {
+        if (!Array.isArray(data)) return
+        setCustomers(data)
+        const preset = initialCustomerId ? data.find(c => c.id === initialCustomerId) : undefined
+        if (preset) {
+          setForm(prev => (prev.clientName ? prev : { ...prev, clientName: preset.name, clientContact: contactFromCustomer(preset), customerId: preset.id }))
+        }
+      })
+      .catch(() => {})
+  }, [initialCustomerId])
+
+  const linkedCustomer = form.customerId ? customers.find(c => c.id === form.customerId) : undefined
+
+  const customerMatches = useMemo(() => {
+    const term = form.clientName.trim().toLowerCase()
+    if (form.customerId || term.length < 2) return []
+    const digits = term.replace(/\D/g, '')
+    return customers
+      .filter(c => c.name.toLowerCase().includes(term) || c.email?.includes(term) || (digits.length >= 4 && c.whatsapp?.includes(digits)))
+      .slice(0, 6)
+  }, [customers, form.clientName, form.customerId])
+
+  function pickCustomer(customer: Customer) {
+    setForm(prev => ({ ...prev, clientName: customer.name, clientContact: contactFromCustomer(customer), customerId: customer.id }))
+    setNameFocused(false)
+  }
 
   const matches = useMemo(() => {
     const term = search.trim().toLowerCase()
@@ -126,9 +162,46 @@ export default function QuoteForm({ mode, id, initialData }: QuoteFormProps) {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 grid gap-5 md:grid-cols-[2fr_1.2fr_1fr]">
-            <div>
+            <div className="relative">
               <label htmlFor="cliente" className={label}>Cliente *</label>
-              <input id="cliente" required value={form.clientName} onChange={e => set('clientName', e.target.value)} className={input} placeholder="Nome do cliente ou da igreja/empresa" />
+              <input
+                id="cliente"
+                required
+                autoComplete="off"
+                value={form.clientName}
+                // Mudou o nome: deixa de valer o cliente escolhido (o servidor casa de novo pelo contato)
+                onChange={e => setForm(prev => ({ ...prev, clientName: e.target.value, customerId: null }))}
+                onFocus={() => setNameFocused(true)}
+                onBlur={() => setTimeout(() => setNameFocused(false), 150)}
+                className={input}
+                placeholder="Nome do cliente ou da igreja/empresa"
+                aria-describedby="cliente-ajuda"
+              />
+              {nameFocused && customerMatches.length > 0 && (
+                <ul className="absolute z-20 left-0 right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-72 overflow-y-auto" aria-label="Clientes cadastrados">
+                  {customerMatches.map(c => (
+                    <li key={c.id}>
+                      <button type="button" onMouseDown={e => e.preventDefault()} onClick={() => pickCustomer(c)} className="w-full px-3 py-2.5 text-left text-sm hover:bg-orange-50">
+                        <span className="block font-semibold text-gray-900">{c.name}</span>
+                        <span className="block text-xs text-gray-500">{[c.whatsapp && formatWhatsapp(c.whatsapp), c.email, c.city].filter(Boolean).join(' · ') || 'Sem contato'}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <p id="cliente-ajuda" className="mt-1.5 text-xs text-gray-500">
+                {linkedCustomer ? (
+                  <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="inline-flex items-center gap-1 font-semibold text-green-700"><CheckCircle2 size={14} /> Cliente cadastrado</span>
+                    <Link href={`/admin/dashboard/clientes/${linkedCustomer.id}`} target="_blank" className="text-gray-600 underline hover:text-gray-900">ver cadastro</Link>
+                    <button type="button" onClick={() => set('customerId', null)} className="inline-flex items-center gap-0.5 text-gray-500 hover:text-gray-900"><X size={12} /> desvincular</button>
+                  </span>
+                ) : customers.length > 0 ? (
+                  'Comece a digitar para escolher um cliente cadastrado. Se for novo, ele entra no cadastro ao salvar.'
+                ) : (
+                  'O cliente entra no cadastro de clientes ao salvar.'
+                )}
+              </p>
             </div>
             <div>
               <label htmlFor="contato" className={label}>Contato <span className="text-gray-400 font-normal">opcional</span></label>

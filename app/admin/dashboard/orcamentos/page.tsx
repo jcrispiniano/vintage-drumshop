@@ -48,6 +48,7 @@ export default function OrcamentosPage() {
         quoteDate: todayISO(),
         items: quote.items,
         notes: quote.notes ?? '',
+        customerId: quote.customer_id ?? null,
       }),
     })
     const data = await res.json().catch(() => ({}))
