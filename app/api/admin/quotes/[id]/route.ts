@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
-import { toQuoteRow } from '@/lib/quote'
+import { customerIdFromBody, toQuoteRow } from '@/lib/quote'
+import { linkQuoteToCustomer } from '@/lib/customerMatch'
 
 type Params = { params: Promise<{ id: string }> }
 
@@ -28,7 +29,13 @@ export async function PUT(req: Request, { params }: Params) {
 
   const { data, error } = await supabaseAdmin.from('quotes').update(row).eq('id', id).select().single()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json(data)
+
+  const customerId = await linkQuoteToCustomer(data.id, {
+    name: data.client_name,
+    contact: data.client_contact,
+    customerId: customerIdFromBody(body),
+  })
+  return NextResponse.json({ ...data, customer_id: customerId ?? data.customer_id ?? null })
 }
 
 export async function DELETE(_req: Request, { params }: Params) {

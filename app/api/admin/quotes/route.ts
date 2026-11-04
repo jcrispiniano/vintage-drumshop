@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
-import { toQuoteRow } from '@/lib/quote'
+import { customerIdFromBody, toQuoteRow } from '@/lib/quote'
+import { linkQuoteToCustomer } from '@/lib/customerMatch'
 
 export async function GET() {
   if (!isSupabaseConfigured()) {
@@ -29,5 +30,12 @@ export async function POST(req: Request) {
 
   const { data, error } = await supabaseAdmin.from('quotes').insert([row]).select().single()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json(data, { status: 201 })
+
+  // Liga ao cadastro de clientes (cria o cliente se for novo); não impede salvar o orçamento
+  const customerId = await linkQuoteToCustomer(data.id, {
+    name: data.client_name,
+    contact: data.client_contact,
+    customerId: customerIdFromBody(body),
+  })
+  return NextResponse.json({ ...data, customer_id: customerId ?? data.customer_id ?? null }, { status: 201 })
 }

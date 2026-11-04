@@ -21,6 +21,7 @@ export default function EditarOrcamentoPage() {
           quoteDate: quote.quote_date,
           items: quote.items,
           notes: quote.notes ?? '',
+          customerId: quote.customer_id ?? null,
         })
       })
       .catch(() => setError('Orçamento não encontrado.'))

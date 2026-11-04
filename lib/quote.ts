@@ -17,6 +17,8 @@ export interface Quote {
   quote_date: string // AAAA-MM-DD
   items: QuoteItem[]
   notes: string | null
+  /** Cliente cadastrado (aba Clientes); null em orçamentos antigos ou sem a tabela customers */
+  customer_id?: number | null
   created_at: string
   updated_at: string
 }
@@ -64,6 +66,12 @@ export function todayISO(): string {
 }
 
 type Row = Record<string, unknown>
+
+/** Cliente escolhido no formulário (o servidor confere se existe). */
+export function customerIdFromBody(body: Row): number | null {
+  const id = Number(body.customerId)
+  return Number.isInteger(id) && id > 0 ? id : null
+}
 
 /** Valida o corpo enviado pelo painel e devolve a linha para a tabela quotes. */
 export function toQuoteRow(body: Row): { row: Row; error?: string } {
