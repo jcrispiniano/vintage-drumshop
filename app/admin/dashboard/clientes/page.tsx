@@ -3,18 +3,19 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Download, Edit, Mail, MessageCircle, Plus, RefreshCw, Search, Trash2, Users } from 'lucide-react'
+import { Cake, Download, Edit, Mail, MessageCircle, Plus, RefreshCw, Search, Trash2, Users } from 'lucide-react'
 import AdminHeader from '../_components/AdminHeader'
-import { CustomerWithStats, customersToCsv, formatWhatsapp, missingFields } from '@/lib/customers'
-import { formatQuoteDate } from '@/lib/quote'
+import { CustomerWithStats, birthdayHint, birthdayInfo, customersToCsv, formatWhatsapp, missingFields } from '@/lib/customers'
+import { formatQuoteDate, todayISO } from '@/lib/quote'
 import { formatPrice } from '@/lib/products'
 
-type Filter = 'todos' | 'aceitam' | 'com-orcamento' | 'incompletos'
+type Filter = 'todos' | 'aceitam' | 'com-orcamento' | 'aniversariantes' | 'incompletos'
 
 const FILTERS: { id: Filter; label: string }[] = [
   { id: 'todos', label: 'Todos' },
   { id: 'aceitam', label: 'Aceitam e-mails' },
   { id: 'com-orcamento', label: 'Com orçamento' },
+  { id: 'aniversariantes', label: 'Aniversariantes do mês' },
   { id: 'incompletos', label: 'Cadastro incompleto' },
 ]
 
@@ -82,8 +83,13 @@ export default function ClientesPage() {
 
   const term = search.trim().toLowerCase()
   const digits = term.replace(/\D/g, '')
+  const today = todayISO()
+  const currentMonth = Number(today.slice(5, 7))
+  const birthday = (c: CustomerWithStats) => birthdayInfo(c.birth_date, today)
+
   const matchesFilter = (c: CustomerWithStats) =>
     filter === 'todos' ||
+    (filter === 'aniversariantes' && birthday(c)?.month === currentMonth) ||
     (filter === 'aceitam' && c.accepts_marketing) ||
     (filter === 'com-orcamento' && c.quote_count > 0) ||
     (filter === 'incompletos' && missingFields(c).length > 0)
@@ -95,6 +101,14 @@ export default function ClientesPage() {
       c.city?.toLowerCase().includes(term) ||
       (digits.length >= 3 && (c.whatsapp?.includes(digits) || c.cpf?.includes(digits))))
   )
+  // Aniversariantes do mês em ordem de data (dia 1 primeiro)
+  if (filter === 'aniversariantes') filtered.sort((a, b) => (a.birth_date ?? '').slice(8).localeCompare((b.birth_date ?? '').slice(8)))
+
+  // Lembrete no topo: aniversários de hoje até os próximos 7 dias
+  const upcoming = customers
+    .map(c => ({ c, info: birthday(c) }))
+    .filter((x): x is { c: CustomerWithStats; info: NonNullable<ReturnType<typeof birthdayInfo>> } => !!x.info && x.info.daysUntil <= 7)
+    .sort((a, b) => a.info.daysUntil - b.info.daysUntil)
 
   function handleExport() {
     const blob = new Blob([customersToCsv(filtered)], { type: 'text/csv;charset=utf-8' })
@@ -176,6 +190,25 @@ export default function ClientesPage() {
           )}
         </div>
 
+        {!loading && !error && upcoming.length > 0 && (
+          <section aria-label="Próximos aniversários" className="mb-4 rounded-lg border border-pink-100 bg-pink-50 px-4 py-3">
+            <p className="flex items-center gap-2 text-sm font-semibold text-pink-800"><Cake size={16} aria-hidden /> Aniversários nos próximos 7 dias</p>
+            <ul className="mt-1.5 flex flex-wrap gap-x-5 gap-y-1 text-sm text-pink-900">
+              {upcoming.map(({ c, info }) => (
+                <li key={c.id}>
+                  <Link href={`/admin/dashboard/clientes/${c.id}`} className="font-semibold hover:underline">{c.name}</Link>
+                  {' '}— {info.daysUntil === 0 ? <strong>hoje</strong> : info.daysUntil === 1 ? 'amanhã' : `${info.label} (em ${info.daysUntil} dias)`}, {info.turning} anos
+                  {c.whatsapp && info.daysUntil === 0 && (
+                    <a href={`https://wa.me/${c.whatsapp}?text=${encodeURIComponent(`Feliz aniversário, ${c.name.split(' ')[0]}! Um abraço de toda a Vintage Drum Shop.`)}`} target="_blank" rel="noopener noreferrer" className="ml-2 font-semibold text-green-700 hover:underline">
+                      Mandar parabéns
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {notice && <p role="status" className="mb-4 text-sm text-gray-700 bg-white border border-gray-200 rounded-lg px-4 py-3">{notice}</p>}
 
         {loading ? (
@@ -224,6 +257,11 @@ export default function ClientesPage() {
                           <p className="text-xs text-gray-500">
                             {[c.city && (c.state ? `${c.city}/${c.state}` : c.city), c.instagram, c.source === 'orcamento' ? 'veio de orçamento' : null].filter(Boolean).join(' · ')}
                           </p>
+                          {birthday(c) && (
+                            <p className={`mt-0.5 mr-2 inline-flex items-center gap-1 text-xs ${birthday(c)!.daysUntil <= 7 ? 'font-semibold text-pink-700' : 'text-gray-500'}`}>
+                              <Cake size={12} aria-hidden /> {birthdayHint(birthday(c)!)}
+                            </p>
+                          )}
                           {missingFields(c).length > 0 && (
                             <span className="mt-1 inline-block rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700" title={`Falta: ${missingFields(c).join(', ')}`}>
                               Cadastro incompleto

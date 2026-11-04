@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { AlertCircle, ArrowLeft, FileText, Loader2, Plus, Save } from 'lucide-react'
 import AdminHeader from './AdminHeader'
-import { Customer, UFS, formatCep, formatCpf, formatWhatsapp, missingFields } from '@/lib/customers'
-import { Quote, formatQuoteDate, quoteNumber, quoteTotal } from '@/lib/quote'
+import { Customer, UFS, birthdayInfo, formatCep, formatCpf, formatWhatsapp, missingFields } from '@/lib/customers'
+import { Quote, formatQuoteDate, quoteNumber, quoteTotal, todayISO } from '@/lib/quote'
 import { formatPrice } from '@/lib/products'
 
 export interface CustomerFormData {
@@ -45,6 +45,15 @@ export function customerToForm(c?: Customer): CustomerFormData {
     notes: c?.notes ?? '',
     acceptsMarketing: c?.accepts_marketing ?? false,
   }
+}
+
+/** Texto abaixo do campo: quando é o próximo aniversário e quantos anos a pessoa faz */
+function birthdayText(birthDate: string): string {
+  const info = birthdayInfo(birthDate || null, todayISO())
+  if (!info) return 'Aparece na lista de clientes e no aviso de aniversariantes.'
+  if (info.daysUntil === 0) return `Aniversário hoje! Faz ${info.turning} anos.`
+  const when = info.daysUntil === 1 ? 'amanhã' : `em ${info.daysUntil} dias`
+  return `Faz ${info.turning} anos em ${info.label} (${when}).`
 }
 
 /** Máscaras enquanto digita */
@@ -227,9 +236,9 @@ export default function CustomerForm({ mode, customer, quotes = [] }: CustomerFo
                 <input id="instagram" value={form.instagram} onChange={e => set('instagram', e.target.value)} className={input} placeholder="@usuario" />
               </div>
               <div>
-                <label htmlFor="nascimento" className={label}>Data de nascimento</label>
-                <input id="nascimento" type="date" value={form.birthDate} onChange={e => set('birthDate', e.target.value)} className={input} />
-                <p className="mt-1 text-xs text-gray-500">Útil para um e-mail de aniversário no futuro.</p>
+                <label htmlFor="nascimento" className={label}>Data de nascimento (aniversário)</label>
+                <input id="nascimento" type="date" max={todayISO()} value={form.birthDate} onChange={e => set('birthDate', e.target.value)} className={input} />
+                <p className="mt-1 text-xs text-gray-500">{birthdayText(form.birthDate)}</p>
               </div>
               <div className="md:col-span-2">
                 <label htmlFor="obs" className={label}>Observações</label>

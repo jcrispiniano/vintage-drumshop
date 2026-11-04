@@ -110,6 +110,48 @@ export function formatAddress(c: AddressParts): string {
     .join(' - ')
 }
 
+export interface BirthdayInfo {
+  /** "20/05" */
+  label: string
+  /** Idade que a pessoa faz no próximo aniversário */
+  turning: number
+  /** 0 = hoje, 1 = amanhã... */
+  daysUntil: number
+  month: number
+}
+
+/**
+ * Próximo aniversário a partir de "hoje" (AAAA-MM-DD, data de São Paulo).
+ * Quem nasceu em 29/02 comemora em 28/02 nos anos que não são bissextos.
+ */
+export function birthdayInfo(birthDate: string | null, today: string): BirthdayInfo | null {
+  if (!birthDate || !/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) return null
+  const [by, bm, bd] = birthDate.split('-').map(Number)
+  const [ty, tm, td] = today.split('-').map(Number)
+  const dayIn = (year: number) => {
+    const leap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+    return bm === 2 && bd === 29 && !leap ? 28 : bd
+  }
+  const utc = (y: number, m: number, d: number) => Date.UTC(y, m - 1, d)
+  let year = ty
+  if (utc(year, bm, dayIn(year)) < utc(ty, tm, td)) year += 1
+  const daysUntil = Math.round((utc(year, bm, dayIn(year)) - utc(ty, tm, td)) / 86400000)
+  return {
+    label: `${String(bd).padStart(2, '0')}/${String(bm).padStart(2, '0')}`,
+    turning: year - by,
+    daysUntil,
+    month: bm,
+  }
+}
+
+/** "Hoje!", "Amanhã", "em 5 dias" ou só a data */
+export function birthdayHint(info: BirthdayInfo): string {
+  if (info.daysUntil === 0) return `Aniversário hoje! Faz ${info.turning} anos`
+  if (info.daysUntil === 1) return `Aniversário amanhã (${info.turning} anos)`
+  if (info.daysUntil <= 7) return `Aniversário em ${info.daysUntil} dias (${info.turning} anos)`
+  return `Aniversário ${info.label}`
+}
+
 /** Dados obrigatórios do cadastro; clientes criados pelo orçamento chegam só com nome e contato. */
 export function missingFields(c: Pick<Customer, 'email' | 'whatsapp' | 'cpf' | 'cep' | 'street' | 'number' | 'neighborhood' | 'city' | 'state'>): string[] {
   const missing: string[] = []
