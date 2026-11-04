@@ -58,11 +58,14 @@ export default function DocumentoOrcamentoPage() {
   const cell = 'border border-[#2B1D14] px-3 py-3 text-center align-middle'
 
   return (
-    <div className="min-h-screen bg-gray-200 py-6 print:bg-white print:py-0">
+    <div className="min-h-screen bg-gray-200 py-6 print:min-h-0 print:bg-transparent print:py-0">
+      {/* Impressão: a folha ocupa exatamente a área da página (100vh). Se o navegador forçar margens
+          (o Safari costuma fazer isso), ela encolhe junto em vez de empurrar o rodapé para a página 2. */}
       <style>{`
         @page { size: A4; margin: 0; }
         @media print {
-          html, body { background: #fff !important; }
+          html, body { margin: 0 !important; padding: 0 !important; background: ${PAPER} !important; }
+          .quote-sheet { width: 100% !important; max-width: none !important; min-height: 0 !important; height: 100vh !important; overflow: hidden; break-after: avoid; break-inside: avoid; }
         }
         .quote-sheet { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       `}</style>
@@ -91,11 +94,11 @@ export default function DocumentoOrcamentoPage() {
       {/* Folha A4 */}
       <article
         className="quote-sheet relative mx-auto flex min-h-[297mm] w-[210mm] max-w-full flex-col overflow-hidden px-[16mm] pb-[12mm] pt-[16mm] font-sans text-[#2B1D14] shadow-xl print:shadow-none"
-        style={{ backgroundColor: PAPER, backgroundImage: 'radial-gradient(120% 80% at 20% 10%, rgba(255,255,255,0.35), transparent 60%), radial-gradient(90% 70% at 90% 100%, rgba(120,90,60,0.08), transparent 70%)' }}
+        style={{ backgroundColor: PAPER }}
       >
-        {/* Marca d'água: a logo bem clara atrás da tabela, como no modelo */}
+        {/* Marca d'água: a logo já vem clareada no arquivo (sem opacity no CSS, que escurecia no PDF) */}
         {/* eslint-disable-next-line @next/next/no-img-element -- img comum imprime com fidelidade */}
-        <img src="/logo-vintage.png" alt="" aria-hidden className="pointer-events-none absolute left-1/2 top-[92mm] w-[160mm] -translate-x-1/2 opacity-[0.07]" />
+        <img src="/logo-marca-dagua.png" alt="" aria-hidden className="pointer-events-none absolute left-1/2 top-[92mm] w-[160mm] -translate-x-1/2" />
 
         <header className="relative flex items-start justify-between gap-8">
           <div className="min-w-0 flex-1 pt-2">
@@ -143,7 +146,7 @@ export default function DocumentoOrcamentoPage() {
         </table>
 
         {quote.notes && (
-          <section className="mt-[12mm] max-w-[85mm] break-inside-avoid italic" style={{ color: MAROON }}>
+          <section className="relative mt-[12mm] max-w-[85mm] break-inside-avoid italic" style={{ color: MAROON }}>
             <h2 className="font-sans text-[15px] font-bold not-italic tracking-normal">
               <em>Observação Importante:</em>
             </h2>
@@ -151,14 +154,14 @@ export default function DocumentoOrcamentoPage() {
           </section>
         )}
 
-        <footer className="mt-auto pt-[12mm] break-inside-avoid">
+        <footer className="relative mt-auto pt-[12mm] break-inside-avoid">
           <div className="h-[3px] w-full" style={{ backgroundColor: MAROON }} />
           <div className="mt-[6mm] flex items-center gap-[8mm]">
             {/* eslint-disable-next-line @next/next/no-img-element -- img comum imprime com fidelidade */}
             <img src="/logo-v.png" alt="" className="h-[22mm] w-[22mm] flex-shrink-0 object-contain" />
             <div className="h-[18mm] w-[2px] flex-shrink-0 bg-[#2B1D14]" />
-            <p className="text-[24px] font-bold tracking-[-0.01em]" style={{ color: MAROON }}>{quoteCompany.instagram}</p>
-            <div className="ml-auto text-[17px] leading-tight" style={{ color: MAROON }}>
+            <p className="whitespace-nowrap text-[22px] font-bold tracking-[-0.01em]" style={{ color: MAROON }}>{quoteCompany.instagram}</p>
+            <div className="ml-auto whitespace-nowrap text-[15px] leading-tight" style={{ color: MAROON }}>
               <p>{quoteCompany.phone}</p>
               <p>CNPJ: {quoteCompany.cnpj}</p>
             </div>
