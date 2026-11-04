@@ -5,16 +5,17 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Download, Edit, Mail, MessageCircle, Plus, RefreshCw, Search, Trash2, Users } from 'lucide-react'
 import AdminHeader from '../_components/AdminHeader'
-import { CustomerWithStats, customersToCsv, formatWhatsapp } from '@/lib/customers'
+import { CustomerWithStats, customersToCsv, formatWhatsapp, missingFields } from '@/lib/customers'
 import { formatQuoteDate } from '@/lib/quote'
 import { formatPrice } from '@/lib/products'
 
-type Filter = 'todos' | 'aceitam' | 'com-orcamento'
+type Filter = 'todos' | 'aceitam' | 'com-orcamento' | 'incompletos'
 
 const FILTERS: { id: Filter; label: string }[] = [
   { id: 'todos', label: 'Todos' },
   { id: 'aceitam', label: 'Aceitam e-mails' },
   { id: 'com-orcamento', label: 'Com orçamento' },
+  { id: 'incompletos', label: 'Cadastro incompleto' },
 ]
 
 export default function ClientesPage() {
@@ -81,13 +82,18 @@ export default function ClientesPage() {
 
   const term = search.trim().toLowerCase()
   const digits = term.replace(/\D/g, '')
+  const matchesFilter = (c: CustomerWithStats) =>
+    filter === 'todos' ||
+    (filter === 'aceitam' && c.accepts_marketing) ||
+    (filter === 'com-orcamento' && c.quote_count > 0) ||
+    (filter === 'incompletos' && missingFields(c).length > 0)
   const filtered = customers.filter(c =>
-    (filter === 'todos' || (filter === 'aceitam' ? c.accepts_marketing : c.quote_count > 0)) &&
+    matchesFilter(c) &&
     (!term ||
       c.name.toLowerCase().includes(term) ||
       c.email?.includes(term) ||
       c.city?.toLowerCase().includes(term) ||
-      (digits.length >= 3 && c.whatsapp?.includes(digits)))
+      (digits.length >= 3 && (c.whatsapp?.includes(digits) || c.cpf?.includes(digits))))
   )
 
   function handleExport() {
@@ -112,7 +118,7 @@ export default function ClientesPage() {
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder="Buscar por nome, e-mail, WhatsApp ou cidade..."
+              placeholder="Buscar por nome, e-mail, contato, CPF ou cidade..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
@@ -216,8 +222,13 @@ export default function ClientesPage() {
                             {c.name}
                           </Link>
                           <p className="text-xs text-gray-500">
-                            {[c.city, c.instagram, c.source === 'orcamento' ? 'veio de orçamento' : null].filter(Boolean).join(' · ')}
+                            {[c.city && (c.state ? `${c.city}/${c.state}` : c.city), c.instagram, c.source === 'orcamento' ? 'veio de orçamento' : null].filter(Boolean).join(' · ')}
                           </p>
+                          {missingFields(c).length > 0 && (
+                            <span className="mt-1 inline-block rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700" title={`Falta: ${missingFields(c).join(', ')}`}>
+                              Cadastro incompleto
+                            </span>
+                          )}
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex flex-col gap-0.5">

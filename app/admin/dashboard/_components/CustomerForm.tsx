@@ -3,18 +3,26 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, FileText, Plus, Save } from 'lucide-react'
+import { AlertCircle, ArrowLeft, FileText, Loader2, Plus, Save } from 'lucide-react'
 import AdminHeader from './AdminHeader'
-import { Customer, formatWhatsapp } from '@/lib/customers'
+import { Customer, UFS, formatCep, formatCpf, formatWhatsapp, missingFields } from '@/lib/customers'
 import { Quote, formatQuoteDate, quoteNumber, quoteTotal } from '@/lib/quote'
 import { formatPrice } from '@/lib/products'
 
 export interface CustomerFormData {
   name: string
-  whatsapp: string
+  cpf: string
   email: string
-  instagram: string
+  whatsapp: string
+  cep: string
+  street: string
+  number: string
+  complement: string
+  neighborhood: string
   city: string
+  state: string
+  instagram: string
+  birthDate: string
   notes: string
   acceptsMarketing: boolean
 }
@@ -22,13 +30,31 @@ export interface CustomerFormData {
 export function customerToForm(c?: Customer): CustomerFormData {
   return {
     name: c?.name ?? '',
-    whatsapp: c?.whatsapp ? formatWhatsapp(c.whatsapp) : '',
+    cpf: formatCpf(c?.cpf ?? null),
     email: c?.email ?? '',
-    instagram: c?.instagram ?? '',
+    whatsapp: c?.whatsapp ? formatWhatsapp(c.whatsapp) : '',
+    cep: formatCep(c?.cep ?? null),
+    street: c?.street ?? '',
+    number: c?.number ?? '',
+    complement: c?.complement ?? '',
+    neighborhood: c?.neighborhood ?? '',
     city: c?.city ?? '',
+    state: c?.state ?? '',
+    instagram: c?.instagram ?? '',
+    birthDate: c?.birth_date ?? '',
     notes: c?.notes ?? '',
     acceptsMarketing: c?.accepts_marketing ?? false,
   }
+}
+
+/** Máscaras enquanto digita */
+const maskCpf = (v: string) => {
+  const d = v.replace(/\D/g, '').slice(0, 11)
+  return d.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+}
+const maskCep = (v: string) => {
+  const d = v.replace(/\D/g, '').slice(0, 8)
+  return d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d
 }
 
 interface CustomerFormProps {
@@ -43,6 +69,34 @@ export default function CustomerForm({ mode, customer, quotes = [] }: CustomerFo
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [saved, setSaved] = useState(false)
+  const [cepStatus, setCepStatus] = useState<'idle' | 'loading' | 'notfound'>('idle')
+  const [current, setCurrent] = useState(customer)
+  const missing = current ? missingFields(current) : []
+
+  /** CEP completo: busca rua, bairro, cidade e UF no ViaCEP (gratuito) e leva o cursor ao número. */
+  async function handleCep(value: string) {
+    const masked = maskCep(value)
+    set('cep', masked)
+    const digits = masked.replace(/\D/g, '')
+    if (digits.length !== 8) { setCepStatus('idle'); return }
+    setCepStatus('loading')
+    try {
+      const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`)
+      const data = await res.json()
+      if (!res.ok || data.erro) { setCepStatus('notfound'); return }
+      setForm(prev => ({
+        ...prev,
+        street: data.logradouro || prev.street,
+        neighborhood: data.bairro || prev.neighborhood,
+        city: data.localidade || prev.city,
+        state: data.uf || prev.state,
+      }))
+      setCepStatus('idle')
+      document.getElementById('numero')?.focus()
+    } catch {
+      setCepStatus('idle') // sem internet ou ViaCEP fora do ar: preenche à mão
+    }
+  }
 
   function set<K extends keyof CustomerFormData>(field: K, value: CustomerFormData[K]) {
     setForm(prev => ({ ...prev, [field]: value }))
@@ -66,6 +120,7 @@ export default function CustomerForm({ mode, customer, quotes = [] }: CustomerFo
           return
         }
         setForm(customerToForm(data))
+        setCurrent(data)
         setSaved(true)
       } else {
         setError(data.error ?? 'Erro ao salvar cliente.')
@@ -91,41 +146,106 @@ export default function CustomerForm({ mode, customer, quotes = [] }: CustomerFo
         <h2 className="text-2xl font-bold text-gray-900 mb-6">{mode === 'edit' ? customer!.name : 'Novo cliente'}</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 grid gap-5 md:grid-cols-2">
-            <div className="md:col-span-2">
-              <label htmlFor="nome" className={label}>Nome *</label>
-              <input id="nome" required value={form.name} onChange={e => set('name', e.target.value)} className={input} placeholder="Nome do cliente, igreja ou empresa" />
+          {missing.length > 0 && (
+            <p className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              <AlertCircle size={18} className="mt-0.5 flex-shrink-0" />
+              <span><strong>Cadastro incompleto:</strong> falta {missing.join(', ')}. Este cliente veio de um orçamento; complete os dados quando tiver.</span>
+            </p>
+          )}
+
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+            <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wide mb-4">Dados do cliente</h3>
+            <div className="grid gap-5 md:grid-cols-2">
+              <div className="md:col-span-2">
+                <label htmlFor="nome" className={label}>Nome completo *</label>
+                <input id="nome" required autoComplete="name" value={form.name} onChange={e => set('name', e.target.value)} className={input} placeholder="Nome do cliente, igreja ou empresa" />
+              </div>
+              <div>
+                <label htmlFor="cpf" className={label}>CPF *</label>
+                <input id="cpf" required inputMode="numeric" value={form.cpf} onChange={e => set('cpf', maskCpf(e.target.value))} className={`${input} tabular-nums`} placeholder="000.000.000-00" />
+              </div>
+              <div>
+                <label htmlFor="whatsapp" className={label}>Número de contato *</label>
+                <input id="whatsapp" required type="tel" inputMode="tel" autoComplete="tel" value={form.whatsapp} onChange={e => set('whatsapp', e.target.value)} className={`${input} tabular-nums`} placeholder="(11) 96440-5519" />
+                <p className="mt-1 text-xs text-gray-500">WhatsApp ou telefone com DDD.</p>
+              </div>
+              <div className="md:col-span-2">
+                <label htmlFor="email" className={label}>E-mail *</label>
+                <input id="email" required type="email" autoComplete="email" value={form.email} onChange={e => set('email', e.target.value)} className={input} placeholder="cliente@email.com" />
+              </div>
             </div>
-            <div>
-              <label htmlFor="whatsapp" className={label}>WhatsApp {optional}</label>
-              <input id="whatsapp" type="tel" inputMode="tel" autoComplete="tel" value={form.whatsapp} onChange={e => set('whatsapp', e.target.value)} className={input} placeholder="(11) 96440-5519" />
+          </section>
+
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+            <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wide mb-4">Endereço completo</h3>
+            <div className="grid gap-5 md:grid-cols-6">
+              <div className="md:col-span-2">
+                <label htmlFor="cep" className={label}>CEP *</label>
+                <div className="relative">
+                  <input id="cep" required inputMode="numeric" autoComplete="postal-code" value={form.cep} onChange={e => handleCep(e.target.value)} className={`${input} tabular-nums`} placeholder="00000-000" aria-describedby="cep-ajuda" />
+                  {cepStatus === 'loading' && <Loader2 size={16} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-gray-400" aria-hidden />}
+                </div>
+                <p id="cep-ajuda" className={`mt-1 text-xs ${cepStatus === 'notfound' ? 'text-red-600' : 'text-gray-500'}`}>
+                  {cepStatus === 'notfound' ? 'CEP não encontrado. Confira ou preencha o endereço à mão.' : 'Preenche rua, bairro e cidade sozinho.'}
+                </p>
+              </div>
+              <div className="md:col-span-4">
+                <label htmlFor="rua" className={label}>Rua *</label>
+                <input id="rua" required autoComplete="address-line1" value={form.street} onChange={e => set('street', e.target.value)} className={input} placeholder="Rua, avenida..." />
+              </div>
+              <div className="md:col-span-2">
+                <label htmlFor="numero" className={label}>Número *</label>
+                <input id="numero" required value={form.number} onChange={e => set('number', e.target.value)} className={input} placeholder="123 ou s/n" />
+              </div>
+              <div className="md:col-span-4">
+                <label htmlFor="complemento" className={label}>Complemento {optional}</label>
+                <input id="complemento" autoComplete="address-line2" value={form.complement} onChange={e => set('complement', e.target.value)} className={input} placeholder="Apto, bloco, sala..." />
+              </div>
+              <div className="md:col-span-2">
+                <label htmlFor="bairro" className={label}>Bairro *</label>
+                <input id="bairro" required value={form.neighborhood} onChange={e => set('neighborhood', e.target.value)} className={input} />
+              </div>
+              <div className="md:col-span-3">
+                <label htmlFor="cidade" className={label}>Cidade *</label>
+                <input id="cidade" required autoComplete="address-level2" value={form.city} onChange={e => set('city', e.target.value)} className={input} />
+              </div>
+              <div className="md:col-span-1">
+                <label htmlFor="uf" className={label}>UF *</label>
+                <select id="uf" required autoComplete="address-level1" value={form.state} onChange={e => set('state', e.target.value)} className={input}>
+                  <option value="">—</option>
+                  {UFS.map(uf => <option key={uf} value={uf}>{uf}</option>)}
+                </select>
+              </div>
             </div>
-            <div>
-              <label htmlFor="email" className={label}>E-mail {optional}</label>
-              <input id="email" type="email" autoComplete="email" value={form.email} onChange={e => set('email', e.target.value)} className={input} placeholder="cliente@email.com" />
-            </div>
-            <div>
-              <label htmlFor="instagram" className={label}>Instagram {optional}</label>
-              <input id="instagram" value={form.instagram} onChange={e => set('instagram', e.target.value)} className={input} placeholder="@usuario" />
-            </div>
-            <div>
-              <label htmlFor="cidade" className={label}>Cidade {optional}</label>
-              <input id="cidade" value={form.city} onChange={e => set('city', e.target.value)} className={input} placeholder="São Paulo - SP" />
-            </div>
-            <div className="md:col-span-2">
-              <label htmlFor="obs" className={label}>Observações {optional}</label>
-              <textarea id="obs" rows={3} value={form.notes} onChange={e => set('notes', e.target.value)} className={input} placeholder="Ex.: toca em igreja, procura pratos dark, prefere Pix" />
-            </div>
-            <label className="md:col-span-2 flex items-start gap-3 rounded-lg bg-gray-50 p-4 cursor-pointer">
-              <input type="checkbox" checked={form.acceptsMarketing} onChange={e => set('acceptsMarketing', e.target.checked)} className="mt-0.5 w-4 h-4 accent-orange-500" />
-              <span className="text-sm">
-                <strong className="text-gray-900">Aceita receber e-mails da loja</strong> (novidades e promoções)
-                <span className="block text-gray-500">
-                  Só marque se o cliente concordou. Pela LGPD, os disparos de e-mail vão apenas para quem aceitou.
-                  {customer?.accepts_marketing && customer.marketing_consent_at && ` Aceitou em ${new Date(customer.marketing_consent_at).toLocaleDateString('pt-BR')}.`}
+          </section>
+
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+            <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wide mb-4">Mais informações <span className="font-normal normal-case tracking-normal text-gray-400">opcionais</span></h3>
+            <div className="grid gap-5 md:grid-cols-2">
+              <div>
+                <label htmlFor="instagram" className={label}>Instagram</label>
+                <input id="instagram" value={form.instagram} onChange={e => set('instagram', e.target.value)} className={input} placeholder="@usuario" />
+              </div>
+              <div>
+                <label htmlFor="nascimento" className={label}>Data de nascimento</label>
+                <input id="nascimento" type="date" value={form.birthDate} onChange={e => set('birthDate', e.target.value)} className={input} />
+                <p className="mt-1 text-xs text-gray-500">Útil para um e-mail de aniversário no futuro.</p>
+              </div>
+              <div className="md:col-span-2">
+                <label htmlFor="obs" className={label}>Observações</label>
+                <textarea id="obs" rows={3} value={form.notes} onChange={e => set('notes', e.target.value)} className={input} placeholder="Ex.: toca em igreja, procura pratos dark, prefere Pix" />
+              </div>
+              <label className="md:col-span-2 flex items-start gap-3 rounded-lg bg-gray-50 p-4 cursor-pointer">
+                <input type="checkbox" checked={form.acceptsMarketing} onChange={e => set('acceptsMarketing', e.target.checked)} className="mt-0.5 w-4 h-4 accent-orange-500" />
+                <span className="text-sm">
+                  <strong className="text-gray-900">Aceita receber e-mails da loja</strong> (novidades e promoções)
+                  <span className="block text-gray-500">
+                    Só marque se o cliente concordou. Pela LGPD, os disparos de e-mail vão apenas para quem aceitou.
+                    {customer?.accepts_marketing && customer.marketing_consent_at && ` Aceitou em ${new Date(customer.marketing_consent_at).toLocaleDateString('pt-BR')}.`}
+                  </span>
                 </span>
-              </span>
-            </label>
+              </label>
+            </div>
           </section>
 
           {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-4 py-3">{error}</p>}

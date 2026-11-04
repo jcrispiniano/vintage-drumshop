@@ -4,10 +4,22 @@ export interface Customer {
   id: number
   name: string
   email: string | null
-  /** Só dígitos, com DDI: 5511964405519 */
+  /** Número de contato: só dígitos, com DDI: 5511964405519 */
   whatsapp: string | null
-  instagram: string | null
+  /** Só os 11 dígitos */
+  cpf: string | null
+  /** Endereço completo; o CEP fica só com os 8 dígitos */
+  cep: string | null
+  street: string | null
+  number: string | null
+  complement: string | null
+  neighborhood: string | null
   city: string | null
+  /** UF, ex.: SP */
+  state: string | null
+  instagram: string | null
+  /** AAAA-MM-DD */
+  birth_date: string | null
   notes: string | null
   accepts_marketing: boolean
   marketing_consent_at: string | null
@@ -53,6 +65,61 @@ export function formatWhatsapp(whatsapp: string | null): string {
   return `(${ddd}) ${number.slice(0, split)}-${number.slice(split)}`
 }
 
+/** CPF → 11 dígitos, se os dígitos verificadores baterem. */
+export function normalizeCpf(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const cpf = value.replace(/\D/g, '')
+  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return null
+  const digit = (len: number) => {
+    let sum = 0
+    for (let i = 0; i < len; i++) sum += Number(cpf[i]) * (len + 1 - i)
+    const rest = (sum * 10) % 11
+    return rest === 10 ? 0 : rest
+  }
+  return digit(9) === Number(cpf[9]) && digit(10) === Number(cpf[10]) ? cpf : null
+}
+
+/** 12345678909 → 123.456.789-09 */
+export function formatCpf(cpf: string | null): string {
+  if (!cpf) return ''
+  return `${cpf.slice(0, 3)}.${cpf.slice(3, 6)}.${cpf.slice(6, 9)}-${cpf.slice(9)}`
+}
+
+export function normalizeCep(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const cep = value.replace(/\D/g, '')
+  return cep.length === 8 ? cep : null
+}
+
+/** 01310100 → 01310-100 */
+export function formatCep(cep: string | null): string {
+  if (!cep) return ''
+  return `${cep.slice(0, 5)}-${cep.slice(5)}`
+}
+
+export const UFS = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
+
+type AddressParts = Pick<Customer, 'street' | 'number' | 'complement' | 'neighborhood' | 'city' | 'state' | 'cep'>
+
+/** "Rua X, 123 - Apto 4 - Bairro, Cidade/UF - CEP 01310-100" */
+export function formatAddress(c: AddressParts): string {
+  const line1 = [c.street && c.number ? `${c.street}, ${c.number}` : c.street, c.complement].filter(Boolean).join(' - ')
+  const place = c.city ? (c.state ? `${c.city}/${c.state}` : c.city) : null
+  return [line1, [c.neighborhood, place].filter(Boolean).join(', '), c.cep ? `CEP ${formatCep(c.cep)}` : null]
+    .filter(Boolean)
+    .join(' - ')
+}
+
+/** Dados obrigatórios do cadastro; clientes criados pelo orçamento chegam só com nome e contato. */
+export function missingFields(c: Pick<Customer, 'email' | 'whatsapp' | 'cpf' | 'cep' | 'street' | 'number' | 'neighborhood' | 'city' | 'state'>): string[] {
+  const missing: string[] = []
+  if (!c.cpf) missing.push('CPF')
+  if (!c.email) missing.push('e-mail')
+  if (!c.whatsapp) missing.push('contato')
+  if (!c.cep || !c.street || !c.number || !c.neighborhood || !c.city || !c.state) missing.push('endereço')
+  return missing
+}
+
 /** O campo "Contato" do orçamento é livre: separa e-mail de WhatsApp. */
 export function parseContact(contact: unknown): { email: string | null; whatsapp: string | null } {
   if (typeof contact !== 'string' || !contact.trim()) return { email: null, whatsapp: null }
@@ -78,17 +145,36 @@ export function toCustomerRow(body: Row, previous?: Pick<Customer, 'accepts_mark
   const name = cleanText(body.name, 200)
   if (!name) return { row: {}, error: 'Informe o nome do cliente.' }
 
-  const rawEmail = typeof body.email === 'string' ? body.email.trim() : ''
-  const email = normalizeEmail(rawEmail)
-  if (rawEmail && !email) return { row: {}, error: 'E-mail inválido.' }
+  const cpf = normalizeCpf(body.cpf)
+  if (!cpf) return { row: {}, error: typeof body.cpf === 'string' && body.cpf.trim() ? 'CPF inválido. Confira os números.' : 'Informe o CPF.' }
 
-  const rawWhatsapp = typeof body.whatsapp === 'string' ? body.whatsapp.trim() : ''
-  const whatsapp = normalizeWhatsapp(rawWhatsapp)
-  if (rawWhatsapp && !whatsapp) return { row: {}, error: 'WhatsApp inválido. Use DDD + número, ex.: (11) 96440-5519.' }
+  const email = normalizeEmail(body.email)
+  if (!email) return { row: {}, error: typeof body.email === 'string' && body.email.trim() ? 'E-mail inválido.' : 'Informe o e-mail.' }
+
+  const whatsapp = normalizeWhatsapp(body.whatsapp)
+  if (!whatsapp) {
+    return { row: {}, error: typeof body.whatsapp === 'string' && body.whatsapp.trim()
+      ? 'Número de contato inválido. Use DDD + número, ex.: (11) 96440-5519.'
+      : 'Informe o número de contato.' }
+  }
+
+  // Endereço completo: só o complemento é opcional
+  const cep = normalizeCep(body.cep)
+  if (!cep) return { row: {}, error: 'Informe o CEP com 8 números.' }
+  const street = cleanText(body.street, 200)
+  const number = cleanText(body.number, 20)
+  const neighborhood = cleanText(body.neighborhood, 100)
+  const city = cleanText(body.city, 100)
+  const state = typeof body.state === 'string' ? body.state.trim().toUpperCase() : ''
+  if (!street) return { row: {}, error: 'Informe a rua do endereço.' }
+  if (!number) return { row: {}, error: 'Informe o número do endereço (use "s/n" se não tiver).' }
+  if (!neighborhood) return { row: {}, error: 'Informe o bairro.' }
+  if (!city) return { row: {}, error: 'Informe a cidade.' }
+  if (!UFS.includes(state)) return { row: {}, error: 'Escolha o estado (UF).' }
+
+  const birthDate = typeof body.birthDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(body.birthDate) ? body.birthDate : null
 
   const acceptsMarketing = body.acceptsMarketing === true
-  if (acceptsMarketing && !email) return { row: {}, error: 'Para marcar que aceita e-mails, informe o e-mail.' }
-
   // Guarda a data do aceite; mantém a original se já tinha aceitado antes
   const consentAt = acceptsMarketing
     ? previous?.accepts_marketing && previous.marketing_consent_at ? previous.marketing_consent_at : new Date().toISOString()
@@ -98,10 +184,18 @@ export function toCustomerRow(body: Row, previous?: Pick<Customer, 'accepts_mark
   return {
     row: {
       name,
+      cpf,
       email,
       whatsapp,
+      cep,
+      street,
+      number,
+      complement: cleanText(body.complement, 100),
+      neighborhood,
+      city,
+      state,
       instagram: instagram ? (instagram.startsWith('@') ? instagram : `@${instagram}`) : null,
-      city: cleanText(body.city, 100),
+      birth_date: birthDate,
       notes: cleanText(body.notes, 2000),
       accepts_marketing: acceptsMarketing,
       marketing_consent_at: consentAt,
@@ -113,13 +207,17 @@ export function toCustomerRow(body: Row, previous?: Pick<Customer, 'accepts_mark
 export function duplicateMessage(dbMessage: string): string | null {
   if (!/duplicate key|unique/i.test(dbMessage)) return null
   if (dbMessage.includes('email')) return 'Já existe um cliente com esse e-mail.'
-  if (dbMessage.includes('whatsapp')) return 'Já existe um cliente com esse WhatsApp.'
+  if (dbMessage.includes('whatsapp')) return 'Já existe um cliente com esse número de contato.'
+  if (dbMessage.includes('cpf')) return 'Já existe um cliente com esse CPF.'
   return 'Já existe um cliente com esses dados.'
 }
 
-/** Planilha para importar na ferramenta de e-mail (só quem aceitou receber, se pedido). */
+/**
+ * Planilha para importar na ferramenta de e-mail. O CPF fica de fora de propósito:
+ * não serve para disparo e é o dado mais sensível do cadastro.
+ */
 export function customersToCsv(customers: CustomerWithStats[]): string {
-  const header = ['Nome', 'E-mail', 'WhatsApp', 'Instagram', 'Cidade', 'Aceita e-mails', 'Data do aceite', 'Orçamentos', 'Último orçamento']
+  const header = ['Nome', 'E-mail', 'Contato', 'Cidade', 'UF', 'Endereço', 'Aniversário', 'Instagram', 'Aceita e-mails', 'Data do aceite', 'Orçamentos', 'Último orçamento']
   const escape = (v: string | number | null) => {
     const s = v === null ? '' : String(v)
     return /[";\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
@@ -128,8 +226,11 @@ export function customersToCsv(customers: CustomerWithStats[]): string {
     c.name,
     c.email,
     c.whatsapp ? formatWhatsapp(c.whatsapp) : null,
-    c.instagram,
     c.city,
+    c.state,
+    formatAddress(c) || null,
+    c.birth_date ? c.birth_date.split('-').reverse().join('/') : null,
+    c.instagram,
     c.accepts_marketing ? 'Sim' : 'Não',
     c.marketing_consent_at ? c.marketing_consent_at.slice(0, 10) : null,
     c.quote_count,

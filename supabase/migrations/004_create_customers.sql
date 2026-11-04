@@ -10,9 +10,19 @@ create table if not exists public.customers (
   id                   bigserial primary key,
   name                 text        not null,
   email                text,                 -- sempre em minúsculas
-  whatsapp             text,                 -- só dígitos, com DDI (ex.: 5511964405519)
-  instagram            text,
+  whatsapp             text,                 -- número de contato: só dígitos, com DDI (ex.: 5511964405519)
+  cpf                  text,                 -- só os 11 dígitos
+  -- Endereço completo (o CEP preenche o resto pelo ViaCEP no painel)
+  cep                  text,                 -- só os 8 dígitos
+  street               text,
+  number               text,
+  complement           text,
+  neighborhood         text,
   city                 text,
+  state                text,                 -- UF, ex.: SP
+  -- Opcionais
+  instagram            text,
+  birth_date           date,
   notes                text,
   -- LGPD: e-mail marketing só para quem aceitou; guarda quando aceitou
   accepts_marketing    boolean     not null default false,
@@ -23,9 +33,20 @@ create table if not exists public.customers (
   updated_at           timestamptz not null default now()
 );
 
--- Um cliente por e-mail e por WhatsApp (é o que permite casar orçamento com cliente)
+-- Se a versão anterior desta migração já rodou, acrescenta as colunas novas
+alter table public.customers add column if not exists cpf text;
+alter table public.customers add column if not exists cep text;
+alter table public.customers add column if not exists street text;
+alter table public.customers add column if not exists number text;
+alter table public.customers add column if not exists complement text;
+alter table public.customers add column if not exists neighborhood text;
+alter table public.customers add column if not exists state text;
+alter table public.customers add column if not exists birth_date date;
+
+-- Um cliente por e-mail, por número de contato e por CPF (é o que permite casar orçamento com cliente)
 create unique index if not exists customers_email_key on public.customers (lower(email)) where email is not null;
 create unique index if not exists customers_whatsapp_key on public.customers (whatsapp) where whatsapp is not null;
+create unique index if not exists customers_cpf_key on public.customers (cpf) where cpf is not null;
 create index if not exists customers_name_idx on public.customers (lower(name));
 
 -- Reaproveita a função de supabase/schema.sql (recriada aqui por segurança)
