@@ -129,9 +129,9 @@ function Hero() {
 
       <div className="flex flex-col justify-center border-b-[3px] border-brass px-5 py-10 text-white md:order-1 md:border-b-0 md:border-r-[3px] md:px-10 xl:px-14">
         <h1 className="text-[2.5rem] font-semibold uppercase leading-[1.12] lg:text-5xl 2xl:text-6xl">
-          <span className="block">Pratos turcos feitos à mão.</span>
-          <span className="block text-[#E9B872]">Baquetas suecas.</span>
-          <span className="block">Em São Paulo.</span>
+          <span className="block">Vintage,</span>
+          <span className="block text-[#E9B872]">porque clássico</span>
+          <span className="block">é eterno</span>
         </h1>
         <p className="mt-5 max-w-md text-base leading-relaxed text-[#F0E3D0] lg:text-lg">
           Baterias, pratos e acessórios escolhidos por quem toca. Monte seu pedido aqui e feche direto com a loja pelo WhatsApp.
