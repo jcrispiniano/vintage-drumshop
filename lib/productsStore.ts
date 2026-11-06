@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { products as staticProducts, Product } from '@/lib/products'
+import { products as staticProducts, Product, soldOutLast } from '@/lib/products'
 
 interface ProductsState {
   products: Product[]
@@ -9,7 +9,7 @@ interface ProductsState {
 
 export const useProductsStore = create<ProductsState>((set) => ({
   // Inicia com produtos estáticos; ProductsInitializer substitui pelo Supabase
-  products: staticProducts,
+  products: soldOutLast(staticProducts),
   loaded: false,
-  setProducts: (products) => set({ products, loaded: true }),
+  setProducts: (products) => set({ products: soldOutLast(products), loaded: true }),
 }))

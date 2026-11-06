@@ -711,3 +711,8 @@ export const contactInfo = {
 export function productImage(src?: string): string {
   return src || '/placeholder-produto.jpg';
 }
+
+/** Mantém a ordem original, mas manda os produtos esgotados para o final da lista. */
+export function soldOutLast<T extends { soldOut?: boolean }>(list: T[]): T[] {
+  return [...list].sort((a, b) => Number(!!a.soldOut) - Number(!!b.soldOut));
+}

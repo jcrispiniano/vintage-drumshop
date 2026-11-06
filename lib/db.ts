@@ -1,4 +1,4 @@
-import { products as staticProducts, Product } from '@/lib/products'
+import { products as staticProducts, Product, soldOutLast } from '@/lib/products'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { normalizeProduct as normalize } from '@/lib/productRow'
 
@@ -11,8 +11,8 @@ export async function getAllProducts(): Promise<Product[]> {
     .eq('active', true)
     .order('created_at', { ascending: false })
 
-  if (error || !data?.length) return staticProducts
-  return data.map(normalize)
+  if (error || !data?.length) return soldOutLast(staticProducts)
+  return soldOutLast(data.map(normalize))
 }
 
 export async function getProductById(id: number): Promise<Product | null> {

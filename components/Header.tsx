@@ -4,7 +4,7 @@ import SmartImage from '@/components/SmartImage';
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
-import { Product, formatPrice, contactInfo, productImage, pixPrice } from '@/lib/products';
+import { Product, formatPrice, contactInfo, productImage, pixPrice, soldOutLast } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { searchScore } from '@/lib/productText';
 import { useRouter } from 'next/navigation';
@@ -47,11 +47,11 @@ function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {
       return;
     }
 
-    const ranked = products
+    const ranked = soldOutLast(products
       .map(product => ({ product, score: searchScore(product, term) }))
       .filter(r => r.score > 0)
       .sort((a, b) => b.score - a.score)
-      .map(r => r.product);
+      .map(r => r.product));
 
     setSearchResults(ranked.slice(0, 8));
     setShowSearchResults(true);

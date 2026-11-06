@@ -1,6 +1,6 @@
 'use client';
 
-import { contactInfo } from '@/lib/products';
+import { contactInfo, soldOutLast } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { searchScore } from '@/lib/productText';
 import { MessageCircle } from 'lucide-react';
@@ -24,11 +24,11 @@ function BuscaContent() {
 
   // Nome do produto pesa mais que marca/categoria, que pesam mais que a descrição
   const results = query.length >= 2
-    ? products
+    ? soldOutLast(products
         .map(product => ({ product, score: searchScore(product, query) }))
         .filter(r => r.score > 0)
         .sort((a, b) => b.score - a.score)
-        .map(r => r.product)
+        .map(r => r.product))
     : [];
 
   return (
