@@ -54,6 +54,25 @@ const brands = [
   },
 ];
 
+/** Arte da campanha (Black November) no topo da home; some quando `campaign` for null. */
+function CampaignBanner() {
+  return (
+    <section aria-label={campaign?.name} className="bg-[#16110D]">
+      <a href="#categorias" className="group block">
+        <SmartImage
+          src="/fotos/black-november-banner.jpg"
+          alt={`${campaign?.name} Vintage Drum Shop: ofertas especiais por tempo limitado. ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros. Renove seu setup!`}
+          width={1376}
+          height={768}
+          priority
+          sizes="(min-width: 1100px) 1100px, 100vw"
+          className="mx-auto h-auto w-full max-w-[1100px] md:[mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]"
+        />
+      </a>
+    </section>
+  );
+}
+
 function Hero() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -237,6 +256,7 @@ export default function Home() {
       <CategoryNav />
 
       <main id="main-content">
+        {campaign && <CampaignBanner />}
         <Hero />
         <PaymentPerks />
 
