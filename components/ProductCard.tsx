@@ -62,7 +62,7 @@ export default function ProductCard({ product, typeLabel, tags = [] }: ProductCa
           alt=""
           fill
           sizes="(min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-          className={`object-contain p-4 md:p-6 transition-transform duration-700 ease-out group-hover:scale-105 ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
+          className={`object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
         />
         {product.soldOut ? (
           <span className="absolute inset-x-0 top-1/2 mx-auto w-fit -translate-y-1/2 rounded bg-ink px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-white">
