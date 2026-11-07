@@ -10,10 +10,12 @@ import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import CatalogGrid, { SORTS, SortKey } from '@/components/CatalogGrid';
 
-type CymbalType = 'todos' | 'crash' | 'ride' | 'hihat' | 'effects';
+type CymbalType = 'todos' | 'kits' | 'crash' | 'ride' | 'hihat' | 'effects';
 
 function getCymbalType(name: string): Exclude<CymbalType, 'todos'> {
   const n = name.toLowerCase();
+  // Kits primeiro: o nome do kit cita os pratos que vêm nele
+  if (/\b(kit|set) de pratos\b/.test(n)) return 'kits';
   if (n.includes('crash')) return 'crash';
   if (n.includes('ride')) return 'ride';
   if (n.includes('hi-hat') || n.includes('chimbal')) return 'hihat';
@@ -22,13 +24,14 @@ function getCymbalType(name: string): Exclude<CymbalType, 'todos'> {
 
 const TYPE_LABELS: Record<CymbalType, string> = {
   todos: 'Todos',
+  kits: 'Kit de pratos',
   crash: 'Crash',
   ride: 'Ride',
   hihat: 'Hi-Hat',
   effects: 'Efeitos e stacks',
 };
 
-const TYPES = ['crash', 'ride', 'hihat', 'effects'] as const;
+const TYPES = ['kits', 'crash', 'ride', 'hihat', 'effects'] as const;
 
 const chip = (active: boolean, disabled = false) =>
   `flex h-11 flex-shrink-0 items-center rounded-full px-4 text-sm font-semibold tabular-nums transition ${
@@ -40,6 +43,13 @@ const chip = (active: boolean, disabled = false) =>
   }`;
 
 type Filters = { type: CymbalType; timbre: TimbreId | null; size: number | null; sort: SortKey };
+
+// O menu Pratos leva a /pratos?tipo=...: se o tipo mudar por um link (e não pelos chips),
+// recomeça com os filtros da nova URL
+function PratosWithUrl() {
+  const tipo = useSearchParams().get('tipo') ?? 'todos';
+  return <PratosContent key={tipo} />;
+}
 
 function PratosContent() {
   const products = useProductsStore(state => state.products);
@@ -226,7 +236,7 @@ function PratosContent() {
 export default function PratosPage() {
   return (
     <Suspense>
-      <PratosContent />
+      <PratosWithUrl />
     </Suspense>
   );
 }

@@ -13,6 +13,11 @@ const MAIN = ['baterias', 'pratos', 'caixas', 'peles', 'baquetas', 'acessorios']
 const SUBMENUS: Record<string, { href: string; label: string }[]> = {
   pratos: [
     { href: '/pratos', label: 'Todos os pratos' },
+    { href: '/pratos?tipo=kits', label: 'Kit de pratos' },
+    { href: '/pratos?tipo=crash', label: 'Crash' },
+    { href: '/pratos?tipo=ride', label: 'Ride' },
+    { href: '/pratos?tipo=hihat', label: 'Hi-Hat' },
+    { href: '/pratos?tipo=effects', label: 'Efeitos e stacks' },
     { href: '/pratos#istanbul-agop', label: 'Istanbul Agop' },
   ],
   baquetas: [

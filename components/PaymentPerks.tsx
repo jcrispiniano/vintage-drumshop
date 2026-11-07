@@ -1,5 +1,5 @@
 import { BadgePercent, CreditCard, Truck } from 'lucide-react';
-import { paymentTerms, pixOffLabel } from '@/lib/products';
+import { campaign, paymentTerms, pixOffLabel } from '@/lib/products';
 
 /** Faixa de benefícios da home: desconto no Pix e parcelamento em destaque, como na referência. */
 export default function PaymentPerks() {
@@ -11,6 +11,11 @@ export default function PaymentPerks() {
 
   return (
     <section aria-label="Condições de pagamento" className="border-b border-line bg-cream">
+      {campaign && (
+        <p className="bg-[#120c08] py-2 text-center text-xs font-bold uppercase tracking-[0.25em] text-[#E9B872] md:text-sm">
+          {campaign.name} · condições especiais por tempo limitado
+        </p>
+      )}
       <ul className="container mx-auto grid grid-cols-3 divide-x divide-line px-2 py-5 md:px-4 md:py-7">
         {perks.map(({ icon: Icon, big, small }) => (
           <li key={big} className="flex flex-col items-center gap-1 px-2 text-center md:flex-row md:justify-center md:gap-4 md:text-left">

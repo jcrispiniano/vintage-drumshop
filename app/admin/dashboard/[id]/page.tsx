@@ -12,6 +12,7 @@ interface DbProduct {
   price: number
   old_price?: number
   image: string
+  images?: string[] | null
   badge?: string
   description: string
   featured: boolean
@@ -71,6 +72,7 @@ export default function EditProductPage() {
         price: String(product.price),
         oldPrice: product.old_price ? String(product.old_price) : '',
         image: product.image,
+        images: product.images ?? [],
         badge: product.badge ?? '',
         description: product.description,
         featured: product.featured,

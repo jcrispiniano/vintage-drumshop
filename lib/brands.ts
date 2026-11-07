@@ -6,6 +6,7 @@ const BRAND_LABELS: Record<string, string> = {
   pinguim: 'Pinguim',
   dw: 'DW',
   rockkey: 'RockKey',
+  tunebot: 'Tune-bot',
 };
 
 /** Marca genérica do cadastro ("outro") não deve aparecer para o cliente. */

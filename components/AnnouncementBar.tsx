@@ -1,11 +1,24 @@
 'use client';
 
 import { ReactNode, useEffect, useState } from 'react';
-import { paymentTerms, pixOffLabel } from '@/lib/products';
+import { campaign, paymentTerms, pixOffLabel } from '@/lib/products';
 
 const INTERVAL_MS = 3500;
 
 const messages: { key: string; text: string; node: ReactNode }[] = [
+  ...(campaign
+    ? [{
+        key: 'campanha',
+        text: `${campaign.name}: ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros`,
+        node: (
+          <>
+            <strong className="font-bold uppercase tracking-widest text-[#E9B872]">{campaign.name}</strong>
+            <span className="sm:hidden"> · {Math.round(paymentTerms.pixDiscount * 100)}% Pix · {paymentTerms.maxInstallments}x sem juros</span>
+            <span className="hidden sm:inline"> · {pixOffLabel} no Pix ou até {paymentTerms.maxInstallments}x sem juros</span>
+          </>
+        ),
+      }]
+    : []),
   {
     key: 'pix',
     text: `${pixOffLabel} pagando no Pix`,
@@ -49,7 +62,7 @@ export default function AnnouncementBar() {
 
   return (
     <div
-      className="bg-primary text-white"
+      className={campaign ? 'bg-[#120c08] text-white' : 'bg-primary text-white'}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >

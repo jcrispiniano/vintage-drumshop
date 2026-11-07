@@ -679,11 +679,16 @@ export function formatPrice(price: number): string {
   });
 }
 
-// Condições comerciais exibidas na loja (benefícios, cards e página de produto)
+// Condições comerciais exibidas na loja (benefícios, cards, carrinho e orçamentos).
+// Black November: 10% no Pix ou até 10x sem juros. Fora da campanha a loja usa 5% / 6x
+// (troque os números abaixo e `campaign` para null para voltar).
 export const paymentTerms = {
-  pixDiscount: 0.05,
-  maxInstallments: 6,
+  pixDiscount: 0.10,
+  maxInstallments: 10,
 };
+
+/** Campanha ativa: aparece na barra do topo, no banner da home e na faixa de benefícios. */
+export const campaign: { name: string } | null = { name: 'Black November' };
 
 /** Rótulo único da condição do Pix, usado em toda a loja (o desconto vale só no Pix). */
 export const pixOffLabel = `${Math.round(paymentTerms.pixDiscount * 100)}% OFF`;
