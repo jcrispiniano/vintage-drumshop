@@ -60,7 +60,7 @@ function CampaignBanner() {
     <section aria-label={campaign?.name} className="bg-[#16110D]">
       <a href="#categorias" className="group block">
         <SmartImage
-          src="/fotos/black-november-banner.jpg"
+          src="/fotos/black-november-banner-pearl.jpg"
           alt={`${campaign?.name} Vintage Drum Shop: ofertas especiais por tempo limitado. ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros. Renove seu setup!`}
           width={1376}
           height={768}
