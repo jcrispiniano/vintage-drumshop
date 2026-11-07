@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
-import { Product, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage } from '@/lib/products';
+import { Product, campaign, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
@@ -191,6 +191,15 @@ export default function ProdutoClient({ product }: { product: Product }) {
               <MessageCircle size={18} className="text-[#1f9d55]" aria-hidden />
               Tire suas dúvidas pelo WhatsApp
             </a>
+
+            {campaign && !product.soldOut && (
+              <p className="mt-6 rounded-lg bg-ink px-4 py-3 text-sm text-white">
+                <strong className="block text-xs font-bold uppercase tracking-[0.2em] text-[#E9B872]">{campaign.name}</strong>
+                <span className="mt-1 block">
+                  <strong>{pixOffLabel}</strong> no Pix ou até <strong>{paymentTerms.maxInstallments}x sem juros</strong> no cartão
+                </span>
+              </p>
+            )}
 
             <ul className="mt-6 space-y-3 text-sm text-ink-soft">
               <li className="flex items-center gap-3">

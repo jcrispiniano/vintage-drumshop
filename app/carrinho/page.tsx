@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import type { CartItem } from '@/lib/cartStore';
-import { categories, contactInfo, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage } from '@/lib/products';
+import { campaign, categories, contactInfo, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage } from '@/lib/products';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import SmartImage from '@/components/SmartImage';
@@ -170,7 +170,7 @@ export default function CarrinhoPage() {
                   </div>
                   {savings > 0 && (
                     <div className="flex justify-between gap-2 text-ink-soft">
-                      <dt>Desconto no Pix ({pixOffLabel})</dt>
+                      <dt>Desconto {campaign ? `${campaign.name} ` : ''}no Pix ({pixOffLabel})</dt>
                       <dd className="font-semibold text-primary">− {formatPrice(savings)}</dd>
                     </div>
                   )}

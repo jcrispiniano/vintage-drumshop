@@ -158,3 +158,42 @@
 }
 
 
+
+/*
+ * Black November (lib/products.ts → campaign): o espresso vira preto e as faixas
+ * escuras ganham o selo dourado. Some sozinho quando `campaign` for null.
+ */
+.black-november {
+  --color-ink: #120D0A;
+  --color-darkBg: #0B0806;
+  --color-deepBrown: #120C08;
+}
+
+.black-november .category-hero {
+  background: radial-gradient(120% 140% at 50% 0%, #2A1F17 0%, #0B0806 62%);
+  border-bottom-color: #E9B872;
+}
+
+.black-november .category-hero--photo {
+  background:
+    linear-gradient(0deg, rgba(8, 6, 4, 0.86), rgba(8, 6, 4, 0.55)),
+    var(--hero-img) center 40% / cover no-repeat,
+    #0B0806;
+}
+
+.black-november .category-hero::before {
+  content: var(--campaign-label);
+  display: block;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  margin: 0 auto 1rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid rgba(233, 184, 114, 0.6);
+  border-radius: 999px;
+  color: #E9B872;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-align: center;
+  text-transform: uppercase;
+}

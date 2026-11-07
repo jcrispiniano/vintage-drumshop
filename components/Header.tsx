@@ -4,7 +4,7 @@ import SmartImage from '@/components/SmartImage';
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
-import { Product, formatPrice, contactInfo, productImage, pixPrice, soldOutLast } from '@/lib/products';
+import { Product, campaign, formatPrice, contactInfo, productImage, pixPrice, soldOutLast } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { searchScore } from '@/lib/productText';
 import { useRouter } from 'next/navigation';
@@ -197,7 +197,7 @@ export default function Header() {
       </header>
 
       {/* Busca de largura total no mobile (padrão da referência) */}
-      <div className="bg-primary px-4 md:hidden">
+      <div className={`${campaign ? 'bg-ink' : 'bg-primary'} px-4 md:hidden`}>
         <SearchBox variant="mobile" />
       </div>
     </>

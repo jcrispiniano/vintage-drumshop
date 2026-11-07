@@ -10,12 +10,12 @@ import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import CatalogGrid, { SORTS, SortKey } from '@/components/CatalogGrid';
 
-type CymbalType = 'todos' | 'kits' | 'crash' | 'ride' | 'hihat' | 'effects';
+type CymbalType = 'todos' | 'sets' | 'crash' | 'ride' | 'hihat' | 'effects';
 
 function getCymbalType(name: string): Exclude<CymbalType, 'todos'> {
   const n = name.toLowerCase();
-  // Kits primeiro: o nome do kit cita os pratos que vêm nele
-  if (/\b(kit|set) de pratos\b/.test(n)) return 'kits';
+  // Sets primeiro: o nome do set cita os pratos que vêm nele
+  if (/\b(kit|set) de pratos\b/.test(n)) return 'sets';
   if (n.includes('crash')) return 'crash';
   if (n.includes('ride')) return 'ride';
   if (n.includes('hi-hat') || n.includes('chimbal')) return 'hihat';
@@ -24,14 +24,14 @@ function getCymbalType(name: string): Exclude<CymbalType, 'todos'> {
 
 const TYPE_LABELS: Record<CymbalType, string> = {
   todos: 'Todos',
-  kits: 'Kit de pratos',
+  sets: 'Set de pratos',
   crash: 'Crash',
   ride: 'Ride',
   hihat: 'Hi-Hat',
   effects: 'Efeitos e stacks',
 };
 
-const TYPES = ['kits', 'crash', 'ride', 'hihat', 'effects'] as const;
+const TYPES = ['sets', 'crash', 'ride', 'hihat', 'effects'] as const;
 
 const chip = (active: boolean, disabled = false) =>
   `flex h-11 flex-shrink-0 items-center rounded-full px-4 text-sm font-semibold tabular-nums transition ${
