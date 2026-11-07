@@ -12,23 +12,23 @@ const messages: { key: string; text: string; node: ReactNode }[] = [
         text: `${campaign.name}: ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros`,
         node: (
           <>
-            <strong className="font-bold uppercase tracking-widest text-[#E9B872]">{campaign.name}</strong>
+            <strong className="font-bold uppercase tracking-widest text-gold">{campaign.name}</strong>
             <span className="sm:hidden"> · {Math.round(paymentTerms.pixDiscount * 100)}% Pix · {paymentTerms.maxInstallments}x sem juros</span>
             <span className="hidden sm:inline"> · {pixOffLabel} no Pix ou até {paymentTerms.maxInstallments}x sem juros</span>
           </>
         ),
       }]
     : []),
-  {
+  // Na campanha a primeira mensagem já traz Pix e parcelas; não repete as duas logo depois
+  ...(campaign ? [] : [{
     key: 'pix',
     text: `${pixOffLabel} pagando no Pix`,
     node: <><strong className="font-bold">{pixOffLabel}</strong> pagando no Pix</>,
-  },
-  {
+  }, {
     key: 'parcelas',
     text: `Até ${paymentTerms.maxInstallments}x sem juros no cartão de crédito`,
     node: <><strong className="font-bold">Até {paymentTerms.maxInstallments}x sem juros</strong> no cartão de crédito</>,
-  },
+  }]),
   {
     key: 'frete',
     text: 'Enviamos para todo o Brasil',
@@ -62,7 +62,7 @@ export default function AnnouncementBar() {
 
   return (
     <div
-      className={campaign ? 'bg-[#120c08] text-white' : 'bg-primary text-white'}
+      className={campaign ? 'bg-campaign text-white' : 'bg-primary text-white'}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >

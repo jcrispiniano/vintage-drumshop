@@ -6,30 +6,14 @@ import { SlidersHorizontal } from 'lucide-react';
 import { useProductsStore } from '@/lib/productsStore';
 import { Product, contactInfo } from '@/lib/products';
 import { TIMBRES, TimbreId, productSizeValue, productTimbres } from '@/lib/productText';
+import { CYMBAL_SERIES, CYMBAL_TYPE_LABELS, CymbalType, SeriesId, cymbalSeries, cymbalType } from '@/lib/cymbals';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import CatalogGrid, { SORTS, SortKey } from '@/components/CatalogGrid';
 
-type CymbalType = 'todos' | 'sets' | 'crash' | 'ride' | 'hihat' | 'effects';
+type TypeFilter = 'todos' | CymbalType;
 
-function getCymbalType(name: string): Exclude<CymbalType, 'todos'> {
-  const n = name.toLowerCase();
-  // Sets primeiro: o nome do set cita os pratos que vêm nele
-  if (/\b(kit|set) de pratos\b/.test(n)) return 'sets';
-  if (n.includes('crash')) return 'crash';
-  if (n.includes('ride')) return 'ride';
-  if (n.includes('hi-hat') || n.includes('chimbal')) return 'hihat';
-  return 'effects';
-}
-
-const TYPE_LABELS: Record<CymbalType, string> = {
-  todos: 'Todos',
-  sets: 'Set de pratos',
-  crash: 'Crash',
-  ride: 'Ride',
-  hihat: 'Hi-Hat',
-  effects: 'Efeitos e stacks',
-};
+const TYPE_LABELS: Record<TypeFilter, string> = { todos: 'Todos', ...CYMBAL_TYPE_LABELS };
 
 const TYPES = ['sets', 'crash', 'ride', 'hihat', 'effects'] as const;
 
@@ -42,13 +26,13 @@ const chip = (active: boolean, disabled = false) =>
         : 'bg-white text-ink ring-1 ring-line hover:ring-ink/40'
   }`;
 
-type Filters = { type: CymbalType; timbre: TimbreId | null; size: number | null; sort: SortKey };
+type Filters = { type: TypeFilter; series: SeriesId | null; timbre: TimbreId | null; size: number | null; sort: SortKey };
 
-// O menu Pratos leva a /pratos?tipo=...: se o tipo mudar por um link (e não pelos chips),
+// O menu Pratos leva a /pratos?tipo=... e ?serie=...: se mudarem por um link (e não pelos chips),
 // recomeça com os filtros da nova URL
 function PratosWithUrl() {
-  const tipo = useSearchParams().get('tipo') ?? 'todos';
-  return <PratosContent key={tipo} />;
+  const params = useSearchParams();
+  return <PratosContent key={`${params.get('tipo') ?? ''}|${params.get('serie') ?? ''}`} />;
 }
 
 function PratosContent() {
@@ -63,6 +47,7 @@ function PratosContent() {
     const ordem = searchParams.get('ordem');
     return {
       type: (TYPES as readonly string[]).includes(tipo ?? '') ? (tipo as CymbalType) : 'todos',
+      series: CYMBAL_SERIES.find(x => x.id === searchParams.get('serie'))?.id ?? null,
       timbre: TIMBRES.find(t => t.id === searchParams.get('timbre'))?.id ?? null,
       size: Number.isFinite(tamanho) && tamanho > 0 ? tamanho : null,
       sort: SORTS.find(o => o.id === ordem)?.id ?? 'relevancia',
@@ -75,6 +60,7 @@ function PratosContent() {
     setFilters(next);
     const qs = new URLSearchParams();
     if (next.type !== 'todos') qs.set('tipo', next.type);
+    if (next.series) qs.set('serie', next.series);
     if (next.timbre) qs.set('timbre', next.timbre);
     if (next.size !== null) qs.set('tamanho', String(next.size));
     if (next.sort !== 'relevancia') qs.set('ordem', next.sort);
@@ -83,8 +69,9 @@ function PratosContent() {
   };
 
   const allPratos = products.filter(p => p.category === 'pratos');
-  const matches = (p: Product, f: Pick<Filters, 'type' | 'timbre' | 'size'>) =>
-    (f.type === 'todos' || getCymbalType(p.name) === f.type) &&
+  const matches = (p: Product, f: Pick<Filters, 'type' | 'series' | 'timbre' | 'size'>) =>
+    (f.type === 'todos' || cymbalType(p.name) === f.type) &&
+    (!f.series || cymbalSeries(p.name)?.id === f.series) &&
     (!f.timbre || productTimbres(p.name).includes(f.timbre)) &&
     (f.size === null || productSizeValue(p.name) === f.size);
 
@@ -92,12 +79,14 @@ function PratosContent() {
 
   // Cada contagem já considera os outros filtros escolhidos: o número no chip é o resultado do clique,
   // e um chip que daria 0 fica desativado (sem becos sem saída)
-  const countType = (type: CymbalType) => allPratos.filter(p => matches(p, { ...filters, type })).length;
+  const countSeries = (series: SeriesId) => allPratos.filter(p => matches(p, { ...filters, series })).length;
+  const countType = (type: TypeFilter) => allPratos.filter(p => matches(p, { ...filters, type })).length;
   const countTimbre = (timbre: TimbreId) => allPratos.filter(p => matches(p, { ...filters, timbre })).length;
   const countSize = (size: number) => allPratos.filter(p => matches(p, { ...filters, size })).length;
 
   const sizes = [...new Set(allPratos.map(p => productSizeValue(p.name)).filter((v): v is number => v !== null))].sort((a, b) => a - b);
-  const extraCount = (filters.timbre ? 1 : 0) + (filters.size !== null ? 1 : 0);
+  const extraCount = (filters.series ? 1 : 0) + (filters.timbre ? 1 : 0) + (filters.size !== null ? 1 : 0);
+  const seriesLabel = filters.series ? CYMBAL_SERIES.find(x => x.id === filters.series)!.label : null;
 
   return (
     <div className="min-h-screen bg-paper">
@@ -106,7 +95,7 @@ function PratosContent() {
 
       <section className="category-hero category-hero--photo" style={{ '--hero-img': "url('/fotos/banner-pratos.jpg')" } as React.CSSProperties}>
         <div className="container mx-auto px-4 text-center">
-          <h1 className="category-hero__title">Pratos</h1>
+          <h1 className="category-hero__title">{seriesLabel ? `Pratos ${seriesLabel}` : 'Pratos'}</h1>
           <p className="category-hero__lead">
             Istanbul Agop: artesanato turco feito à mão há gerações. Escolha pelo tipo ou pelo som.
           </p>
@@ -121,7 +110,7 @@ function PratosContent() {
               Todos ({countType('todos')})
             </button>
             {TYPES.map(type => {
-              if (!allPratos.some(p => getCymbalType(p.name) === type)) return null;
+              if (!allPratos.some(p => cymbalType(p.name) === type)) return null;
               const count = countType(type);
               const active = filters.type === type;
               return (
@@ -152,7 +141,29 @@ function PratosContent() {
 
       <div id="painel-filtros" className={`border-b border-line bg-white ${panelOpen ? 'block' : 'hidden'} md:block`}>
         <div className="container mx-auto px-4">
-          <div className="flex flex-col gap-1 py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por som">
+          <div className="flex flex-col gap-1 py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por série">
+            <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Série</span>
+            <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:px-0 md:pb-0">
+              {CYMBAL_SERIES.map(sr => {
+                if (!allPratos.some(p => cymbalSeries(p.name)?.id === sr.id)) return null;
+                const count = countSeries(sr.id);
+                const active = filters.series === sr.id;
+                if (!active && count === 0) return null;
+                return (
+                  <button
+                    key={sr.id}
+                    type="button"
+                    onClick={() => update({ series: active ? null : sr.id })}
+                    aria-pressed={active}
+                    className={chip(active)}
+                  >
+                    {sr.label} ({count})
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col gap-1 border-t border-line py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por som">
             <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Som</span>
             <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:px-0 md:pb-0">
               {TIMBRES.map(t => {
@@ -188,6 +199,8 @@ function PratosContent() {
                 {sizes.map(v => {
                   const count = countSize(v);
                   const active = filters.size === v;
+                  // Só os tamanhos que existem com os outros filtros: menos chips, nenhum beco sem saída
+                  if (!active && count === 0) return null;
                   return (
                     <button
                       key={v}
@@ -212,8 +225,8 @@ function PratosContent() {
         products={filtered}
         categoryName="Pratos"
         totalInCategory={allPratos.length}
-        onClearFilters={() => update({ type: 'todos', timbre: null, size: null })}
-        typeLabel={p => TYPE_LABELS[getCymbalType(p.name)]}
+        onClearFilters={() => update({ type: 'todos', series: null, timbre: null, size: null })}
+        typeLabel={p => TYPE_LABELS[cymbalType(p.name)]}
         tags={p => productTimbres(p.name).map(id => TIMBRES.find(t => t.id === id)!.label)}
         noun={['prato', 'pratos']}
         sort={filters.sort}

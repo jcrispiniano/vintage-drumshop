@@ -16,10 +16,10 @@
   --color-secondary: #8F370B;  /* hover do CTA */
   --color-accent: #B5470F;     /* CTA e preço Pix (cobre queimado, AA com branco) */
   --color-brass: #B8862B;      /* detalhes de latão */
-  --color-darkBg: #2C1810;
-  --color-lightBg: #F5E6D3;
-  --color-warmGold: #C4872A;
-  --color-deepBrown: #3D1A0A;
+  --color-gold: #E9B872;       /* latão claro: destaques sobre fundo escuro */
+  --color-on-dark: #F0E3D0;    /* texto principal sobre fundo escuro */
+  --color-on-dark-soft: #E9D9C2; /* texto secundário sobre fundo escuro */
+  --color-campaign: #0E0806;   /* fundo da capa da campanha */
 
   --font-display: var(--font-oswald), 'Arial Narrow', sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
@@ -90,6 +90,12 @@
 
   h3, h4, h5, h6 {
     font-family: var(--font-sans);
+    text-wrap: balance;
+  }
+
+  /* Sem palavra solta na última linha de parágrafos e itens */
+  p, li, dd {
+    text-wrap: pretty;
   }
 
   ::selection {
@@ -160,28 +166,28 @@
 
 
 /*
- * Black November (lib/products.ts → campaign): o espresso vira preto e as faixas
- * escuras ganham filete dourado. Some sozinho quando `campaign` for null.
+ * Black November (lib/products.ts → campaign): o espresso escurece para mogno queimado
+ * e as faixas escuras ganham filete dourado. Some sozinho quando `campaign` for null.
  */
 .black-november {
-  --color-ink: #120D0A;
-  --color-darkBg: #0B0806;
-  --color-deepBrown: #120C08;
+  /* Black November em mogno queimado + latão: escuro de campanha sem perder a madeira da marca */
+  --color-ink: #1E120B;
+  --color-campaign: #140B06;
 }
 
 .black-november .category-hero {
-  background: radial-gradient(120% 140% at 50% 0%, #2A1F17 0%, #0B0806 62%);
-  border-bottom-color: #E9B872;
+  background: radial-gradient(120% 140% at 50% 0%, #3A2213 0%, var(--color-campaign) 62%);
+  border-bottom-color: var(--color-gold);
 }
 
 .black-november .category-hero--photo {
   background:
-    linear-gradient(0deg, rgba(8, 6, 4, 0.86), rgba(8, 6, 4, 0.55)),
+    linear-gradient(0deg, rgba(20, 11, 6, 0.86), rgba(20, 11, 6, 0.55)),
     var(--hero-img) center 40% / cover no-repeat,
-    #0B0806;
+    var(--color-campaign);
 }
 
 .black-november ::selection {
-  background: #E9B872;
-  color: #120D0A;
+  background: var(--color-gold);
+  color: var(--color-ink);
 }

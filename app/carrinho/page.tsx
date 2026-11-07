@@ -1,10 +1,10 @@
 'use client';
-import { Trash2, Plus, Minus, ShoppingCart, Undo2, ShieldCheck } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingCart, Undo2, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import type { CartItem } from '@/lib/cartStore';
-import { campaign, categories, contactInfo, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage } from '@/lib/products';
+import { campaign, categories, contactInfo, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productUrl } from '@/lib/products';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import SmartImage from '@/components/SmartImage';
@@ -21,8 +21,26 @@ function formatCep(value: string) {
   return digits.length > 5 ? `${digits.slice(0, 5)}-${digits.slice(5)}` : digits;
 }
 
+const SENT_KEY = 'vintage-pedido-enviado';
+
+/** Assinatura do carrinho: se mudar depois do envio, o aviso de "pedido enviado" some */
+function cartSignature(items: CartItem[]) {
+  return items.map(i => `${i.id}x${i.quantity}`).join(',');
+}
+
 export default function CarrinhoPage() {
-  const { cartItems, updateQuantity, removeFromCart, addToCart } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, addToCart, clearCart } = useCart();
+  // Assinatura do carrinho no momento em que o pedido foi para o WhatsApp
+  const [sentFor, setSentFor] = useState<string | null>(null);
+  const [cleared, setCleared] = useState(false);
+
+  // Quem volta do WhatsApp (ou recarrega a página) continua vendo que o pedido foi enviado
+  useEffect(() => {
+    let saved: string | null = null;
+    try { saved = sessionStorage.getItem(SENT_KEY); } catch {}
+    if (saved) Promise.resolve().then(() => setSentFor(saved));
+  }, []);
+  const sent = sentFor !== null && sentFor === cartSignature(cartItems) && cartItems.length > 0;
   const [removed, setRemoved] = useState<CartItem | null>(null);
   const [cep, setCep] = useState('');
   const cepComplete = cep.replace(/\D/g, '').length === 8;
@@ -59,7 +77,8 @@ export default function CarrinhoPage() {
 
     cartItems.forEach(item => {
       message += `*${item.quantity}x* ${item.name}\n`;
-      message += `${formatPrice(pixPrice(item.price))} no Pix (${formatPrice(item.price)} no cartão) cada\n\n`;
+      message += `${formatPrice(pixPrice(item.price))} no Pix (${formatPrice(item.price)} no cartão) cada\n`;
+      message += `${productUrl(item.id)}\n\n`;
     });
 
     message += `*Total no Pix:* ${formatPrice(totalPix)}\n`;
@@ -68,6 +87,17 @@ export default function CarrinhoPage() {
     message += cepComplete ? 'Gostaria de finalizar este pedido!' : 'Gostaria de finalizar este pedido! Meu CEP é: ';
 
     window.open(`${contactInfo.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
+    const signature = cartSignature(cartItems);
+    setSentFor(signature);
+    setCleared(false);
+    try { sessionStorage.setItem(SENT_KEY, signature); } catch {}
+  };
+
+  const handleClear = () => {
+    clearCart();
+    setSentFor(null);
+    setCleared(true);
+    try { sessionStorage.removeItem(SENT_KEY); } catch {}
   };
 
   const categoryName = (id: string) => categories.find(c => c.id === id)?.name ?? id;
@@ -83,13 +113,42 @@ export default function CarrinhoPage() {
         {removed && (
           <div role="status" className="mb-4 flex items-center justify-between gap-3 rounded-lg bg-ink px-4 py-3 text-sm text-white">
             <span className="min-w-0 truncate">Removido: {removed.name}</span>
-            <button type="button" onClick={handleUndo} className="flex flex-shrink-0 items-center gap-1.5 font-bold text-[#E9B872] hover:underline">
+            <button type="button" onClick={handleUndo} className="flex flex-shrink-0 items-center gap-1.5 font-bold text-gold hover:underline">
               <Undo2 size={16} aria-hidden /> Desfazer
             </button>
           </div>
         )}
 
-        {cartItems.length === 0 ? (
+        {/* Depois do envio: o que acontece agora, sem deixar o carrinho parecer esquecido */}
+        {sent && (
+          <section role="status" aria-labelledby="enviado-titulo" className="mb-6 rounded-xl bg-white p-5 ring-2 ring-[#167a42] sm:p-6">
+            <h2 id="enviado-titulo" className="flex items-center gap-2 text-xl font-semibold uppercase text-ink">
+              <CheckCircle2 size={24} className="text-[#167a42]" aria-hidden /> Pedido enviado pelo WhatsApp
+            </h2>
+            <p className="mt-2 max-w-[60ch] text-ink-soft">
+              A loja confere o estoque e o frete e responde por lá ({contactInfo.hours}). Nada foi cobrado. Se o WhatsApp não abriu, envie de novo.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button type="button" onClick={handleCheckout} className="inline-flex h-11 items-center rounded-md px-5 text-sm font-bold text-ink ring-1 ring-line transition hover:ring-ink/50">
+                Enviar de novo
+              </button>
+              <button type="button" onClick={handleClear} className="inline-flex h-11 items-center rounded-md bg-ink px-5 text-sm font-bold text-white transition hover:bg-ink/90">
+                Limpar carrinho
+              </button>
+            </div>
+          </section>
+        )}
+
+        {cartItems.length === 0 && cleared ? (
+          <div role="status" className="mx-auto max-w-lg py-10 text-center">
+            <CheckCircle2 size={48} className="mx-auto mb-5 text-[#167a42]" aria-hidden />
+            <h2 className="mb-2 text-2xl font-semibold uppercase text-ink">Carrinho limpo</h2>
+            <p className="mb-8 text-ink-soft">Seu pedido está com a loja no WhatsApp. Quando quiser, é só montar outro.</p>
+            <Link href="/" className="inline-flex h-11 items-center rounded-md bg-accent px-6 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary">
+              Voltar para a loja
+            </Link>
+          </div>
+        ) : cartItems.length === 0 ? (
           <div className="mx-auto max-w-lg py-10 text-center">
             <ShoppingCart size={48} className="mx-auto mb-5 text-primary" aria-hidden />
             <h2 className="mb-2 text-2xl font-semibold uppercase text-ink">Banco vazio por aqui</h2>
@@ -232,7 +291,7 @@ export default function CarrinhoPage() {
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                   </svg>
-                  Finalizar no WhatsApp
+                  {sent ? 'Enviar de novo pelo WhatsApp' : 'Finalizar no WhatsApp'}
                 </button>
 
                 <p className="mt-2 text-center text-xs text-ink-soft">Atendimento {contactInfo.hours}</p>

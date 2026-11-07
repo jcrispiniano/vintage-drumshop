@@ -702,6 +702,13 @@ export function discountPercent(price: number, oldPrice?: number): number {
   return Math.round((1 - price / oldPrice) * 100);
 }
 
+/** Endereço público da loja, para links em mensagens (WhatsApp) e metadados. */
+export const siteUrl = 'https://www.vintagedrumshop.com.br';
+
+export function productUrl(id: number): string {
+  return `${siteUrl}/produto/${id}`;
+}
+
 export const contactInfo = {
   phone: '+55 11 94739-7347',
   phoneFormatted: '(11) 94739-7347',

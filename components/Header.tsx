@@ -84,8 +84,8 @@ function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {
         onBlur={() => setTimeout(() => setShowSearchResults(false), 200)}
         className={
           isMobile
-            ? 'w-full bg-transparent py-3 pr-10 text-base text-white placeholder:text-cream/90 outline-none'
-            : 'w-full rounded-md border border-line bg-paper px-4 py-2.5 pr-10 text-sm text-ink placeholder:text-ink-soft outline-none transition focus:border-accent focus:bg-white'
+            ? 'w-full rounded-md bg-transparent py-3 pl-1 pr-10 text-base text-white placeholder:text-cream/90 outline-none focus-visible:ring-2 focus-visible:ring-gold'
+            : 'w-full rounded-md border border-line bg-paper px-4 py-2.5 pr-10 text-sm text-ink placeholder:text-ink-soft outline-none transition focus:border-accent focus:bg-white focus-visible:ring-2 focus-visible:ring-accent/35'
         }
       />
       <button
@@ -116,6 +116,20 @@ function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {
               </div>
             </Link>
           ))}
+        </div>
+      )}
+      {/* Busca sem resultado: em vez de silêncio, a saída é perguntar para a loja */}
+      {showSearchResults && searchResults.length === 0 && searchTerm.trim().length >= 2 && (
+        <div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-xl bg-white p-4 text-sm text-ink shadow-[0_16px_40px_-12px_rgba(43,29,20,0.4)] ring-1 ring-line">
+          <p>Nada encontrado para <strong>&ldquo;{searchTerm.trim()}&rdquo;</strong>.</p>
+          <a
+            href={`${contactInfo.whatsapp}?text=${encodeURIComponent(`Olá! Vocês têm ${searchTerm.trim()}?`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1 inline-flex min-h-11 items-center font-semibold text-accent hover:underline"
+          >
+            Perguntar à loja pelo WhatsApp
+          </a>
         </div>
       )}
     </form>

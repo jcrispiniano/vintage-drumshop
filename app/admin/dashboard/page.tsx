@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Plus, Edit, Trash2, Package, Eye, EyeOff, Search } from 'lucide-react'
+import { Plus, Edit, Trash2, Package, Search, Undo2, X } from 'lucide-react'
 import AdminHeader from './_components/AdminHeader'
 
 interface DbProduct {
@@ -15,17 +15,46 @@ interface DbProduct {
   old_price?: number
   image: string
   badge?: string
+  description?: string
   active: boolean
   featured: boolean
+  sold_out?: boolean
   created_at: string
 }
+
+type QuickFilter = 'todos' | 'esgotados' | 'inativos' | 'sem-descricao' | 'destaques'
+
+/** Descrição curta demais para ajudar o cliente a escolher (meta da análise de UX) */
+const SHORT_DESCRIPTION = 200
+const UNDO_MS = 6000
+
+const isShort = (p: DbProduct) => (p.description ?? '').trim().length < SHORT_DESCRIPTION
+
+const QUICK_FILTERS: { id: QuickFilter; label: string; test: (p: DbProduct) => boolean }[] = [
+  { id: 'todos', label: 'Todos', test: () => true },
+  { id: 'esgotados', label: 'Esgotados', test: p => !!p.sold_out },
+  { id: 'inativos', label: 'Fora do site', test: p => !p.active },
+  { id: 'sem-descricao', label: 'Descrição curta', test: isShort },
+  { id: 'destaques', label: 'Destaques', test: p => p.featured },
+]
+
+/** Devolve o produto ao lugar dele (lista ordenada do mais novo para o mais antigo) */
+const restore = (list: DbProduct[], product: DbProduct) =>
+  [...list, product].sort((a, b) => b.created_at.localeCompare(a.created_at))
+
+const price = (n: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n)
 
 export default function AdminDashboardPage() {
   const [products, setProducts] = useState<DbProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
-  const [deleting, setDeleting] = useState<number | null>(null)
+  const [quick, setQuick] = useState<QuickFilter>('todos')
+  const [category, setCategory] = useState('')
+  const [toast, setToast] = useState<{ text: string; undo?: () => void; tone?: 'error' } | null>(null)
+  const [busy, setBusy] = useState<number | null>(null)
+  // Exclusão fica pendente alguns segundos para dar tempo de desfazer
+  const pendingDelete = useRef<{ product: DbProduct; timer: ReturnType<typeof setTimeout> } | null>(null)
   const router = useRouter()
 
   async function loadProducts() {
@@ -36,7 +65,7 @@ export default function AdminDashboardPage() {
       return
     }
     if (!res.ok) {
-      setError('Erro ao carregar produtos.')
+      setError('Não foi possível carregar os produtos. Recarregue a página; se continuar, fale com quem cuida do site.')
       setLoading(false)
       return
     }
@@ -48,186 +77,261 @@ export default function AdminDashboardPage() {
   // eslint-disable-next-line react-hooks/set-state-in-effect, react-hooks/exhaustive-deps
   useEffect(() => { loadProducts() }, [])
 
-  async function handleDelete(id: number, name: string) {
-    if (!confirm(`Excluir "${name}"?`)) return
-    setDeleting(id)
-    const res = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
-    if (res.ok) {
-      setProducts(prev => prev.filter(p => p.id !== id))
-    } else {
-      alert('Erro ao excluir produto.')
+  // O aviso some sozinho
+  useEffect(() => {
+    if (!toast) return
+    const t = setTimeout(() => setToast(null), UNDO_MS)
+    return () => clearTimeout(t)
+  }, [toast])
+
+  // Saiu da página com uma exclusão pendente: conclui a exclusão
+  useEffect(() => () => {
+    const pending = pendingDelete.current
+    if (!pending) return
+    clearTimeout(pending.timer)
+    fetch(`/api/admin/products/${pending.product.id}`, { method: 'DELETE', keepalive: true }).catch(() => {})
+  }, [])
+
+  async function commitDelete(product: DbProduct) {
+    pendingDelete.current = null
+    const res = await fetch(`/api/admin/products/${product.id}`, { method: 'DELETE' }).catch(() => null)
+    if (!res?.ok) {
+      setProducts(prev => restore(prev, product))
+      setToast({ text: `Não foi possível excluir "${product.name}". Ele voltou para a lista.`, tone: 'error' })
     }
-    setDeleting(null)
   }
 
-  async function handleToggleActive(product: DbProduct) {
+  function handleDelete(product: DbProduct) {
+    // Uma exclusão por vez: a anterior é concluída antes
+    if (pendingDelete.current) {
+      clearTimeout(pendingDelete.current.timer)
+      commitDelete(pendingDelete.current.product)
+    }
+    setProducts(prev => prev.filter(p => p.id !== product.id))
+    const timer = setTimeout(() => commitDelete(product), UNDO_MS)
+    pendingDelete.current = { product, timer }
+    setToast({
+      text: `"${product.name}" excluído.`,
+      undo: () => {
+        clearTimeout(timer)
+        pendingDelete.current = null
+        setProducts(prev => restore(prev, product))
+        setToast(null)
+      },
+    })
+  }
+
+  async function updateFlag(product: DbProduct, patch: { active?: boolean; soldOut?: boolean }) {
+    setBusy(product.id)
     const res = await fetch(`/api/admin/products/${product.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ active: !product.active }),
-    })
-    if (res.ok) {
-      setProducts(prev =>
-        prev.map(p => p.id === product.id ? { ...p, active: !p.active } : p)
-      )
+      body: JSON.stringify(patch),
+    }).catch(() => null)
+    setBusy(null)
+    if (!res?.ok) {
+      setToast({ text: `Não foi possível salvar "${product.name}". Tente de novo.`, tone: 'error' })
+      return
     }
+    setProducts(prev => prev.map(p => p.id === product.id
+      ? { ...p, ...(patch.active !== undefined && { active: patch.active }), ...(patch.soldOut !== undefined && { sold_out: patch.soldOut }) }
+      : p))
   }
 
-
+  const categories = [...new Set(products.map(p => p.category))].sort()
+  const q = search.toLowerCase().trim()
+  const quickTest = QUICK_FILTERS.find(f => f.id === quick)!.test
   const filtered = products.filter(p =>
-    p.name.toLowerCase().includes(search.toLowerCase()) ||
-    p.category.toLowerCase().includes(search.toLowerCase()) ||
-    p.brand.toLowerCase().includes(search.toLowerCase())
+    quickTest(p) &&
+    (!category || p.category === category) &&
+    (!q || p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q))
   )
+  const hasFilters = quick !== 'todos' || !!category || !!q
 
   return (
     <div className="min-h-screen bg-gray-50">
       <AdminHeader />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Stats bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {[
-            { label: 'Total de produtos', value: products.length, color: 'bg-blue-500' },
-            { label: 'Ativos', value: products.filter(p => p.active).length, color: 'bg-green-500' },
-            { label: 'Inativos', value: products.filter(p => !p.active).length, color: 'bg-gray-400' },
-            { label: 'Destaques', value: products.filter(p => p.featured).length, color: 'bg-orange-500' },
-          ].map(stat => (
-            <div key={stat.label} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-              <div className={`${stat.color} text-white text-2xl font-bold rounded-lg w-12 h-12 flex items-center justify-center mb-3`}>
-                {stat.value}
-              </div>
-              <p className="text-sm text-gray-600">{stat.label}</p>
-            </div>
-          ))}
+        {/* Atalhos: cada número é um filtro do que precisa de atenção */}
+        <div className="mb-5 flex gap-2 overflow-x-auto pb-1" role="group" aria-label="Filtros rápidos">
+          {QUICK_FILTERS.map(f => {
+            const count = products.filter(f.test).length
+            const active = quick === f.id
+            return (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => setQuick(f.id)}
+                aria-pressed={active}
+                className={`flex h-11 flex-shrink-0 items-center gap-2 rounded-full px-4 text-sm font-semibold transition ${
+                  active ? 'bg-gray-900 text-white' : 'bg-white text-gray-700 ring-1 ring-gray-200 hover:ring-gray-400'
+                }`}
+              >
+                {f.label}
+                <span className={`tabular-nums ${active ? 'text-white/70' : 'text-gray-400'}`}>{count}</span>
+              </button>
+            )
+          })}
         </div>
 
         {/* Toolbar */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden />
+            <label htmlFor="busca-admin" className="sr-only">Buscar produtos</label>
             <input
+              id="busca-admin"
               type="text"
               placeholder="Buscar por nome, categoria ou marca..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+              className="w-full h-11 pl-9 pr-4 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
+          <label htmlFor="categoria-admin" className="sr-only">Categoria</label>
+          <select
+            id="categoria-admin"
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+            className="h-11 rounded-lg border border-gray-200 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+          >
+            <option value="">Todas as categorias</option>
+            {categories.map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
+          </select>
           <Link
             href="/admin/dashboard/novo"
-            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition whitespace-nowrap"
+            className="flex h-11 items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 rounded-lg text-sm transition whitespace-nowrap"
           >
-            <Plus size={16} />
+            <Plus size={16} aria-hidden />
             Novo Produto
           </Link>
         </div>
 
-        {/* Table */}
         {loading ? (
           <div className="text-center py-20 text-gray-400">Carregando produtos...</div>
         ) : error ? (
           <div className="text-center py-20">
-            <p className="text-red-500 mb-2">{error}</p>
-            <p className="text-sm text-gray-500">Verifique se o Supabase está configurado nas variáveis de ambiente.</p>
+            <p className="text-red-600 mb-4">{error}</p>
+            <button type="button" onClick={() => { setError(''); loadProducts() }} className="h-11 rounded-lg bg-gray-900 px-5 text-sm font-semibold text-white">
+              Tentar de novo
+            </button>
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50 border-b border-gray-100">
-                  <tr>
-                    <th className="text-left px-4 py-3 text-gray-500 font-semibold">Produto</th>
-                    <th className="text-left px-4 py-3 text-gray-500 font-semibold hidden md:table-cell">Categoria</th>
-                    <th className="text-left px-4 py-3 text-gray-500 font-semibold hidden lg:table-cell">Marca</th>
-                    <th className="text-right px-4 py-3 text-gray-500 font-semibold">Preço</th>
-                    <th className="text-center px-4 py-3 text-gray-500 font-semibold hidden sm:table-cell">Status</th>
-                    <th className="text-center px-4 py-3 text-gray-500 font-semibold">Ações</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {filtered.length === 0 ? (
-                    <tr>
-                      <td colSpan={6} className="text-center py-12 text-gray-400">
-                        <Package size={32} className="mx-auto mb-2 opacity-40" />
-                        {search ? 'Nenhum produto encontrado.' : 'Nenhum produto cadastrado ainda.'}
-                      </td>
-                    </tr>
-                  ) : (
-                    filtered.map(product => (
-                      <tr key={product.id} className={`hover:bg-gray-50 transition ${!product.active ? 'opacity-50' : ''}`}>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden">
-                              {/* eslint-disable-next-line @next/next/no-img-element -- prévia de URL qualquer no admin */}
-                              <img
-                                src={product.image}
-                                alt={product.name}
-                                className="w-full h-full object-contain p-1"
-                                onError={e => { (e.target as HTMLImageElement).src = '/placeholder-produto.jpg' }}
-                              />
-                            </div>
-                            <div className="min-w-0">
-                              <p className="font-semibold text-gray-900 truncate max-w-[200px]">{product.name}</p>
-                              {product.badge && (
-                                <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">{product.badge}</span>
-                              )}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 text-gray-600 hidden md:table-cell capitalize">{product.category}</td>
-                        <td className="px-4 py-3 text-gray-600 hidden lg:table-cell capitalize">{product.brand}</td>
-                        <td className="px-4 py-3 text-right font-semibold text-gray-900">
-                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
-                        </td>
-                        <td className="px-4 py-3 text-center hidden sm:table-cell">
-                          <button
-                            onClick={() => handleToggleActive(product)}
-                            title={product.active ? 'Desativar' : 'Ativar'}
-                            className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium transition ${
-                              product.active
-                                ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                                : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                            }`}
-                          >
-                            {product.active ? <Eye size={12} /> : <EyeOff size={12} />}
-                            {product.active ? 'Ativo' : 'Inativo'}
-                          </button>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center justify-center gap-2">
-                            <Link
-                              href={`/admin/dashboard/${product.id}`}
-                              className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition"
-                              title="Editar"
-                            >
-                              <Edit size={15} />
-                            </Link>
-                            <button
-                              onClick={() => handleDelete(product.id, product.name)}
-                              disabled={deleting === product.id}
-                              className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition disabled:opacity-40"
-                              title="Excluir"
-                            >
-                              <Trash2 size={15} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
+            {filtered.length === 0 ? (
+              <div className="text-center py-12 text-gray-500">
+                <Package size={32} className="mx-auto mb-2 opacity-40" aria-hidden />
+                {hasFilters ? (
+                  <>
+                    <p>Nenhum produto com esses filtros.</p>
+                    <button type="button" onClick={() => { setQuick('todos'); setCategory(''); setSearch('') }} className="mt-3 h-11 px-4 text-sm font-semibold text-orange-600 hover:underline">
+                      Limpar filtros
+                    </button>
+                  </>
+                ) : (
+                  <p>Nenhum produto cadastrado ainda.</p>
+                )}
+              </div>
+            ) : (
+              <ul className="divide-y divide-gray-100">
+                {filtered.map(product => (
+                  <li key={product.id} className="flex flex-wrap items-center gap-3 px-4 py-3 sm:flex-nowrap">
+                    <div className={`flex min-w-0 flex-1 items-center gap-3 ${!product.active ? 'opacity-50' : ''}`}>
+                      <div className="w-12 h-12 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden">
+                        {/* eslint-disable-next-line @next/next/no-img-element -- prévia de URL qualquer no admin */}
+                        <img
+                          src={product.image}
+                          alt=""
+                          className="w-full h-full object-contain p-1"
+                          onError={e => { (e.target as HTMLImageElement).src = '/placeholder-produto.jpg' }}
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <Link href={`/admin/dashboard/${product.id}`} className="block truncate font-semibold text-gray-900 hover:text-orange-600">
+                          {product.name}
+                        </Link>
+                        <p className="flex flex-wrap items-center gap-x-2 text-xs text-gray-500">
+                          <span className="capitalize">{product.category}</span>
+                          <span aria-hidden>·</span>
+                          <span className="font-semibold text-gray-800 tabular-nums">{price(product.price)}</span>
+                          {product.badge && <span className="rounded-full bg-orange-100 px-2 py-0.5 text-orange-700">{product.badge}</span>}
+                          {isShort(product) && <span className="text-amber-700">descrição curta</span>}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
+                      <button
+                        type="button"
+                        onClick={() => updateFlag(product, { soldOut: !product.sold_out })}
+                        disabled={busy === product.id}
+                        aria-pressed={!!product.sold_out}
+                        className={`h-10 rounded-full px-3 text-xs font-semibold transition disabled:opacity-50 ${
+                          product.sold_out ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-gray-400'
+                        }`}
+                      >
+                        {product.sold_out ? 'Esgotado' : 'Em estoque'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => updateFlag(product, { active: !product.active })}
+                        disabled={busy === product.id}
+                        aria-pressed={product.active}
+                        className={`h-10 rounded-full px-3 text-xs font-semibold transition disabled:opacity-50 ${
+                          product.active ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                      >
+                        {product.active ? 'No site' : 'Fora do site'}
+                      </button>
+                      <Link
+                        href={`/admin/dashboard/${product.id}`}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg text-blue-600 hover:bg-blue-50 transition"
+                        aria-label={`Editar ${product.name}`}
+                      >
+                        <Edit size={16} aria-hidden />
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(product)}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg text-red-500 hover:bg-red-50 transition"
+                        aria-label={`Excluir ${product.name}`}
+                      >
+                        <Trash2 size={16} aria-hidden />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
             {filtered.length > 0 && (
-              <div className="px-4 py-3 border-t border-gray-50 text-xs text-gray-400">
-                {filtered.length} produto{filtered.length !== 1 ? 's' : ''}
-                {search ? ` encontrado${filtered.length !== 1 ? 's' : ''}` : ' no total'}
+              <div className="px-4 py-3 border-t border-gray-100 text-xs text-gray-500">
+                {filtered.length} de {products.length} produto{products.length !== 1 ? 's' : ''}
               </div>
             )}
           </div>
         )}
       </main>
+
+      {toast && (
+        <div
+          role="status"
+          className={`fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-lg items-center gap-3 rounded-xl px-4 py-3 text-sm text-white shadow-[0_12px_32px_-8px_rgba(0,0,0,0.45)] ${
+            toast.tone === 'error' ? 'bg-red-700' : 'bg-gray-900'
+          }`}
+          style={{ marginBottom: 'env(safe-area-inset-bottom, 0px)' }}
+        >
+          <span className="min-w-0 flex-1">{toast.text}</span>
+          {toast.undo && (
+            <button type="button" onClick={toast.undo} className="flex h-10 items-center gap-1.5 rounded-md px-3 font-bold text-orange-300 hover:bg-white/10">
+              <Undo2 size={16} aria-hidden /> Desfazer
+            </button>
+          )}
+          <button type="button" onClick={() => setToast(null)} className="flex h-10 w-10 items-center justify-center rounded-md hover:bg-white/10" aria-label="Fechar aviso">
+            <X size={16} aria-hidden />
+          </button>
+        </div>
+      )}
     </div>
   )
 }
