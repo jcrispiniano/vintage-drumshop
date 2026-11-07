@@ -56,15 +56,15 @@ const brands = [
 
 /**
  * Arte da campanha (Black November) como capa da home, de ponta a ponta; some quando `campaign` for null.
- * Desktop: ocupa a primeira dobra abaixo do cabeçalho; corta no máximo a base da arte (o logo fica sempre inteiro).
+ * Desktop: arte + faixa de condições cabem na primeira dobra; corta no máximo a base da arte (o logo fica sempre inteiro).
  * Celular: quadro 4:3 alinhado à direita, onde está o título da arte.
  */
 function CampaignBanner() {
   return (
-    <section aria-label={campaign?.name} className="bg-[#16110D]">
+    <section aria-label={campaign?.name} className="border-b-[3px] border-[#E9B872] bg-[#0B0806]">
       <a
         href="#categorias"
-        className="relative block aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-[max(min(calc(100svh-10.5rem),55.8vw),48vw)]"
+        className="relative block aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-[max(min(calc(100svh-15.5rem),55.8vw),44vw)]"
       >
         <SmartImage
           src="/fotos/black-november-banner-pearl.jpg"
@@ -74,7 +74,23 @@ function CampaignBanner() {
           sizes="100vw"
           className="object-cover object-[100%_50%] md:object-top"
         />
+        {/* A base da arte se funde na faixa de condições logo abaixo */}
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0B0806] to-transparent md:h-24" aria-hidden />
       </a>
+      {/* Faixa de fechamento da capa: separa a arte do banner de baixo e traz as condições + ação */}
+      <div className="container mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4 py-4 text-center md:justify-between md:py-5 md:text-left">
+        <p className="text-sm text-[#E9D9C2] md:text-base">
+          <strong className="block font-display text-xl font-semibold uppercase tracking-wide text-[#E9B872] md:inline md:text-2xl">{pixOffLabel} no Pix</strong>
+          <span className="mx-2 hidden text-[#E9B872]/50 md:inline" aria-hidden>·</span>
+          ou até <strong className="text-white">{paymentTerms.maxInstallments}x sem juros</strong> no cartão
+        </p>
+        <a
+          href="#categorias"
+          className="inline-flex h-11 items-center gap-2 rounded-md bg-accent px-5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary"
+        >
+          Ver ofertas <ArrowRight size={18} aria-hidden />
+        </a>
+      </div>
     </section>
   );
 }
@@ -124,7 +140,8 @@ function Hero() {
         ))}
 
         {/* No celular o texto fica abaixo da foto: as condições aparecem já sobre a imagem */}
-        <p className="absolute right-4 top-4 rounded-lg bg-[#E9B872] px-3 py-2 text-right leading-none text-ink shadow-lg md:hidden" aria-hidden>
+        {/* Na campanha a faixa da capa já mostra as condições logo acima */}
+        <p className={`absolute right-4 top-4 rounded-lg bg-[#E9B872] px-3 py-2 text-right leading-none text-ink shadow-lg md:hidden ${campaign ? 'hidden' : ''}`} aria-hidden>
           <strong className="block font-display text-2xl font-semibold uppercase">{pixOffLabel} <span className="text-sm">no Pix</span></strong>
           <span className="mt-1 block text-sm font-bold">ou {paymentTerms.maxInstallments}x sem juros</span>
         </p>
