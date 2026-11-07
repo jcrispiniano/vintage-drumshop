@@ -54,19 +54,25 @@ const brands = [
   },
 ];
 
-/** Arte da campanha (Black November) no topo da home; some quando `campaign` for null. */
+/**
+ * Arte da campanha (Black November) como capa da home, de ponta a ponta; some quando `campaign` for null.
+ * Desktop: ocupa a primeira dobra abaixo do cabeçalho; corta no máximo a base da arte (o logo fica sempre inteiro).
+ * Celular: quadro 4:3 alinhado à direita, onde está o título da arte.
+ */
 function CampaignBanner() {
   return (
     <section aria-label={campaign?.name} className="bg-[#16110D]">
-      <a href="#categorias" className="group block">
+      <a
+        href="#categorias"
+        className="relative block aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-[max(min(calc(100svh-10.5rem),55.8vw),48vw)]"
+      >
         <SmartImage
           src="/fotos/black-november-banner-pearl.jpg"
           alt={`${campaign?.name} Vintage Drum Shop: ofertas especiais por tempo limitado. ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros. Renove seu setup!`}
-          width={1376}
-          height={768}
+          fill
           priority
-          sizes="(min-width: 1100px) 1100px, 100vw"
-          className="mx-auto h-auto w-full max-w-[1100px] md:[mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]"
+          sizes="100vw"
+          className="object-cover object-[100%_50%] md:object-top"
         />
       </a>
     </section>
