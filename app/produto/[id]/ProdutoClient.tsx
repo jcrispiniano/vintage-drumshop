@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
-import { Product, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage } from '@/lib/products';
+import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, PlayCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
+import { Product, campaign, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productUrl } from '@/lib/products';
+import { cymbalSeries, cymbalType, productSpecs, soundSearchUrl } from '@/lib/cymbals';
+import { productSizeValue } from '@/lib/productText';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
@@ -24,11 +26,12 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const [shared, setShared] = useState(false);
 
   const gallery = [product.image, ...(product.images ?? [])].filter(Boolean);
+  const promo = campaign && !product.soldOut ? campaign : null;
   const off = discountPercent(product.price, product.oldPrice);
   const category = categories.find(c => c.id === product.category);
-  const related = allProducts
-    .filter(p => p.category === product.category && p.id !== product.id && p.image)
-    .slice(0, 4);
+  const specs = productSpecs(product);
+  const isCymbal = product.category === 'pratos';
+  const related = relatedProducts(product, allProducts);
 
   const handleAddToCart = () => {
     if (product.soldOut) return;
@@ -57,7 +60,12 @@ export default function ProdutoClient({ product }: { product: Product }) {
     }
   };
 
-  const whatsappHref = `${contactInfo.whatsapp}?text=${encodeURIComponent(`Olá! Tenho uma dúvida sobre: ${product.name}`)}`;
+  // A mensagem já leva o produto e o link: a loja sabe na hora do que se trata
+  const whatsappHref = `${contactInfo.whatsapp}?text=${encodeURIComponent(
+    product.soldOut
+      ? `Olá! Quero encomendar: ${product.name}\n${productUrl(product.id)}\nQual o prazo?`
+      : `Olá! Quero saber mais sobre: ${product.name}\n${productUrl(product.id)}`
+  )}`;
 
   return (
     <div className="min-h-screen bg-white">
@@ -123,15 +131,17 @@ export default function ProdutoClient({ product }: { product: Product }) {
 
           {/* Informações e compra */}
           <div className="lg:pt-4">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
-              {!isGenericBrand(product.brand) && brandLabel(product.brand)}
-              {product.badge && <span className="ml-2 rounded bg-cream px-1.5 py-0.5 text-ink">{product.badge}</span>}
-            </p>
-            <h1 className="mb-6 text-3xl font-semibold uppercase leading-[1.1] text-ink md:text-4xl">
+            <h1 className="text-3xl font-semibold uppercase leading-[1.1] text-ink md:text-4xl">
               {product.name}
             </h1>
+            <p className="mb-6 mt-3 flex flex-wrap items-center gap-2 text-sm text-ink-soft">
+              {!isGenericBrand(product.brand) && <span className="font-semibold text-primary">{brandLabel(product.brand)}</span>}
+              {product.badge && <span className="rounded bg-cream px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-ink">{product.badge}</span>}
+              {product.soldOut && <span className="rounded bg-ink px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-white">Esgotado no momento</span>}
+            </p>
 
-            <div className="border-y border-line py-5">
+            {/* Esgotado: o preço fica de referência, sem disputar com a ação de encomendar */}
+            <div className={`border-y border-line py-5 ${product.soldOut ? 'opacity-55' : ''}`}>
               <PriceBlock price={product.price} oldPrice={product.oldPrice} size="page" />
             </div>
 
@@ -147,19 +157,24 @@ export default function ProdutoClient({ product }: { product: Product }) {
             )}
 
             <div className="mt-6 flex gap-3">
-              <button
-                type="button"
-                onClick={handleAddToCart}
-                disabled={product.soldOut}
-                className={`flex h-14 flex-1 items-center justify-center gap-2 rounded-md text-base font-bold uppercase tracking-wide transition-colors ${
-                  product.soldOut
-                    ? 'cursor-not-allowed bg-line text-ink-soft'
-                    : 'bg-accent text-white hover:bg-secondary active:scale-[0.99]'
-                }`}
-              >
-                <ShoppingCart size={20} aria-hidden />
-                {product.soldOut ? 'Produto esgotado' : 'Comprar'}
-              </button>
+              {product.soldOut ? (
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex h-14 flex-1 items-center justify-center gap-2 rounded-md bg-accent text-base font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary"
+                >
+                  <MessageCircle size={20} aria-hidden /> Encomendar pelo WhatsApp
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleAddToCart}
+                  className="flex h-14 flex-1 items-center justify-center gap-2 rounded-md bg-accent text-base font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary active:scale-[0.99]"
+                >
+                  <ShoppingCart size={20} aria-hidden /> Comprar
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => toggleFavorite(product.id)}
@@ -182,45 +197,84 @@ export default function ProdutoClient({ product }: { product: Product }) {
               </button>
             </div>
 
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 flex h-12 items-center justify-center gap-2 rounded-md bg-paper text-sm font-semibold text-ink ring-1 ring-line transition hover:ring-ink/40"
-            >
-              <MessageCircle size={18} className="text-[#1f9d55]" aria-hidden />
-              Tire suas dúvidas pelo WhatsApp
-            </a>
+            {product.soldOut ? (
+              <p className="mt-3 text-sm text-ink-soft">
+                Sem estoque agora. Pela encomenda a loja confirma prazo e valor antes de qualquer pagamento.
+              </p>
+            ) : (
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 flex h-12 items-center justify-center gap-2 rounded-md bg-paper text-sm font-semibold text-ink ring-1 ring-line transition hover:ring-ink/40"
+              >
+                <MessageCircle size={18} className="text-[#1f9d55]" aria-hidden />
+                {isCymbal ? 'Ouça e pergunte sobre este prato no WhatsApp' : 'Tire suas dúvidas pelo WhatsApp'}
+              </a>
+            )}
 
-            <ul className="mt-6 space-y-3 text-sm text-ink-soft">
-              <li className="flex items-center gap-3">
-                <BadgePercent size={18} className="text-primary" aria-hidden />
-                <span><strong className="text-ink">{pixOffLabel}</strong> pagando no Pix</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <CreditCard size={18} className="text-primary" aria-hidden />
-                <span>Até <strong className="text-ink">{paymentTerms.maxInstallments}x sem juros</strong> no cartão de crédito</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Truck size={18} className="text-primary" aria-hidden />
-                <span><strong className="text-ink">Enviamos para todo o Brasil</strong> · frete calculado pelo seu CEP</span>
-              </li>
-            </ul>
+            {/* Na campanha as condições ganham o painel preto da Black November (sem repetir a lista) */}
+            <div className={promo ? 'mt-6 rounded-xl bg-ink px-5 py-4 text-on-dark-soft' : 'mt-6'}>
+              {promo && (
+                <p className="mb-3 font-display text-lg font-semibold uppercase leading-none tracking-wide text-gold">{promo.name}</p>
+              )}
+              <ul className={`space-y-3 text-sm ${promo ? '' : 'text-ink-soft'}`}>
+                <li className="flex items-center gap-3">
+                  <BadgePercent size={18} className={promo ? 'text-gold' : 'text-primary'} aria-hidden />
+                  <span><strong className={promo ? 'text-white' : 'text-ink'}>{pixOffLabel}</strong> pagando no Pix</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <CreditCard size={18} className={promo ? 'text-gold' : 'text-primary'} aria-hidden />
+                  <span>Até <strong className={promo ? 'text-white' : 'text-ink'}>{paymentTerms.maxInstallments}x sem juros</strong> no cartão de crédito</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Truck size={18} className={promo ? 'text-gold' : 'text-primary'} aria-hidden />
+                  <span><strong className={promo ? 'text-white' : 'text-ink'}>Enviamos para todo o Brasil</strong> · frete calculado pelo seu CEP</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        {/* Descrição */}
-        <section className="mx-auto mt-14 max-w-[68ch] border-t-2 border-ink pt-8">
-          <h2 className="mb-4 text-2xl font-semibold uppercase text-ink">Descrição</h2>
-          <p className="whitespace-pre-line leading-relaxed text-ink-soft">
-            {product.description}
-          </p>
-        </section>
+        {/* Ficha técnica + descrição: o que diferencia este produto dos vizinhos */}
+        <div className="mt-14 grid gap-10 border-t-2 border-ink pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-14">
+          {specs.length > 0 && (
+            <section aria-labelledby="ficha-titulo">
+              <h2 id="ficha-titulo" className="mb-4 text-2xl font-semibold uppercase text-ink">Ficha técnica</h2>
+              <dl className="divide-y divide-line rounded-xl bg-paper ring-1 ring-line">
+                {specs.map(spec => (
+                  <div key={spec.label} className="grid grid-cols-[7rem_minmax(0,1fr)] gap-3 px-4 py-3 text-sm">
+                    <dt className="font-semibold text-ink-soft">{spec.label}</dt>
+                    <dd className="text-ink">{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
+              {isCymbal && !product.audio && (
+                <a
+                  href={soundSearchUrl(product.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-accent hover:underline"
+                >
+                  <PlayCircle size={18} aria-hidden /> Ouvir o som no YouTube
+                </a>
+              )}
+            </section>
+          )}
+          <section aria-labelledby="descricao-titulo" className={specs.length ? '' : 'lg:col-span-2'}>
+            <h2 id="descricao-titulo" className="mb-4 text-2xl font-semibold uppercase text-ink">Descrição</h2>
+            <p className="max-w-[65ch] whitespace-pre-line leading-relaxed text-ink-soft">
+              {product.description}
+            </p>
+          </section>
+        </div>
 
         {related.length > 0 && (
           <section className="mt-16">
             <div className="mb-6 flex items-end justify-between gap-4">
-              <h2 className="text-2xl font-semibold uppercase text-ink md:text-3xl">Veja também</h2>
+              <h2 className="text-2xl font-semibold uppercase text-ink md:text-3xl">
+                {isCymbal && cymbalSeries(product.name) ? `Mais da série ${cymbalSeries(product.name)!.label}` : 'Veja também'}
+              </h2>
               {category && (
                 <Link href={`/${category.id}`} className="text-sm font-semibold text-accent hover:underline">
                   Ver tudo em {category.name}
@@ -280,4 +334,25 @@ export default function ProdutoClient({ product }: { product: Product }) {
       )}
     </div>
   );
+}
+
+/**
+ * "Veja também": a mesma série em outros tamanhos e tipos primeiro (ex.: o chimbal
+ * e o ride que combinam com um crash Xist), depois o resto da categoria.
+ */
+function relatedProducts(product: Product, all: Product[]): Product[] {
+  const pool = all.filter(p => p.id !== product.id && p.image && p.category === product.category && !p.soldOut);
+  if (product.category !== 'pratos') return pool.slice(0, 4);
+  const series = cymbalSeries(product.name)?.id;
+  const type = cymbalType(product.name);
+  const size = productSizeValue(product.name);
+  const score = (p: Product) => {
+    let s = 0;
+    if (series && cymbalSeries(p.name)?.id === series) s += 10;
+    const t = cymbalType(p.name);
+    if (t !== type) s += 3; // completa o setup
+    else if (size !== null && productSizeValue(p.name) !== size) s += 2; // mesmo tipo, outro tamanho
+    return s;
+  };
+  return [...pool].sort((a, b) => score(b) - score(a)).slice(0, 4);
 }

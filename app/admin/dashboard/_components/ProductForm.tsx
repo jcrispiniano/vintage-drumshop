@@ -4,6 +4,7 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Save, Upload, X, ImageIcon } from 'lucide-react'
+import { compressImage } from '@/lib/compressImage'
 
 // Precisa bater com os filtros das páginas de categoria (p.category === '...').
 // Mallets e vassourinhas são baquetas; Wincent e Dynabeat são marcas.
@@ -16,7 +17,7 @@ const BRANDS = [
   'istanbul', 'wincent', 'dynabeat', 'torelli', 'pinguim',
   'evans', 'remo', 'pearl', 'tama', 'dw', 'mapex',
   'yamaha', 'sonor', 'gretsch', 'ludwig', 'zildjian',
-  'sabian', 'meinl', 'rockkey', 'outro',
+  'sabian', 'meinl', 'rockkey', 'tunebot', 'outro',
 ]
 
 const BADGES = ['Novo', 'Premium', 'Signature', 'Effect', 'Oferta', 'Destaque', '']
@@ -28,6 +29,8 @@ interface FormData {
   price: string
   oldPrice: string
   image: string
+  /** Fotos extras, depois da principal */
+  images: string[]
   badge: string
   description: string
   featured: boolean
@@ -43,7 +46,7 @@ interface ProductFormProps {
 
 const emptyForm: FormData = {
   name: '', category: 'pratos', brand: 'istanbul',
-  price: '', oldPrice: '', image: '', badge: '',
+  price: '', oldPrice: '', image: '', images: [], badge: '',
   description: '', featured: false, active: true, soldOut: false, audio: '',
 }
 
@@ -112,94 +115,163 @@ function AudioUploader({
   )
 }
 
-function ImageUploader({
+const MAX_PHOTOS = 12
+
+function ImageGallery({
   value,
   category,
   onChange,
 }: {
-  value: string
+  value: string[]
   category: string
-  onChange: (url: string) => void
+  /** Recebe uma função de atualização: uploads terminam fora de ordem e não podem se sobrescrever */
+  onChange: (update: (urls: string[]) => string[]) => void
 }) {
-  const [uploading, setUploading] = useState(false)
+  const [uploading, setUploading] = useState(0)
   const [uploadError, setUploadError] = useState('')
   const [dragging, setDragging] = useState(false)
+  const [manualUrl, setManualUrl] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
-
-  async function uploadFile(file: File) {
-    setUploading(true)
-    setUploadError('')
-
+  async function uploadFile(file: File): Promise<string | null> {
     const fd = new FormData()
-    fd.append('file', file)
+    fd.append('file', await compressImage(file))
     fd.append('category', category)
-
     try {
       const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
       // Respostas de erro da plataforma (ex.: 413) podem não ser JSON
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        setUploadError(data.error ?? `Erro ao enviar imagem (HTTP ${res.status}).`)
-      } else {
-        onChange(data.url)
+        setUploadError(
+          res.status === 413
+            ? `"${file.name}" é grande demais mesmo depois de reduzida. Tente outra foto.`
+            : data.error ?? `Erro ao enviar "${file.name}" (HTTP ${res.status}).`
+        )
+        return null
       }
+      return data.url as string
     } catch {
-      setUploadError('Falha de conexão ao enviar imagem.')
-    } finally {
-      setUploading(false)
+      setUploadError(`Falha de conexão ao enviar "${file.name}".`)
+      return null
     }
   }
 
-  function handleFiles(files: FileList | null) {
+  async function handleFiles(files: FileList | null) {
     if (!files?.length) return
-    uploadFile(files[0])
+    setUploadError('')
+    const room = MAX_PHOTOS - value.length
+    const list = Array.from(files).filter(f => f.type.startsWith('image/')).slice(0, Math.max(room, 0))
+    if (files.length > list.length) {
+      setUploadError(`Máximo de ${MAX_PHOTOS} fotos por produto (só imagens).`)
+    }
+    if (!list.length) return
+    setUploading(n => n + list.length)
+    // Uma por vez, na ordem escolhida
+    for (const file of list) {
+      const url = await uploadFile(file)
+      if (url) onChange(urls => [...urls, url].slice(0, MAX_PHOTOS))
+      setUploading(n => n - 1)
+    }
+    if (inputRef.current) inputRef.current.value = ''
   }
 
-  function handleDrop(e: React.DragEvent) {
-    e.preventDefault()
-    setDragging(false)
-    handleFiles(e.dataTransfer.files)
+  function move(index: number, to: number) {
+    if (to < 0 || to >= value.length) return
+    onChange(urls => {
+      const next = [...urls]
+      const [item] = next.splice(index, 1)
+      next.splice(to, 0, item)
+      return next
+    })
+  }
+
+  function addManual() {
+    const url = manualUrl.trim()
+    if (!url || value.length >= MAX_PHOTOS) return
+    onChange(urls => [...urls, url].slice(0, MAX_PHOTOS))
+    setManualUrl('')
   }
 
   return (
     <div className="space-y-3">
-      <label className="label">Imagem do produto *</label>
+      <label className="label">
+        Fotos do produto * <span className="text-gray-400 font-normal">a primeira é a foto principal</span>
+      </label>
 
-      {/* Drop zone */}
-      <div
-        onClick={() => inputRef.current?.click()}
-        onDrop={handleDrop}
-        onDragOver={e => { e.preventDefault(); setDragging(true) }}
-        onDragLeave={() => setDragging(false)}
-        className={`relative flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl p-6 cursor-pointer transition ${
-          dragging
-            ? 'border-orange-400 bg-orange-50'
-            : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'
-        }`}
-      >
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={e => handleFiles(e.target.files)}
-        />
+      {value.length > 0 && (
+        <ul className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+          {value.map((url, i) => (
+            <li key={`${url}-${i}`} className={`relative rounded-xl border bg-white p-1.5 ${i === 0 ? 'border-orange-400 ring-2 ring-orange-100' : 'border-gray-200'}`}>
+              {/* eslint-disable-next-line @next/next/no-img-element -- prévia de URL qualquer no admin */}
+              <img
+                src={url}
+                alt={`Foto ${i + 1}`}
+                className="aspect-square w-full rounded-lg object-contain bg-gray-50"
+                onError={e => { (e.target as HTMLImageElement).src = '/placeholder-produto.jpg' }}
+              />
+              {i === 0 && (
+                <span className="absolute left-2 top-2 rounded bg-orange-500 px-1.5 py-0.5 text-[10px] font-bold uppercase text-white">Principal</span>
+              )}
+              <button
+                type="button"
+                onClick={() => onChange(urls => urls.filter((_, j) => j !== i))}
+                className="absolute right-2 top-2 rounded-full bg-white/90 p-1 text-gray-500 shadow hover:text-red-500"
+                title="Remover foto"
+                aria-label={`Remover foto ${i + 1}`}
+              >
+                <X size={12} />
+              </button>
+              <div className="mt-1.5 flex items-center justify-between gap-1 text-[11px]">
+                <button type="button" onClick={() => move(i, i - 1)} disabled={i === 0} className="rounded px-1.5 py-0.5 text-gray-500 hover:bg-gray-100 disabled:opacity-30" aria-label="Mover para a esquerda">◀</button>
+                {i !== 0 ? (
+                  <button type="button" onClick={() => move(i, 0)} className="font-semibold text-orange-600 hover:underline">Principal</button>
+                ) : <span />}
+                <button type="button" onClick={() => move(i, i + 1)} disabled={i === value.length - 1} className="rounded px-1.5 py-0.5 text-gray-500 hover:bg-gray-100 disabled:opacity-30" aria-label="Mover para a direita">▶</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
 
-        {uploading ? (
-          <>
-            <div className="w-8 h-8 border-2 border-orange-400 border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-gray-500">Enviando imagem...</p>
-          </>
-        ) : (
-          <>
-            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-              <Upload size={18} className="text-orange-500" />
-            </div>
-            <p className="text-sm font-semibold text-gray-700">Clique ou arraste a imagem aqui</p>
-            <p className="text-xs text-gray-400">PNG, JPG, WEBP — máx. 4MB</p>
-          </>
-        )}
-      </div>
+      {value.length < MAX_PHOTOS && (
+        <div
+          onClick={() => inputRef.current?.click()}
+          onDrop={e => { e.preventDefault(); setDragging(false); handleFiles(e.dataTransfer.files) }}
+          onDragOver={e => { e.preventDefault(); setDragging(true) }}
+          onDragLeave={() => setDragging(false)}
+          className={`relative flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl p-6 cursor-pointer transition ${
+            dragging
+              ? 'border-orange-400 bg-orange-50'
+              : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'
+          }`}
+        >
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={e => handleFiles(e.target.files)}
+          />
+          {uploading > 0 ? (
+            <>
+              <div className="w-8 h-8 border-2 border-orange-400 border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-gray-500">Enviando {uploading} foto{uploading > 1 ? 's' : ''}...</p>
+            </>
+          ) : (
+            <>
+              <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                <Upload size={18} className="text-orange-500" />
+              </div>
+              <p className="text-sm font-semibold text-gray-700">
+                {value.length ? 'Adicionar mais fotos' : 'Clique ou arraste as fotos aqui'}
+              </p>
+              <p className="text-xs text-gray-400">
+                Várias de uma vez · até {MAX_PHOTOS} fotos · fotos grandes são reduzidas automaticamente
+              </p>
+            </>
+          )}
+        </div>
+      )}
 
       {uploadError && (
         <p className="text-red-600 text-xs bg-red-50 border border-red-200 rounded-lg px-3 py-2">
@@ -207,43 +279,22 @@ function ImageUploader({
         </p>
       )}
 
-      {/* Preview + URL manual */}
-      {value && (
-        <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
-          {/* eslint-disable-next-line @next/next/no-img-element -- prévia de URL qualquer no admin */}
-          <img
-            src={value}
-            alt="Preview"
-            className="w-16 h-16 object-contain rounded-lg border border-gray-200 bg-white flex-shrink-0"
-            onError={e => { (e.target as HTMLImageElement).src = '/placeholder-produto.jpg' }}
-          />
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-gray-700 mb-1">Imagem selecionada</p>
-            <p className="text-xs text-gray-400 truncate">{value}</p>
-          </div>
-          <button
-            type="button"
-            onClick={() => onChange('')}
-            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition flex-shrink-0"
-            title="Remover imagem"
-          >
-            <X size={14} />
-          </button>
-        </div>
-      )}
-
       {/* Fallback: URL manual */}
       <details className="group">
         <summary className="text-xs text-gray-400 cursor-pointer hover:text-gray-600 transition select-none">
-          Ou informe a URL manualmente
+          Ou adicione uma foto pela URL
         </summary>
-        <div className="mt-2">
+        <div className="mt-2 flex gap-2">
           <input
-            value={value}
-            onChange={e => onChange(e.target.value)}
+            value={manualUrl}
+            onChange={e => setManualUrl(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addManual() } }}
             placeholder="https://... ou /produtos/categoria/imagem.jpg"
             className="input font-mono text-xs"
           />
+          <button type="button" onClick={addManual} className="shrink-0 rounded-lg border border-gray-200 px-3 text-xs font-semibold text-gray-700 hover:bg-gray-50">
+            Adicionar
+          </button>
         </div>
       </details>
     </div>
@@ -256,14 +307,14 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
   const [error, setError] = useState('')
   const router = useRouter()
 
-  function set(field: keyof FormData, value: string | boolean) {
+  function set(field: keyof FormData, value: string | boolean | string[]) {
     setForm(prev => ({ ...prev, [field]: value }))
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!form.image.trim()) {
-      setError('Adicione uma imagem ao produto.')
+      setError('Adicione pelo menos uma foto ao produto.')
       return
     }
     setSaving(true)
@@ -277,6 +328,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
       // null (e não undefined) para que a edição consiga limpar esses campos
       oldPrice: form.oldPrice ? parseFloat(form.oldPrice) : null,
       image: form.image.trim(),
+      images: form.images.length ? form.images : null,
       badge: form.badge || null,
       description: form.description.trim(),
       featured: form.featured,
@@ -411,13 +463,16 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-5">
             <h2 className="font-bold text-gray-800 text-sm uppercase tracking-wide flex items-center gap-2">
               <ImageIcon size={16} />
-              Imagem, áudio e badge
+              Fotos, áudio e badge
             </h2>
 
-            <ImageUploader
-              value={form.image}
+            <ImageGallery
+              value={[form.image, ...form.images].filter(Boolean)}
               category={form.category}
-              onChange={url => set('image', url)}
+              onChange={update => setForm(prev => {
+                const urls = update([prev.image, ...prev.images].filter(Boolean))
+                return { ...prev, image: urls[0] ?? '', images: urls.slice(1) }
+              })}
             />
 
             <AudioUploader

@@ -56,12 +56,12 @@ export default function ProductCard({ product, typeLabel, tags = [] }: ProductCa
 
   return (
     <div className="group relative flex h-full flex-col rounded-xl bg-white ring-1 ring-line transition-shadow duration-300 hover:shadow-[0_12px_28px_-12px_rgba(43,29,20,0.35)]">
-      <Link href={href} className="relative block aspect-square overflow-hidden rounded-t-xl bg-cream" tabIndex={-1} aria-hidden>
+      <Link href={href} className="relative block aspect-square overflow-hidden rounded-t-xl bg-white" tabIndex={-1} aria-hidden>
         <SmartImage
           src={productImage(product.image)}
           alt=""
           fill
-          sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+          sizes="(min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
           className={`object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${product.soldOut ? 'opacity-40 grayscale' : ''}`}
         />
         {product.soldOut ? (
@@ -84,7 +84,7 @@ export default function ProductCard({ product, typeLabel, tags = [] }: ProductCa
         onClick={() => toggleFavorite(product.id)}
         aria-pressed={isFavorite}
         aria-label={isFavorite ? `Remover ${product.name} dos favoritos` : `Favoritar ${product.name}`}
-        className={`absolute right-1.5 top-1.5 flex h-11 w-11 items-center justify-center rounded-full bg-white/85 backdrop-blur-sm transition ${
+        className={`absolute right-1.5 top-1.5 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/85 backdrop-blur-sm transition ${
           isFavorite ? 'text-accent' : 'text-ink-soft hover:text-accent'
         }`}
       >
@@ -104,7 +104,8 @@ export default function ProductCard({ product, typeLabel, tags = [] }: ProductCa
         </p>
 
         <h3 className="mb-2 line-clamp-2 min-h-[2.5em] text-sm font-semibold leading-tight text-ink md:text-[15px]">
-          <Link href={href} className="hover:text-accent" title={product.name}>
+          {/* O link do título cobre o card inteiro: alvo de toque grande no celular */}
+          <Link href={href} className="hover:text-accent after:absolute after:inset-0 after:rounded-xl after:content-['']" title={product.name}>
             {title}
           </Link>
         </h3>
@@ -127,19 +128,18 @@ export default function ProductCard({ product, typeLabel, tags = [] }: ProductCa
         </div>
 
         {product.soldOut ? (
-          <button
-            type="button"
-            disabled
-            className="h-11 w-full cursor-not-allowed rounded-md bg-line text-sm font-bold uppercase tracking-wide text-ink-soft"
+          <Link
+            href={href}
+            className="relative z-10 flex h-11 w-full items-center justify-center rounded-md bg-paper text-sm font-bold uppercase tracking-wide text-ink ring-1 ring-line transition hover:ring-ink/40"
           >
-            Esgotado
-          </button>
+            Encomendar
+          </Link>
         ) : (
           <button
             type="button"
             onClick={handleAddToCart}
             aria-label={`Comprar ${product.name}`}
-            className="flex h-11 w-full items-center justify-center gap-2 rounded-md bg-white text-sm font-bold uppercase tracking-wide text-accent ring-1 ring-accent/60 transition-colors hover:bg-accent hover:text-white active:scale-[0.98]"
+            className="relative z-10 flex h-11 w-full items-center justify-center gap-2 rounded-md bg-white text-sm font-bold uppercase tracking-wide text-accent ring-1 ring-accent/60 transition-colors hover:bg-accent hover:text-white active:scale-[0.98]"
           >
             <ShoppingCart size={16} aria-hidden />
             Comprar

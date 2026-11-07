@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { products as staticProducts } from '@/lib/products'
+import { products as staticProducts, soldOutLast } from '@/lib/products'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { normalizeProduct } from '@/lib/productRow'
 
@@ -35,5 +35,5 @@ export async function GET(request: Request) {
 
   const normalized = (data ?? []).map(normalizeProduct)
 
-  return NextResponse.json(normalized)
+  return NextResponse.json(soldOutLast(normalized))
 }

@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { MessageCircle } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
-import { Product, contactInfo } from '@/lib/products';
+import { Product, contactInfo, soldOutLast } from '@/lib/products';
 import { productSizeValue } from '@/lib/productText';
 
 export type SortKey = 'relevancia' | 'menor-preco' | 'maior-preco' | 'tamanho';
@@ -80,7 +80,7 @@ export default function CatalogGrid({
     if (sort === 'tamanho') {
       list.sort((a, b) => (productSizeValue(a.name) ?? 99) - (productSizeValue(b.name) ?? 99));
     }
-    return list;
+    return soldOutLast(list);
   }, [products, size, sort]);
 
   // Categoria sem nenhum produto: vira encomenda pelo WhatsApp em vez de beco sem saída
@@ -168,7 +168,7 @@ export default function CatalogGrid({
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-5">
               {visible.slice(0, limit).map(product => (
                 <ProductCard key={product.id} product={product} typeLabel={typeLabel?.(product)} tags={tags?.(product)} />
               ))}

@@ -6,6 +6,7 @@ import WhatsAppButton from '@/components/WhatsAppButton'
 import Footer from '@/components/Footer'
 import PageTransition from '@/components/PageTransition'
 import ProductsInitializer from '@/components/ProductsInitializer'
+import { campaign } from '@/lib/products'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
@@ -59,7 +60,7 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="pt-BR" href="https://vintagedrumshop.com.br" />
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
       </head>
-      <body className="antialiased">
+      <body className={campaign ? 'antialiased black-november' : 'antialiased'}>
         <CartProvider>
           <ProductsInitializer />
           <div className="overflow-x-clip w-full">

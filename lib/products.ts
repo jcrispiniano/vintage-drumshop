@@ -679,11 +679,16 @@ export function formatPrice(price: number): string {
   });
 }
 
-// Condições comerciais exibidas na loja (benefícios, cards e página de produto)
+// Condições comerciais exibidas na loja (benefícios, cards, carrinho e orçamentos).
+// Black November: 10% no Pix ou até 10x sem juros. Fora da campanha a loja usa 5% / 6x
+// (troque os números abaixo e `campaign` para null para voltar).
 export const paymentTerms = {
-  pixDiscount: 0.05,
-  maxInstallments: 6,
+  pixDiscount: 0.10,
+  maxInstallments: 10,
 };
+
+/** Campanha ativa: aparece na barra do topo, no banner da home e na faixa de benefícios. */
+export const campaign: { name: string } | null = { name: 'Black November' };
 
 /** Rótulo único da condição do Pix, usado em toda a loja (o desconto vale só no Pix). */
 export const pixOffLabel = `${Math.round(paymentTerms.pixDiscount * 100)}% OFF`;
@@ -695,6 +700,13 @@ export function pixPrice(price: number): number {
 export function discountPercent(price: number, oldPrice?: number): number {
   if (!oldPrice || oldPrice <= price) return 0;
   return Math.round((1 - price / oldPrice) * 100);
+}
+
+/** Endereço público da loja, para links em mensagens (WhatsApp) e metadados. */
+export const siteUrl = 'https://www.vintagedrumshop.com.br';
+
+export function productUrl(id: number): string {
+  return `${siteUrl}/produto/${id}`;
 }
 
 export const contactInfo = {
@@ -710,4 +722,9 @@ export const contactInfo = {
 // Produtos sem foto (ex.: fallback estático) usam o logo em vez de <img src=""> quebrado
 export function productImage(src?: string): string {
   return src || '/placeholder-produto.jpg';
+}
+
+/** Mantém a ordem original, mas manda os produtos esgotados para o final da lista. */
+export function soldOutLast<T extends { soldOut?: boolean }>(list: T[]): T[] {
+  return [...list].sort((a, b) => Number(!!a.soldOut) - Number(!!b.soldOut));
 }

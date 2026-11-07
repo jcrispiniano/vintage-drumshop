@@ -1,7 +1,7 @@
 'use client';
 
 import SmartImage from '@/components/SmartImage';
-import { categories, contactInfo, paymentTerms, pixOffLabel } from '@/lib/products';
+import { campaign, categories, contactInfo, paymentTerms, pixOffLabel } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { TIMBRES } from '@/lib/productText';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ import CategoryNav from '@/components/CategoryNav';
 import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 import PaymentPerks from '@/components/PaymentPerks';
-import { ArrowRight, ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, MessageCircle, Pause, Play } from 'lucide-react';
 
 // Fotos do ensaio da Vintage (public/fotos)
 const heroSlides = [
@@ -54,19 +54,76 @@ const brands = [
   },
 ];
 
+/**
+ * Arte da campanha (Black November) como capa da home, de ponta a ponta; some quando `campaign` for null.
+ * Desktop: arte + faixa da capa cabem na primeira dobra; corta no máximo a base da arte (o logo fica sempre inteiro).
+ * Celular: quadro 4:3 alinhado à direita, onde está o título da arte.
+ */
+function CampaignBanner() {
+  return (
+    <section aria-label={campaign?.name} className="border-b-[3px] border-gold bg-campaign">
+      <a
+        href="#categorias"
+        className="relative block aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-[max(min(calc(100svh-17.5rem),55.8vw),42vw)]"
+      >
+        <SmartImage
+          src="/fotos/black-november-banner-pearl.jpg"
+          alt={`${campaign?.name} Vintage Drum Shop: ofertas especiais por tempo limitado. ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros. Renove seu setup!`}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[100%_50%] md:object-top"
+        />
+        {/* A base da arte se funde na faixa de condições logo abaixo */}
+        <span className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-campaign to-transparent md:h-24" aria-hidden />
+      </a>
+      {/* Faixa da capa: a frase da loja, as condições e as ações. Durante a campanha ela substitui o banner principal */}
+      <div className="container mx-auto flex flex-col gap-5 px-4 py-6 md:flex-row md:items-center md:justify-between md:py-7">
+        <div className="grid gap-2 text-center md:text-left">
+          <h1 className="font-display text-[1.75rem] font-semibold uppercase leading-[1.1] text-white md:text-4xl">
+            Vintage, <span className="text-gold">porque clássico</span> é eterno
+          </h1>
+          <p className="text-sm text-on-dark-soft md:text-base">
+            <strong className="font-semibold text-gold">{pixOffLabel} no Pix</strong> ou até{' '}
+            <strong className="font-semibold text-white">{paymentTerms.maxInstallments}x sem juros</strong> no cartão. Monte o pedido aqui e feche pelo WhatsApp.
+          </p>
+        </div>
+        <div className="flex flex-wrap justify-center gap-3 md:flex-nowrap md:justify-end">
+          <a
+            href="#categorias"
+            className="inline-flex h-12 items-center gap-2 rounded-md bg-accent px-6 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary"
+          >
+            Ver ofertas <ArrowRight size={18} aria-hidden />
+          </a>
+          <a
+            href={contactInfo.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-12 items-center gap-2 rounded-md px-6 text-sm font-bold uppercase tracking-wide text-white ring-1 ring-white/60 transition hover:bg-white/10"
+          >
+            <MessageCircle size={18} aria-hidden /> Fale com a loja
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Hero() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  // Pausa pedida pelo visitante (botão); a de hover/foco é só temporária
+  const [stopped, setStopped] = useState(false);
 
   const go = useCallback((delta: number) => {
     setCurrent(prev => (prev + delta + heroSlides.length) % heroSlides.length);
   }, []);
 
   useEffect(() => {
-    if (paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (paused || stopped || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const id = setInterval(() => go(1), SLIDE_MS);
     return () => clearInterval(id);
-  }, [paused, go]);
+  }, [paused, stopped, go]);
 
   return (
     <section
@@ -99,7 +156,7 @@ function Hero() {
         ))}
 
         {/* No celular o texto fica abaixo da foto: as condições aparecem já sobre a imagem */}
-        <p className="absolute right-4 top-4 rounded-lg bg-[#E9B872] px-3 py-2 text-right leading-none text-ink shadow-lg md:hidden" aria-hidden>
+        <p className="absolute right-4 top-4 rounded-lg bg-gold px-3 py-2 text-right leading-none text-ink shadow-lg md:hidden" aria-hidden>
           <strong className="block font-display text-2xl font-semibold uppercase">{pixOffLabel} <span className="text-sm">no Pix</span></strong>
           <span className="mt-1 block text-sm font-bold">ou {paymentTerms.maxInstallments}x sem juros</span>
         </p>
@@ -124,27 +181,36 @@ function Hero() {
           >
             <ChevronRight size={20} />
           </button>
+          <button
+            type="button"
+            onClick={() => setStopped(v => !v)}
+            className="flex h-11 w-11 items-center justify-center rounded-full text-white transition hover:bg-white/20"
+            aria-label={stopped ? 'Retomar troca automática das fotos' : 'Pausar troca automática das fotos'}
+            aria-pressed={stopped}
+          >
+            {stopped ? <Play size={18} /> : <Pause size={18} />}
+          </button>
         </div>
       </div>
 
       <div className="flex flex-col justify-center border-b-[3px] border-brass px-5 py-10 text-white md:order-1 md:border-b-0 md:border-r-[3px] md:px-10 xl:px-14">
         <h1 className="text-[2.5rem] font-semibold uppercase leading-[1.12] lg:text-5xl 2xl:text-6xl">
           <span className="block">Vintage,</span>
-          <span className="block text-[#E9B872]">porque clássico</span>
+          <span className="block text-gold">porque clássico</span>
           <span className="block">é eterno</span>
         </h1>
-        <p className="mt-5 max-w-md text-base leading-relaxed text-[#F0E3D0] lg:text-lg">
+        <p className="mt-5 max-w-md text-base leading-relaxed text-on-dark lg:text-lg">
           Baterias, pratos e acessórios escolhidos por quem toca. Monte seu pedido aqui e feche direto com a loja pelo WhatsApp.
         </p>
         {/* Condições em destaque logo na primeira dobra */}
         <ul className="mt-6 hidden flex-wrap gap-2 md:flex" aria-label="Condições de pagamento">
-          <li className="flex items-baseline gap-1.5 rounded-md bg-[#E9B872] px-3.5 py-2 text-ink">
+          <li className="flex items-baseline gap-1.5 rounded-md bg-gold px-3.5 py-2 text-ink">
             <strong className="font-display text-2xl font-semibold uppercase leading-none">{pixOffLabel}</strong>
             <span className="text-sm font-semibold">no Pix</span>
           </li>
-          <li className="flex items-baseline gap-1.5 rounded-md px-3.5 py-2 ring-1 ring-[#E9B872]">
-            <strong className="font-display text-2xl font-semibold uppercase leading-none text-[#E9B872]">{paymentTerms.maxInstallments}x sem juros</strong>
-            <span className="text-sm font-semibold text-[#F0E3D0]">no cartão</span>
+          <li className="flex items-baseline gap-1.5 rounded-md px-3.5 py-2 ring-1 ring-gold">
+            <strong className="font-display text-2xl font-semibold uppercase leading-none text-gold">{paymentTerms.maxInstallments}x sem juros</strong>
+            <span className="text-sm font-semibold text-on-dark">no cartão</span>
           </li>
         </ul>
         <div className="mt-8 flex flex-wrap gap-3">
@@ -193,8 +259,8 @@ function PhotoPanel({ href, image, alt, title, text, position }: {
       <span className="absolute inset-0 bg-[linear-gradient(0deg,rgba(28,17,10,0.88)_0%,rgba(28,17,10,0.25)_45%,transparent_70%)]" aria-hidden />
       <span className="absolute inset-x-0 bottom-0 p-6 text-white md:p-10">
         <span className="block font-display text-3xl font-semibold uppercase leading-none md:text-5xl">{title}</span>
-        <span className="mt-3 block max-w-sm text-sm text-[#F0E3D0] md:text-base">{text}</span>
-        <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-[#E9B872]">
+        <span className="mt-3 block max-w-sm text-sm text-on-dark md:text-base">{text}</span>
+        <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-gold">
           Ver coleção <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" aria-hidden />
         </span>
       </span>
@@ -204,6 +270,7 @@ function PhotoPanel({ href, image, alt, title, text, position }: {
 
 export default function Home() {
   const products = useProductsStore(state => state.products);
+  const loaded = useProductsStore(state => state.loaded);
 
   const offers = products.filter(p => p.oldPrice && p.oldPrice > p.price && !p.soldOut).slice(0, 8);
   const featured = (products.some(p => p.featured) ? products.filter(p => p.featured) : products)
@@ -230,8 +297,13 @@ export default function Home() {
       <CategoryNav />
 
       <main id="main-content">
-        <Hero />
-        <PaymentPerks />
+        {/* Na campanha a capa faz o papel do banner principal e já traz as condições */}
+        {campaign ? <CampaignBanner /> : (
+          <>
+            <Hero />
+            <PaymentPerks />
+          </>
+        )}
 
         {/* Compre por categoria: fotos grandes do ensaio */}
         <section id="categorias" className="scroll-mt-32 py-12 md:py-20" aria-labelledby="categorias-titulo">
@@ -251,10 +323,15 @@ export default function Home() {
                     />
                     <span className="absolute inset-0 bg-[linear-gradient(0deg,rgba(28,17,10,0.85)_0%,rgba(28,17,10,0.1)_45%,transparent_65%)]" aria-hidden />
                     <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4 md:p-6">
-                      <span className="font-display text-xl font-semibold uppercase leading-none text-white md:text-4xl">
-                        {cat.name}
+                      <span className="grid gap-1.5">
+                        <span className="font-display text-xl font-semibold uppercase leading-none text-white md:text-4xl">
+                          {cat.name}
+                        </span>
+                        {loaded && !products.some(p => p.category === cat.id) && (
+                          <span className="text-xs font-semibold uppercase tracking-wide text-gold md:text-sm">Sob encomenda</span>
+                        )}
                       </span>
-                      <ArrowRight className="mb-0.5 h-5 w-5 flex-shrink-0 text-[#E9B872] transition-transform group-hover:translate-x-1 md:h-7 md:w-7" aria-hidden />
+                      <ArrowRight className="mb-0.5 h-5 w-5 flex-shrink-0 text-gold transition-transform group-hover:translate-x-1 md:h-7 md:w-7" aria-hidden />
                     </span>
                   </Link>
                 </li>
@@ -310,9 +387,9 @@ export default function Home() {
           </div>
           <div className="flex flex-col justify-center px-5 py-12 md:px-12 lg:px-20">
             <h2 id="timbre-titulo" className="text-3xl font-semibold uppercase leading-none md:text-5xl">
-              Escolha pelo <span className="text-[#E9B872]">som</span>
+              Escolha pelo <span className="text-gold">som</span>
             </h2>
-            <p className="mt-5 max-w-md text-[#E9D9C2]">
+            <p className="mt-5 max-w-md text-on-dark-soft">
               Cada prato tem um timbre. Comece pelo som que você procura e, se ficar entre dois, pergunte pra gente pelo WhatsApp.
             </p>
             <ul className="mt-8 max-w-md divide-y divide-white/15 border-y border-white/15">
@@ -320,11 +397,11 @@ export default function Home() {
                 <li key={t.id}>
                   <Link
                     href={`/pratos?timbre=${t.id}`}
-                    className="group flex min-h-12 items-center gap-4 py-3 transition hover:text-[#E9B872]"
+                    className="group flex min-h-12 items-center gap-4 py-3 transition hover:text-gold"
                   >
                     <span className="w-24 flex-shrink-0 font-display text-lg font-semibold uppercase tracking-wide">{t.label}</span>
-                    <span className="flex-1 text-sm text-[#E9D9C2]">{t.hint}</span>
-                    <ArrowRight size={18} className="flex-shrink-0 text-[#E9B872] transition-transform group-hover:translate-x-1" aria-hidden />
+                    <span className="flex-1 text-sm text-on-dark-soft">{t.hint}</span>
+                    <ArrowRight size={18} className="flex-shrink-0 text-gold transition-transform group-hover:translate-x-1" aria-hidden />
                   </Link>
                 </li>
               ))}
@@ -333,7 +410,7 @@ export default function Home() {
               href={`${contactInfo.whatsapp}?text=${encodeURIComponent('Olá! Estou em dúvida sobre o som de um prato.')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#E9B872] hover:underline"
+              className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-gold hover:underline"
             >
               <MessageCircle size={18} aria-hidden /> Tirar dúvida sobre um prato
             </a>
