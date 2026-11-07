@@ -256,7 +256,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
                   rel="noopener noreferrer"
                   className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-accent hover:underline"
                 >
-                  <PlayCircle size={18} aria-hidden /> Ouvir este prato no YouTube
+                  <PlayCircle size={18} aria-hidden /> Ouvir o som no YouTube
                 </a>
               )}
             </section>

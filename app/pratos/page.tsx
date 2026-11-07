@@ -143,7 +143,8 @@ function PratosContent() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col gap-1 py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por série">
             <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Série</span>
-            <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:px-0 md:pb-0">
+            {/* No desktop as séries quebram linha em vez de sumir para o lado */}
+            <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
               {CYMBAL_SERIES.map(sr => {
                 if (!allPratos.some(p => cymbalSeries(p.name)?.id === sr.id)) return null;
                 const count = countSeries(sr.id);
