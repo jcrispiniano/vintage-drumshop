@@ -4,7 +4,7 @@ import SmartImage from '@/components/SmartImage';
 import PriceBlock from '@/components/PriceBlock';
 import Link from 'next/link';
 import { Headphones, Heart, ShoppingCart } from 'lucide-react';
-import { campaign, discountPercent, productImage } from '@/lib/products';
+import { discountPercent, productImage } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 import { brandLabel, isGenericBrand } from '@/lib/brands';
 import { productSizes, shortTitle } from '@/lib/productText';
@@ -77,11 +77,6 @@ export default function ProductCard({ product, typeLabel, tags = [] }: ProductCa
             {product.badge}
           </span>
         ) : null}
-        {campaign && !product.soldOut && (
-          <span className="absolute bottom-2 left-2 rounded bg-ink px-2 py-1 text-[10px] font-bold uppercase leading-none tracking-[0.14em] text-[#E9B872]">
-            {campaign.name}
-          </span>
-        )}
       </Link>
 
       <button

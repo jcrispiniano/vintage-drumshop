@@ -24,6 +24,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const [shared, setShared] = useState(false);
 
   const gallery = [product.image, ...(product.images ?? [])].filter(Boolean);
+  const promo = campaign && !product.soldOut ? campaign : null;
   const off = discountPercent(product.price, product.oldPrice);
   const category = categories.find(c => c.id === product.category);
   const related = allProducts
@@ -192,29 +193,26 @@ export default function ProdutoClient({ product }: { product: Product }) {
               Tire suas dúvidas pelo WhatsApp
             </a>
 
-            {campaign && !product.soldOut && (
-              <p className="mt-6 rounded-lg bg-ink px-4 py-3 text-sm text-white">
-                <strong className="block text-xs font-bold uppercase tracking-[0.2em] text-[#E9B872]">{campaign.name}</strong>
-                <span className="mt-1 block">
-                  <strong>{pixOffLabel}</strong> no Pix ou até <strong>{paymentTerms.maxInstallments}x sem juros</strong> no cartão
-                </span>
-              </p>
-            )}
-
-            <ul className="mt-6 space-y-3 text-sm text-ink-soft">
-              <li className="flex items-center gap-3">
-                <BadgePercent size={18} className="text-primary" aria-hidden />
-                <span><strong className="text-ink">{pixOffLabel}</strong> pagando no Pix</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <CreditCard size={18} className="text-primary" aria-hidden />
-                <span>Até <strong className="text-ink">{paymentTerms.maxInstallments}x sem juros</strong> no cartão de crédito</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Truck size={18} className="text-primary" aria-hidden />
-                <span><strong className="text-ink">Enviamos para todo o Brasil</strong> · frete calculado pelo seu CEP</span>
-              </li>
-            </ul>
+            {/* Na campanha as condições ganham o painel preto da Black November (sem repetir a lista) */}
+            <div className={promo ? 'mt-6 rounded-xl bg-ink px-5 py-4 text-[#E9D9C2]' : 'mt-6'}>
+              {promo && (
+                <p className="mb-3 font-display text-lg font-semibold uppercase leading-none tracking-wide text-[#E9B872]">{promo.name}</p>
+              )}
+              <ul className={`space-y-3 text-sm ${promo ? '' : 'text-ink-soft'}`}>
+                <li className="flex items-center gap-3">
+                  <BadgePercent size={18} className={promo ? 'text-[#E9B872]' : 'text-primary'} aria-hidden />
+                  <span><strong className={promo ? 'text-white' : 'text-ink'}>{pixOffLabel}</strong> pagando no Pix</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <CreditCard size={18} className={promo ? 'text-[#E9B872]' : 'text-primary'} aria-hidden />
+                  <span>Até <strong className={promo ? 'text-white' : 'text-ink'}>{paymentTerms.maxInstallments}x sem juros</strong> no cartão de crédito</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <Truck size={18} className={promo ? 'text-[#E9B872]' : 'text-primary'} aria-hidden />
+                  <span><strong className={promo ? 'text-white' : 'text-ink'}>Enviamos para todo o Brasil</strong> · frete calculado pelo seu CEP</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 

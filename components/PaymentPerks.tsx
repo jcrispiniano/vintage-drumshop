@@ -11,11 +11,6 @@ export default function PaymentPerks() {
 
   return (
     <section aria-label="Condições de pagamento" className={campaign ? 'border-b-[3px] border-[#E9B872] bg-ink' : 'border-b border-line bg-cream'}>
-      {campaign && (
-        <p className="border-b border-white/10 py-2 text-center text-xs font-bold uppercase tracking-[0.25em] text-[#E9B872] md:text-sm">
-          {campaign.name}<span className="hidden sm:inline"> · condições especiais por tempo limitado</span>
-        </p>
-      )}
       <ul className={`container mx-auto grid grid-cols-3 divide-x px-2 py-5 md:px-4 md:py-7 ${campaign ? 'divide-white/15' : 'divide-line'}`}>
         {perks.map(({ icon: Icon, big, small }) => (
           <li key={big} className="flex flex-col items-center gap-1 px-2 text-center md:flex-row md:justify-center md:gap-4 md:text-left">

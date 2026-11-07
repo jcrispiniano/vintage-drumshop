@@ -119,7 +119,6 @@ function Hero() {
 
         {/* No celular o texto fica abaixo da foto: as condições aparecem já sobre a imagem */}
         <p className="absolute right-4 top-4 rounded-lg bg-[#E9B872] px-3 py-2 text-right leading-none text-ink shadow-lg md:hidden" aria-hidden>
-          {campaign && <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest">{campaign.name}</span>}
           <strong className="block font-display text-2xl font-semibold uppercase">{pixOffLabel} <span className="text-sm">no Pix</span></strong>
           <span className="mt-1 block text-sm font-bold">ou {paymentTerms.maxInstallments}x sem juros</span>
         </p>
@@ -157,13 +156,7 @@ function Hero() {
           Baterias, pratos e acessórios escolhidos por quem toca. Monte seu pedido aqui e feche direto com a loja pelo WhatsApp.
         </p>
         {/* Condições em destaque logo na primeira dobra */}
-        {campaign && (
-          <p className="mt-6 hidden w-fit items-center gap-2 rounded-full bg-black px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#E9B872] ring-1 ring-[#E9B872]/60 md:flex">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#E9B872]" aria-hidden />
-            {campaign.name}
-          </p>
-        )}
-        <ul className={`${campaign ? 'mt-3' : 'mt-6'} hidden flex-wrap gap-2 md:flex`} aria-label="Condições de pagamento">
+        <ul className="mt-6 hidden flex-wrap gap-2 md:flex" aria-label="Condições de pagamento">
           <li className="flex items-baseline gap-1.5 rounded-md bg-[#E9B872] px-3.5 py-2 text-ink">
             <strong className="font-display text-2xl font-semibold uppercase leading-none">{pixOffLabel}</strong>
             <span className="text-sm font-semibold">no Pix</span>
