@@ -92,7 +92,7 @@ function PratosContent({ params }: { params: Params }) {
   const countSize = (size: number) => allPratos.filter(p => matches(p, { ...filters, size })).length;
 
   const sizes = [...new Set(allPratos.map(p => productSizeValue(p.name)).filter((v): v is number => v !== null))].sort((a, b) => a - b);
-  const extraCount = (filters.series ? 1 : 0) + (filters.size !== null ? 1 : 0);
+  const extraCount = (filters.type !== 'todos' ? 1 : 0) + (filters.series ? 1 : 0) + (filters.size !== null ? 1 : 0);
   const seriesLabel = filters.series ? CYMBAL_SERIES.find(x => x.id === filters.series)!.label : null;
 
   return (
@@ -109,8 +109,8 @@ function PratosContent({ params }: { params: Params }) {
         </div>
       </section>
 
-      {/* O som é o primeiro filtro (é como o baterista escolhe um prato) e fica fixo no topo.
-          O tipo vem logo abaixo; série e tamanho abrem num painel, fechado de início. */}
+      {/* Uma linha só: o som (é como o baterista escolhe um prato), fixa no topo.
+          Tipo, série e tamanho abrem num painel, fechado de início. */}
       <div className="sticky top-[108px] z-40 border-b border-line bg-white md:top-[124px]">
         <div className="container mx-auto flex items-center gap-2 px-4">
           <span className="hidden flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft md:inline">Som</span>
@@ -129,12 +129,10 @@ function PratosContent({ params }: { params: Params }) {
                   onClick={() => update({ timbre: active ? null : t.id })}
                   disabled={!active && count === 0}
                   aria-pressed={active}
-                  aria-describedby={`timbre-${t.id}`}
-                  className={`${chip(active, count === 0)} max-md:h-auto max-md:min-h-11 max-md:flex-col max-md:items-start max-md:rounded-2xl max-md:py-1.5 max-md:leading-tight`}
+                  title={`${t.label}: ${t.hint}`}
+                  className={chip(active, count === 0)}
                 >
-                  <span>{t.label} ({count})</span>
-                  {/* No celular a dica vai dentro do chip: dá para comparar deslizando */}
-                  <span aria-hidden className={`text-xs font-normal md:hidden ${active ? 'text-white/75' : 'text-ink-soft'}`}>{t.hint}</span>
+                  {t.label} ({count})
                 </button>
               );
             })}
@@ -150,24 +148,39 @@ function PratosContent({ params }: { params: Params }) {
           >
             <SlidersHorizontal size={16} aria-hidden />
             <span className="md:hidden">Mais</span>
-            <span className="hidden md:inline">Série e tamanho</span>
+            <span className="hidden md:inline">Tipo, série e tamanho</span>
             {extraCount > 0 && ` (${extraCount})`}
             <ChevronDown size={16} aria-hidden className={`transition-transform ${panelOpen ? 'rotate-180' : ''}`} />
           </button>
         </div>
       </div>
 
-      <div className="border-b border-line bg-white">
+      {/* Com o painel fechado, tipo, série e tamanho escolhidos continuam visíveis (e removíveis) */}
+      {!panelOpen && extraCount > 0 && (
+        <div className="border-b border-line bg-white">
+          <div className="container mx-auto flex flex-wrap items-center gap-2 px-4 py-2">
+            {filters.type !== 'todos' && (
+              <button type="button" onClick={() => update({ type: 'todos' })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
+                {TYPE_LABELS[filters.type]} <X size={14} aria-hidden /><span className="sr-only">remover</span>
+              </button>
+            )}
+            {filters.series && (
+              <button type="button" onClick={() => update({ series: null })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
+                {seriesLabel} <X size={14} aria-hidden /><span className="sr-only">remover</span>
+              </button>
+            )}
+            {filters.size !== null && (
+              <button type="button" onClick={() => update({ size: null })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
+                {String(filters.size).replace('.', ',')}&quot; <X size={14} aria-hidden /><span className="sr-only">remover</span>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      <div id="painel-filtros" className={`border-b border-line bg-white ${panelOpen ? 'block' : 'hidden'}`}>
         <div className="container mx-auto px-4">
-          {/* O que cada som quer dizer, sempre escrito: dá para comparar antes de escolher */}
-          <ul className="flex flex-wrap gap-x-5 gap-y-1 pb-2.5 pt-2 text-sm text-ink-soft max-md:sr-only">
-            {TIMBRES.map(t => (
-              <li key={t.id} id={`timbre-${t.id}`} className={filters.timbre === t.id ? 'text-ink' : ''}>
-                <strong className="font-semibold text-ink">{t.label}:</strong> {t.hint}
-              </li>
-            ))}
-          </ul>
-          <div className="flex flex-col gap-1 py-2.5 md:flex-row md:items-center md:gap-2 md:border-t md:border-line" role="group" aria-label="Filtrar por tipo">
+          <div className="flex flex-col gap-1 py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por tipo">
             <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Tipo</span>
             <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
               <button type="button" onClick={() => update({ type: 'todos' })} aria-pressed={filters.type === 'todos'} className={chip(filters.type === 'todos')}>
@@ -192,30 +205,7 @@ function PratosContent({ params }: { params: Params }) {
               })}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Com o painel fechado, série e tamanho escolhidos continuam visíveis (e removíveis) */}
-      {!panelOpen && extraCount > 0 && (
-        <div className="border-b border-line bg-white">
-          <div className="container mx-auto flex flex-wrap items-center gap-2 px-4 py-2">
-            {filters.series && (
-              <button type="button" onClick={() => update({ series: null })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
-                {seriesLabel} <X size={14} aria-hidden /><span className="sr-only">remover</span>
-              </button>
-            )}
-            {filters.size !== null && (
-              <button type="button" onClick={() => update({ size: null })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
-                {String(filters.size).replace('.', ',')}&quot; <X size={14} aria-hidden /><span className="sr-only">remover</span>
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-      <div id="painel-filtros" className={`border-b border-line bg-white ${panelOpen ? 'block' : 'hidden'}`}>
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col gap-1 py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por série">
+          <div className="flex flex-col gap-1 border-t border-line py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por série">
             <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Série</span>
             <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
               {CYMBAL_SERIES.map(sr => {

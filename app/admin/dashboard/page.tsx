@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Plus, Edit, Trash2, Package, Search, Undo2, X } from 'lucide-react'
 import AdminHeader from './_components/AdminHeader'
+import { categoryName } from '@/lib/products'
 
 interface DbProduct {
   id: number
@@ -132,7 +133,7 @@ export default function AdminDashboardPage() {
     })
   }
 
-  async function updateFlag(product: DbProduct, patch: { active?: boolean; soldOut?: boolean }) {
+  async function updateFlag(product: DbProduct, patch: { active?: boolean; soldOut?: boolean }, isUndo = false) {
     setBusy(product.id)
     const res = await fetch(`/api/admin/products/${product.id}`, {
       method: 'PUT',
@@ -147,6 +148,13 @@ export default function AdminDashboardPage() {
     setProducts(prev => prev.map(p => p.id === product.id
       ? { ...p, ...(patch.active !== undefined && { active: patch.active }), ...(patch.soldOut !== undefined && { sold_out: patch.soldOut }) }
       : p))
+    // Um toque muda o site na hora: confirma o que aconteceu e deixa desfazer
+    if (isUndo) { setToast(null); return }
+    const text = patch.soldOut !== undefined
+      ? `"${product.name}" ${patch.soldOut ? 'marcado como esgotado' : 'voltou ao estoque'}.`
+      : `"${product.name}" ${patch.active ? 'voltou para o site' : 'saiu do site'}.`
+    const inverse = patch.soldOut !== undefined ? { soldOut: !patch.soldOut } : { active: !patch.active }
+    setToast({ text, undo: () => updateFlag(product, inverse, true) })
   }
 
   const categories = [...new Set(products.map(p => p.category))].sort()
@@ -208,7 +216,7 @@ export default function AdminDashboardPage() {
             className="h-11 rounded-lg border border-gray-200 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
           >
             <option value="">Todas as categorias</option>
-            {categories.map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
+            {categories.map(c => <option key={c} value={c}>{categoryName(c)}</option>)}
           </select>
           <Link
             href="/admin/dashboard/novo"
@@ -280,6 +288,7 @@ export default function AdminDashboardPage() {
                         onClick={() => updateFlag(product, { soldOut: !product.sold_out })}
                         disabled={busy === product.id}
                         aria-pressed={!!product.sold_out}
+                        title={product.sold_out ? 'Toque para voltar ao estoque' : 'Toque para marcar como esgotado'}
                         className={`h-10 rounded-full px-3 text-xs font-semibold transition disabled:opacity-50 ${
                           product.sold_out ? 'bg-gray-900 text-white' : 'bg-white text-gray-600 ring-1 ring-gray-200 hover:ring-gray-400'
                         }`}
@@ -291,6 +300,7 @@ export default function AdminDashboardPage() {
                         onClick={() => updateFlag(product, { active: !product.active })}
                         disabled={busy === product.id}
                         aria-pressed={product.active}
+                        title={product.active ? 'Toque para tirar do site' : 'Toque para mostrar no site'}
                         className={`h-10 rounded-full px-3 text-xs font-semibold transition disabled:opacity-50 ${
                           product.active ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                         }`}

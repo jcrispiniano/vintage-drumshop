@@ -662,6 +662,10 @@ export const products: Product[] = [
   },
 ];
 
+/**
+ * Lista única de categorias: menus, rodapé, admin e páginas leem daqui.
+ * Uma categoria só aparece nos menus quando tem produto; sem produto ela vira encomenda.
+ */
 export const categories = [
   { id: 'baterias', name: 'Baterias' },
   { id: 'pratos', name: 'Pratos' },
@@ -672,7 +676,15 @@ export const categories = [
   { id: 'ferragens', name: 'Ferragens' },
   { id: 'bags', name: 'Bags, Cases e Capas' },
   { id: 'pecas', name: 'Peças de Reparo e Manutenção' },
+  { id: 'estudo', name: 'Estudo' },
+  { id: 'cajon', name: 'Cajón' },
+  { id: 'kids', name: 'Kids' },
+  { id: 'livros', name: 'Livros' },
 ];
+
+export function categoryName(id: string): string {
+  return categories.find(c => c.id === id)?.name ?? id.charAt(0).toUpperCase() + id.slice(1);
+}
 
 export function formatPrice(price: number): string {
   return price.toLocaleString('pt-BR', {

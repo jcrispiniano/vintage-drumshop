@@ -1,25 +1,32 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Save, Upload, X, ImageIcon, Headphones } from 'lucide-react'
+import { ArrowLeft, ChevronLeft, ChevronRight, Save, Upload, X, ImageIcon, Headphones } from 'lucide-react'
 import { compressImage } from '@/lib/compressImage'
 import { parseYouTubeList } from '@/lib/youtube'
 
-// Precisa bater com os filtros das páginas de categoria (p.category === '...').
-// Mallets e vassourinhas são baquetas; Wincent e Dynabeat são marcas.
-const CATEGORIES = [
-  'acessorios', 'bags', 'baquetas', 'baterias', 'caixas', 'cajon',
-  'estudo', 'ferragens', 'kids', 'livros', 'pecas', 'peles', 'pratos',
-]
+import { categories, categoryName } from '@/lib/products'
+import { brandLabel } from '@/lib/brands'
 
-const BRANDS = [
-  'istanbul', 'wincent', 'dynabeat', 'torelli', 'pinguim',
-  'evans', 'remo', 'pearl', 'tama', 'dw', 'mapex',
-  'yamaha', 'sonor', 'gretsch', 'ludwig', 'zildjian',
-  'sabian', 'meinl', 'rockkey', 'tunebot', 'outro',
-]
+// Categorias vêm da mesma lista dos menus da loja: o que o Daniel escolhe aqui aparece no site.
+// Mallets e vassourinhas são baquetas; Wincent e Dynabeat são marcas.
+
+// Marcas que a loja vende primeiro; as outras ficam num grupo à parte para um produto novo
+const SHOP_BRANDS = ['istanbul', 'wincent', 'dynabeat', 'pinguim', 'dw', 'torelli', 'tunebot', 'rockkey', 'outro']
+const OTHER_BRANDS = ['evans', 'remo', 'pearl', 'tama', 'mapex', 'yamaha', 'sonor', 'gretsch', 'ludwig', 'zildjian', 'sabian', 'meinl']
+
+/** Aceita "1.299,90", "1299,9", "1299.90" ou "R$ 1.299": devolve número ou NaN */
+export function parsePrice(raw: string): number {
+  const t = raw.replace(/[^\d.,]/g, '')
+  if (!t) return NaN
+  if (t.includes(',')) return Number(t.replace(/\./g, '').replace(',', '.'))
+  // Sem vírgula: pontos em grupos de 3 são milhar ("1.299"); senão é decimal ("1299.9")
+  return /^\d{1,3}(\.\d{3})+$/.test(t) ? Number(t.replace(/\./g, '')) : Number(t)
+}
+
+const formatBRL = (n: number) => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
 const BADGES = ['Novo', 'Premium', 'Signature', 'Effect', 'Oferta', 'Destaque', '']
 
@@ -217,18 +224,18 @@ function ImageGallery({
               <button
                 type="button"
                 onClick={() => onChange(urls => urls.filter((_, j) => j !== i))}
-                className="absolute right-2 top-2 rounded-full bg-white/90 p-1 text-gray-500 shadow hover:text-red-500"
+                className="absolute right-1 top-1 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-gray-600 shadow hover:text-red-600"
                 title="Remover foto"
                 aria-label={`Remover foto ${i + 1}`}
               >
-                <X size={12} />
+                <X size={16} />
               </button>
               <div className="mt-1.5 flex items-center justify-between gap-1 text-[11px]">
-                <button type="button" onClick={() => move(i, i - 1)} disabled={i === 0} className="rounded px-1.5 py-0.5 text-gray-500 hover:bg-gray-100 disabled:opacity-30" aria-label="Mover para a esquerda">◀</button>
+                <button type="button" onClick={() => move(i, i - 1)} disabled={i === 0} className="flex h-9 w-9 items-center justify-center rounded-md text-gray-600 hover:bg-gray-100 disabled:opacity-30" aria-label={`Mover foto ${i + 1} para a esquerda`}><ChevronLeft size={18} aria-hidden /></button>
                 {i !== 0 ? (
-                  <button type="button" onClick={() => move(i, 0)} className="font-semibold text-orange-600 hover:underline">Principal</button>
+                  <button type="button" onClick={() => move(i, 0)} className="min-h-9 px-1 text-xs font-semibold text-orange-700 hover:underline">Tornar principal</button>
                 ) : <span />}
-                <button type="button" onClick={() => move(i, i + 1)} disabled={i === value.length - 1} className="rounded px-1.5 py-0.5 text-gray-500 hover:bg-gray-100 disabled:opacity-30" aria-label="Mover para a direita">▶</button>
+                <button type="button" onClick={() => move(i, i + 1)} disabled={i === value.length - 1} className="flex h-9 w-9 items-center justify-center rounded-md text-gray-600 hover:bg-gray-100 disabled:opacity-30" aria-label={`Mover foto ${i + 1} para a direita`}><ChevronRight size={18} aria-hidden /></button>
               </div>
             </li>
           ))}
@@ -305,7 +312,13 @@ function ImageGallery({
 }
 
 export default function ProductForm({ initialData, mode }: ProductFormProps) {
-  const [form, setForm] = useState<FormData>({ ...emptyForm, ...initialData })
+  const [initial] = useState<FormData>(() => {
+    const base = { ...emptyForm, ...initialData }
+    // Preços chegam como número em texto ("1299.9"): mostrados no formato brasileiro
+    const fmt = (v: string) => { const n = parsePrice(v); return v && Number.isFinite(n) ? formatBRL(n) : v }
+    return { ...base, price: fmt(base.price), oldPrice: fmt(base.oldPrice) }
+  })
+  const [form, setForm] = useState<FormData>(initial)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
@@ -314,10 +327,35 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
     setForm(prev => ({ ...prev, [field]: value }))
   }
 
+  const price = parsePrice(form.price)
+  const oldPrice = parsePrice(form.oldPrice)
+  const priceError = form.price && !(price > 0) ? 'Preço inválido. Exemplo: 1.299,90' : ''
+  const oldPriceError = form.oldPrice
+    ? !(oldPrice > 0) ? 'Preço inválido. Exemplo: 1.499,90'
+      : price > 0 && oldPrice <= price ? 'O preço antigo precisa ser maior que o atual para mostrar desconto.' : ''
+    : ''
+
+  // Alterações não salvas: avisa antes de sair (botão voltar, Cancelar ou fechar a aba)
+  const dirty = !saving && JSON.stringify(form) !== JSON.stringify(initial)
+  useEffect(() => {
+    if (!dirty) return
+    const onBeforeUnload = (e: BeforeUnloadEvent) => { e.preventDefault() }
+    window.addEventListener('beforeunload', onBeforeUnload)
+    return () => window.removeEventListener('beforeunload', onBeforeUnload)
+  }, [dirty])
+  const confirmLeave = (e: React.MouseEvent) => {
+    if (dirty && !window.confirm('Sair sem salvar? As alterações deste produto serão perdidas.')) e.preventDefault()
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!form.image.trim()) {
       setError('Adicione pelo menos uma foto ao produto.')
+      return
+    }
+    if (priceError || oldPriceError || !(price > 0)) {
+      setError(priceError || oldPriceError || 'Informe o preço do produto.')
+      document.getElementById(oldPriceError && !priceError ? 'oldPrice' : 'price')?.focus()
       return
     }
     setSaving(true)
@@ -327,9 +365,9 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
       name: form.name.trim(),
       category: form.category,
       brand: form.brand,
-      price: parseFloat(form.price),
+      price,
       // null (e não undefined) para que a edição consiga limpar esses campos
-      oldPrice: form.oldPrice ? parseFloat(form.oldPrice) : null,
+      oldPrice: form.oldPrice ? oldPrice : null,
       image: form.image.trim(),
       images: form.images.length ? form.images : null,
       badge: form.badge || null,
@@ -368,7 +406,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-gray-900 text-white px-6 py-4 flex items-center gap-4 shadow-lg">
-        <Link href="/admin/dashboard" className="text-gray-400 hover:text-white transition">
+        <Link href="/admin/dashboard" onClick={confirmLeave} aria-label="Voltar para a lista" className="flex h-11 w-11 items-center justify-center rounded-md text-gray-400 hover:text-white transition">
           <ArrowLeft size={20} />
         </Link>
         <div>
@@ -387,8 +425,9 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
             <h2 className="font-bold text-gray-800 text-sm uppercase tracking-wide">Informações Básicas</h2>
 
             <div>
-              <label className="label">Nome do produto *</label>
+              <label htmlFor="name" className="label">Nome do produto *</label>
               <input
+                id="name"
                 required
                 value={form.name}
                 onChange={e => set('name', e.target.value)}
@@ -399,26 +438,34 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="label">Categoria *</label>
-                <select required value={form.category} onChange={e => set('category', e.target.value)} className="input">
-                  {[...new Set([...CATEGORIES, form.category])].map(c => (
-                    <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
+                <label htmlFor="category" className="label">Categoria *</label>
+                <select id="category" required value={form.category} onChange={e => set('category', e.target.value)} className="input">
+                  {[...new Set([...categories.map(c => c.id), form.category])].map(c => (
+                    <option key={c} value={c}>{categoryName(c)}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="label">Marca *</label>
-                <select required value={form.brand} onChange={e => set('brand', e.target.value)} className="input">
-                  {BRANDS.map(b => (
-                    <option key={b} value={b}>{b.charAt(0).toUpperCase() + b.slice(1)}</option>
-                  ))}
+                <label htmlFor="brand" className="label">Marca *</label>
+                <select id="brand" required value={form.brand} onChange={e => set('brand', e.target.value)} className="input">
+                  <optgroup label="Marcas da loja">
+                    {SHOP_BRANDS.map(b => (
+                      <option key={b} value={b}>{b === 'outro' ? 'Outra / sem marca' : brandLabel(b)}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Outras marcas">
+                    {[...new Set([...OTHER_BRANDS, form.brand])].filter(b => !SHOP_BRANDS.includes(b)).map(b => (
+                      <option key={b} value={b}>{brandLabel(b)}</option>
+                    ))}
+                  </optgroup>
                 </select>
               </div>
             </div>
 
             <div>
-              <label className="label">Descrição *</label>
+              <label htmlFor="description" className="label">Descrição *</label>
               <textarea
+                id="description"
                 required
                 rows={5}
                 value={form.description}
@@ -435,30 +482,43 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="label">Preço atual (R$) *</label>
+                <label htmlFor="price" className="label">Preço atual (R$) *</label>
                 <input
+                  id="price"
                   required
-                  type="number"
-                  step="0.01"
-                  min="0"
+                  type="text"
+                  inputMode="decimal"
+                  autoComplete="off"
                   value={form.price}
                   onChange={e => set('price', e.target.value)}
-                  placeholder="0,00"
-                  className="input"
+                  onBlur={() => { const n = parsePrice(form.price); if (Number.isFinite(n)) set('price', formatBRL(n)) }}
+                  placeholder="1.299,90"
+                  aria-invalid={priceError ? true : undefined}
+                  aria-describedby="price-hint"
+                  className="input tabular-nums"
                 />
+                <p id="price-hint" className={`text-xs mt-1 ${priceError ? 'text-red-600' : 'text-gray-400'}`}>
+                  {priceError || 'Pode digitar com vírgula: 1.299,90'}
+                </p>
               </div>
               <div>
-                <label className="label">Preço antigo (R$) <span className="text-gray-400 font-normal">opcional</span></label>
+                <label htmlFor="oldPrice" className="label">Preço antigo (R$) <span className="text-gray-400 font-normal">opcional</span></label>
                 <input
-                  type="number"
-                  step="0.01"
-                  min="0"
+                  id="oldPrice"
+                  type="text"
+                  inputMode="decimal"
+                  autoComplete="off"
                   value={form.oldPrice}
                   onChange={e => set('oldPrice', e.target.value)}
-                  placeholder="0,00"
-                  className="input"
+                  onBlur={() => { const n = parsePrice(form.oldPrice); if (Number.isFinite(n)) set('oldPrice', formatBRL(n)) }}
+                  placeholder="1.499,90"
+                  aria-invalid={oldPriceError ? true : undefined}
+                  aria-describedby="oldPrice-hint"
+                  className="input tabular-nums"
                 />
-                <p className="text-xs text-gray-400 mt-1">Aparece riscado para indicar desconto</p>
+                <p id="oldPrice-hint" className={`text-xs mt-1 ${oldPriceError ? 'text-red-600' : 'text-gray-400'}`}>
+                  {oldPriceError || 'Aparece riscado para indicar desconto'}
+                </p>
               </div>
             </div>
           </section>
@@ -528,8 +588,8 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
             />
 
             <div>
-              <label className="label">Badge <span className="text-gray-400 font-normal">opcional</span></label>
-              <select value={form.badge} onChange={e => set('badge', e.target.value)} className="input">
+              <label htmlFor="badge" className="label">Badge <span className="text-gray-400 font-normal">opcional</span></label>
+              <select id="badge" value={form.badge} onChange={e => set('badge', e.target.value)} className="input">
                 {BADGES.map(b => (
                   <option key={b} value={b}>{b || '— Nenhum —'}</option>
                 ))}
@@ -589,6 +649,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
           <div className="flex gap-3 pb-8">
             <Link
               href="/admin/dashboard"
+              onClick={confirmLeave}
               className="flex-1 text-center border border-gray-300 text-gray-700 font-semibold py-3 rounded-lg hover:bg-gray-50 transition text-sm"
             >
               Cancelar
