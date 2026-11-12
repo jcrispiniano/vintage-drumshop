@@ -19,14 +19,20 @@ const GOOGLE_CATEGORY: Record<string, string> = {
   baterias: 'Arts & Entertainment > Hobbies & Creative Arts > Musical Instruments > Percussion > Drum Kits',
 }
 
+/** Previsão de chegada dos produtos esgotados (sob encomenda): início de janeiro */
+const BACKORDER_EXPECTED = '2027-01-05T12:00:00-03:00'
+
 /** Data no formato que o Google pede (ISO 8601 com fuso): 2026-12-12T12:00+0000 */
 const googleDate = (d: Date) => `${d.toISOString().slice(0, 16)}+0000`
 
 export async function GET() {
   const products = await getAllProducts()
   // Esgotado vai como "sob encomenda" (backorder), que exige data prevista de chegada.
-  // A loja não informa prazo por produto, então usamos 30 dias a partir de hoje (prazo típico de encomenda)
-  const backorderDate = googleDate(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))
+  // Previsão informada pela loja; se ela passar, usa 30 dias a partir de hoje
+  const expected = new Date(BACKORDER_EXPECTED)
+  const backorderDate = googleDate(expected.getTime() > Date.now()
+    ? expected
+    : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))
   const items = products.map(p => {
     const type = p.category === 'pratos' ? CYMBAL_TYPE_LABELS[cymbalType(p.name)] : null
     const aliases = productAliases(p.name)
