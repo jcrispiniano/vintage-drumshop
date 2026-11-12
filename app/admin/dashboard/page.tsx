@@ -14,6 +14,7 @@ interface DbProduct {
   price: number
   old_price?: number
   image: string
+  images?: string[] | null
   badge?: string
   description?: string
   active: boolean
@@ -22,11 +23,14 @@ interface DbProduct {
   created_at: string
 }
 
-type QuickFilter = 'todos' | 'esgotados' | 'inativos' | 'sem-descricao' | 'destaques'
+type QuickFilter = 'todos' | 'esgotados' | 'inativos' | 'sem-descricao' | 'poucas-fotos' | 'destaques'
 
 /** Descrição curta demais para ajudar o cliente a escolher (meta da análise de UX) */
 const SHORT_DESCRIPTION = 200
 const UNDO_MS = 6000
+
+/** Só a foto principal: cliente compra melhor vendo o prato/caixa de vários ângulos */
+const fewPhotos = (p: DbProduct) => (p.images?.filter(Boolean).length ?? 0) === 0
 
 const isShort = (p: DbProduct) => (p.description ?? '').trim().length < SHORT_DESCRIPTION
 
@@ -35,6 +39,7 @@ const QUICK_FILTERS: { id: QuickFilter; label: string; test: (p: DbProduct) => b
   { id: 'esgotados', label: 'Esgotados', test: p => !!p.sold_out },
   { id: 'inativos', label: 'Fora do site', test: p => !p.active },
   { id: 'sem-descricao', label: 'Descrição curta', test: isShort },
+  { id: 'poucas-fotos', label: 'Só 1 foto', test: fewPhotos },
   { id: 'destaques', label: 'Destaques', test: p => p.featured },
 ]
 
@@ -257,6 +262,7 @@ export default function AdminDashboardPage() {
                           <span className="font-semibold text-gray-800 tabular-nums">{price(product.price)}</span>
                           {product.badge && <span className="rounded-full bg-orange-100 px-2 py-0.5 text-orange-700">{product.badge}</span>}
                           {isShort(product) && <span className="text-amber-700">descrição curta</span>}
+                          {fewPhotos(product) && <span className="text-amber-700">só 1 foto</span>}
                         </p>
                       </div>
                     </div>
