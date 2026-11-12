@@ -4,7 +4,7 @@ import SmartImage from '@/components/SmartImage';
 import PriceBlock from '@/components/PriceBlock';
 import Link from 'next/link';
 import { Headphones, Heart, ShoppingCart } from 'lucide-react';
-import { discountPercent, productImage } from '@/lib/products';
+import { discountPercent, productImage, productPath } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 import { brandLabel, isGenericBrand } from '@/lib/brands';
 import { productSizes, shortTitle } from '@/lib/productText';
@@ -39,7 +39,7 @@ export default function ProductCard({ product, typeLabel, tags = [] }: ProductCa
   const { addToCart, toggleFavorite, favorites } = useCart();
   const isFavorite = favorites.includes(product.id);
   const off = discountPercent(product.price, product.oldPrice);
-  const href = `/produto/${product.id}`;
+  const href = productPath(product);
   const size = productSizes(product.name);
   const title = shortTitle(product.name, product.brand);
 

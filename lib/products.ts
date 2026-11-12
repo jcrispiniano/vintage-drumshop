@@ -12,6 +12,7 @@ export interface Product {
   featured?: boolean;
   soldOut?: boolean;
   audio?: string; // URL de um áudio curto do produto ("Ouça antes de comprar")
+  updatedAt?: string; // última alteração (sitemap e feed do Google)
 }
 
 export const products: Product[] = [
@@ -705,8 +706,34 @@ export function discountPercent(price: number, oldPrice?: number): number {
 /** Endereço público da loja, para links em mensagens (WhatsApp) e metadados. */
 export const siteUrl = 'https://www.vintagedrumshop.com.br';
 
-export function productUrl(id: number): string {
-  return `${siteUrl}/produto/${id}`;
+/** Nome em formato de URL: 'Chimbal Istanbul Agop Xist 14"' → 'chimbal-istanbul-agop-xist-14' */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80)
+    .replace(/-+$/g, '');
+}
+
+/**
+ * Caminho do produto com o nome na URL (/produto/150-set-de-pratos-istanbul...):
+ * o Google lê as palavras da URL. O número na frente continua identificando o produto,
+ * então /produto/150 antigo ainda funciona (e redireciona para este).
+ */
+export function productPath(p: { id: number; name: string }): string {
+  return `/produto/${p.id}-${slugify(p.name)}`;
+}
+
+export function productUrl(p: { id: number; name: string }): string {
+  return `${siteUrl}${productPath(p)}`;
+}
+
+/** URL absoluta de uma imagem do site (as do Supabase/Vercel Blob já são absolutas) */
+export function absoluteUrl(path: string): string {
+  return path.startsWith('http') ? path : `${siteUrl}${path.startsWith('/') ? '' : '/'}${path}`;
 }
 
 export const contactInfo = {

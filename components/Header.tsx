@@ -4,7 +4,7 @@ import SmartImage from '@/components/SmartImage';
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
-import { Product, campaign, formatPrice, contactInfo, productImage, pixPrice, soldOutLast } from '@/lib/products';
+import { Product, campaign, formatPrice, contactInfo, productImage, productPath, pixPrice, soldOutLast } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { searchScore } from '@/lib/productText';
 import { useRouter } from 'next/navigation';
@@ -107,7 +107,7 @@ function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {
           {searchResults.map(product => (
             <Link
               key={product.id}
-              href={`/produto/${product.id}`}
+              href={productPath(product)}
               className="flex items-center gap-3 border-b border-line p-3 transition last:border-b-0 hover:bg-paper"
               onClick={() => { setShowSearchResults(false); setSearchTerm(''); }}
             >

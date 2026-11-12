@@ -1,5 +1,5 @@
 import { brandLabel } from '@/lib/brands';
-import { normalizeSearch, searchTerms, synonymKeys } from '@/lib/searchTerms';
+import { hasWord, normalizeSearch, searchTerms, synonymKeys } from '@/lib/searchTerms';
 
 /** Tamanhos em polegadas citados no nome: 'Clap Stack (11"/13"/15")' → '11/13/15"'. */
 export function productSizes(name: string): string | null {
@@ -46,12 +46,17 @@ export function searchScore(p: { name: string; brand?: string; category: string;
   const nameKeys = synonymKeys(name);
   const metaKeys = synonymKeys(meta);
   let score = 0;
-  for (const t of terms) {
-    if (name.includes(t.text) || (t.key && nameKeys.has(t.key))) score += 10;
-    else if (meta.includes(t.text) || (t.key && metaKeys.has(t.key))) score += 4;
-    else if (desc.includes(t.text)) score += 1;
-    else return 0; // todos os termos precisam aparecer em algum lugar
-  }
+  terms.forEach((t, i) => {
+    if (score < 0) return;
+    // A última palavra pode estar pela metade (o cliente ainda está digitando)
+    const prefix = !t.key && i === terms.length - 1;
+    const keyIn = (keys: Set<string>) => (t.key && keys.has(t.key)) || !!t.prefixKeys?.some(k => keys.has(k));
+    if (hasWord(name, t.text, prefix) || keyIn(nameKeys)) score += 10;
+    else if (hasWord(meta, t.text, prefix) || keyIn(metaKeys)) score += 4;
+    else if (hasWord(desc, t.text, prefix)) score += 1;
+    else score = -1; // todos os termos precisam aparecer em algum lugar
+  });
+  if (score <= 0) return 0;
   if (name.includes(normalizeSearch(query))) score += 5;
   return score;
 }

@@ -16,6 +16,7 @@ export function normalizeProduct(row: Record<string, unknown>): Product {
     featured: (row.featured as boolean) ?? false,
     soldOut: (row.sold_out as boolean) ?? false,
     audio: (row.audio as string) || undefined,
+    updatedAt: (row.updated_at as string) || undefined,
   }
 }
 
