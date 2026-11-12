@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Save, Upload, X, ImageIcon } from 'lucide-react'
+import { ArrowLeft, Save, Upload, X, ImageIcon, Headphones } from 'lucide-react'
 import { compressImage } from '@/lib/compressImage'
 import { parseYouTubeList } from '@/lib/youtube'
 
@@ -463,21 +463,17 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
             </div>
           </section>
 
-          {/* Image & badge */}
+          {/* Som: o que mais vende um prato. Vem logo depois do básico */}
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-5">
-            <h2 className="font-bold text-gray-800 text-sm uppercase tracking-wide flex items-center gap-2">
-              <ImageIcon size={16} />
-              Fotos, áudio, vídeos e badge
-            </h2>
-
-            <ImageGallery
-              value={[form.image, ...form.images].filter(Boolean)}
-              category={form.category}
-              onChange={update => setForm(prev => {
-                const urls = update([prev.image, ...prev.images].filter(Boolean))
-                return { ...prev, image: urls[0] ?? '', images: urls.slice(1) }
-              })}
-            />
+            <div>
+              <h2 className="font-bold text-gray-800 text-sm uppercase tracking-wide flex items-center gap-2">
+                <Headphones size={16} />
+                Som
+              </h2>
+              <p className="mt-1 text-xs text-gray-500">
+                O cliente escolhe o prato pelo som. Um áudio ou vídeo aparece perto do preço, na página do produto.
+              </p>
+            </div>
 
             <AudioUploader
               value={form.audio}
@@ -512,6 +508,24 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
                 )
               })()}
             </div>
+
+          </section>
+
+          {/* Image & badge */}
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-5">
+            <h2 className="font-bold text-gray-800 text-sm uppercase tracking-wide flex items-center gap-2">
+              <ImageIcon size={16} />
+              Fotos e badge
+            </h2>
+
+            <ImageGallery
+              value={[form.image, ...form.images].filter(Boolean)}
+              category={form.category}
+              onChange={update => setForm(prev => {
+                const urls = update([prev.image, ...prev.images].filter(Boolean))
+                return { ...prev, image: urls[0] ?? '', images: urls.slice(1) }
+              })}
+            />
 
             <div>
               <label className="label">Badge <span className="text-gray-400 font-normal">opcional</span></label>

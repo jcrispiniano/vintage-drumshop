@@ -15,7 +15,8 @@ type TypeFilter = 'todos' | CymbalType;
 
 const TYPE_LABELS: Record<TypeFilter, string> = { todos: 'Todos', ...CYMBAL_TYPE_LABELS };
 
-const TYPES = ['sets', 'crash', 'ride', 'hihat', 'effects'] as const;
+// Do mais procurado ao menos procurado
+const TYPES = ['crash', 'ride', 'hihat', 'effects', 'sets'] as const;
 
 const chip = (active: boolean, disabled = false) =>
   `flex h-11 flex-shrink-0 items-center rounded-full px-4 text-sm font-semibold tabular-nums transition ${
@@ -91,7 +92,7 @@ function PratosContent({ params }: { params: Params }) {
   const countSize = (size: number) => allPratos.filter(p => matches(p, { ...filters, size })).length;
 
   const sizes = [...new Set(allPratos.map(p => productSizeValue(p.name)).filter((v): v is number => v !== null))].sort((a, b) => a - b);
-  const extraCount = (filters.series ? 1 : 0) + (filters.timbre ? 1 : 0) + (filters.size !== null ? 1 : 0);
+  const extraCount = (filters.series ? 1 : 0) + (filters.size !== null ? 1 : 0);
   const seriesLabel = filters.series ? CYMBAL_SERIES.find(x => x.id === filters.series)!.label : null;
 
   return (
@@ -103,32 +104,37 @@ function PratosContent({ params }: { params: Params }) {
         <div className="container mx-auto px-4 text-center">
           <h1 className="category-hero__title">{seriesLabel ? `Pratos ${seriesLabel}` : 'Pratos'}</h1>
           <p className="category-hero__lead">
-            Istanbul Agop: artesanato turco feito à mão há gerações. Escolha pelo tipo ou pelo som.
+            Istanbul Agop: artesanato turco feito à mão há gerações. Escolha pelo som ou pelo tipo.
           </p>
         </div>
       </section>
 
-      {/* Só o tipo fica à mostra; série, som e tamanho abrem num painel (fechado de início) */}
+      {/* O som é o primeiro filtro (é como o baterista escolhe um prato) e fica fixo no topo.
+          O tipo vem logo abaixo; série e tamanho abrem num painel, fechado de início. */}
       <div className="sticky top-[108px] z-40 border-b border-line bg-white md:top-[124px]">
         <div className="container mx-auto flex items-center gap-2 px-4">
-          <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto py-2.5 scrollbar-hide" role="group" aria-label="Filtrar por tipo">
-            <button type="button" onClick={() => update({ type: 'todos' })} aria-pressed={filters.type === 'todos'} className={chip(filters.type === 'todos')}>
-              Todos ({countType('todos')})
+          <span className="hidden flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft md:inline">Som</span>
+          <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto py-2.5 scrollbar-hide" role="group" aria-label="Filtrar por som">
+            <button type="button" onClick={() => update({ timbre: null })} aria-pressed={!filters.timbre} className={chip(!filters.timbre)}>
+              Todos os sons
             </button>
-            {TYPES.map(type => {
-              if (!allPratos.some(p => cymbalType(p.name) === type)) return null;
-              const count = countType(type);
-              const active = filters.type === type;
+            {TIMBRES.map(t => {
+              if (!allPratos.some(p => productTimbres(p.name).includes(t.id))) return null;
+              const count = countTimbre(t.id);
+              const active = filters.timbre === t.id;
               return (
                 <button
-                  key={type}
+                  key={t.id}
                   type="button"
-                  onClick={() => update({ type })}
+                  onClick={() => update({ timbre: active ? null : t.id })}
                   disabled={!active && count === 0}
                   aria-pressed={active}
-                  className={chip(active, count === 0)}
+                  aria-describedby={`timbre-${t.id}`}
+                  className={`${chip(active, count === 0)} max-md:h-auto max-md:min-h-11 max-md:flex-col max-md:items-start max-md:rounded-2xl max-md:py-1.5 max-md:leading-tight`}
                 >
-                  {TYPE_LABELS[type]} ({count})
+                  <span>{t.label} ({count})</span>
+                  {/* No celular a dica vai dentro do chip: dá para comparar deslizando */}
+                  <span aria-hidden className={`text-xs font-normal md:hidden ${active ? 'text-white/75' : 'text-ink-soft'}`}>{t.hint}</span>
                 </button>
               );
             })}
@@ -143,31 +149,64 @@ function PratosContent({ params }: { params: Params }) {
             }`}
           >
             <SlidersHorizontal size={16} aria-hidden />
-            <span className="md:hidden">Filtrar</span>
-            <span className="hidden md:inline">Série, som e tamanho</span>
+            <span className="md:hidden">Mais</span>
+            <span className="hidden md:inline">Série e tamanho</span>
             {extraCount > 0 && ` (${extraCount})`}
             <ChevronDown size={16} aria-hidden className={`transition-transform ${panelOpen ? 'rotate-180' : ''}`} />
           </button>
         </div>
       </div>
 
-      {/* Com o painel fechado, os filtros escolhidos continuam visíveis (e removíveis) */}
+      <div className="border-b border-line bg-white">
+        <div className="container mx-auto px-4">
+          {/* O que cada som quer dizer, sempre escrito: dá para comparar antes de escolher */}
+          <ul className="flex flex-wrap gap-x-5 gap-y-1 pb-2.5 pt-2 text-sm text-ink-soft max-md:sr-only">
+            {TIMBRES.map(t => (
+              <li key={t.id} id={`timbre-${t.id}`} className={filters.timbre === t.id ? 'text-ink' : ''}>
+                <strong className="font-semibold text-ink">{t.label}:</strong> {t.hint}
+              </li>
+            ))}
+          </ul>
+          <div className="flex flex-col gap-1 py-2.5 md:flex-row md:items-center md:gap-2 md:border-t md:border-line" role="group" aria-label="Filtrar por tipo">
+            <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Tipo</span>
+            <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
+              <button type="button" onClick={() => update({ type: 'todos' })} aria-pressed={filters.type === 'todos'} className={chip(filters.type === 'todos')}>
+                Todos ({countType('todos')})
+              </button>
+              {TYPES.map(type => {
+                if (!allPratos.some(p => cymbalType(p.name) === type)) return null;
+                const count = countType(type);
+                const active = filters.type === type;
+                return (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => update({ type })}
+                    disabled={!active && count === 0}
+                    aria-pressed={active}
+                    className={chip(active, count === 0)}
+                  >
+                    {TYPE_LABELS[type]} ({count})
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Com o painel fechado, série e tamanho escolhidos continuam visíveis (e removíveis) */}
       {!panelOpen && extraCount > 0 && (
         <div className="border-b border-line bg-white">
           <div className="container mx-auto flex flex-wrap items-center gap-2 px-4 py-2">
             {filters.series && (
               <button type="button" onClick={() => update({ series: null })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
-                {seriesLabel} <X size={14} aria-label="remover" />
-              </button>
-            )}
-            {filters.timbre && (
-              <button type="button" onClick={() => update({ timbre: null })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
-                {TIMBRES.find(t => t.id === filters.timbre)!.label} <X size={14} aria-label="remover" />
+                {seriesLabel} <X size={14} aria-hidden /><span className="sr-only">remover</span>
               </button>
             )}
             {filters.size !== null && (
               <button type="button" onClick={() => update({ size: null })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
-                {String(filters.size).replace('.', ',')}&quot; <X size={14} aria-label="remover" />
+                {String(filters.size).replace('.', ',')}&quot; <X size={14} aria-hidden /><span className="sr-only">remover</span>
               </button>
             )}
           </div>
@@ -178,7 +217,6 @@ function PratosContent({ params }: { params: Params }) {
         <div className="container mx-auto px-4">
           <div className="flex flex-col gap-1 py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por série">
             <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Série</span>
-            {/* No desktop as séries quebram linha em vez de sumir para o lado */}
             <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
               {CYMBAL_SERIES.map(sr => {
                 if (!allPratos.some(p => cymbalSeries(p.name)?.id === sr.id)) return null;
@@ -199,39 +237,11 @@ function PratosContent({ params }: { params: Params }) {
               })}
             </div>
           </div>
-          <div className="flex flex-col gap-1 border-t border-line py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por som">
-            <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Som</span>
-            <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:px-0 md:pb-0">
-              {TIMBRES.map(t => {
-                if (!allPratos.some(p => productTimbres(p.name).includes(t.id))) return null;
-                const count = countTimbre(t.id);
-                const active = filters.timbre === t.id;
-                return (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => update({ timbre: active ? null : t.id })}
-                    disabled={!active && count === 0}
-                    aria-pressed={active}
-                    title={`${t.label}: ${t.hint}`}
-                    className={chip(active, count === 0)}
-                  >
-                    {t.label} ({count})
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-          {/* No celular a dica de cada som aparece escrita (o title só funciona com mouse) */}
-          {filters.timbre && (
-            <p className="pb-2 text-sm text-ink-soft md:hidden">
-              <strong className="text-ink">{TIMBRES.find(t => t.id === filters.timbre)!.label}:</strong> {TIMBRES.find(t => t.id === filters.timbre)!.hint}
-            </p>
-          )}
           {sizes.length >= 3 && (
             <div className="flex flex-col gap-1 border-t border-line py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por tamanho">
               <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Tamanho</span>
-              <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide md:mx-0 md:px-0 md:pb-0">
+              {/* Tamanhos quebram linha (são muitos e curtos): nada escondido à direita */}
+              <div className="flex flex-wrap gap-2">
                 {sizes.map(v => {
                   const count = countSize(v);
                   const active = filters.size === v;
@@ -242,10 +252,9 @@ function PratosContent({ params }: { params: Params }) {
                       key={v}
                       type="button"
                       onClick={() => update({ size: active ? null : v })}
-                      disabled={!active && count === 0}
                       aria-pressed={active}
                       aria-label={`${String(v).replace('.', ',')} polegadas (${count})`}
-                      className={chip(active, count === 0)}
+                      className={chip(active)}
                     >
                       {String(v).replace('.', ',')}&quot;
                     </button>
@@ -256,7 +265,6 @@ function PratosContent({ params }: { params: Params }) {
           )}
         </div>
       </div>
-
       <CatalogGrid
         products={filtered}
         categoryName="Pratos"

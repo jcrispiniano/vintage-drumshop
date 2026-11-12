@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, PlayCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
+import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, Play, PlayCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
 import { Product, campaign, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
 import { cymbalSeries, cymbalType, productSpecs, soundSearchUrl } from '@/lib/cymbals';
 import { parseYouTubeList } from '@/lib/youtube';
@@ -35,6 +35,9 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const videos = parseYouTubeList(product.videos);
   const shorts = videos.filter(v => v.short);
   const longVideos = videos.filter(v => !v.short);
+  // Ordem em que aparecem na seção de vídeos: Shorts primeiro
+  const firstVideo = shorts[0] ?? longVideos[0];
+  const [playFirst, setPlayFirst] = useState(false);
   const isCymbal = product.category === 'pratos';
   const related = relatedProducts(product, allProducts);
 
@@ -151,6 +154,31 @@ export default function ProdutoClient({ product }: { product: Product }) {
               <PriceBlock price={product.price} oldPrice={product.oldPrice} size="page" />
             </div>
 
+            {/* Sem áudio próprio, o primeiro vídeo vira o "ouça" ao lado do preço: o som decide a compra */}
+            {!product.audio && firstVideo && (
+              <a
+                href="#ouca"
+                onClick={() => setPlayFirst(true)}
+                className="group mt-5 flex items-center gap-4 rounded-lg bg-cream p-3 pr-4 transition hover:ring-1 hover:ring-ink/30"
+              >
+                <span className="relative h-14 w-24 flex-shrink-0 overflow-hidden rounded-md bg-ink">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- miniatura do YouTube */}
+                  <img src={`https://i.ytimg.com/vi/${firstVideo.id}/mqdefault.jpg`} alt="" loading="lazy" className="h-full w-full object-cover opacity-85" />
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-white">
+                      <Play size={14} fill="currentColor" aria-hidden />
+                    </span>
+                  </span>
+                </span>
+                <span className="min-w-0 leading-tight">
+                  <span className="block text-sm font-bold uppercase tracking-wide text-ink">{isCymbal ? 'Ouça o som' : 'Veja em vídeo'}</span>
+                  <span className="text-sm text-ink-soft">
+                    {videos.length > 1 ? `${videos.length} vídeos` : '1 vídeo'}{isCymbal ? ' · use fone de ouvido' : ''}
+                  </span>
+                </span>
+              </a>
+            )}
+
             {product.audio && (
               <div className="mt-5 rounded-lg bg-cream p-4">
                 <p className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink">
@@ -244,7 +272,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
 
         {/* Vídeos do produto: o som decide a compra de um prato */}
         {videos.length > 0 && (
-          <section aria-labelledby="videos-titulo" className="mt-14 border-t-2 border-ink pt-8">
+          <section id="ouca" aria-labelledby="videos-titulo" className="mt-14 scroll-mt-40 border-t-2 border-ink pt-8">
             <h2 id="videos-titulo" className="mb-2 text-2xl font-semibold uppercase text-ink">
               {isCymbal ? 'Ouça o som' : 'Veja em vídeo'}
             </h2>
@@ -256,7 +284,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
             <div className="flex flex-wrap gap-4">
               {shorts.map(v => (
                 <YouTubeLite
-                  key={v.id}
+                  key={`${v.id}-${playFirst && v.id === firstVideo?.id}`}
+                  autoStart={playFirst && v.id === firstVideo?.id}
                   video={v}
                   title={`${product.name} (vídeo da Vintage Drum Shop)`}
                   className="w-[min(100%,260px)] md:h-[380px] md:w-auto xl:h-[440px]"
@@ -264,7 +293,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
               ))}
               {longVideos.map(v => (
                 <YouTubeLite
-                  key={v.id}
+                  key={`${v.id}-${playFirst && v.id === firstVideo?.id}`}
+                  autoStart={playFirst && v.id === firstVideo?.id}
                   video={v}
                   title={`${product.name} (demonstração de som)`}
                   className="w-full md:h-[380px] md:w-auto md:max-w-full xl:h-[440px]"

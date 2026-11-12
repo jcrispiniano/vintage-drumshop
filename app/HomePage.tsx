@@ -306,6 +306,51 @@ export default function Home() {
           </>
         )}
 
+        {/* Escolha pelo som logo no começo: é como o baterista decide um prato */}
+        <section className="grid bg-ink text-white md:grid-cols-2" aria-labelledby="timbre-titulo">
+          {/* No celular a lista vem primeiro e a foto fica baixa: o som não pode empurrar o resto da home */}
+          <div className="relative order-2 aspect-[16/9] md:order-none md:aspect-auto md:min-h-[480px]">
+            <SmartImage
+              src="/fotos/ouca-pratos.jpg"
+              alt="Prato Istanbul Agop Xist em primeiro plano"
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover"
+              style={{ objectPosition: '50% 70%' }}
+            />
+          </div>
+          <div className="flex flex-col justify-center px-5 py-12 md:px-12 lg:px-20">
+            <h2 id="timbre-titulo" className="text-3xl font-semibold uppercase leading-none md:text-5xl">
+              Escolha pelo <span className="text-gold">som</span>
+            </h2>
+            <p className="mt-5 max-w-md text-on-dark-soft">
+              Cada prato tem um timbre. Comece pelo som que você procura e, se ficar entre dois, pergunte pra gente pelo WhatsApp.
+            </p>
+            <ul className="mt-8 max-w-md divide-y divide-white/15 border-y border-white/15">
+              {TIMBRES.map(t => (
+                <li key={t.id}>
+                  <Link
+                    href={`/pratos?timbre=${t.id}`}
+                    className="group flex min-h-12 items-center gap-4 py-3 transition hover:text-gold"
+                  >
+                    <span className="w-24 flex-shrink-0 font-display text-lg font-semibold uppercase tracking-wide">{t.label}</span>
+                    <span className="flex-1 text-sm text-on-dark-soft">{t.hint}</span>
+                    <ArrowRight size={18} className="flex-shrink-0 text-gold transition-transform group-hover:translate-x-1" aria-hidden />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <a
+              href={`${contactInfo.whatsapp}?text=${encodeURIComponent('Olá! Estou em dúvida sobre o som de um prato.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-gold hover:underline"
+            >
+              <MessageCircle size={18} aria-hidden /> Tirar dúvida sobre um prato
+            </a>
+          </div>
+        </section>
+
         {/* Compre por categoria: fotos grandes do ensaio */}
         <section id="categorias" className="scroll-mt-32 py-12 md:py-20" aria-labelledby="categorias-titulo">
           <div className="container mx-auto px-4">
@@ -372,50 +417,6 @@ export default function Home() {
             text="Baquetas suecas com madeira selecionada e equilíbrio para todos os estilos."
             position="50% 70%"
           />
-        </section>
-
-        {/* Ouça antes de comprar: timbres dos pratos */}
-        <section className="grid bg-ink text-white md:grid-cols-2" aria-labelledby="timbre-titulo">
-          <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[560px]">
-            <SmartImage
-              src="/fotos/ouca-pratos.jpg"
-              alt="Prato Istanbul Agop Xist em primeiro plano"
-              fill
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover"
-              style={{ objectPosition: '50% 70%' }}
-            />
-          </div>
-          <div className="flex flex-col justify-center px-5 py-12 md:px-12 lg:px-20">
-            <h2 id="timbre-titulo" className="text-3xl font-semibold uppercase leading-none md:text-5xl">
-              Escolha pelo <span className="text-gold">som</span>
-            </h2>
-            <p className="mt-5 max-w-md text-on-dark-soft">
-              Cada prato tem um timbre. Comece pelo som que você procura e, se ficar entre dois, pergunte pra gente pelo WhatsApp.
-            </p>
-            <ul className="mt-8 max-w-md divide-y divide-white/15 border-y border-white/15">
-              {TIMBRES.map(t => (
-                <li key={t.id}>
-                  <Link
-                    href={`/pratos?timbre=${t.id}`}
-                    className="group flex min-h-12 items-center gap-4 py-3 transition hover:text-gold"
-                  >
-                    <span className="w-24 flex-shrink-0 font-display text-lg font-semibold uppercase tracking-wide">{t.label}</span>
-                    <span className="flex-1 text-sm text-on-dark-soft">{t.hint}</span>
-                    <ArrowRight size={18} className="flex-shrink-0 text-gold transition-transform group-hover:translate-x-1" aria-hidden />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <a
-              href={`${contactInfo.whatsapp}?text=${encodeURIComponent('Olá! Estou em dúvida sobre o som de um prato.')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-gold hover:underline"
-            >
-              <MessageCircle size={18} aria-hidden /> Tirar dúvida sobre um prato
-            </a>
-          </div>
         </section>
 
         {featured.length > 0 && (
