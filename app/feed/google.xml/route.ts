@@ -19,8 +19,14 @@ const GOOGLE_CATEGORY: Record<string, string> = {
   baterias: 'Arts & Entertainment > Hobbies & Creative Arts > Musical Instruments > Percussion > Drum Kits',
 }
 
+/** Data no formato que o Google pede (ISO 8601 com fuso): 2026-12-12T12:00+0000 */
+const googleDate = (d: Date) => `${d.toISOString().slice(0, 16)}+0000`
+
 export async function GET() {
   const products = await getAllProducts()
+  // Esgotado vai como "sob encomenda" (backorder), que exige data prevista de chegada.
+  // A loja não informa prazo por produto, então usamos 30 dias a partir de hoje (prazo típico de encomenda)
+  const backorderDate = googleDate(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))
   const items = products.map(p => {
     const type = p.category === 'pratos' ? CYMBAL_TYPE_LABELS[cymbalType(p.name)] : null
     const aliases = productAliases(p.name)
@@ -33,7 +39,8 @@ export async function GET() {
       <g:description>${esc(p.description.slice(0, 5000))}</g:description>
       <g:link>${esc(productUrl(p))}</g:link>
       <g:image_link>${esc(absoluteUrl(p.image))}</g:image_link>${extraImages}
-      <g:availability>${p.soldOut ? 'backorder' : 'in_stock'}</g:availability>
+      <g:availability>${p.soldOut ? 'backorder' : 'in_stock'}</g:availability>${p.soldOut ? `
+      <g:availability_date>${backorderDate}</g:availability_date>` : ''}
       <g:price>${p.price.toFixed(2)} BRL</g:price>
       <g:condition>new</g:condition>
       ${isGenericBrand(p.brand) ? '' : `<g:brand>${esc(brandLabel(p.brand))}</g:brand>`}
