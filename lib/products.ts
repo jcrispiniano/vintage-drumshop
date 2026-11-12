@@ -706,6 +706,9 @@ export function discountPercent(price: number, oldPrice?: number): number {
 /** Endereço público da loja, para links em mensagens (WhatsApp) e metadados. */
 export const siteUrl = 'https://www.vintagedrumshop.com.br';
 
+/** Só a produção entra no Google; staging e prévias ficam fora (evita conteúdo duplicado) */
+export const isProductionSite = process.env.VERCEL_ENV === 'production';
+
 /** Nome em formato de URL: 'Chimbal Istanbul Agop Xist 14"' → 'chimbal-istanbul-agop-xist-14' */
 export function slugify(text: string): string {
   return text

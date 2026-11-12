@@ -6,7 +6,7 @@ import WhatsAppButton from '@/components/WhatsAppButton'
 import Footer from '@/components/Footer'
 import PageTransition from '@/components/PageTransition'
 import ProductsInitializer from '@/components/ProductsInitializer'
-import { campaign, siteUrl } from '@/lib/products'
+import { campaign, isProductionSite, siteUrl } from '@/lib/products'
 import { getAllProducts } from '@/lib/db'
 import { ProductsProvider } from '@/lib/productsStore'
 import SiteSchema from '@/components/schemas/SiteSchema'
@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   description: 'Loja de bateria em São Paulo: pratos Istanbul Agop (chimbal, crash, ride), baquetas Wincent e Dynabeat, caixas e baterias. 10% no Pix ou 10x sem juros. Enviamos para todo o Brasil.',
   keywords: 'pratos istanbul agop, chimbal, hi-hat, crash, ride, baquetas wincent, baquetas dynabeat, caixa de bateria, bateria, drum shop, loja de bateria são paulo',
   applicationName: 'Vintage Drum Shop',
+  ...(!isProductionSite && { robots: { index: false, follow: false } }),
   formatDetection: { telephone: false },
   icons: {
     icon: [
