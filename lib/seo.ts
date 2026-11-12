@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import type { Product } from '@/lib/products'
+import { absoluteUrl, type Product } from '@/lib/products'
+import { getAllProducts } from '@/lib/db'
 
 /**
  * SEO das páginas de lista (categorias, marcas e institucionais): título e descrição
@@ -96,5 +97,29 @@ export function sectionMetadata(id: keyof typeof SECTIONS): Metadata {
     alternates: { canonical: s.path },
     openGraph: { title: s.title, description: s.description, url: s.path, siteName: 'Vintage Drum Shop', locale: 'pt_BR', type: 'website' },
     ...(s.noindex && { robots: { index: false, follow: true } }),
+  }
+}
+
+/**
+ * Foto que representa a lista no Google e nas redes (og:image): a de um produto
+ * disponível da própria categoria, em vez do logo genérico do site.
+ */
+export async function sectionImage(id: keyof typeof SECTIONS): Promise<string | null> {
+  const s = SECTIONS[id]
+  if (!s.match) return null
+  const items = (await getAllProducts()).filter(s.match).filter(p => p.image && !p.image.includes('placeholder'))
+  const pick = items.find(p => !p.soldOut && p.featured) ?? items.find(p => !p.soldOut) ?? items[0]
+  return pick ? absoluteUrl(pick.image) : null
+}
+
+export async function sectionMetadataWithImage(id: keyof typeof SECTIONS): Promise<Metadata> {
+  const base = sectionMetadata(id)
+  const image = await sectionImage(id)
+  if (!image) return base
+  const s = SECTIONS[id]
+  return {
+    ...base,
+    openGraph: { ...base.openGraph, images: [{ url: image, alt: s.name }] },
+    twitter: { card: 'summary_large_image', title: s.title, description: s.description, images: [image] },
   }
 }
