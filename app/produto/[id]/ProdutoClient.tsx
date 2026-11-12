@@ -119,7 +119,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
                 src={productImage(currentImage)}
                 alt={product.name}
                 fill
-                priority
+                preload
+                fetchPriority="high"
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className={`object-contain transition-transform duration-500 ease-out group-hover:scale-[1.03] ${product.soldOut ? 'opacity-50 grayscale' : ''}`}
               />
@@ -250,23 +251,25 @@ export default function ProdutoClient({ product }: { product: Product }) {
             <p className="mb-6 max-w-[65ch] text-sm text-ink-soft">
               {videos.length > 1 ? 'Vídeos' : 'Vídeo'} de {product.name}. Use fone de ouvido para perceber melhor o timbre.
             </p>
-            <div className="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start">
-              {shorts.length > 0 && (
-                <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap">
-                  {shorts.map(v => (
-                    <div key={v.id} className="sm:w-[240px]">
-                      <YouTubeLite video={v} title={`${product.name} (vídeo da Vintage Drum Shop)`} />
-                    </div>
-                  ))}
-                </div>
-              )}
-              {longVideos.length > 0 && (
-                <div className={`grid gap-4 ${longVideos.length > 1 && !shorts.length ? 'md:grid-cols-2' : ''}`}>
-                  {longVideos.map(v => (
-                    <YouTubeLite key={v.id} video={v} title={`${product.name} (demonstração de som)`} />
-                  ))}
-                </div>
-              )}
+            {/* Todos os vídeos com a mesma altura: o Short (em pé) e o vídeo deitado ficam alinhados lado a lado.
+                No celular cada um ocupa a largura (o Short limitado para não ficar enorme). */}
+            <div className="flex flex-wrap gap-4">
+              {shorts.map(v => (
+                <YouTubeLite
+                  key={v.id}
+                  video={v}
+                  title={`${product.name} (vídeo da Vintage Drum Shop)`}
+                  className="w-[min(100%,260px)] md:h-[380px] md:w-auto xl:h-[440px]"
+                />
+              ))}
+              {longVideos.map(v => (
+                <YouTubeLite
+                  key={v.id}
+                  video={v}
+                  title={`${product.name} (demonstração de som)`}
+                  className="w-full md:h-[380px] md:w-auto md:max-w-full xl:h-[440px]"
+                />
+              ))}
             </div>
           </section>
         )}

@@ -18,7 +18,7 @@ export default function DynabeatPage() {
       {/* Hero com imagem de fundo */}
       <section className="relative overflow-hidden border-b-[3px] border-brass bg-ink py-14 text-white md:py-20">
         <div className="absolute inset-0">
-          <SmartImage src="/fotos/banner-dynabeat.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
+          <SmartImage src="/fotos/banner-dynabeat.jpg" alt="" fill preload fetchPriority="high" sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-[rgba(28,17,10,0.5)]"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">

@@ -69,7 +69,8 @@ function CampaignBanner() {
           src="/fotos/black-november-banner-pearl.jpg"
           alt={`${campaign?.name} Vintage Drum Shop: ofertas especiais por tempo limitado. ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros. Renove seu setup!`}
           fill
-          priority
+          preload
+          fetchPriority="high"
           sizes="100vw"
           className="object-cover object-[100%_50%] md:object-top"
         />
@@ -146,7 +147,9 @@ function Hero() {
               src={slide.image}
               alt={slide.alt}
               fill
-              priority={i === 0}
+              preload={i === 0}
+              fetchPriority={i === 0 ? 'high' : 'low'}
+              loading={i === 0 ? 'eager' : 'lazy'}
               sizes="(min-width: 768px) 60vw, 100vw"
               className="object-cover"
               style={{ objectPosition: slide.position }}
@@ -315,7 +318,7 @@ export default function Home() {
                       src={cat.image}
                       alt=""
                       fill
-                      sizes="(min-width: 768px) 33vw, 50vw"
+                      sizes="(min-width: 1536px) 480px, (min-width: 768px) 30vw, 50vw"
                       className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                       style={{ objectPosition: cat.position }}
                     />
