@@ -25,7 +25,7 @@ const SUBMENUS: Record<string, MenuGroup[]> = {
         { href: '/pratos?tipo=sets', label: 'Set de pratos' },
         { href: '/pratos?tipo=crash', label: 'Crash' },
         { href: '/pratos?tipo=ride', label: 'Ride' },
-        { href: '/pratos?tipo=hihat', label: 'Hi-Hat' },
+        { href: '/pratos?tipo=hihat', label: 'Chimbal / Hi-Hat' },
         { href: '/pratos?tipo=effects', label: 'Efeitos e stacks' },
       ],
     },

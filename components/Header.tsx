@@ -29,6 +29,12 @@ const redirectMap: { [key: string]: string } = {
   'brush': '/vassourinhas', 'brushes': '/vassourinhas',
   'mallets': '/mallets', 'mallet': '/mallets',
   'rod': '/vassourinhas', 'rods': '/vassourinhas',
+  'chimbal': '/pratos?tipo=hihat', 'chimbais': '/pratos?tipo=hihat', 'hi hat': '/pratos?tipo=hihat',
+  'hi-hat': '/pratos?tipo=hihat', 'hihat': '/pratos?tipo=hihat',
+  'crash': '/pratos?tipo=crash', 'ride': '/pratos?tipo=ride',
+  'set de pratos': '/pratos?tipo=sets', 'kit de pratos': '/pratos?tipo=sets',
+  'cymbal': '/pratos', 'cymbals': '/pratos', 'drumstick': '/baquetas', 'drumsticks': '/baquetas',
+  'snare': '/caixas', 'drumhead': '/peles',
 };
 
 function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {

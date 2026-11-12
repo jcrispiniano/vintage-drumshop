@@ -1,5 +1,6 @@
 import type { Product } from '@/lib/products';
 import { brandLabel } from '@/lib/brands';
+import { productAliases } from '@/lib/searchTerms';
 
 interface ProductSchemaProps {
   product: Product;
@@ -10,6 +11,7 @@ export default function ProductSchema({ product }: ProductSchemaProps) {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
+    ...(productAliases(product.name).length && { "alternateName": productAliases(product.name) }),
     "description": product.description,
     "image": product.image.startsWith('http') ? product.image : `https://vintagedrumshop.com.br${product.image}`,
     "brand": {

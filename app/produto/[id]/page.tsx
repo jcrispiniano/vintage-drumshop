@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import ProdutoClient from './ProdutoClient';
 import ProductSchema from '@/components/schemas/ProductSchema';
+import { productAliases } from '@/lib/searchTerms';
 
 export async function generateStaticParams() {
   const ids = await getAllProductIds();
@@ -20,15 +21,18 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!product) return { title: 'Produto não encontrado | Vintage Drum Shop' };
 
   const brandName = brandLabel(product.brand);
+  // Outros nomes do produto (chimbal = hi-hat, baqueta = drumstick...): o Google acha pelos dois
+  const aliases = productAliases(product.name);
+  const aka = aliases.length ? ` (${aliases.slice(0, 2).join(', ')})` : '';
 
   const imageUrl = product.image.startsWith('http')
     ? product.image
     : `https://vintagedrumshop.com.br${product.image}`;
 
   return {
-    title: `${product.name} | Vintage Drum Shop`,
-    description: `${product.description.substring(0, 155)}... Compre na Vintage Drum Shop com os melhores preços. ${formatPrice(product.price)}`,
-    keywords: `${product.name}, ${brandName}, ${product.category}, bateria, percussão, são paulo`,
+    title: `${product.name}${aka} | Vintage Drum Shop`,
+    description: `${aliases.length ? `${product.name}, também chamado de ${aliases.join(', ')}. ` : ''}${product.description.substring(0, 140)}... ${formatPrice(product.price)} na Vintage Drum Shop.`,
+    keywords: [product.name, ...aliases, brandName, product.category, 'bateria', 'percussão', 'são paulo'].join(', '),
     openGraph: {
       title: `${product.name} - ${brandName}`,
       description: product.description.substring(0, 200),
