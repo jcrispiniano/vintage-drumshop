@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, PlayCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
 import { Product, campaign, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
 import { cymbalSeries, cymbalType, productSpecs, soundSearchUrl } from '@/lib/cymbals';
+import { parseYouTubeList } from '@/lib/youtube';
+import YouTubeLite from '@/components/YouTubeLite';
 import { productSizeValue } from '@/lib/productText';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
@@ -30,6 +32,9 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const off = discountPercent(product.price, product.oldPrice);
   const category = categories.find(c => c.id === product.category);
   const specs = productSpecs(product);
+  const videos = parseYouTubeList(product.videos);
+  const shorts = videos.filter(v => v.short);
+  const longVideos = videos.filter(v => !v.short);
   const isCymbal = product.category === 'pratos';
   const related = relatedProducts(product, allProducts);
 
@@ -236,6 +241,36 @@ export default function ProdutoClient({ product }: { product: Product }) {
           </div>
         </div>
 
+        {/* Vídeos do produto: o som decide a compra de um prato */}
+        {videos.length > 0 && (
+          <section aria-labelledby="videos-titulo" className="mt-14 border-t-2 border-ink pt-8">
+            <h2 id="videos-titulo" className="mb-2 text-2xl font-semibold uppercase text-ink">
+              {isCymbal ? 'Ouça o som' : 'Veja em vídeo'}
+            </h2>
+            <p className="mb-6 max-w-[65ch] text-sm text-ink-soft">
+              {videos.length > 1 ? 'Vídeos' : 'Vídeo'} de {product.name}. Use fone de ouvido para perceber melhor o timbre.
+            </p>
+            <div className="grid gap-6 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start">
+              {shorts.length > 0 && (
+                <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap">
+                  {shorts.map(v => (
+                    <div key={v.id} className="sm:w-[240px]">
+                      <YouTubeLite video={v} title={`${product.name} (vídeo da Vintage Drum Shop)`} />
+                    </div>
+                  ))}
+                </div>
+              )}
+              {longVideos.length > 0 && (
+                <div className={`grid gap-4 ${longVideos.length > 1 && !shorts.length ? 'md:grid-cols-2' : ''}`}>
+                  {longVideos.map(v => (
+                    <YouTubeLite key={v.id} video={v} title={`${product.name} (demonstração de som)`} />
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
         {/* Ficha técnica + descrição: o que diferencia este produto dos vizinhos */}
         <div className="mt-14 grid gap-10 border-t-2 border-ink pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-14">
           {specs.length > 0 && (
@@ -249,7 +284,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
                   </div>
                 ))}
               </dl>
-              {isCymbal && !product.audio && (
+              {isCymbal && !product.audio && videos.length === 0 && (
                 <a
                   href={soundSearchUrl(product.name)}
                   target="_blank"

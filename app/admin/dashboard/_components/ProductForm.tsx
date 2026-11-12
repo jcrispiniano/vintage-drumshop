@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Save, Upload, X, ImageIcon } from 'lucide-react'
 import { compressImage } from '@/lib/compressImage'
+import { parseYouTubeList } from '@/lib/youtube'
 
 // Precisa bater com os filtros das páginas de categoria (p.category === '...').
 // Mallets e vassourinhas são baquetas; Wincent e Dynabeat são marcas.
@@ -37,6 +38,8 @@ interface FormData {
   active: boolean
   soldOut: boolean
   audio: string
+  /** Links do YouTube, um por linha */
+  videos: string
 }
 
 interface ProductFormProps {
@@ -47,7 +50,7 @@ interface ProductFormProps {
 const emptyForm: FormData = {
   name: '', category: 'pratos', brand: 'istanbul',
   price: '', oldPrice: '', image: '', images: [], badge: '',
-  description: '', featured: false, active: true, soldOut: false, audio: '',
+  description: '', featured: false, active: true, soldOut: false, audio: '', videos: '',
 }
 
 function AudioUploader({
@@ -335,6 +338,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
       active: form.active,
       soldOut: form.soldOut,
       audio: form.audio.trim() || null,
+      videos: form.videos.split(/\s+/).map(v => v.trim()).filter(Boolean),
     }
 
     const url = mode === 'edit' && initialData?.id
@@ -463,7 +467,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
           <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 space-y-5">
             <h2 className="font-bold text-gray-800 text-sm uppercase tracking-wide flex items-center gap-2">
               <ImageIcon size={16} />
-              Fotos, áudio e badge
+              Fotos, áudio, vídeos e badge
             </h2>
 
             <ImageGallery
@@ -480,6 +484,34 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
               category={form.category}
               onChange={url => set('audio', url)}
             />
+
+            <div>
+              <label htmlFor="videos" className="label">
+                Vídeos do YouTube <span className="text-gray-400 font-normal">opcional · um link por linha</span>
+              </label>
+              <textarea
+                id="videos"
+                rows={3}
+                value={form.videos}
+                onChange={e => set('videos', e.target.value)}
+                placeholder={'https://www.youtube.com/shorts/...\nhttps://www.youtube.com/watch?v=...'}
+                className="input font-mono text-xs resize-y"
+              />
+              {(() => {
+                const lines = form.videos.split(/\s+/).filter(Boolean)
+                const valid = parseYouTubeList(lines)
+                const invalid = lines.length - valid.length
+                return lines.length > 0 ? (
+                  <p className={`mt-1 text-xs ${invalid ? 'text-red-600' : 'text-gray-500'}`}>
+                    {valid.length} vídeo{valid.length !== 1 ? 's' : ''} reconhecido{valid.length !== 1 ? 's' : ''}
+                    {invalid > 0 && ` · ${invalid} link${invalid > 1 ? 's' : ''} que não parece${invalid > 1 ? 'm' : ''} do YouTube`}
+                    {' · '}Aparecem na página do produto, em &quot;Ouça o som&quot;, na ordem acima.
+                  </p>
+                ) : (
+                  <p className="mt-1 text-xs text-gray-500">Links do YouTube (vídeos ou Shorts). Aparecem na página do produto, em &quot;Ouça o som&quot;.</p>
+                )
+              })()}
+            </div>
 
             <div>
               <label className="label">Badge <span className="text-gray-400 font-normal">opcional</span></label>
