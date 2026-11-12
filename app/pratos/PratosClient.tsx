@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { SlidersHorizontal } from 'lucide-react';
+import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 
 import { useProductsStore } from '@/lib/productsStore';
 import { Product, contactInfo } from '@/lib/products';
@@ -108,7 +108,7 @@ function PratosContent({ params }: { params: Params }) {
         </div>
       </section>
 
-      {/* Só o tipo fica fixo no topo; som e tamanho ficam no painel logo abaixo */}
+      {/* Só o tipo fica à mostra; série, som e tamanho abrem num painel (fechado de início) */}
       <div className="sticky top-[108px] z-40 border-b border-line bg-white md:top-[124px]">
         <div className="container mx-auto flex items-center gap-2 px-4">
           <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto py-2.5 scrollbar-hide" role="group" aria-label="Filtrar por tipo">
@@ -138,14 +138,43 @@ function PratosContent({ params }: { params: Params }) {
             onClick={() => setPanelOpen(o => !o)}
             aria-expanded={panelOpen}
             aria-controls="painel-filtros"
-            className="flex h-11 flex-shrink-0 items-center gap-1.5 rounded-md px-3 text-sm font-semibold text-ink ring-1 ring-line md:hidden"
+            className={`flex h-11 flex-shrink-0 items-center gap-1.5 rounded-md px-3 text-sm font-semibold ring-1 transition ${
+              panelOpen || extraCount > 0 ? 'bg-ink text-white ring-ink' : 'text-ink ring-line hover:ring-ink/40'
+            }`}
           >
-            <SlidersHorizontal size={16} aria-hidden /> Filtrar{extraCount > 0 && ` (${extraCount})`}
+            <SlidersHorizontal size={16} aria-hidden />
+            <span className="md:hidden">Filtrar</span>
+            <span className="hidden md:inline">Série, som e tamanho</span>
+            {extraCount > 0 && ` (${extraCount})`}
+            <ChevronDown size={16} aria-hidden className={`transition-transform ${panelOpen ? 'rotate-180' : ''}`} />
           </button>
         </div>
       </div>
 
-      <div id="painel-filtros" className={`border-b border-line bg-white ${panelOpen ? 'block' : 'hidden'} md:block`}>
+      {/* Com o painel fechado, os filtros escolhidos continuam visíveis (e removíveis) */}
+      {!panelOpen && extraCount > 0 && (
+        <div className="border-b border-line bg-white">
+          <div className="container mx-auto flex flex-wrap items-center gap-2 px-4 py-2">
+            {filters.series && (
+              <button type="button" onClick={() => update({ series: null })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
+                {seriesLabel} <X size={14} aria-label="remover" />
+              </button>
+            )}
+            {filters.timbre && (
+              <button type="button" onClick={() => update({ timbre: null })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
+                {TIMBRES.find(t => t.id === filters.timbre)!.label} <X size={14} aria-label="remover" />
+              </button>
+            )}
+            {filters.size !== null && (
+              <button type="button" onClick={() => update({ size: null })} className="flex h-9 items-center gap-1 rounded-full bg-paper px-3 text-sm font-semibold text-ink ring-1 ring-line hover:ring-ink/40">
+                {String(filters.size).replace('.', ',')}&quot; <X size={14} aria-label="remover" />
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      <div id="painel-filtros" className={`border-b border-line bg-white ${panelOpen ? 'block' : 'hidden'}`}>
         <div className="container mx-auto px-4">
           <div className="flex flex-col gap-1 py-3 md:flex-row md:items-center md:gap-2 md:py-2.5" role="group" aria-label="Filtrar por série">
             <span className="flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft">Série</span>

@@ -169,9 +169,9 @@ export default function Header() {
             <SmartImage
               src="/logo-vintage-header.png"
               alt="Vintage Drum Shop"
-              width={440}
-              height={338}
-              priority
+              width={89}
+              height={68}
+              loading="eager"
               className="h-12 w-auto md:h-[68px]"
             />
           </Link>
@@ -193,7 +193,7 @@ export default function Header() {
             <Link
               href="/favoritos"
               className="relative flex h-11 w-11 items-center justify-center rounded-md text-ink transition hover:text-accent"
-              aria-label={`Favoritos (${favorites.length})`}
+              aria-label={`Favoritos, ${favorites.length}`}
             >
               <Heart size={22} fill={favorites.length > 0 ? 'currentColor' : 'none'} />
               {favorites.length > 0 && (
@@ -205,7 +205,7 @@ export default function Header() {
             <Link
               href="/carrinho"
               className="flex h-11 items-center gap-1.5 rounded-md px-2 text-ink transition hover:text-accent"
-              aria-label={`Carrinho (${cartCount} ${cartCount === 1 ? 'item' : 'itens'})`}
+              aria-label={`Carrinho, ${cartCount} ${cartCount === 1 ? 'item' : 'itens'}`}
             >
               <ShoppingCart size={24} />
               <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1.5 text-xs font-bold text-white tabular-nums">
