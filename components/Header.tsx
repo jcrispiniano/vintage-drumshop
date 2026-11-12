@@ -4,7 +4,7 @@ import SmartImage from '@/components/SmartImage';
 import { ShoppingCart, Heart, Search, Menu, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
-import { Product, campaign, formatPrice, contactInfo, productImage, pixPrice, soldOutLast } from '@/lib/products';
+import { Product, campaign, formatPrice, contactInfo, productImage, productPath, pixPrice, soldOutLast } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { searchScore } from '@/lib/productText';
 import { useRouter } from 'next/navigation';
@@ -29,6 +29,12 @@ const redirectMap: { [key: string]: string } = {
   'brush': '/vassourinhas', 'brushes': '/vassourinhas',
   'mallets': '/mallets', 'mallet': '/mallets',
   'rod': '/vassourinhas', 'rods': '/vassourinhas',
+  'chimbal': '/pratos?tipo=hihat', 'chimbais': '/pratos?tipo=hihat', 'hi hat': '/pratos?tipo=hihat',
+  'hi-hat': '/pratos?tipo=hihat', 'hihat': '/pratos?tipo=hihat',
+  'crash': '/pratos?tipo=crash', 'ride': '/pratos?tipo=ride',
+  'set de pratos': '/pratos?tipo=sets', 'kit de pratos': '/pratos?tipo=sets',
+  'cymbal': '/pratos', 'cymbals': '/pratos', 'drumstick': '/baquetas', 'drumsticks': '/baquetas',
+  'snare': '/caixas', 'drumhead': '/peles',
 };
 
 function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {
@@ -101,7 +107,7 @@ function SearchBox({ variant }: { variant: 'desktop' | 'mobile' }) {
           {searchResults.map(product => (
             <Link
               key={product.id}
-              href={`/produto/${product.id}`}
+              href={productPath(product)}
               className="flex items-center gap-3 border-b border-line p-3 transition last:border-b-0 hover:bg-paper"
               onClick={() => { setShowSearchResults(false); setSearchTerm(''); }}
             >

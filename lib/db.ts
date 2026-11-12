@@ -31,6 +31,14 @@ export async function getProductById(id: number): Promise<Product | null> {
   return normalize(data)
 }
 
+/** id + nome de todos os produtos ativos (rotas com o nome na URL) */
+export async function getAllProductRefs(): Promise<{ id: number; name: string }[]> {
+  if (!isSupabaseConfigured()) return staticProducts.map(p => ({ id: p.id, name: p.name }))
+  const { data } = await supabase.from('products').select('id, name').eq('active', true)
+  if (!data?.length) return staticProducts.map(p => ({ id: p.id, name: p.name }))
+  return data as { id: number; name: string }[]
+}
+
 export async function getAllProductIds(): Promise<number[]> {
   if (!isSupabaseConfigured()) return staticProducts.map(p => p.id)
 

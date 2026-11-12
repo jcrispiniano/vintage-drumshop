@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, PlayCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
-import { Product, campaign, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productUrl } from '@/lib/products';
+import { Product, campaign, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
 import { cymbalSeries, cymbalType, productSpecs, soundSearchUrl } from '@/lib/cymbals';
 import { productSizeValue } from '@/lib/productText';
 import { useProductsStore } from '@/lib/productsStore';
@@ -63,8 +63,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
   // A mensagem já leva o produto e o link: a loja sabe na hora do que se trata
   const whatsappHref = `${contactInfo.whatsapp}?text=${encodeURIComponent(
     product.soldOut
-      ? `Olá! Quero encomendar: ${product.name}\n${productUrl(product.id)}\nQual o prazo?`
-      : `Olá! Quero saber mais sobre: ${product.name}\n${productUrl(product.id)}`
+      ? `Olá! Quero encomendar: ${product.name}\n${productUrl(product)}\nQual o prazo?`
+      : `Olá! Quero saber mais sobre: ${product.name}\n${productUrl(product)}`
   )}`;
 
   return (
@@ -77,7 +77,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
           items={[
             { name: 'Início', url: '/' },
             ...(category ? [{ name: category.name, url: `/${category.id}` }] : []),
-            { name: product.name, url: `/produto/${product.id}` },
+            { name: product.name, url: productPath(product) },
           ]}
         />
 

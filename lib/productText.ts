@@ -1,4 +1,5 @@
 import { brandLabel } from '@/lib/brands';
+import { hasWord, normalizeSearch, searchTerms, synonymKeys } from '@/lib/searchTerms';
 
 /** Tamanhos em polegadas citados no nome: 'Clap Stack (11"/13"/15")' → '11/13/15"'. */
 export function productSizes(name: string): string | null {
@@ -31,21 +32,32 @@ export function productSizeValue(name: string): number | null {
   return trailingInches(name);
 }
 
-/** Pontua o produto para a busca: nome pesa mais que descrição. */
+/**
+ * Pontua o produto para a busca: nome pesa mais que marca/categoria, que pesam mais
+ * que a descrição. Sinônimos contam como a mesma palavra ("hi hat" acha "Chimbal",
+ * "baqueta" acha "stick"), e acento, hífen e maiúsculas não importam.
+ */
 export function searchScore(p: { name: string; brand?: string; category: string; description: string }, query: string): number {
-  const terms = query.toLowerCase().split(/\s+/).filter(t => t.length >= 2);
+  const terms = searchTerms(query);
   if (terms.length === 0) return 0;
-  const name = p.name.toLowerCase();
-  const meta = `${p.brand ?? ''} ${p.category}`.toLowerCase();
-  const desc = p.description.toLowerCase();
+  const name = normalizeSearch(p.name);
+  const meta = normalizeSearch(`${p.brand ?? ''} ${brandLabel(p.brand ?? '')} ${p.category}`);
+  const desc = normalizeSearch(p.description);
+  const nameKeys = synonymKeys(name);
+  const metaKeys = synonymKeys(meta);
   let score = 0;
-  for (const t of terms) {
-    if (name.includes(t)) score += 10;
-    else if (meta.includes(t)) score += 4;
-    else if (desc.includes(t)) score += 1;
-    else return 0; // todos os termos precisam aparecer em algum lugar
-  }
-  if (name.includes(query.toLowerCase().trim())) score += 5;
+  terms.forEach((t, i) => {
+    if (score < 0) return;
+    // A última palavra pode estar pela metade (o cliente ainda está digitando)
+    const prefix = !t.key && i === terms.length - 1;
+    const keyIn = (keys: Set<string>) => (t.key && keys.has(t.key)) || !!t.prefixKeys?.some(k => keys.has(k));
+    if (hasWord(name, t.text, prefix) || keyIn(nameKeys)) score += 10;
+    else if (hasWord(meta, t.text, prefix) || keyIn(metaKeys)) score += 4;
+    else if (hasWord(desc, t.text, prefix)) score += 1;
+    else score = -1; // todos os termos precisam aparecer em algum lugar
+  });
+  if (score <= 0) return 0;
+  if (name.includes(normalizeSearch(query))) score += 5;
   return score;
 }
 

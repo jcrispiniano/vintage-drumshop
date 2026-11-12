@@ -6,7 +6,10 @@ import WhatsAppButton from '@/components/WhatsAppButton'
 import Footer from '@/components/Footer'
 import PageTransition from '@/components/PageTransition'
 import ProductsInitializer from '@/components/ProductsInitializer'
-import { campaign } from '@/lib/products'
+import { campaign, isProductionSite, siteUrl } from '@/lib/products'
+import { getAllProducts } from '@/lib/db'
+import { ProductsProvider } from '@/lib/productsStore'
+import SiteSchema from '@/components/schemas/SiteSchema'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
@@ -14,10 +17,16 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'sw
 const oswald = Oswald({ subsets: ['latin'], weight: ['500', '600'], variable: '--font-oswald', display: 'swap' })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://vintagedrumshop.com.br'),
-  title: 'Vintage Drum Shop - Baterias e Acessórios Profissionais',
-  description: 'Revenda oficial Wincent e Istanbul Agop em São Paulo. A melhor seleção de baterias, pratos e acessórios musicais para percussionistas profissionais.',
-  keywords: 'baterias, pratos, wincent, istanbul agop, drum shop, instrumentos musicais, são paulo, percussão',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: 'Vintage Drum Shop | Pratos Istanbul Agop, baquetas Wincent e baterias',
+    template: '%s',
+  },
+  description: 'Loja de bateria em São Paulo: pratos Istanbul Agop (chimbal, crash, ride), baquetas Wincent e Dynabeat, caixas e baterias. 10% no Pix ou 10x sem juros. Enviamos para todo o Brasil.',
+  keywords: 'pratos istanbul agop, chimbal, hi-hat, crash, ride, baquetas wincent, baquetas dynabeat, caixa de bateria, bateria, drum shop, loja de bateria são paulo',
+  applicationName: 'Vintage Drum Shop',
+  ...(!isProductionSite && { robots: { index: false, follow: false } }),
+  formatDetection: { telephone: false },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -28,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: 'https://vintagedrumshop.com.br',
+    url: siteUrl,
     title: 'Vintage Drum Shop - Percussão Profissional',
     description: 'Revenda oficial Wincent e Istanbul Agop em São Paulo',
     siteName: 'Vintage Drum Shop',
@@ -49,19 +58,26 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+// Produtos buscados no servidor a cada 5 min: as páginas já saem com o catálogo real no HTML
+export const revalidate = 300
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  // Descrição curta no catálogo da página (a completa vem na página do produto)
+  const initialProducts = (await getAllProducts()).map(p => ({ ...p, description: p.description.slice(0, 240) }))
+
   return (
     <html lang="pt-BR" className={`${inter.variable} ${oswald.variable}`} suppressHydrationWarning>
       <head>
-        <link rel="alternate" hrefLang="pt-BR" href="https://vintagedrumshop.com.br" />
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
       </head>
       <body className={campaign ? 'antialiased black-november' : 'antialiased'}>
+        <SiteSchema />
         <CartProvider>
+          <ProductsProvider initialProducts={initialProducts}>
           <ProductsInitializer />
           <div className="overflow-x-clip w-full">
             <PageTransition>
@@ -70,6 +86,7 @@ export default function RootLayout({
             <Footer />
             <WhatsAppButton />
           </div>
+          </ProductsProvider>
         </CartProvider>
         <Analytics />
         <SpeedInsights />

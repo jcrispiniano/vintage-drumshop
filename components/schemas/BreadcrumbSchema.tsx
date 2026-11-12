@@ -1,3 +1,5 @@
+import { absoluteUrl } from '@/lib/products';
+
 interface BreadcrumbItem {
   name: string;
   url: string;
@@ -15,7 +17,7 @@ export default function BreadcrumbSchema({ items }: BreadcrumbSchemaProps) {
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": `https://vintagedrumshop.com.br${item.url}`
+      "item": absoluteUrl(item.url)
     }))
   };
 

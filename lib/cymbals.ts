@@ -1,5 +1,6 @@
 import { TIMBRES, productSizes, productTimbres } from '@/lib/productText';
 import { brandLabel, isGenericBrand } from '@/lib/brands';
+import { productAliases } from '@/lib/searchTerms';
 
 /**
  * Tipo, série e ficha técnica dos pratos, tirados só do nome do produto
@@ -13,7 +14,7 @@ export const CYMBAL_TYPE_LABELS: Record<CymbalType, string> = {
   sets: 'Set de pratos',
   crash: 'Crash',
   ride: 'Ride',
-  hihat: 'Hi-Hat',
+  hihat: 'Chimbal / Hi-Hat',
   effects: 'Efeitos e stacks',
 };
 
@@ -82,6 +83,9 @@ export function productSpecs(p: { name: string; brand: string; category: string 
     }
   }
   if (/\+\s*bag\b/i.test(p.name)) specs.push({ label: 'Inclui', value: 'Bag para transporte' });
+  // Outros nomes do mesmo produto (ex.: chimbal = hi-hat): ajudam o cliente e o Google
+  const aliases = productAliases(p.name);
+  if (aliases.length) specs.push({ label: 'Também chamado', value: aliases.join(', ') });
   return specs;
 }
 

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import type { CartItem } from '@/lib/cartStore';
-import { campaign, categories, contactInfo, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productUrl } from '@/lib/products';
+import { campaign, categories, contactInfo, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import SmartImage from '@/components/SmartImage';
@@ -78,7 +78,7 @@ export default function CarrinhoPage() {
     cartItems.forEach(item => {
       message += `*${item.quantity}x* ${item.name}\n`;
       message += `${formatPrice(pixPrice(item.price))} no Pix (${formatPrice(item.price)} no cartão) cada\n`;
-      message += `${productUrl(item.id)}\n\n`;
+      message += `${productUrl(item)}\n\n`;
     });
 
     message += `*Total no Pix:* ${formatPrice(totalPix)}\n`;
@@ -168,14 +168,14 @@ export default function CarrinhoPage() {
             <section aria-label="Itens do carrinho" className="space-y-3 lg:col-span-2">
               {cartItems.map(item => (
                 <article key={item.id} className="flex gap-3 rounded-xl bg-white p-3 ring-1 ring-line sm:gap-5 sm:p-5">
-                  <Link href={`/produto/${item.id}`} className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-paper sm:h-28 sm:w-28">
+                  <Link href={productPath(item)} className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-paper sm:h-28 sm:w-28">
                     <SmartImage src={productImage(item.image)} alt={item.name} fill sizes="112px" className="object-cover" />
                   </Link>
 
                   <div className="min-w-0 flex-1">
                     <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-primary">{categoryName(item.category)}</p>
                     <h2 className="mb-2 line-clamp-2 text-sm font-semibold leading-tight text-ink sm:text-base">
-                      <Link href={`/produto/${item.id}`} className="hover:text-accent">{item.name}</Link>
+                      <Link href={productPath(item)} className="hover:text-accent">{item.name}</Link>
                     </h2>
                     <p className="flex flex-wrap items-baseline gap-x-1 tabular-nums">
                       <span className="text-lg font-bold text-accent sm:text-xl">{formatPrice(pixPrice(item.price))}</span>

@@ -1,10 +1,8 @@
-import type { Metadata } from 'next'
+import { sectionMetadata } from '@/lib/seo'
+import SectionLayout from '@/components/seo/SectionLayout'
 
-export const metadata: Metadata = {
-  title: 'Pratos Istanbul Agop | Vintage Drum Shop',
-  description: 'Pratos Istanbul Agop feitos à mão: crash, ride, hi-hat e efeitos. Filtre pelo som: dark, brilhante, seco, jazz.',
-}
+export const metadata = sectionMetadata('pratos')
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return children
+  return <SectionLayout id="pratos">{children}</SectionLayout>
 }
