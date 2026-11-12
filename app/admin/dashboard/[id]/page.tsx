@@ -19,6 +19,7 @@ interface DbProduct {
   active: boolean
   sold_out?: boolean
   audio?: string | null
+  videos?: string[] | null
 }
 
 export default function EditProductPage() {
@@ -79,6 +80,7 @@ export default function EditProductPage() {
         active: product.active,
         soldOut: product.sold_out ?? false,
         audio: product.audio ?? '',
+        videos: (product.videos ?? []).join('\n'),
       }}
     />
   )

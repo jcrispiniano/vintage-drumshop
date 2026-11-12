@@ -3,7 +3,7 @@
 import SmartImage from '@/components/SmartImage';
 import PriceBlock from '@/components/PriceBlock';
 import Link from 'next/link';
-import { Headphones, Heart, ShoppingCart } from 'lucide-react';
+import { Headphones, PlayCircle, Heart, ShoppingCart } from 'lucide-react';
 import { discountPercent, productImage, productPath } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 import { brandLabel, isGenericBrand } from '@/lib/brands';
@@ -23,6 +23,7 @@ interface Product {
   description: string;
   soldOut?: boolean;
   audio?: string;
+  videos?: string[];
 }
 
 interface ProductCardProps {
@@ -109,12 +110,17 @@ export default function ProductCard({ product, typeLabel, tags = [] }: ProductCa
             {title}
           </Link>
         </h3>
-        {(size || product.audio || tags.length > 0) && (
+        {(size || product.audio || product.videos?.length || tags.length > 0) && (
           <p className="mb-3 -mt-0.5 flex flex-wrap gap-1.5">
             {size && <span className="inline-block rounded bg-paper px-1.5 py-0.5 text-xs font-bold tabular-nums text-ink ring-1 ring-line">{size}</span>}
             {tags.map(tag => (
               <span key={tag} className="inline-block rounded bg-cream px-1.5 py-0.5 text-xs font-semibold text-ink">{tag}</span>
             ))}
+            {product.videos?.length ? (
+              <span className="inline-flex items-center gap-1 rounded bg-cream px-1.5 py-0.5 text-xs font-bold text-ink">
+                <PlayCircle size={12} aria-hidden /> Com vídeo
+              </span>
+            ) : null}
             {product.audio && (
               <span className="inline-flex items-center gap-1 rounded bg-cream px-1.5 py-0.5 text-xs font-bold text-ink">
                 <Headphones size={12} aria-hidden /> Com áudio

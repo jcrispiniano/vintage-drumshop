@@ -1,6 +1,6 @@
 import { getAllProducts } from '@/lib/db'
 import { absoluteUrl, productUrl, siteUrl } from '@/lib/products'
-import { SECTIONS } from '@/lib/seo'
+import { SECTIONS, sectionImage } from '@/lib/seo'
 
 /**
  * Envolve uma página de lista: publica para o Google a trilha (Início › Categoria)
@@ -10,6 +10,7 @@ export default async function SectionLayout({ id, children }: { id: string; chil
   const section = SECTIONS[id]
   const products = section.match ? (await getAllProducts()).filter(section.match).filter(p => !p.soldOut) : []
 
+  const image = await sectionImage(id)
   const schemas: object[] = [{
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -18,6 +19,16 @@ export default async function SectionLayout({ id, children }: { id: string; chil
       { '@type': 'ListItem', position: 2, name: section.name, item: `${siteUrl}${section.path}` },
     ],
   }]
+  // A página em si, com a foto que a representa (o Google usa como miniatura no resultado)
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: section.title.replace(/ \| Vintage Drum Shop$/, ''),
+    description: section.description,
+    url: `${siteUrl}${section.path}`,
+    ...(image && { image, primaryImageOfPage: { '@type': 'ImageObject', url: image } }),
+    isPartOf: { '@id': `${siteUrl}/#site` },
+  })
   if (products.length) {
     schemas.push({
       '@context': 'https://schema.org',

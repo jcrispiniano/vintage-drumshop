@@ -12,6 +12,7 @@ export interface Product {
   featured?: boolean;
   soldOut?: boolean;
   audio?: string; // URL de um áudio curto do produto ("Ouça antes de comprar")
+  videos?: string[]; // links do YouTube (som/review), na ordem de exibição
   updatedAt?: string; // última alteração (sitemap e feed do Google)
 }
 

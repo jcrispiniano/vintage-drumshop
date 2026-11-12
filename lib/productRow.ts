@@ -16,6 +16,7 @@ export function normalizeProduct(row: Record<string, unknown>): Product {
     featured: (row.featured as boolean) ?? false,
     soldOut: (row.sold_out as boolean) ?? false,
     audio: (row.audio as string) || undefined,
+    videos: (row.videos as string[] | null)?.length ? (row.videos as string[]) : undefined,
     updatedAt: (row.updated_at as string) || undefined,
   }
 }
@@ -57,6 +58,10 @@ export function toDbRow(body: Record<string, unknown>, partial = false): { row: 
   if (has('featured')) row.featured = body.featured ?? false
   if (has('active')) row.active = body.active ?? true
   if (has('soldOut')) row.sold_out = body.soldOut ?? false
+  if (has('videos')) {
+    const list = Array.isArray(body.videos) ? (body.videos as unknown[]).filter((v): v is string => typeof v === 'string' && v.trim() !== '').map(v => v.trim()) : []
+    row.videos = list.length ? list : null
+  }
   if (has('audio')) row.audio = typeof body.audio === 'string' && body.audio.trim() ? body.audio.trim() : null
 
   return { row }
@@ -67,7 +72,7 @@ export function toDbRow(body: Record<string, unknown>, partial = false): { row: 
  * `supabase/schema.sql`. Se o PostgREST reclamar de uma delas, a gravação é
  * refeita sem a coluna em vez de falhar o salvamento inteiro.
  */
-const OPTIONAL_COLUMNS = ['sold_out', 'images', 'audio']
+const OPTIONAL_COLUMNS = ['sold_out', 'images', 'audio', 'videos']
 
 /** PGRST204 = "Could not find the 'x' column of 'products' in the schema cache". */
 function missingColumn(error: { code?: string; message?: string } | null) {
