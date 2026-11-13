@@ -102,7 +102,7 @@ function PratosContent({ params }: { params: Params }) {
 
       <section className="category-hero category-hero--photo" style={{ '--hero-img': "url('/fotos/banner-pratos.jpg')" } as React.CSSProperties}>
         <div className="container mx-auto px-4 text-center">
-          <h1 className="category-hero__title">{seriesLabel ? `Pratos ${seriesLabel}` : 'Pratos'}</h1>
+          <h1 className="category-hero__title">{seriesLabel ? `Pratos ${seriesLabel}` : 'Pratos Istanbul Agop'}</h1>
           <p className="category-hero__lead">
             Istanbul Agop: artesanato turco feito à mão há gerações. Escolha pelo som ou pelo tipo.
           </p>

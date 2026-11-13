@@ -18,7 +18,7 @@ export default function VassourinhasPage() {
 
       <section className="category-hero category-hero--photo" style={{ '--hero-img': "url('/images/brushes-wincent-collection.jpg')" } as React.CSSProperties}>
         <div className="container mx-auto px-4 text-center">
-          <h1 className="category-hero__title">Vassourinhas</h1>
+          <h1 className="category-hero__title">Vassourinhas e rods Wincent</h1>
           <p className="category-hero__lead">Brushes Wincent para sons suaves e dinâmicos</p>
         </div>
       </section>
