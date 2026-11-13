@@ -35,24 +35,6 @@ const CATEGORY_PHOTOS: Record<string, { image: string; position?: string }> = {
 };
 const CATEGORY_ORDER = ['pratos', 'baquetas', 'caixas', 'peles', 'baterias', 'acessorios'];
 
-const brands = [
-  {
-    logo: '/wincent-logo.png', name: 'Wincent', label: 'Revenda autorizada',
-    desc: 'Baquetas suecas com madeira selecionada e equilíbrio para todos os estilos.',
-    href: '/wincent', cta: 'Ver baquetas Wincent',
-  },
-  {
-    logo: '/istanbul-logo-wide.png', name: 'Istanbul Agop', label: 'Distribuidor oficial',
-    desc: 'Pratos turcos feitos à mão, ricos em harmônicos e usados pelos grandes bateristas.',
-    href: '/pratos', cta: 'Ver pratos Istanbul',
-  },
-  {
-    logo: '/torelli-logo-wide.png', name: 'Torelli', label: 'Revenda autorizada',
-    desc: 'Marca brasileira de percussão, ferragens e acessórios com ótimo custo-benefício.',
-    href: '/busca?q=torelli', cta: 'Ver produtos Torelli',
-  },
-];
-
 /**
  * Arte da campanha (Black November) como capa da home, de ponta a ponta; some quando `campaign` for null.
  * Desktop: arte + faixa da capa cabem na primeira dobra; corta no máximo a base da arte (o logo fica sempre inteiro).
@@ -247,25 +229,27 @@ function SectionTitle({ id, children }: { id: string; children: React.ReactNode 
 }
 
 /** Painel grande de foto com título sobreposto (padrão "LENDAS DO ROCK" da referência). */
-function PhotoPanel({ href, image, alt, title, text, position }: {
-  href: string; image: string; alt: string; title: string; text: string; position?: string;
+function PhotoPanel({ href, image, alt, title, text, label, cta, position }: {
+  href: string; image: string; alt: string; title: string; text: string; label: string; cta: string; position?: string;
 }) {
   return (
-    <Link href={href} className="group relative block aspect-[4/5] overflow-hidden bg-ink md:aspect-[3/4]">
+    <Link href={href} className="group relative block aspect-[5/4] overflow-hidden bg-ink md:aspect-[3/4] lg:aspect-[4/5]">
       <SmartImage
         src={image}
         alt={alt}
         fill
-        sizes="(min-width: 768px) 50vw, 100vw"
+        sizes="(min-width: 768px) 34vw, 100vw"
         className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
         style={{ objectPosition: position }}
       />
-      <span className="absolute inset-0 bg-[linear-gradient(0deg,rgba(28,17,10,0.88)_0%,rgba(28,17,10,0.25)_45%,transparent_70%)]" aria-hidden />
+      <span className="absolute inset-0 bg-[linear-gradient(0deg,rgba(28,17,10,0.94)_0%,rgba(28,17,10,0.78)_32%,rgba(28,17,10,0.2)_62%,transparent_80%)]" aria-hidden />
       <span className="absolute inset-x-0 bottom-0 p-6 text-white md:p-10">
-        <span className="block font-display text-3xl font-semibold uppercase leading-none md:text-5xl">{title}</span>
+        <span className="block font-display text-3xl font-semibold uppercase leading-none md:text-4xl xl:text-5xl">{title}</span>
         <span className="mt-3 block max-w-sm text-sm text-on-dark md:text-base">{text}</span>
+        {/* A relação da loja com a marca fica aqui: dispensa o bloco "Revendedor autorizado" no fim da página */}
+        <span className="mt-3 block text-xs font-semibold uppercase tracking-[0.14em] text-on-dark-soft">{label}</span>
         <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-gold">
-          Ver coleção <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" aria-hidden />
+          {cta} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" aria-hidden />
         </span>
       </span>
     </Link>
@@ -401,14 +385,16 @@ export default function Home() {
           </section>
         )}
 
-        {/* Dois painéis grandes de marca */}
-        <section aria-label="Marcas em destaque" className="grid md:grid-cols-2">
+        {/* As três marcas da casa, cada uma apresentada uma vez (com a relação da loja com ela) */}
+        <section aria-label="Marcas da casa" className="grid md:grid-cols-3">
           <PhotoPanel
             href="/pratos"
             image="/fotos/ed-istanbul.jpg"
             alt="Prato Istanbul Agop cobrindo metade do rosto do Daniel"
             title="Istanbul Agop"
             text="Pratos turcos martelados à mão, um a um. Cada peça tem voz própria."
+            label="Distribuidor oficial"
+            cta="Ver pratos"
             position="40% 50%"
           />
           <PhotoPanel
@@ -417,7 +403,19 @@ export default function Home() {
             alt="Baquetas Wincent sobre o sofá de couro, com pratos ao fundo"
             title="Wincent"
             text="Baquetas suecas com madeira selecionada e equilíbrio para todos os estilos."
+            label="Revenda autorizada"
+            cta="Ver baquetas"
             position="50% 70%"
+          />
+          <PhotoPanel
+            href="/caixas"
+            image="/fotos/hero-caixa-martelada.jpg"
+            alt="Caixa Pinguim Real com casco martelado e a etiqueta assinada da Torelli"
+            title="Pinguim"
+            text="Caixas brasileiras da Torelli em alumínio, latão e cobre martelado."
+            label="Revenda autorizada"
+            cta="Ver caixas"
+            position="70% 60%"
           />
         </section>
 
@@ -434,32 +432,6 @@ export default function Home() {
           </section>
         )}
 
-        {/* Marcas oficiais */}
-        <section className="border-t border-line bg-cream py-12 md:py-16" aria-labelledby="marcas-titulo">
-          <div className="container mx-auto px-4">
-            <SectionTitle id="marcas-titulo">Revendedor autorizado</SectionTitle>
-            <ul className="grid divide-y divide-[#DCC9AE] md:grid-cols-3 md:divide-x md:divide-y-0">
-              {brands.map(brand => (
-                <li key={brand.name} className="flex flex-col py-6 first:pt-0 last:pb-0 md:px-8 md:py-0 md:first:pl-0 md:last:pr-0">
-                  <div className="relative mb-4 h-14 w-52">
-                    <SmartImage
-                      src={brand.logo}
-                      alt={brand.name}
-                      fill
-                      sizes="208px"
-                      className="object-contain object-left mix-blend-multiply"
-                    />
-                  </div>
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary">{brand.label}</p>
-                  <p className="mb-4 max-w-sm text-sm leading-relaxed text-ink-soft">{brand.desc}</p>
-                  <Link href={brand.href} className="mt-auto inline-flex min-h-11 items-center gap-1 text-sm font-bold text-secondary hover:underline">
-                    {brand.cta} <ArrowRight size={16} aria-hidden />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
       </main>
     </div>
   );
