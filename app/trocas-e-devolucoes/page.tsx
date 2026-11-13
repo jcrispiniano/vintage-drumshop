@@ -38,8 +38,8 @@ export default function TrocasDevolucoes() {
                 <ul className="list-disc pl-6 mt-2 space-y-1">
                   <li>
                     E-mail:{' '}
-                    <a href={`mailto:${contactInfo.email}`} className="text-accent font-semibold hover:underline">
-                      {contactInfo.email}
+                    <a href={`mailto:${contactInfo.sacEmail}`} className="text-accent font-semibold hover:underline">
+                      {contactInfo.sacEmail}
                     </a>
                   </li>
                   <li>
@@ -111,8 +111,8 @@ export default function TrocasDevolucoes() {
               <p className="mb-2"><strong>Vintage Drum Shop</strong></p>
               <p className="mb-2">
                 E-mail:{' '}
-                <a href={`mailto:${contactInfo.email}`} className="text-accent font-semibold hover:underline">
-                  {contactInfo.email}
+                <a href={`mailto:${contactInfo.sacEmail}`} className="text-accent font-semibold hover:underline">
+                  {contactInfo.sacEmail}
                 </a>
               </p>
               <p className="mb-2">

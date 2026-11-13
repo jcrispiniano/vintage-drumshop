@@ -756,7 +756,9 @@ export const contactInfo = {
   phone: '+55 11 94739-7347',
   phoneFormatted: '(11) 94739-7347',
   whatsapp: 'https://wa.me/5511947397347',
-  email: 'drumshopvintage@gmail.com',
+  email: 'contato@vintagedrumshop.com.br',
+  // Trocas, devoluções e problemas com pedido
+  sacEmail: 'sac@vintagedrumshop.com.br',
   instagram: 'https://www.instagram.com/vintage.drumshop',
   instagramHandle: '@vintage.drumshop',
   // Link do Perfil da Empresa no Google que abre direto a caixa de avaliação
