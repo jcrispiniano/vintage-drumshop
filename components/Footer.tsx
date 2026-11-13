@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Instagram, Mail, MessageCircle, Phone } from 'lucide-react';
+import { Instagram, Mail, MessageCircle, Phone, Star } from 'lucide-react';
 import SmartImage from '@/components/SmartImage';
 import { campaign, categories, contactInfo, paymentTerms, pixOffLabel } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
@@ -74,6 +74,9 @@ export default function Footer() {
             </a>
             <a href={contactInfo.instagram} target="_blank" rel="noopener noreferrer me" className="flex min-h-11 items-center gap-2 hover:text-white">
               <Instagram size={15} aria-hidden /> {contactInfo.instagramHandle}
+            </a>
+            <a href={contactInfo.googleReview} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-2 hover:text-white">
+              <Star size={15} aria-hidden /> Avalie a loja no Google
             </a>
             <p className="mt-2">{contactInfo.address}</p>
             {/* Um horário por linha: "Sáb: 9h-13h" não fica sozinho quebrado no fim */}

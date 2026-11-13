@@ -759,6 +759,8 @@ export const contactInfo = {
   email: 'drumshopvintage@gmail.com',
   instagram: 'https://www.instagram.com/vintage.drumshop',
   instagramHandle: '@vintage.drumshop',
+  // Link do Perfil da Empresa no Google que abre direto a caixa de avaliação
+  googleReview: 'https://g.page/r/CTTd5zG1AjGqEBM/review',
   address: 'São Paulo - SP',
   hours: 'Seg-Sex: 9h-18h | Sáb: 9h-13h'
 };
