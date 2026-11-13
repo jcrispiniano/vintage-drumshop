@@ -1,7 +1,7 @@
 'use client';
 
 import SmartImage from '@/components/SmartImage';
-import { campaign, categories, contactInfo, paymentTerms, pixOffLabel } from '@/lib/products';
+import { campaign, categories, contactInfo, paymentTerms, pixOffLabel, regularTerms } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { TIMBRES } from '@/lib/productText';
 import Link from 'next/link';
@@ -58,16 +58,18 @@ const brands = [
  * Desktop: arte + faixa da capa cabem na primeira dobra; corta no máximo a base da arte (o logo fica sempre inteiro).
  * Celular: quadro 4:3 alinhado à direita, onde está o título da arte.
  */
-function CampaignBanner() {
+function CampaignBanner({ hasOffers }: { hasOffers: boolean }) {
+  // "Ver ofertas" leva às ofertas de verdade; sem nenhuma, leva às categorias
+  const offersHref = hasOffers ? '#ofertas' : '#categorias';
   return (
     <section aria-label={campaign?.name} className="border-b-[3px] border-gold bg-campaign">
       <a
-        href="#categorias"
+        href={offersHref}
         className="relative block aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-[max(min(calc(100svh-17.5rem),55.8vw),42vw)]"
       >
         <SmartImage
           src="/fotos/black-november-banner-pearl.jpg"
-          alt={`${campaign?.name} Vintage Drum Shop: ofertas especiais por tempo limitado. ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros. Renove seu setup!`}
+          alt={`${campaign?.name} Vintage Drum Shop: condições especiais até ${campaign?.until}. ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros. Renove seu setup!`}
           fill
           preload
           fetchPriority="high"
@@ -85,15 +87,16 @@ function CampaignBanner() {
           </h1>
           <p className="text-sm text-on-dark-soft md:text-base">
             <strong className="font-semibold text-gold">{pixOffLabel} no Pix</strong> ou até{' '}
-            <strong className="font-semibold text-white">{paymentTerms.maxInstallments}x sem juros</strong> no cartão. Monte o pedido aqui e feche pelo WhatsApp.
+            <strong className="font-semibold text-white">{paymentTerms.maxInstallments}x sem juros</strong> no cartão, até {campaign?.until}.{' '}
+            <span className="whitespace-nowrap">No resto do ano: {Math.round(regularTerms.pixDiscount * 100)}% e {regularTerms.maxInstallments}x.</span>
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-3 md:flex-nowrap md:justify-end">
           <a
-            href="#categorias"
+            href={offersHref}
             className="inline-flex h-12 items-center gap-2 rounded-md bg-accent px-6 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary"
           >
-            Ver ofertas <ArrowRight size={18} aria-hidden />
+            {hasOffers ? 'Ver ofertas' : 'Ver produtos'} <ArrowRight size={18} aria-hidden />
           </a>
           <a
             href={contactInfo.whatsapp}
@@ -299,7 +302,7 @@ export default function Home() {
 
       <main id="main-content">
         {/* Na campanha a capa faz o papel do banner principal e já traz as condições */}
-        {campaign ? <CampaignBanner /> : (
+        {campaign ? <CampaignBanner hasOffers={offers.length > 0} /> : (
           <>
             <Hero />
             <PaymentPerks />
@@ -387,7 +390,7 @@ export default function Home() {
         </section>
 
         {offers.length > 0 && (
-          <section className="bg-white py-12 md:py-20" aria-labelledby="ofertas-titulo">
+          <section id="ofertas" className="scroll-mt-32 bg-white py-12 md:py-20" aria-labelledby="ofertas-titulo">
             <div className="container mx-auto px-4">
               <SectionTitle id="ofertas-titulo">Ofertas da casa</SectionTitle>
               <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">

@@ -702,7 +702,10 @@ export const paymentTerms = {
 };
 
 /** Campanha ativa: aparece na barra do topo, no banner da home e na faixa de benefícios. */
-export const campaign: { name: string } | null = { name: 'Black November' };
+export const campaign: { name: string; until: string } | null = { name: 'Black November', until: '30/11' };
+
+/** Condições de fora da campanha: mostram o que a campanha tem de diferente */
+export const regularTerms = { pixDiscount: 0.05, maxInstallments: 6 };
 
 /** Rótulo único da condição do Pix, usado em toda a loja (o desconto vale só no Pix). */
 export const pixOffLabel = `${Math.round(paymentTerms.pixDiscount * 100)}% OFF`;

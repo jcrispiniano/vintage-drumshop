@@ -9,7 +9,7 @@ import YouTubeLite from '@/components/YouTubeLite';
 import { productSizeValue } from '@/lib/productText';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -38,6 +38,16 @@ export default function ProdutoClient({ product }: { product: Product }) {
   // Ordem em que aparecem na seção de vídeos: Shorts primeiro
   const firstVideo = shorts[0] ?? longVideos[0];
   const [playFirst, setPlayFirst] = useState(false);
+  // A barra fixa do celular só aparece quando o "Comprar" da página sai da tela (sem dois botões iguais juntos)
+  const buyRef = useRef<HTMLDivElement>(null);
+  const [buyVisible, setBuyVisible] = useState(true);
+  useEffect(() => {
+    const el = buyRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setBuyVisible(entry.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   const isCymbal = product.category === 'pratos';
   const related = relatedProducts(product, allProducts);
 
@@ -190,7 +200,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
               </div>
             )}
 
-            <div className="mt-6 flex gap-3">
+            <div ref={buyRef} className="mt-6 flex gap-3">
               {product.soldOut ? (
                 <a
                   href={whatsappHref}
@@ -236,15 +246,20 @@ export default function ProdutoClient({ product }: { product: Product }) {
                 Sem estoque agora. Pela encomenda a loja confirma prazo e valor antes de qualquer pagamento.
               </p>
             ) : (
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 flex h-12 items-center justify-center gap-2 rounded-md bg-paper text-sm font-semibold text-ink ring-1 ring-line transition hover:ring-ink/40"
-              >
-                <MessageCircle size={18} className="text-[#1f9d55]" aria-hidden />
-                {isCymbal ? 'Ouça e pergunte sobre este prato no WhatsApp' : 'Tire suas dúvidas pelo WhatsApp'}
-              </a>
+              <>
+                <p className="mt-2 text-sm text-ink-soft">
+                  Vai para o carrinho. Você finaliza pelo WhatsApp e nada é cobrado agora.
+                </p>
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 flex min-h-12 items-center justify-center gap-2 rounded-md bg-paper px-4 py-2.5 text-center text-sm font-semibold leading-tight text-ink ring-1 ring-line transition hover:ring-ink/40"
+                >
+                  <MessageCircle size={18} className="flex-shrink-0 text-[#1f9d55]" aria-hidden />
+                  {isCymbal ? 'Pergunte sobre este prato no WhatsApp' : 'Tire suas dúvidas pelo WhatsApp'}
+                </a>
+              </>
             )}
 
             {/* Na campanha as condições ganham o painel preto da Black November (sem repetir a lista) */}
@@ -359,8 +374,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
       </div>
 
       {/* Barra de compra fixa no celular */}
-      {!product.soldOut && (
-        <div className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-line bg-white/95 px-4 py-3 backdrop-blur md:hidden">
+      {!product.soldOut && !buyVisible && (
+        <div className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-line bg-white px-4 py-3 md:hidden">
           <p className="min-w-0 flex-1 leading-tight tabular-nums">
             <span className="block text-lg font-bold text-accent">{formatPrice(pixPrice(product.price))}</span>
             <span className="text-xs text-ink-soft">no Pix · ou {paymentTerms.maxInstallments}x sem juros</span>
