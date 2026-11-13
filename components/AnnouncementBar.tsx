@@ -9,12 +9,12 @@ const messages: { key: string; text: string; node: ReactNode }[] = [
   ...(campaign
     ? [{
         key: 'campanha',
-        text: `${campaign.name}: ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros`,
+        text: `${campaign.name}: ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros, até ${campaign.until}`,
         node: (
           <>
             <strong className="font-bold uppercase tracking-widest text-gold">{campaign.name}</strong>
             <span className="sm:hidden"> · {Math.round(paymentTerms.pixDiscount * 100)}% Pix · {paymentTerms.maxInstallments}x sem juros</span>
-            <span className="hidden sm:inline"> · {pixOffLabel} no Pix ou até {paymentTerms.maxInstallments}x sem juros</span>
+            <span className="hidden sm:inline"> · {pixOffLabel} no Pix ou até {paymentTerms.maxInstallments}x sem juros · até {campaign.until}</span>
           </>
         ),
       }]

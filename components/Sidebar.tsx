@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import Link from 'next/link';
 import { categories, contactInfo } from '@/lib/products';
+import { useProductsStore } from '@/lib/productsStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface SidebarProps {
@@ -31,8 +32,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     return () => window.removeEventListener('keydown', onKey);
   }, [isOpen, onClose]);
 
-  const main = MAIN.map(id => categories.find(c => c.id === id)).filter(Boolean) as typeof categories;
-  const others = categories.filter(c => !MAIN.includes(c.id));
+  const products = useProductsStore(state => state.products);
+  const loaded = useProductsStore(state => state.loaded);
+  // Mesma regra do menu do computador: categoria sem produto não aparece como departamento
+  const hasStock = (id: string) => !loaded || products.some(p => p.category === id);
+  const main = MAIN.map(id => categories.find(c => c.id === id)).filter(c => c && hasStock(c.id)) as typeof categories;
+  const others = categories.filter(c => !MAIN.includes(c.id) && hasStock(c.id));
 
   const link = 'flex min-h-12 items-center px-5 text-base text-ink transition hover:bg-paper hover:text-accent';
 
@@ -92,6 +97,16 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   </li>
                 ))}
               </ul>
+              {/* O que não está no estoque a loja encomenda: um aviso honesto em vez de departamentos vazios */}
+              <a
+                href={`${contactInfo.whatsapp}?text=${encodeURIComponent('Olá! Vocês encomendam peles, ferragens, bags ou peças?')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mx-5 mt-4 block rounded-lg bg-paper px-4 py-3 text-sm text-ink-soft ring-1 ring-line hover:ring-ink/30"
+              >
+                <strong className="block text-ink">Não achou o que procura?</strong>
+                Peles, ferragens, bags e peças a gente encomenda. Pergunte pelo WhatsApp.
+              </a>
             </nav>
 
             <div className="border-t border-line bg-paper p-4 text-sm text-ink-soft">

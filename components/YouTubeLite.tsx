@@ -8,8 +8,8 @@ import type { YouTubeVideo } from '@/lib/youtube';
  * Vídeo do YouTube que só carrega o player quando o cliente clica: a página do
  * produto continua leve (o player completo pesa ~1MB). Shorts ficam em pé (9:16).
  */
-export default function YouTubeLite({ video, title, className = 'w-full' }: { video: YouTubeVideo; title: string; className?: string }) {
-  const [playing, setPlaying] = useState(false);
+export default function YouTubeLite({ video, title, className = 'w-full', autoStart = false }: { video: YouTubeVideo; title: string; className?: string; autoStart?: boolean }) {
+  const [playing, setPlaying] = useState(autoStart);
   const ratio = video.short ? 'aspect-[9/16]' : 'aspect-video';
 
   return (

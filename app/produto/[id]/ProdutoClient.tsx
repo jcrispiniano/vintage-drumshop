@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, PlayCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
+import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, Play, PlayCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
 import { Product, campaign, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
 import { cymbalSeries, cymbalType, productSpecs, soundSearchUrl } from '@/lib/cymbals';
 import { parseYouTubeList } from '@/lib/youtube';
@@ -9,7 +9,7 @@ import YouTubeLite from '@/components/YouTubeLite';
 import { productSizeValue } from '@/lib/productText';
 import { useProductsStore } from '@/lib/productsStore';
 import { useCart } from '@/contexts/CartContext';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -35,6 +35,19 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const videos = parseYouTubeList(product.videos);
   const shorts = videos.filter(v => v.short);
   const longVideos = videos.filter(v => !v.short);
+  // Ordem em que aparecem na seção de vídeos: Shorts primeiro
+  const firstVideo = shorts[0] ?? longVideos[0];
+  const [playFirst, setPlayFirst] = useState(false);
+  // A barra fixa do celular só aparece quando o "Comprar" da página sai da tela (sem dois botões iguais juntos)
+  const buyRef = useRef<HTMLDivElement>(null);
+  const [buyVisible, setBuyVisible] = useState(true);
+  useEffect(() => {
+    const el = buyRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setBuyVisible(entry.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   const isCymbal = product.category === 'pratos';
   const related = relatedProducts(product, allProducts);
 
@@ -151,6 +164,31 @@ export default function ProdutoClient({ product }: { product: Product }) {
               <PriceBlock price={product.price} oldPrice={product.oldPrice} size="page" />
             </div>
 
+            {/* Sem áudio próprio, o primeiro vídeo vira o "ouça" ao lado do preço: o som decide a compra */}
+            {!product.audio && firstVideo && (
+              <a
+                href="#ouca"
+                onClick={() => setPlayFirst(true)}
+                className="group mt-5 flex items-center gap-4 rounded-lg bg-cream p-3 pr-4 transition hover:ring-1 hover:ring-ink/30"
+              >
+                <span className="relative h-14 w-24 flex-shrink-0 overflow-hidden rounded-md bg-ink">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- miniatura do YouTube */}
+                  <img src={`https://i.ytimg.com/vi/${firstVideo.id}/mqdefault.jpg`} alt="" loading="lazy" className="h-full w-full object-cover opacity-85" />
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-white">
+                      <Play size={14} fill="currentColor" aria-hidden />
+                    </span>
+                  </span>
+                </span>
+                <span className="min-w-0 leading-tight">
+                  <span className="block text-sm font-bold uppercase tracking-wide text-ink">{isCymbal ? 'Ouça o som' : 'Veja em vídeo'}</span>
+                  <span className="text-sm text-ink-soft">
+                    {videos.length > 1 ? `${videos.length} vídeos` : '1 vídeo'}{isCymbal ? ' · use fone de ouvido' : ''}
+                  </span>
+                </span>
+              </a>
+            )}
+
             {product.audio && (
               <div className="mt-5 rounded-lg bg-cream p-4">
                 <p className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-ink">
@@ -162,7 +200,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
               </div>
             )}
 
-            <div className="mt-6 flex gap-3">
+            <div ref={buyRef} className="mt-6 flex gap-3">
               {product.soldOut ? (
                 <a
                   href={whatsappHref}
@@ -208,15 +246,20 @@ export default function ProdutoClient({ product }: { product: Product }) {
                 Sem estoque agora. Pela encomenda a loja confirma prazo e valor antes de qualquer pagamento.
               </p>
             ) : (
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 flex h-12 items-center justify-center gap-2 rounded-md bg-paper text-sm font-semibold text-ink ring-1 ring-line transition hover:ring-ink/40"
-              >
-                <MessageCircle size={18} className="text-[#1f9d55]" aria-hidden />
-                {isCymbal ? 'Ouça e pergunte sobre este prato no WhatsApp' : 'Tire suas dúvidas pelo WhatsApp'}
-              </a>
+              <>
+                <p className="mt-2 text-sm text-ink-soft">
+                  Vai para o carrinho. Você finaliza pelo WhatsApp e nada é cobrado agora.
+                </p>
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 flex min-h-12 items-center justify-center gap-2 rounded-md bg-paper px-4 py-2.5 text-center text-sm font-semibold leading-tight text-ink ring-1 ring-line transition hover:ring-ink/40"
+                >
+                  <MessageCircle size={18} className="flex-shrink-0 text-[#1f9d55]" aria-hidden />
+                  {isCymbal ? 'Pergunte sobre este prato no WhatsApp' : 'Tire suas dúvidas pelo WhatsApp'}
+                </a>
+              </>
             )}
 
             {/* Na campanha as condições ganham o painel preto da Black November (sem repetir a lista) */}
@@ -244,7 +287,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
 
         {/* Vídeos do produto: o som decide a compra de um prato */}
         {videos.length > 0 && (
-          <section aria-labelledby="videos-titulo" className="mt-14 border-t-2 border-ink pt-8">
+          <section id="ouca" aria-labelledby="videos-titulo" className="mt-14 scroll-mt-40 border-t-2 border-ink pt-8">
             <h2 id="videos-titulo" className="mb-2 text-2xl font-semibold uppercase text-ink">
               {isCymbal ? 'Ouça o som' : 'Veja em vídeo'}
             </h2>
@@ -256,7 +299,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
             <div className="flex flex-wrap gap-4">
               {shorts.map(v => (
                 <YouTubeLite
-                  key={v.id}
+                  key={`${v.id}-${playFirst && v.id === firstVideo?.id}`}
+                  autoStart={playFirst && v.id === firstVideo?.id}
                   video={v}
                   title={`${product.name} (vídeo da Vintage Drum Shop)`}
                   className="w-[min(100%,260px)] md:h-[380px] md:w-auto xl:h-[440px]"
@@ -264,7 +308,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
               ))}
               {longVideos.map(v => (
                 <YouTubeLite
-                  key={v.id}
+                  key={`${v.id}-${playFirst && v.id === firstVideo?.id}`}
+                  autoStart={playFirst && v.id === firstVideo?.id}
                   video={v}
                   title={`${product.name} (demonstração de som)`}
                   className="w-full md:h-[380px] md:w-auto md:max-w-full xl:h-[440px]"
@@ -329,8 +374,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
       </div>
 
       {/* Barra de compra fixa no celular */}
-      {!product.soldOut && (
-        <div className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-line bg-white/95 px-4 py-3 backdrop-blur md:hidden">
+      {!product.soldOut && !buyVisible && (
+        <div className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-line bg-white px-4 py-3 md:hidden">
           <p className="min-w-0 flex-1 leading-tight tabular-nums">
             <span className="block text-lg font-bold text-accent">{formatPrice(pixPrice(product.price))}</span>
             <span className="text-xs text-ink-soft">no Pix · ou {paymentTerms.maxInstallments}x sem juros</span>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import type { CartItem } from '@/lib/cartStore';
-import { campaign, categories, contactInfo, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
+import { categories, contactInfo, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
 import SmartImage from '@/components/SmartImage';
@@ -22,6 +22,12 @@ function formatCep(value: string) {
 }
 
 const SENT_KEY = 'vintage-pedido-enviado';
+const CODE_KEY = 'vintage-pedido-codigo';
+
+/** Código curto para o cliente e a loja falarem do mesmo pedido (ex.: VDS-K3F9A) */
+function newOrderCode() {
+  return `VDS-${Date.now().toString(36).slice(-5).toUpperCase()}`;
+}
 
 /** Assinatura do carrinho: se mudar depois do envio, o aviso de "pedido enviado" some */
 function cartSignature(items: CartItem[]) {
@@ -33,12 +39,15 @@ export default function CarrinhoPage() {
   // Assinatura do carrinho no momento em que o pedido foi para o WhatsApp
   const [sentFor, setSentFor] = useState<string | null>(null);
   const [cleared, setCleared] = useState(false);
+  const [orderCode, setOrderCode] = useState<string | null>(null);
 
   // Quem volta do WhatsApp (ou recarrega a página) continua vendo que o pedido foi enviado
   useEffect(() => {
     let saved: string | null = null;
     try { saved = sessionStorage.getItem(SENT_KEY); } catch {}
-    if (saved) Promise.resolve().then(() => setSentFor(saved));
+    let code: string | null = null;
+    try { code = sessionStorage.getItem(CODE_KEY); } catch {}
+    if (saved) Promise.resolve().then(() => { setSentFor(saved); setOrderCode(code); });
   }, []);
   const sent = sentFor !== null && sentFor === cartSignature(cartItems) && cartItems.length > 0;
   const [removed, setRemoved] = useState<CartItem | null>(null);
@@ -73,7 +82,10 @@ export default function CarrinhoPage() {
   const installments = paymentTerms.maxInstallments;
 
   const handleCheckout = () => {
-    let message = '*Pedido - Vintage Drum Shop*\n\n';
+    const signature = cartSignature(cartItems);
+    // Reenvio do mesmo carrinho mantém o código; carrinho diferente ganha um novo
+    const code = sentFor === signature && orderCode ? orderCode : newOrderCode();
+    let message = `*Pedido ${code} - Vintage Drum Shop*\n\n`;
 
     cartItems.forEach(item => {
       message += `*${item.quantity}x* ${item.name}\n`;
@@ -87,17 +99,18 @@ export default function CarrinhoPage() {
     message += cepComplete ? 'Gostaria de finalizar este pedido!' : 'Gostaria de finalizar este pedido! Meu CEP é: ';
 
     window.open(`${contactInfo.whatsapp}?text=${encodeURIComponent(message)}`, '_blank');
-    const signature = cartSignature(cartItems);
     setSentFor(signature);
+    setOrderCode(code);
     setCleared(false);
-    try { sessionStorage.setItem(SENT_KEY, signature); } catch {}
+    try { sessionStorage.setItem(SENT_KEY, signature); sessionStorage.setItem(CODE_KEY, code); } catch {}
   };
 
   const handleClear = () => {
     clearCart();
     setSentFor(null);
+    setOrderCode(null);
     setCleared(true);
-    try { sessionStorage.removeItem(SENT_KEY); } catch {}
+    try { sessionStorage.removeItem(SENT_KEY); sessionStorage.removeItem(CODE_KEY); } catch {}
   };
 
   const categoryName = (id: string) => categories.find(c => c.id === id)?.name ?? id;
@@ -107,7 +120,7 @@ export default function CarrinhoPage() {
       <Header />
       <CategoryNav />
 
-      <div className="container mx-auto px-4 pb-16 pt-8">
+      <div className="container mx-auto px-4 pb-28 pt-8 lg:pb-16">
         <h1 className="mb-6 text-3xl font-semibold uppercase text-ink md:text-4xl">Seu carrinho</h1>
 
         {removed && (
@@ -128,6 +141,12 @@ export default function CarrinhoPage() {
             <p className="mt-2 max-w-[60ch] text-ink-soft">
               A loja confere o estoque e o frete e responde por lá ({contactInfo.hours}). Nada foi cobrado. Se o WhatsApp não abriu, envie de novo.
             </p>
+            {orderCode && (
+              <p className="mt-3 text-sm text-ink-soft">
+                Código do pedido: <strong className="rounded bg-cream px-2 py-1 font-mono text-base tabular-nums text-ink">{orderCode}</strong>{' '}
+                <span className="block pt-1 sm:inline sm:pt-0">Guarde para falar com a loja sobre este pedido.</span>
+              </p>
+            )}
             <div className="mt-4 flex flex-wrap gap-3">
               <button type="button" onClick={handleCheckout} className="inline-flex h-11 items-center rounded-md px-5 text-sm font-bold text-ink ring-1 ring-line transition hover:ring-ink/50">
                 Enviar de novo
@@ -229,7 +248,7 @@ export default function CarrinhoPage() {
                   </div>
                   {savings > 0 && (
                     <div className="flex justify-between gap-2 text-ink-soft">
-                      <dt>Desconto {campaign ? `${campaign.name} ` : ''}no Pix ({pixOffLabel})</dt>
+                      <dt>Desconto no Pix ({pixOffLabel})</dt>
                       <dd className="font-semibold text-primary">− {formatPrice(savings)}</dd>
                     </div>
                   )}
@@ -304,6 +323,23 @@ export default function CarrinhoPage() {
           </div>
         )}
       </div>
+
+      {/* No celular o botão de finalizar fica abaixo da dobra: o total e a ação acompanham a rolagem */}
+      {cartItems.length > 0 && !sent && (
+        <div className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-line bg-white px-4 py-3 lg:hidden">
+          <p className="min-w-0 flex-1 leading-tight tabular-nums">
+            <span className="block text-lg font-bold text-accent">{formatPrice(totalPix)}</span>
+            <span className="text-xs text-ink-soft">total no Pix · nada é cobrado agora</span>
+          </p>
+          <button
+            type="button"
+            onClick={handleCheckout}
+            className="flex h-12 flex-shrink-0 items-center rounded-md bg-[#167a42] px-5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#11643a]"
+          >
+            Finalizar
+          </button>
+        </div>
+      )}
     </div>
   );
 }

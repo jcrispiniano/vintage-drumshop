@@ -3,11 +3,11 @@
 import SmartImage from '@/components/SmartImage';
 import PriceBlock from '@/components/PriceBlock';
 import Link from 'next/link';
-import { Headphones, Heart, ShoppingCart } from 'lucide-react';
+import { AudioLines, Headphones, Heart, ShoppingCart } from 'lucide-react';
 import { discountPercent, productImage, productPath } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 import { brandLabel, isGenericBrand } from '@/lib/brands';
-import { productSizes, shortTitle } from '@/lib/productText';
+import { TIMBRES, productSizes, productTimbres, shortTitle } from '@/lib/productText';
 
 export { brandLabel };
 
@@ -36,7 +36,11 @@ interface ProductCardProps {
   showInstallments?: boolean;
 }
 
-export default function ProductCard({ product, typeLabel, tags = [] }: ProductCardProps) {
+export default function ProductCard({ product, typeLabel, tags: tagsProp }: ProductCardProps) {
+  // Prato escolhe-se pelo som: o timbre aparece em todo card de prato, em qualquer lista do site
+  const tags = tagsProp ?? (product.category === 'pratos'
+    ? productTimbres(product.name).map(id => TIMBRES.find(t => t.id === id)!.label)
+    : []);
   const { addToCart, toggleFavorite, favorites } = useCart();
   const isFavorite = favorites.includes(product.id);
   const off = discountPercent(product.price, product.oldPrice);
@@ -113,8 +117,11 @@ export default function ProductCard({ product, typeLabel, tags = [] }: ProductCa
         {(size || product.audio || tags.length > 0) && (
           <p className="mb-3 -mt-0.5 flex flex-wrap gap-1.5">
             {size && <span className="inline-block rounded bg-paper px-1.5 py-0.5 text-xs font-bold tabular-nums text-ink ring-1 ring-line">{size}</span>}
-            {tags.map(tag => (
-              <span key={tag} className="inline-block rounded bg-cream px-1.5 py-0.5 text-xs font-semibold text-ink">{tag}</span>
+            {tags.map((tag, i) => (
+              <span key={tag} className="inline-flex items-center gap-1 rounded bg-cream px-1.5 py-0.5 text-xs font-semibold text-ink">
+                {i === 0 && <><AudioLines size={12} className="text-primary" aria-hidden /><span className="sr-only">Timbre: </span></>}
+                {tag}
+              </span>
             ))}
             {product.audio && (
               <span className="inline-flex items-center gap-1 rounded bg-cream px-1.5 py-0.5 text-xs font-bold text-ink">

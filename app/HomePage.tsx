@@ -58,16 +58,18 @@ const brands = [
  * Desktop: arte + faixa da capa cabem na primeira dobra; corta no máximo a base da arte (o logo fica sempre inteiro).
  * Celular: quadro 4:3 alinhado à direita, onde está o título da arte.
  */
-function CampaignBanner() {
+function CampaignBanner({ hasOffers }: { hasOffers: boolean }) {
+  // "Ver ofertas" leva às ofertas de verdade; sem nenhuma, leva às categorias
+  const offersHref = hasOffers ? '#ofertas' : '#categorias';
   return (
     <section aria-label={campaign?.name} className="border-b-[3px] border-gold bg-campaign">
       <a
-        href="#categorias"
+        href={offersHref}
         className="relative block aspect-[4/3] w-full overflow-hidden md:aspect-auto md:h-[max(min(calc(100svh-17.5rem),55.8vw),42vw)]"
       >
         <SmartImage
           src="/fotos/black-november-banner-pearl.jpg"
-          alt={`${campaign?.name} Vintage Drum Shop: ofertas especiais por tempo limitado. ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros. Renove seu setup!`}
+          alt={`${campaign?.name} Vintage Drum Shop: condições especiais até ${campaign?.until}. ${pixOffLabel} no Pix ou até ${paymentTerms.maxInstallments}x sem juros. Renove seu setup!`}
           fill
           preload
           fetchPriority="high"
@@ -85,15 +87,15 @@ function CampaignBanner() {
           </h1>
           <p className="text-sm text-on-dark-soft md:text-base">
             <strong className="font-semibold text-gold">{pixOffLabel} no Pix</strong> ou até{' '}
-            <strong className="font-semibold text-white">{paymentTerms.maxInstallments}x sem juros</strong> no cartão. Monte o pedido aqui e feche pelo WhatsApp.
+            <strong className="font-semibold text-white">{paymentTerms.maxInstallments}x sem juros</strong> no cartão, até {campaign?.until}.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-3 md:flex-nowrap md:justify-end">
           <a
-            href="#categorias"
+            href={offersHref}
             className="inline-flex h-12 items-center gap-2 rounded-md bg-accent px-6 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary"
           >
-            Ver ofertas <ArrowRight size={18} aria-hidden />
+            {hasOffers ? 'Ver ofertas' : 'Ver produtos'} <ArrowRight size={18} aria-hidden />
           </a>
           <a
             href={contactInfo.whatsapp}
@@ -299,84 +301,17 @@ export default function Home() {
 
       <main id="main-content">
         {/* Na campanha a capa faz o papel do banner principal e já traz as condições */}
-        {campaign ? <CampaignBanner /> : (
+        {campaign ? <CampaignBanner hasOffers={offers.length > 0} /> : (
           <>
             <Hero />
             <PaymentPerks />
           </>
         )}
 
-        {/* Compre por categoria: fotos grandes do ensaio */}
-        <section id="categorias" className="scroll-mt-32 py-12 md:py-20" aria-labelledby="categorias-titulo">
-          <div className="container mx-auto px-4">
-            <SectionTitle id="categorias-titulo">Compre por categoria</SectionTitle>
-            <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-              {categoryTiles.map(cat => (
-                <li key={cat.id}>
-                  <Link href={`/${cat.id}`} className="group relative block aspect-[4/5] overflow-hidden rounded-xl bg-ink">
-                    <SmartImage
-                      src={cat.image}
-                      alt=""
-                      fill
-                      sizes="(min-width: 1536px) 480px, (min-width: 768px) 30vw, 50vw"
-                      className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                      style={{ objectPosition: cat.position }}
-                    />
-                    <span className="absolute inset-0 bg-[linear-gradient(0deg,rgba(28,17,10,0.85)_0%,rgba(28,17,10,0.1)_45%,transparent_65%)]" aria-hidden />
-                    <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4 md:p-6">
-                      <span className="grid gap-1.5">
-                        <span className="font-display text-xl font-semibold uppercase leading-none text-white md:text-4xl">
-                          {cat.name}
-                        </span>
-                        {loaded && !products.some(p => p.category === cat.id) && (
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gold md:text-sm">Sob encomenda</span>
-                        )}
-                      </span>
-                      <ArrowRight className="mb-0.5 h-5 w-5 flex-shrink-0 text-gold transition-transform group-hover:translate-x-1 md:h-7 md:w-7" aria-hidden />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {offers.length > 0 && (
-          <section className="bg-white py-12 md:py-20" aria-labelledby="ofertas-titulo">
-            <div className="container mx-auto px-4">
-              <SectionTitle id="ofertas-titulo">Ofertas da casa</SectionTitle>
-              <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
-                {offers.map(product => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* Dois painéis grandes de marca */}
-        <section aria-label="Marcas em destaque" className="grid md:grid-cols-2">
-          <PhotoPanel
-            href="/pratos"
-            image="/fotos/ed-istanbul.jpg"
-            alt="Prato Istanbul Agop cobrindo metade do rosto do Daniel"
-            title="Istanbul Agop"
-            text="Pratos turcos martelados à mão, um a um. Cada peça tem voz própria."
-            position="40% 50%"
-          />
-          <PhotoPanel
-            href="/wincent"
-            image="/fotos/ed-wincent-couro.jpg"
-            alt="Baquetas Wincent sobre o sofá de couro, com pratos ao fundo"
-            title="Wincent"
-            text="Baquetas suecas com madeira selecionada e equilíbrio para todos os estilos."
-            position="50% 70%"
-          />
-        </section>
-
-        {/* Ouça antes de comprar: timbres dos pratos */}
+        {/* Escolha pelo som logo no começo: é como o baterista decide um prato */}
         <section className="grid bg-ink text-white md:grid-cols-2" aria-labelledby="timbre-titulo">
-          <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[560px]">
+          {/* No celular a lista vem primeiro e a foto fica baixa: o som não pode empurrar o resto da home */}
+          <div className="relative order-2 aspect-[16/9] md:order-none md:aspect-auto md:min-h-[480px]">
             <SmartImage
               src="/fotos/ouca-pratos.jpg"
               alt="Prato Istanbul Agop Xist em primeiro plano"
@@ -416,6 +351,74 @@ export default function Home() {
               <MessageCircle size={18} aria-hidden /> Tirar dúvida sobre um prato
             </a>
           </div>
+        </section>
+
+        {/* Compre por categoria: fotos grandes do ensaio */}
+        <section id="categorias" className="scroll-mt-32 py-12 md:py-20" aria-labelledby="categorias-titulo">
+          <div className="container mx-auto px-4">
+            <SectionTitle id="categorias-titulo">Compre por categoria</SectionTitle>
+            <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
+              {categoryTiles.map(cat => (
+                <li key={cat.id}>
+                  <Link href={`/${cat.id}`} className="group relative block aspect-[4/5] overflow-hidden rounded-xl bg-ink">
+                    <SmartImage
+                      src={cat.image}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1536px) 480px, (min-width: 768px) 30vw, 50vw"
+                      className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                      style={{ objectPosition: cat.position }}
+                    />
+                    <span className="absolute inset-0 bg-[linear-gradient(0deg,rgba(28,17,10,0.85)_0%,rgba(28,17,10,0.1)_45%,transparent_65%)]" aria-hidden />
+                    <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-4 md:p-6">
+                      <span className="grid gap-1.5">
+                        <span className="font-display text-xl font-semibold uppercase leading-none text-white md:text-4xl">
+                          {cat.name}
+                        </span>
+                        {loaded && !products.some(p => p.category === cat.id) && (
+                          <span className="text-xs font-semibold uppercase tracking-wide text-gold md:text-sm">Sob encomenda</span>
+                        )}
+                      </span>
+                      <ArrowRight className="mb-0.5 h-5 w-5 flex-shrink-0 text-gold transition-transform group-hover:translate-x-1 md:h-7 md:w-7" aria-hidden />
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {offers.length > 0 && (
+          <section id="ofertas" className="scroll-mt-32 bg-white py-12 md:py-20" aria-labelledby="ofertas-titulo">
+            <div className="container mx-auto px-4">
+              <SectionTitle id="ofertas-titulo">Ofertas da casa</SectionTitle>
+              <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+                {offers.map(product => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Dois painéis grandes de marca */}
+        <section aria-label="Marcas em destaque" className="grid md:grid-cols-2">
+          <PhotoPanel
+            href="/pratos"
+            image="/fotos/ed-istanbul.jpg"
+            alt="Prato Istanbul Agop cobrindo metade do rosto do Daniel"
+            title="Istanbul Agop"
+            text="Pratos turcos martelados à mão, um a um. Cada peça tem voz própria."
+            position="40% 50%"
+          />
+          <PhotoPanel
+            href="/wincent"
+            image="/fotos/ed-wincent-couro.jpg"
+            alt="Baquetas Wincent sobre o sofá de couro, com pratos ao fundo"
+            title="Wincent"
+            text="Baquetas suecas com madeira selecionada e equilíbrio para todos os estilos."
+            position="50% 70%"
+          />
         </section>
 
         {featured.length > 0 && (

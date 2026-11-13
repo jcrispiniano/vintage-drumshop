@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { contactInfo } from '@/lib/products';
 
@@ -8,6 +9,19 @@ const HIDDEN_ON = ['/carrinho', '/produto', '/admin'];
 
 export default function WhatsAppButton() {
   const pathname = usePathname() ?? '';
+  // No celular o botão cobria preços e o "Comprar" dos cards: some ao rolar para baixo, volta ao rolar para cima
+  const [tucked, setTucked] = useState(false);
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - last) < 12) return;
+      setTucked(y > last && y > 300);
+      last = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
   if (HIDDEN_ON.some(path => pathname.startsWith(path))) return null;
 
   const href = `${contactInfo.whatsapp}?text=${encodeURIComponent('Olá! Gostaria de mais informações sobre os produtos.')}`;
@@ -17,7 +31,9 @@ export default function WhatsAppButton() {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#167a42] text-white shadow-[0_10px_24px_-8px_rgba(0,0,0,0.45)] transition hover:bg-[#11643a] motion-safe:hover:-translate-y-0.5"
+      className={`fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#167a42] text-white shadow-[0_10px_24px_-8px_rgba(0,0,0,0.45)] transition duration-300 hover:bg-[#11643a] focus-visible:translate-y-0 focus-visible:opacity-100 motion-safe:hover:-translate-y-0.5 ${
+        tucked ? 'max-md:pointer-events-none max-md:translate-y-24 max-md:opacity-0' : ''
+      }`}
       aria-label="Falar com a loja no WhatsApp"
       title="Falar com a loja no WhatsApp"
     >
