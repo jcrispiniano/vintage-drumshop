@@ -1,7 +1,7 @@
 'use client';
 
 import SmartImage from '@/components/SmartImage';
-import { campaign, categories, contactInfo, paymentTerms, pixOffLabel, regularTerms } from '@/lib/products';
+import { campaign, categories, contactInfo, paymentTerms, pixOffLabel } from '@/lib/products';
 import { useProductsStore } from '@/lib/productsStore';
 import { TIMBRES } from '@/lib/productText';
 import Link from 'next/link';
@@ -87,8 +87,7 @@ function CampaignBanner({ hasOffers }: { hasOffers: boolean }) {
           </h1>
           <p className="text-sm text-on-dark-soft md:text-base">
             <strong className="font-semibold text-gold">{pixOffLabel} no Pix</strong> ou até{' '}
-            <strong className="font-semibold text-white">{paymentTerms.maxInstallments}x sem juros</strong> no cartão, até {campaign?.until}.{' '}
-            <span className="whitespace-nowrap">No resto do ano: {Math.round(regularTerms.pixDiscount * 100)}% e {regularTerms.maxInstallments}x.</span>
+            <strong className="font-semibold text-white">{paymentTerms.maxInstallments}x sem juros</strong> no cartão, até {campaign?.until}. Monte o pedido aqui e feche pelo WhatsApp.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-3 md:flex-nowrap md:justify-end">
