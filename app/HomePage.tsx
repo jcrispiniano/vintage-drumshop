@@ -87,7 +87,7 @@ function CampaignBanner({ hasOffers }: { hasOffers: boolean }) {
           </h1>
           <p className="text-sm text-on-dark-soft md:text-base">
             <strong className="font-semibold text-gold">{pixOffLabel} no Pix</strong> ou até{' '}
-            <strong className="font-semibold text-white">{paymentTerms.maxInstallments}x sem juros</strong> no cartão, até {campaign?.until}. Monte o pedido aqui e feche pelo WhatsApp.
+            <strong className="font-semibold text-white">{paymentTerms.maxInstallments}x sem juros</strong> no cartão, até {campaign?.until}.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-3 md:flex-nowrap md:justify-end">
