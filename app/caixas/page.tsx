@@ -49,7 +49,7 @@ export default function CaixasPage() {
         />
         <div className="absolute inset-0 bg-[rgba(28,17,10,0.55)]" />
         <div className="relative container mx-auto px-4 text-center">
-          <h1 className="category-hero__title">Caixas</h1>
+          <h1 className="category-hero__title">Caixas Pinguim</h1>
           <p className="category-hero__lead">
             Pinguim — fabricação nacional de alto desempenho
           </p>

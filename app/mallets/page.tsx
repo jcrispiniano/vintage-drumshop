@@ -18,7 +18,7 @@ export default function MalletsPage() {
 
       <section className="category-hero category-hero--photo" style={{ '--hero-img': "url('/images/mallets-wincent.jpg')" } as React.CSSProperties}>
         <div className="container mx-auto px-4 text-center">
-          <h1 className="category-hero__title">Mallets</h1>
+          <h1 className="category-hero__title">Mallets Wincent</h1>
           <p className="category-hero__lead">Mallets Wincent com cabeças macias para sons expressivos</p>
         </div>
       </section>

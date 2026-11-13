@@ -23,7 +23,7 @@ export default function BateriasPage() {
 
       <section className="category-hero category-hero--photo" style={{ '--hero-img': "url('/fotos/banner-baterias.jpg')" } as React.CSSProperties}>
         <div className="container mx-auto px-4 text-center">
-          <h1 className="category-hero__title">Baterias</h1>
+          <h1 className="category-hero__title">Baterias acústicas</h1>
           <p className="category-hero__lead">Kits montados e testados por quem toca. Pergunte pelo WhatsApp e a gente ajuda a escolher.</p>
         </div>
       </section>

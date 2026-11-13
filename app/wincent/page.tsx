@@ -48,7 +48,7 @@ export default function WincentPage() {
           <div className="absolute inset-0 bg-[rgba(28,17,10,0.5)]"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="category-hero__title drop-shadow-lg">Wincent</h1>
+          <h1 className="category-hero__title drop-shadow-lg">Baquetas Wincent</h1>
           <p className="text-xl text-white drop-shadow-md">Baquetas profissionais suecas com madeira de primeira qualidade</p>
         </div>
       </section>

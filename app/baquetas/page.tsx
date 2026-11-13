@@ -66,7 +66,7 @@ export default function BaquetasPage() {
       {/* Hero */}
       <section className="category-hero category-hero--photo" style={{ '--hero-img': "url('/fotos/banner-baquetas.jpg')" } as React.CSSProperties}>
         <div className="container mx-auto px-4 text-center">
-          <h1 className="category-hero__title">Baquetas</h1>
+          <h1 className="category-hero__title">Baquetas Wincent e Dynabeat</h1>
           <p className="category-hero__lead">
             Wincent · Dynabeat — qualidade e precisão para cada estilo
           </p>
