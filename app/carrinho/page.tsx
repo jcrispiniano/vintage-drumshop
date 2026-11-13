@@ -166,6 +166,13 @@ export default function CarrinhoPage() {
             <Link href="/" className="inline-flex h-11 items-center rounded-md bg-accent px-6 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary">
               Voltar para a loja
             </Link>
+            {/* Quem já comprou e voltou para limpar o carrinho é quem pode contar como foi */}
+            <p className="mt-8 text-sm text-ink-soft">
+              Já recebeu um pedido da Vintage?{' '}
+              <a href={contactInfo.googleReview} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-secondary hover:underline">
+                Avalie a loja no Google
+              </a>
+            </p>
           </div>
         ) : cartItems.length === 0 ? (
           <div className="mx-auto max-w-lg py-10 text-center">
