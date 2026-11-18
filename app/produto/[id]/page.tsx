@@ -1,4 +1,4 @@
-import { absoluteUrl, categories, formatPrice, pixPrice, productPath, productUrl } from '@/lib/products';
+import { absoluteUrl, categories, formatPrice, isPriceOnRequest, pixPrice, productPath, productUrl } from '@/lib/products';
 import { getAllProductRefs, getProductById } from '@/lib/db';
 import { brandLabel, isGenericBrand } from '@/lib/brands';
 import { notFound, permanentRedirect } from 'next/navigation';
@@ -29,7 +29,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const aliases = productAliases(product.name);
   const aka = aliases.length ? ` (${aliases.slice(0, 2).join(', ')})` : '';
   const imageUrl = absoluteUrl(product.image);
-  const price = product.soldOut
+  const price = isPriceOnRequest(product)
+    ? 'Preço sob consulta pelo WhatsApp'
+    : product.soldOut
     ? 'Sob encomenda'
     : `${formatPrice(pixPrice(product.price))} no Pix ou ${formatPrice(product.price)} no cartão`;
   const description = [

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, Play, PlayCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
-import { Product, campaign, contactInfo, discountPercent, formatPrice, isCustomOrder, isPriceOnRequest, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
+import { Product, campaign, contactInfo, discountPercent, formatPrice, hasDetails, isCustomOrder, isPriceOnRequest, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
 import { cymbalSeries, cymbalType, productSpecs, soundSearchUrl } from '@/lib/cymbals';
 import { parseYouTubeList } from '@/lib/youtube';
 import YouTubeLite from '@/components/YouTubeLite';
@@ -16,6 +16,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import PriceBlock from '@/components/PriceBlock';
 import ProductCard from '@/components/ProductCard';
 import SmartImage from '@/components/SmartImage';
+import ProductDetailsTabs from '@/components/ProductDetailsTabs';
 import { brandLabel, isGenericBrand } from '@/lib/brands';
 import { categories } from '@/lib/products';
 
@@ -26,6 +27,25 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const [isImageExpanded, setIsImageExpanded] = useState(false);
   const [currentImage, setCurrentImage] = useState(product.image);
   const [shared, setShared] = useState(false);
+  // Baterias: configuração (kit) e acabamento escolhidos vão junto na mensagem do WhatsApp
+  const details = hasDetails(product.details) ? product.details : null;
+  const [config, setConfig] = useState<string | null>(null);
+  const [finish, setFinish] = useState<string | null>(null);
+  const pickConfig = (code: string, scroll = false) => {
+    const next = config === code && !scroll ? null : code;
+    setConfig(next);
+    const img = details?.configs?.find(c => c.code === next)?.image;
+    if (img) setCurrentImage(img);
+    if (scroll) buyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+  const pickFinish = (name: string, scroll = false) => {
+    const next = finish === name && !scroll ? null : name;
+    setFinish(next);
+    const img = details?.finishes?.find(f => f.name === next)?.image;
+    if (img) setCurrentImage(img);
+    if (scroll) buyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+  const configInfo = details?.configs?.find(c => c.code === config);
 
   const gallery = [product.image, ...(product.images ?? [])].filter(Boolean);
   // Condições de pagamento só fazem sentido com preço definido
@@ -52,9 +72,20 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const isCymbal = product.category === 'pratos';
   const related = relatedProducts(product, allProducts);
 
+  const finishInfo = details?.finishes?.find(f => f.name === finish);
+  // Com mais de uma cor em estoque, a cor faz parte do pedido
+  const needsFinish = (details?.finishes?.length ?? 0) > 1;
+  const [askFinish, setAskFinish] = useState(false);
   const handleAddToCart = () => {
     if (product.soldOut) return;
+    if (needsFinish && !finishInfo) {
+      setAskFinish(true);
+      document.getElementById('escolha-acabamento')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    const onlyFinish = details?.finishes?.length === 1 ? details.finishes[0] : finishInfo;
     addToCart({
+      variant: onlyFinish ? `Acabamento ${onlyFinish.code ? `#${onlyFinish.code} ` : ''}${onlyFinish.name}` : undefined,
       id: product.id,
       name: product.name,
       price: product.price,
@@ -84,14 +115,18 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const onRequest = isPriceOnRequest(product);
   // Custom e sem preço viram conversa: não entram no carrinho
   const viaWhatsApp = product.soldOut || onRequest;
+  const choice = [
+    config && `Configuração: ${config}`,
+    finish && `Acabamento: ${details?.finishes?.find(f => f.name === finish)?.code ? `#${details.finishes.find(f => f.name === finish)!.code} ` : ''}${finish}`,
+  ].filter(Boolean).join('\n');
   const whatsappHref = `${contactInfo.whatsapp}?text=${encodeURIComponent(
-    custom
+    (custom
       ? `Olá! Quero montar uma ${product.name} custom (madeiras, tamanhos e acabamento). Pode me ajudar?\n${productUrl(product)}`
       : onRequest
       ? `Olá! Qual o valor de: ${product.name}?\n${productUrl(product)}`
       : product.soldOut
       ? `Olá! Quero encomendar: ${product.name}\n${productUrl(product)}\nQual o prazo?`
-      : `Olá! Quero saber mais sobre: ${product.name}\n${productUrl(product)}`
+      : `Olá! Quero saber mais sobre: ${product.name}\n${productUrl(product)}`) + (choice ? `\n${choice}` : '')
   )}`;
 
   return (
@@ -172,6 +207,62 @@ export default function ProdutoClient({ product }: { product: Product }) {
             <div className={`border-y border-line py-5 ${product.soldOut ? 'opacity-55' : ''}`}>
               <PriceBlock price={product.price} oldPrice={product.oldPrice} size="page" />
             </div>
+
+            {details?.configs && details.configs.length > 1 && (
+              <fieldset className="mt-5">
+                <legend className="mb-2 text-sm font-bold uppercase tracking-wide text-ink">Configuração</legend>
+                <div className="flex flex-wrap gap-2">
+                  {details.configs.map(c => (
+                    <button key={c.code} type="button" onClick={() => pickConfig(c.code)} aria-pressed={config === c.code}
+                      className={`min-h-11 rounded-md px-3 text-sm font-semibold transition ${config === c.code ? 'bg-ink text-white' : 'text-ink ring-1 ring-line hover:ring-ink/50'}`}>
+                      {c.code}
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-2 text-sm text-ink-soft">
+                  {configInfo ? configInfo.pieces.join(' · ') : 'Escolha um kit para ver os tambores e tamanhos.'}
+                </p>
+              </fieldset>
+            )}
+
+            {details?.configs?.length === 1 && (
+              <p className="mt-5 text-sm text-ink-soft">
+                <span className="font-bold uppercase tracking-wide text-ink">O que vem</span>{' '}
+                {details.configs[0].pieces.join(' · ')}
+              </p>
+            )}
+
+            {details?.finishes?.length === 1 && (
+              <p className="mt-5 text-sm text-ink-soft">
+                <span className="font-bold uppercase tracking-wide text-ink">Acabamento</span>{' '}
+                {details.finishes[0].code ? `#${details.finishes[0].code} ` : ''}{details.finishes[0].name}
+              </p>
+            )}
+
+            {details?.finishes && details.finishes.length > 1 && (
+              <fieldset id="escolha-acabamento" className="mt-5 scroll-mt-40">
+                <legend className="mb-2 text-sm font-bold uppercase tracking-wide text-ink">
+                  Acabamento{finish && <span className="ml-2 font-normal normal-case tracking-normal text-ink-soft">{finish}</span>}
+                </legend>
+                <div className="flex flex-wrap gap-2">
+                  {details.finishes.map(f => (
+                    <button key={f.name} type="button" onClick={() => { pickFinish(f.name); setAskFinish(false); }} aria-pressed={finish === f.name}
+                      title={f.code ? `#${f.code} ${f.name}` : f.name}
+                      className={`flex min-h-11 items-center gap-2 rounded-md px-2 text-sm transition ${finish === f.name ? 'bg-ink text-white' : 'text-ink ring-1 ring-line hover:ring-ink/50'}`}>
+                      {f.image && (
+                        <span className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded bg-white">
+                          <SmartImage src={f.image} alt="" fill sizes="32px" className="object-cover" />
+                        </span>
+                      )}
+                      <span className="pr-1">{f.code ? `#${f.code}` : f.name}</span>
+                    </button>
+                  ))}
+                </div>
+                {askFinish && !finishInfo && (
+                  <p role="alert" className="mt-2 text-sm font-semibold text-accent">Escolha o acabamento para colocar no carrinho.</p>
+                )}
+              </fieldset>
+            )}
 
             {/* Sem áudio próprio, o primeiro vídeo vira o "ouça" ao lado do preço: o som decide a compra */}
             {!product.audio && firstVideo && (
@@ -336,7 +427,15 @@ export default function ProdutoClient({ product }: { product: Product }) {
           </section>
         )}
 
-        {/* Ficha técnica + descrição: o que diferencia este produto dos vizinhos */}
+        {details ? (
+          <ProductDetailsTabs
+            details={details}
+            description={product.description}
+            onPickConfig={(details.configs?.length ?? 0) > 1 ? code => pickConfig(code, true) : undefined}
+            onPickFinish={name => pickFinish(name, true)}
+          />
+        ) : (
+        /* Ficha técnica + descrição: o que diferencia este produto dos vizinhos */
         <div className="mt-14 grid gap-10 border-t-2 border-ink pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-14">
           {specs.length > 0 && (
             <section aria-labelledby="ficha-titulo">
@@ -368,6 +467,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
             </p>
           </section>
         </div>
+        )}
 
         {related.length > 0 && (
           <section className="mt-16">

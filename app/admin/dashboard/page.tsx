@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
-  AlertCircle, ExternalLink, Pencil, Tag, ImageIcon, MoreHorizontal, Package, Plus, Search, Trash2, Undo2, Volume2, X, FileText,
+  AlertCircle, Copy, ExternalLink, Pencil, Tag, ImageIcon, MoreHorizontal, Package, Plus, Search, Trash2, Undo2, Volume2, X, FileText,
 } from 'lucide-react'
 import AdminHeader from './_components/AdminHeader'
 import { categoryName, productPath } from '@/lib/products'
@@ -183,6 +183,21 @@ export default function AdminDashboardPage() {
         setToast(null)
       },
     })
+  }
+
+  // Duplica e abre a cópia já para editar (fica fora do site até ser revisada)
+  async function handleDuplicate(product: DbProduct) {
+    setMenuFor(null)
+    setBusy(product.id)
+    const res = await fetch(`/api/admin/products/${product.id}/duplicar`, { method: 'POST' }).catch(() => null)
+    setBusy(null)
+    if (!res?.ok) {
+      setToast({ text: `Não foi possível duplicar "${product.name}". Tente de novo.`, tone: 'error' })
+      return
+    }
+    const copy: DbProduct = await res.json()
+    setProducts(prev => [copy, ...prev])
+    router.push(`/admin/dashboard/${copy.id}`)
   }
 
   async function updateFlag(product: DbProduct, patch: { active?: boolean; soldOut?: boolean }, isUndo = false) {
@@ -418,6 +433,9 @@ export default function AdminDashboardPage() {
                                     <Link role="menuitem" href={`/admin/dashboard/${product.id}`} className="flex min-h-11 items-center gap-2 px-4 text-sm font-semibold text-ink hover:bg-cream sm:hidden">
                                       <Pencil size={16} aria-hidden /> Editar
                                     </Link>
+                                    <button role="menuitem" type="button" onClick={() => handleDuplicate(product)} className="flex min-h-11 w-full items-center gap-2 px-4 text-left text-sm text-ink hover:bg-cream">
+                                      <Copy size={16} aria-hidden /> Duplicar
+                                    </button>
                                     <a role="menuitem" href={productPath(product)} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-2 px-4 text-sm text-ink hover:bg-cream">
                                       <ExternalLink size={16} aria-hidden /> Ver no site
                                     </a>

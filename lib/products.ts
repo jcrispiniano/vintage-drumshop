@@ -14,6 +14,25 @@ export interface Product {
   audio?: string; // URL de um áudio curto do produto ("Ouça antes de comprar")
   videos?: string[]; // links do YouTube (som/review), na ordem de exibição
   updatedAt?: string; // última alteração (sitemap e feed do Google)
+  details?: ProductDetails; // abas da página (baterias): opcional
+}
+
+/**
+ * Conteúdo estruturado da página do produto, mostrado em abas (como nas páginas
+ * da Pearl). Cada parte é opcional: só aparece a aba que tiver conteúdo.
+ */
+export interface ProductDetails {
+  features?: { title: string; text: string }[];          // Características
+  specs?: { label: string; value: string }[];            // Ficha técnica
+  configs?: { code: string; pieces: string[]; image?: string; note?: string }[]; // Configurações (kits)
+  addons?: { title: string; items: { size: string; code: string }[]; note?: string; image?: string }[]; // Tambores avulsos
+  finishes?: { code?: string; name: string; image?: string }[]; // Acabamentos
+  palette?: string;      // imagem com a paleta de cores
+  finishesNote?: string; // ex.: "também em acabamentos custom"
+}
+
+export function hasDetails(d?: ProductDetails | null): d is ProductDetails {
+  return !!d && Object.values(d).some(v => (Array.isArray(v) ? v.length > 0 : !!v));
 }
 
 export const products: Product[] = [

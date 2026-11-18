@@ -9,15 +9,20 @@ export interface CartItem {
   category: string;
   image?: string;
   description?: string;
+  variant?: string; // ex.: "Acabamento #228 Solid Yellow" (baterias com várias cores)
 }
+
+/** Mesmo produto em cores diferentes vira itens separados no carrinho */
+const same = (a: { id: number; variant?: string }, id: number, variant?: string) =>
+  a.id === id && (a.variant ?? '') === (variant ?? '');
 
 interface CartStore {
   cartItems: CartItem[];
   favorites: number[];
   toastMessage: string | null;
   addToCart: (item: Omit<CartItem, 'quantity'>) => void;
-  removeFromCart: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeFromCart: (id: number, variant?: string) => void;
+  updateQuantity: (id: number, quantity: number, variant?: string) => void;
   toggleFavorite: (id: number) => void;
   clearCart: () => void;
   setToastMessage: (msg: string | null) => void;
@@ -31,34 +36,34 @@ export const useCartStore = create<CartStore>()(
       toastMessage: null,
 
       addToCart: (item) => {
-        const existing = get().cartItems.find(i => i.id === item.id);
+        const existing = get().cartItems.find(i => same(i, item.id, item.variant));
         if (existing) {
           set(state => ({
             cartItems: state.cartItems.map(i =>
-              i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+              same(i, item.id, item.variant) ? { ...i, quantity: i.quantity + 1 } : i
             ),
-            toastMessage: `Quantidade atualizada|${item.name}`,
+            toastMessage: `Quantidade atualizada|${item.name}${item.variant ? ` · ${item.variant}` : ''}`,
           }));
         } else {
           set(state => ({
             cartItems: [...state.cartItems, { ...item, quantity: 1 }],
-            toastMessage: `Adicionado ao carrinho|${item.name}`,
+            toastMessage: `Adicionado ao carrinho|${item.name}${item.variant ? ` · ${item.variant}` : ''}`,
           }));
         }
       },
 
-      removeFromCart: (id) => {
-        set(state => ({ cartItems: state.cartItems.filter(item => item.id !== id) }));
+      removeFromCart: (id, variant) => {
+        set(state => ({ cartItems: state.cartItems.filter(item => !same(item, id, variant)) }));
       },
 
-      updateQuantity: (id, quantity) => {
+      updateQuantity: (id, quantity, variant) => {
         if (quantity < 1) {
-          get().removeFromCart(id);
+          get().removeFromCart(id, variant);
           return;
         }
         set(state => ({
           cartItems: state.cartItems.map(item =>
-            item.id === id ? { ...item, quantity } : item
+            same(item, id, variant) ? { ...item, quantity } : item
           ),
         }));
       },
