@@ -4,7 +4,7 @@ import SmartImage from '@/components/SmartImage';
 import PriceBlock from '@/components/PriceBlock';
 import Link from 'next/link';
 import { AudioLines, Headphones, Heart, ShoppingCart } from 'lucide-react';
-import { discountPercent, productImage, productPath } from '@/lib/products';
+import { discountPercent, isCustomOrder, isPriceOnRequest, productImage, productPath } from '@/lib/products';
 import { useCart } from '@/contexts/CartContext';
 import { brandLabel, isGenericBrand } from '@/lib/brands';
 import { TIMBRES, productSizes, productTimbres, shortTitle } from '@/lib/productText';
@@ -135,12 +135,12 @@ export default function ProductCard({ product, typeLabel, tags: tagsProp }: Prod
           <PriceBlock price={product.price} oldPrice={product.oldPrice} />
         </div>
 
-        {product.soldOut ? (
+        {product.soldOut || isPriceOnRequest(product) ? (
           <Link
             href={href}
             className="relative z-10 flex h-11 w-full items-center justify-center rounded-md bg-paper text-sm font-bold uppercase tracking-wide text-ink ring-1 ring-line transition hover:ring-ink/40"
           >
-            Encomendar
+            {isCustomOrder(product) ? 'Montar a sua' : isPriceOnRequest(product) ? 'Consultar' : 'Encomendar'}
           </Link>
         ) : (
           <button

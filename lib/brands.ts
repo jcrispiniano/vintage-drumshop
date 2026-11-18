@@ -5,6 +5,7 @@ const BRAND_LABELS: Record<string, string> = {
   torelli: 'Torelli',
   pinguim: 'Pinguim',
   dw: 'DW',
+  pearl: 'Pearl',
   rockkey: 'RockKey',
   tunebot: 'Tune-bot',
 };

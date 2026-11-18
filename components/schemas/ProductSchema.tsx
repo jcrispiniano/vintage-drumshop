@@ -13,6 +13,8 @@ interface ProductSchemaProps {
  * mostrar preço, disponibilidade e foto direto no resultado da busca.
  */
 export default function ProductSchema({ product }: ProductSchemaProps) {
+  // Sem preço não há oferta válida para o Google (custom ou preço sob consulta)
+  if (!(product.price > 0)) return null;
   const url = productUrl(product);
   const aliases = productAliases(product.name);
   const images = [product.image, ...(product.images ?? [])].filter(Boolean).map(absoluteUrl);

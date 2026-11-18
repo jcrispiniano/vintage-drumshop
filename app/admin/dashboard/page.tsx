@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
-  AlertCircle, ExternalLink, Pencil, ImageIcon, MoreHorizontal, Package, Plus, Search, Trash2, Undo2, Volume2, X, FileText,
+  AlertCircle, ExternalLink, Pencil, Tag, ImageIcon, MoreHorizontal, Package, Plus, Search, Trash2, Undo2, Volume2, X, FileText,
 } from 'lucide-react'
 import AdminHeader from './_components/AdminHeader'
 import { categoryName, productPath } from '@/lib/products'
@@ -34,12 +34,16 @@ const SHORT_DESCRIPTION = 200
 const UNDO_MS = 6000
 
 const fewPhotos = (p: DbProduct) => (p.images?.filter(Boolean).length ?? 0) === 0
+const isCustom = (p: DbProduct) => p.badge === 'Custom'
+/** Sem preço e não é custom: não pode ir para o site ainda */
+const noPrice = (p: DbProduct) => !(p.price > 0) && !isCustom(p)
 const noSound = (p: DbProduct) => p.category === 'pratos' && !p.audio && !(p.videos?.filter(Boolean).length)
 const isShort = (p: DbProduct) => (p.description ?? '').trim().length < SHORT_DESCRIPTION
 
 /** O que falta em cada produto, na ordem do que mais ajuda a vender */
 function pending(p: DbProduct) {
   const list: { key: string; label: string; icon: typeof Volume2 }[] = []
+  if (noPrice(p)) list.push({ key: 'preco', label: 'Sem preço', icon: Tag })
   if (noSound(p)) list.push({ key: 'som', label: 'Sem som', icon: Volume2 })
   if (fewPhotos(p)) list.push({ key: 'fotos', label: 'Só 1 foto', icon: ImageIcon })
   if (isShort(p)) list.push({ key: 'descricao', label: 'Descrição curta', icon: FileText })
@@ -182,6 +186,11 @@ export default function AdminDashboardPage() {
   }
 
   async function updateFlag(product: DbProduct, patch: { active?: boolean; soldOut?: boolean }, isUndo = false) {
+    // Produto sem preço não vai para o site (apareceria "preço sob consulta" sem ser custom)
+    if (patch.active && noPrice(product)) {
+      setToast({ text: `Defina o preço de "${product.name}" antes de colocar no site. Toque em Editar.`, tone: 'error' })
+      return
+    }
     setBusy(product.id)
     const res = await fetch(`/api/admin/products/${product.id}`, {
       method: 'PUT',
@@ -310,7 +319,7 @@ export default function AdminDashboardPage() {
               <h2 className="font-display text-3xl font-semibold uppercase leading-none">{title}</h2>
               <p className="mt-1 text-sm text-ink-soft">
                 {filtered.length} {filtered.length === 1 ? 'produto' : 'produtos'}
-                {view.kind === 'atencao' && !q && ' com som, fotos ou descrição faltando'}
+                {view.kind === 'atencao' && !q && ' com preço, som, fotos ou descrição faltando'}
               </p>
             </div>
             <label className="flex items-center gap-2 text-sm text-ink-soft">
@@ -375,11 +384,12 @@ export default function AdminDashboardPage() {
                             <span className="min-w-0">
                               <span className="block font-semibold leading-snug text-ink group-hover:text-accent">{product.name}</span>
                               <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-                                <span className="font-semibold tabular-nums">{price(product.price)}</span>
+                                <span className="font-semibold tabular-nums">{product.price > 0 ? price(product.price) : isCustom(product) ? 'Preço sob consulta' : 'Sem preço'}</span>
                                 {product.old_price && product.old_price > product.price && <span className="text-ink-soft line-through tabular-nums">{price(product.old_price)}</span>}
                                 {!product.active && <span className="rounded bg-ink px-1.5 py-0.5 text-xs font-semibold text-white">Fora do site</span>}
                                 {product.sold_out && <span className="rounded bg-cream px-1.5 py-0.5 text-xs font-semibold text-ink">Esgotado</span>}
                                 {product.featured && <span className="rounded bg-cream px-1.5 py-0.5 text-xs font-semibold text-ink">Destaque</span>}
+                                {isCustom(product) && <span className="rounded bg-cream px-1.5 py-0.5 text-xs font-semibold text-ink">Custom · sob consulta</span>}
                               </span>
                               {todo.length > 0 && (
                                 <span className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs font-semibold text-amber-800">

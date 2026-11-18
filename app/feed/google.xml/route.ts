@@ -33,7 +33,8 @@ export async function GET() {
   const backorderDate = googleDate(expected.getTime() > Date.now()
     ? expected
     : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))
-  const items = products.map(p => {
+  // O Google Shopping exige preço: produto sob consulta (custom ou sem preço) fica fora do feed
+  const items = products.filter(p => p.price > 0 && p.badge !== 'Custom').map(p => {
     const type = p.category === 'pratos' ? CYMBAL_TYPE_LABELS[cymbalType(p.name)] : null
     const aliases = productAliases(p.name)
     const title = aliases.length ? `${p.name} (${aliases[0]})` : p.name

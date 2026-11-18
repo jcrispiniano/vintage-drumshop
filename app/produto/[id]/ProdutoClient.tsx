@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { BadgePercent, CreditCard, Headphones, Heart, MessageCircle, Play, PlayCircle, Share2, ShoppingCart, Truck, X, ZoomIn } from 'lucide-react';
-import { Product, campaign, contactInfo, discountPercent, formatPrice, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
+import { Product, campaign, contactInfo, discountPercent, formatPrice, isCustomOrder, isPriceOnRequest, paymentTerms, pixOffLabel, pixPrice, productImage, productPath, productUrl } from '@/lib/products';
 import { cymbalSeries, cymbalType, productSpecs, soundSearchUrl } from '@/lib/cymbals';
 import { parseYouTubeList } from '@/lib/youtube';
 import YouTubeLite from '@/components/YouTubeLite';
@@ -28,7 +28,8 @@ export default function ProdutoClient({ product }: { product: Product }) {
   const [shared, setShared] = useState(false);
 
   const gallery = [product.image, ...(product.images ?? [])].filter(Boolean);
-  const promo = campaign && !product.soldOut ? campaign : null;
+  // Condições de pagamento só fazem sentido com preço definido
+  const promo = campaign && !product.soldOut && !isPriceOnRequest(product) ? campaign : null;
   const off = discountPercent(product.price, product.oldPrice);
   const category = categories.find(c => c.id === product.category);
   const specs = productSpecs(product);
@@ -79,8 +80,16 @@ export default function ProdutoClient({ product }: { product: Product }) {
   };
 
   // A mensagem já leva o produto e o link: a loja sabe na hora do que se trata
+  const custom = isCustomOrder(product);
+  const onRequest = isPriceOnRequest(product);
+  // Custom e sem preço viram conversa: não entram no carrinho
+  const viaWhatsApp = product.soldOut || onRequest;
   const whatsappHref = `${contactInfo.whatsapp}?text=${encodeURIComponent(
-    product.soldOut
+    custom
+      ? `Olá! Quero montar uma ${product.name} custom (madeiras, tamanhos e acabamento). Pode me ajudar?\n${productUrl(product)}`
+      : onRequest
+      ? `Olá! Qual o valor de: ${product.name}?\n${productUrl(product)}`
+      : product.soldOut
       ? `Olá! Quero encomendar: ${product.name}\n${productUrl(product)}\nQual o prazo?`
       : `Olá! Quero saber mais sobre: ${product.name}\n${productUrl(product)}`
   )}`;
@@ -201,14 +210,14 @@ export default function ProdutoClient({ product }: { product: Product }) {
             )}
 
             <div ref={buyRef} className="mt-6 flex gap-3">
-              {product.soldOut ? (
+              {viaWhatsApp ? (
                 <a
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex h-14 flex-1 items-center justify-center gap-2 rounded-md bg-accent text-base font-bold uppercase tracking-wide text-white transition-colors hover:bg-secondary"
                 >
-                  <MessageCircle size={20} aria-hidden /> Encomendar pelo WhatsApp
+                  <MessageCircle size={20} aria-hidden /> {custom ? 'Montar a minha no WhatsApp' : onRequest ? 'Consultar preço no WhatsApp' : 'Encomendar pelo WhatsApp'}
                 </a>
               ) : (
                 <button
@@ -241,7 +250,15 @@ export default function ProdutoClient({ product }: { product: Product }) {
               </button>
             </div>
 
-            {product.soldOut ? (
+            {custom ? (
+              <p className="mt-3 text-sm text-ink-soft">
+                Bateria custom, feita sob encomenda: você escolhe madeiras, tamanhos e acabamento, e a loja monta o orçamento com você pelo WhatsApp.
+              </p>
+            ) : onRequest ? (
+              <p className="mt-3 text-sm text-ink-soft">
+                Fale com a loja para saber valor, prazo e acabamentos disponíveis. Nada é cobrado agora.
+              </p>
+            ) : product.soldOut ? (
               <p className="mt-3 text-sm text-ink-soft">
                 Sem estoque agora. Pela encomenda a loja confirma prazo e valor antes de qualquer pagamento.
               </p>
@@ -374,7 +391,7 @@ export default function ProdutoClient({ product }: { product: Product }) {
       </div>
 
       {/* Barra de compra fixa no celular */}
-      {!product.soldOut && !buyVisible && (
+      {!viaWhatsApp && !buyVisible && (
         <div className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-line bg-white px-4 py-3 md:hidden">
           <p className="min-w-0 flex-1 leading-tight tabular-nums">
             <span className="block text-lg font-bold text-accent">{formatPrice(pixPrice(product.price))}</span>
