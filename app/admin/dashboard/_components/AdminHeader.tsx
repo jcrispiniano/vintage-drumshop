@@ -23,17 +23,17 @@ export default function AdminHeader() {
   const activeHref = TABS.slice(1).find(tab => pathname.startsWith(tab.href))?.href ?? TABS[0].href
 
   return (
-    <header className="bg-gray-900 text-white shadow-lg print:hidden">
+    <header className="bg-ink text-white print:hidden">
       <div className="px-6 py-4 flex items-center justify-between gap-4">
         <div>
-          <h1 className="font-bold text-lg leading-none">Vintage Drum Shop</h1>
-          <p className="text-gray-400 text-xs">Painel Admin</p>
+          <p className="font-display text-xl font-semibold uppercase leading-none">Vintage Drum Shop</p>
+          <p className="text-on-dark-soft text-xs">Painel da loja</p>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/" target="_blank" className="text-gray-400 hover:text-white text-sm transition hidden sm:block">
+          <Link href="/" target="_blank" className="flex min-h-11 items-center text-on-dark-soft hover:text-white text-sm transition">
             Ver site →
           </Link>
-          <button onClick={handleLogout} className="flex items-center gap-2 text-gray-400 hover:text-white text-sm transition">
+          <button onClick={handleLogout} className="flex min-h-11 items-center gap-2 text-on-dark-soft hover:text-white text-sm transition">
             <LogOut size={16} />
             Sair
           </button>
@@ -49,7 +49,7 @@ export default function AdminHeader() {
               href={tab.href}
               aria-current={active ? 'page' : undefined}
               className={`flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-t-lg transition ${
-                active ? 'bg-gray-50 text-gray-900' : 'text-gray-400 hover:text-white'
+                active ? 'bg-paper text-ink' : 'text-on-dark-soft hover:text-white'
               }`}
             >
               <Icon size={16} />

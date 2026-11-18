@@ -31,7 +31,7 @@ function newOrderCode() {
 
 /** Assinatura do carrinho: se mudar depois do envio, o aviso de "pedido enviado" some */
 function cartSignature(items: CartItem[]) {
-  return items.map(i => `${i.id}x${i.quantity}`).join(',');
+  return items.map(i => `${i.id}${i.variant ? `:${i.variant}` : ''}x${i.quantity}`).join(',');
 }
 
 export default function CarrinhoPage() {
@@ -62,7 +62,7 @@ export default function CarrinhoPage() {
   }, [removed]);
 
   const handleRemove = (item: CartItem) => {
-    removeFromCart(item.id);
+    removeFromCart(item.id, item.variant);
     setRemoved(item);
   };
 
@@ -70,7 +70,7 @@ export default function CarrinhoPage() {
     if (!removed) return;
     const { quantity, ...rest } = removed;
     addToCart(rest);
-    if (quantity > 1) updateQuantity(rest.id, quantity);
+    if (quantity > 1) updateQuantity(rest.id, quantity, rest.variant);
     setRemoved(null);
   };
 
@@ -88,7 +88,7 @@ export default function CarrinhoPage() {
     let message = `*Pedido ${code} - Vintage Drum Shop*\n\n`;
 
     cartItems.forEach(item => {
-      message += `*${item.quantity}x* ${item.name}\n`;
+      message += `*${item.quantity}x* ${item.name}${item.variant ? ` (${item.variant})` : ''}\n`;
       message += `${formatPrice(pixPrice(item.price))} no Pix (${formatPrice(item.price)} no cartão) cada\n`;
       message += `${productUrl(item)}\n\n`;
     });
@@ -193,7 +193,7 @@ export default function CarrinhoPage() {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             <section aria-label="Itens do carrinho" className="space-y-3 lg:col-span-2">
               {cartItems.map(item => (
-                <article key={item.id} className="flex gap-3 rounded-xl bg-white p-3 ring-1 ring-line sm:gap-5 sm:p-5">
+                <article key={`${item.id}-${item.variant ?? ''}`} className="flex gap-3 rounded-xl bg-white p-3 ring-1 ring-line sm:gap-5 sm:p-5">
                   <Link href={productPath(item)} className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-paper sm:h-28 sm:w-28">
                     <SmartImage src={productImage(item.image)} alt={item.name} fill sizes="112px" className="object-cover" />
                   </Link>
@@ -203,6 +203,7 @@ export default function CarrinhoPage() {
                     <h2 className="mb-2 line-clamp-2 text-sm font-semibold leading-tight text-ink sm:text-base">
                       <Link href={productPath(item)} className="hover:text-accent">{item.name}</Link>
                     </h2>
+                    {item.variant && <p className="-mt-1 mb-2 text-xs text-ink-soft">{item.variant}</p>}
                     <p className="flex flex-wrap items-baseline gap-x-1 tabular-nums">
                       <span className="text-lg font-bold text-accent sm:text-xl">{formatPrice(pixPrice(item.price))}</span>
                       <span className="text-xs font-semibold uppercase text-ink">no Pix</span>
@@ -223,7 +224,7 @@ export default function CarrinhoPage() {
                     <div className="flex items-center rounded-md ring-1 ring-line">
                       <button
                         type="button"
-                        onClick={() => item.quantity > 1 ? updateQuantity(item.id, item.quantity - 1) : handleRemove(item)}
+                        onClick={() => item.quantity > 1 ? updateQuantity(item.id, item.quantity - 1, item.variant) : handleRemove(item)}
                         className="flex h-11 w-11 items-center justify-center text-ink transition hover:text-accent"
                         aria-label={`Diminuir quantidade de ${item.name}`}
                       >
@@ -232,7 +233,7 @@ export default function CarrinhoPage() {
                       <span className="w-7 text-center font-bold tabular-nums" aria-live="polite">{item.quantity}</span>
                       <button
                         type="button"
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => updateQuantity(item.id, item.quantity + 1, item.variant)}
                         className="flex h-11 w-11 items-center justify-center text-ink transition hover:text-accent"
                         aria-label={`Aumentar quantidade de ${item.name}`}
                       >

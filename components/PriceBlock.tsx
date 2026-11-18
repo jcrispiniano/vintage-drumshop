@@ -12,6 +12,16 @@ export default function PriceBlock({ price, oldPrice, size = 'card' }: PriceBloc
   const installments = paymentTerms.maxInstallments;
   const isPage = size === 'page';
 
+  // Sem preço (custom ou ainda não definido): nada de "R$ 0,00 no Pix"
+  if (!(price > 0)) {
+    return (
+      <div>
+        <p className={`font-bold leading-tight text-ink ${isPage ? 'text-3xl md:text-4xl' : 'text-lg'}`}>Preço sob consulta</p>
+        <p className={`mt-1 text-ink-soft ${isPage ? 'text-sm' : 'text-xs'}`}>Orçamento pelo WhatsApp, sem compromisso</p>
+      </div>
+    );
+  }
+
   return (
     <div className="tabular-nums">
       {oldPrice && oldPrice > price && (

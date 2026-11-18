@@ -1,5 +1,5 @@
 import type { PostgrestSingleResponse } from '@supabase/supabase-js'
-import type { Product } from '@/lib/products'
+import { hasDetails, type Product, type ProductDetails } from '@/lib/products'
 
 export function normalizeProduct(row: Record<string, unknown>): Product {
   return {
@@ -18,6 +18,7 @@ export function normalizeProduct(row: Record<string, unknown>): Product {
     audio: (row.audio as string) || undefined,
     videos: (row.videos as string[] | null)?.length ? (row.videos as string[]) : undefined,
     updatedAt: (row.updated_at as string) || undefined,
+    details: hasDetails(row.details as ProductDetails | null) ? (row.details as ProductDetails) : undefined,
   }
 }
 
@@ -62,6 +63,10 @@ export function toDbRow(body: Record<string, unknown>, partial = false): { row: 
     const list = Array.isArray(body.videos) ? (body.videos as unknown[]).filter((v): v is string => typeof v === 'string' && v.trim() !== '').map(v => v.trim()) : []
     row.videos = list.length ? list : null
   }
+  if (has('details')) {
+    const d = body.details
+    row.details = d && typeof d === 'object' && !Array.isArray(d) && hasDetails(d as ProductDetails) ? d : null
+  }
   if (has('audio')) row.audio = typeof body.audio === 'string' && body.audio.trim() ? body.audio.trim() : null
 
   return { row }
@@ -72,7 +77,7 @@ export function toDbRow(body: Record<string, unknown>, partial = false): { row: 
  * `supabase/schema.sql`. Se o PostgREST reclamar de uma delas, a gravação é
  * refeita sem a coluna em vez de falhar o salvamento inteiro.
  */
-const OPTIONAL_COLUMNS = ['sold_out', 'images', 'audio', 'videos']
+const OPTIONAL_COLUMNS = ['sold_out', 'images', 'audio', 'videos', 'details']
 
 /** PGRST204 = "Could not find the 'x' column of 'products' in the schema cache". */
 function missingColumn(error: { code?: string; message?: string } | null) {

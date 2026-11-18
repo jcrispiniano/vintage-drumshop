@@ -14,8 +14,8 @@ import { brandLabel } from '@/lib/brands'
 // Mallets e vassourinhas são baquetas; Wincent e Dynabeat são marcas.
 
 // Marcas que a loja vende primeiro; as outras ficam num grupo à parte para um produto novo
-const SHOP_BRANDS = ['istanbul', 'wincent', 'dynabeat', 'pinguim', 'dw', 'torelli', 'tunebot', 'rockkey', 'outro']
-const OTHER_BRANDS = ['evans', 'remo', 'pearl', 'tama', 'mapex', 'yamaha', 'sonor', 'gretsch', 'ludwig', 'zildjian', 'sabian', 'meinl']
+const SHOP_BRANDS = ['istanbul', 'wincent', 'dynabeat', 'pinguim', 'pearl', 'dw', 'torelli', 'tunebot', 'rockkey', 'outro']
+const OTHER_BRANDS = ['evans', 'remo', 'tama', 'mapex', 'yamaha', 'sonor', 'gretsch', 'ludwig', 'zildjian', 'sabian', 'meinl']
 
 /** Aceita "1.299,90", "1299,9", "1299.90" ou "R$ 1.299": devolve número ou NaN */
 export function parsePrice(raw: string): number {
@@ -28,7 +28,8 @@ export function parsePrice(raw: string): number {
 
 const formatBRL = (n: number) => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
-const BADGES = ['Novo', 'Premium', 'Signature', 'Effect', 'Oferta', 'Destaque', '']
+// 'Custom': feito sob encomenda; o site mostra preço sob consulta e leva ao WhatsApp
+const BADGES = ['Novo', 'Premium', 'Signature', 'Effect', 'Oferta', 'Destaque', 'Custom', '']
 
 interface FormData {
   name: string
@@ -329,7 +330,9 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
 
   const price = parsePrice(form.price)
   const oldPrice = parsePrice(form.oldPrice)
-  const priceError = form.price && !(price > 0) ? 'Preço inválido. Exemplo: 1.299,90' : ''
+  const custom = form.badge === 'Custom'
+  // Custom pode ficar sem preço (o site mostra "preço sob consulta")
+  const priceError = form.price && !(price > 0) && !(custom && price === 0) ? 'Preço inválido. Exemplo: 1.299,90' : ''
   const oldPriceError = form.oldPrice
     ? !(oldPrice > 0) ? 'Preço inválido. Exemplo: 1.499,90'
       : price > 0 && oldPrice <= price ? 'O preço antigo precisa ser maior que o atual para mostrar desconto.' : ''
@@ -353,8 +356,8 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
       setError('Adicione pelo menos uma foto ao produto.')
       return
     }
-    if (priceError || oldPriceError || !(price > 0)) {
-      setError(priceError || oldPriceError || 'Informe o preço do produto.')
+    if (priceError || oldPriceError || (!(price > 0) && !custom)) {
+      setError(priceError || oldPriceError || 'Informe o preço do produto. Para bateria sob encomenda, escolha o selo "Custom" e deixe sem preço.')
       document.getElementById(oldPriceError && !priceError ? 'oldPrice' : 'price')?.focus()
       return
     }
@@ -365,7 +368,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
       name: form.name.trim(),
       category: form.category,
       brand: form.brand,
-      price,
+      price: price > 0 ? price : 0,
       // null (e não undefined) para que a edição consiga limpar esses campos
       oldPrice: form.oldPrice ? oldPrice : null,
       image: form.image.trim(),
@@ -485,7 +488,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
                 <label htmlFor="price" className="label">Preço atual (R$) *</label>
                 <input
                   id="price"
-                  required
+                  required={!custom}
                   type="text"
                   inputMode="decimal"
                   autoComplete="off"
@@ -498,7 +501,7 @@ export default function ProductForm({ initialData, mode }: ProductFormProps) {
                   className="input tabular-nums"
                 />
                 <p id="price-hint" className={`text-xs mt-1 ${priceError ? 'text-red-600' : 'text-gray-400'}`}>
-                  {priceError || 'Pode digitar com vírgula: 1.299,90'}
+                  {priceError || (custom ? 'Custom: pode deixar em branco para "preço sob consulta"' : 'Pode digitar com vírgula: 1.299,90')}
                 </p>
               </div>
               <div>
