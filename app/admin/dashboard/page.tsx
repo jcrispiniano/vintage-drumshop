@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
-  AlertCircle, Copy, ExternalLink, Pencil, Tag, ImageIcon, MoreHorizontal, Package, Plus, Search, Trash2, Undo2, Volume2, X, FileText,
+  AlertCircle, Copy, ExternalLink, ListOrdered, Pencil, Tag, ImageIcon, MoreHorizontal, Package, Plus, Search, Trash2, Undo2, Volume2, X, FileText,
 } from 'lucide-react'
 import AdminHeader from './_components/AdminHeader'
 import { categoryName, productPath } from '@/lib/products'
@@ -324,6 +324,11 @@ export default function AdminDashboardPage() {
                 className="h-12 w-full rounded-lg border border-line bg-white pl-10 pr-4 text-base text-ink placeholder:text-ink-soft focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25"
               />
             </div>
+            {view.kind === 'categoria' && (
+              <Link href={`/admin/dashboard/ordem?categoria=${view.id}`} className="flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-semibold text-ink ring-1 ring-line transition hover:ring-ink/40">
+                <ListOrdered size={18} aria-hidden /> Organizar ordem
+              </Link>
+            )}
             <Link href={newHref} className="flex h-12 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-accent px-5 text-sm font-bold uppercase tracking-wide text-white transition hover:bg-secondary">
               <Plus size={18} aria-hidden /> Novo produto
             </Link>

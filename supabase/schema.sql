@@ -15,6 +15,7 @@ create table if not exists public.products (
   images      text[],
   audio       text,
   details     jsonb,
+  sort_order  integer,
   badge       text,
   description text        not null,
   featured    boolean     not null default false,
@@ -33,6 +34,8 @@ alter table public.products
   add column if not exists audio text;
 alter table public.products
   add column if not exists details jsonb;
+alter table public.products
+  add column if not exists sort_order integer;
 
 -- Trigger para atualizar updated_at automaticamente
 create or replace function public.set_updated_at()

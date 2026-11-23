@@ -18,6 +18,7 @@ export function normalizeProduct(row: Record<string, unknown>): Product {
     audio: (row.audio as string) || undefined,
     videos: (row.videos as string[] | null)?.length ? (row.videos as string[]) : undefined,
     updatedAt: (row.updated_at as string) || undefined,
+    sortOrder: typeof row.sort_order === 'number' ? row.sort_order : undefined,
     details: hasDetails(row.details as ProductDetails | null) ? (row.details as ProductDetails) : undefined,
   }
 }

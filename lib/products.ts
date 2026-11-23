@@ -15,6 +15,7 @@ export interface Product {
   videos?: string[]; // links do YouTube (som/review), na ordem de exibição
   updatedAt?: string; // última alteração (sitemap e feed do Google)
   details?: ProductDetails; // abas da página (baterias): opcional
+  sortOrder?: number; // ordem manual na loja (1 = primeiro); sem valor = ordem automática, depois dos fixados
 }
 
 /**
@@ -798,6 +799,18 @@ export const contactInfo = {
 // Produtos sem foto (ex.: fallback estático) usam o logo em vez de <img src=""> quebrado
 export function productImage(src?: string): string {
   return src || '/placeholder-produto.jpg';
+}
+
+/**
+ * Ordem da loja: primeiro os produtos fixados à mão (sortOrder 1, 2, 3...), depois o resto na
+ * ordem em que chegou (mais novos primeiro) e, por último, os esgotados. A ordenação é estável.
+ */
+export function sortForShop<T extends { sortOrder?: number | null; soldOut?: boolean }>(list: T[]): T[] {
+  const rank = (p: T) => (typeof p.sortOrder === 'number' ? p.sortOrder : Number.POSITIVE_INFINITY);
+  return soldOutLast([...list].sort((a, b) => {
+    const ra = rank(a); const rb = rank(b);
+    return ra === rb ? 0 : ra < rb ? -1 : 1;
+  }));
 }
 
 /** Mantém a ordem original, mas manda os produtos esgotados para o final da lista. */

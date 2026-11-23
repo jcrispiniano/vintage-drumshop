@@ -19,7 +19,7 @@ export async function POST(_req: Request, { params }: Params) {
   const { id: _id, created_at, updated_at, ...copy } = original
   const { data, error: insertError } = await supabaseAdmin
     .from('products')
-    .insert([{ ...copy, name: `${original.name} (cópia)`, active: false, featured: false }])
+    .insert([{ ...copy, name: `${original.name} (cópia)`, active: false, featured: false, sort_order: null }])
     .select()
     .single()
 
