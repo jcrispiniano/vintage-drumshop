@@ -2,7 +2,7 @@
 
 import { createContext, createElement, useContext, useState, type ReactNode } from 'react'
 import { createStore, useStore, type StoreApi } from 'zustand'
-import { products as staticProducts, Product, soldOutLast } from '@/lib/products'
+import { products as staticProducts, Product, sortForShop } from '@/lib/products'
 
 interface ProductsState {
   products: Product[]
@@ -13,9 +13,9 @@ interface ProductsState {
 function makeStore(initial?: Product[]) {
   return createStore<ProductsState>(set => ({
     // Vem do servidor (layout): o HTML já sai com os produtos reais, que o Google lê
-    products: soldOutLast(initial?.length ? initial : staticProducts),
+    products: sortForShop(initial?.length ? initial : staticProducts),
     loaded: !!initial?.length,
-    setProducts: (products) => set({ products: soldOutLast(products), loaded: true }),
+    setProducts: (products) => set({ products: sortForShop(products), loaded: true }),
   }))
 }
 

@@ -2,10 +2,11 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LogOut, Package, FileText, Users } from 'lucide-react'
+import { LogOut, Package, FileText, Users, ListOrdered } from 'lucide-react'
 
 const TABS = [
   { href: '/admin/dashboard', label: 'Produtos', icon: Package },
+  { href: '/admin/dashboard/ordem', label: 'Ordem na loja', icon: ListOrdered },
   { href: '/admin/dashboard/orcamentos', label: 'Orçamentos', icon: FileText },
   { href: '/admin/dashboard/clientes', label: 'Clientes', icon: Users },
 ]
