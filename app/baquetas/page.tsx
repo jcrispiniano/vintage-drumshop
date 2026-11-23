@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
+import { X } from 'lucide-react';
+import FilterToggle from '@/components/FilterToggle';
 
 import { useProductsStore } from '@/lib/productsStore';
 import Header from '@/components/Header';
@@ -73,9 +74,15 @@ export default function BaquetasPage() {
         </div>
       </section>
 
-      {/* Uma linha só, fixa no topo: o tipo. A marca abre num painel, como em /pratos */}
+      {/* Uma linha só, fixa no topo: o botão da marca à esquerda (como em /pratos) e o tipo ao lado */}
       <div className="sticky top-[108px] z-40 border-b border-line bg-white md:top-[124px]">
         <div className="container mx-auto flex items-center gap-2 px-4">
+          {availableBrands.length > 1 && (
+            <>
+              <FilterToggle open={panelOpen} selectedCount={activeBrand !== 'todas' ? 1 : 0} onClick={() => setPanelOpen(o => !o)} label="Marca" />
+              <span aria-hidden className="h-6 w-px flex-shrink-0 bg-line" />
+            </>
+          )}
           <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto py-2.5 scrollbar-hide" role="group" aria-label="Filtrar por tipo">
             {(['todos', 'baquetas', 'vassourinhas', 'rods', 'mallets'] as const).map(type => {
               const count = type === 'todos'
@@ -89,21 +96,6 @@ export default function BaquetasPage() {
               );
             })}
           </div>
-          {availableBrands.length > 1 && (
-            <button
-              type="button"
-              onClick={() => setPanelOpen(o => !o)}
-              aria-expanded={panelOpen}
-              aria-controls="painel-filtros"
-              className={`flex h-11 flex-shrink-0 items-center gap-1.5 rounded-md px-3 text-sm font-semibold ring-1 transition ${
-                panelOpen || activeBrand !== 'todas' ? 'bg-ink text-white ring-ink' : 'text-ink ring-line hover:ring-ink/40'
-              }`}
-            >
-              <SlidersHorizontal size={16} aria-hidden />
-              Marca{activeBrand !== 'todas' && ' (1)'}
-              <ChevronDown size={16} aria-hidden className={`transition-transform ${panelOpen ? 'rotate-180' : ''}`} />
-            </button>
-          )}
         </div>
       </div>
 

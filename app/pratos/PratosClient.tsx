@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
+import { X } from 'lucide-react';
 
 import { useProductsStore } from '@/lib/productsStore';
 import { Product, contactInfo } from '@/lib/products';
@@ -9,6 +9,7 @@ import { TIMBRES, TimbreId, productSizeValue, productTimbres } from '@/lib/produ
 import { CYMBAL_SERIES, CYMBAL_TYPE_LABELS, CymbalType, SeriesId, cymbalSeries, cymbalType } from '@/lib/cymbals';
 import Header from '@/components/Header';
 import CategoryNav from '@/components/CategoryNav';
+import FilterToggle from '@/components/FilterToggle';
 import CatalogGrid, { SORTS, SortKey } from '@/components/CatalogGrid';
 
 type TypeFilter = 'todos' | CymbalType;
@@ -109,10 +110,12 @@ function PratosContent({ params }: { params: Params }) {
         </div>
       </section>
 
-      {/* Uma linha só: o som (é como o baterista escolhe um prato), fixa no topo.
-          Tipo, série e tamanho abrem num painel, fechado de início. */}
+      {/* Uma linha só, fixa no topo: o botão dos filtros (tipo, série e tamanho) à esquerda, onde o
+          cliente vê primeiro, e o som (é como o baterista escolhe um prato). O painel abre fechado. */}
       <div className="sticky top-[108px] z-40 border-b border-line bg-white md:top-[124px]">
         <div className="container mx-auto flex items-center gap-2 px-4">
+          <FilterToggle open={panelOpen} selectedCount={extraCount} onClick={() => setPanelOpen(o => !o)} label="Tipo, série e tamanho" mobileLabel="Filtros" />
+          <span aria-hidden className="h-6 w-px flex-shrink-0 bg-line" />
           <span className="hidden flex-shrink-0 pr-1 text-xs font-bold uppercase tracking-wider text-ink-soft md:inline">Som</span>
           <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto py-2.5 scrollbar-hide" role="group" aria-label="Filtrar por som">
             <button type="button" onClick={() => update({ timbre: null })} aria-pressed={!filters.timbre} className={chip(!filters.timbre)}>
@@ -137,21 +140,6 @@ function PratosContent({ params }: { params: Params }) {
               );
             })}
           </div>
-          <button
-            type="button"
-            onClick={() => setPanelOpen(o => !o)}
-            aria-expanded={panelOpen}
-            aria-controls="painel-filtros"
-            className={`flex h-11 flex-shrink-0 items-center gap-1.5 rounded-md px-3 text-sm font-semibold ring-1 transition ${
-              panelOpen || extraCount > 0 ? 'bg-ink text-white ring-ink' : 'text-ink ring-line hover:ring-ink/40'
-            }`}
-          >
-            <SlidersHorizontal size={16} aria-hidden />
-            <span className="md:hidden">Mais</span>
-            <span className="hidden md:inline">Tipo, série e tamanho</span>
-            {extraCount > 0 && ` (${extraCount})`}
-            <ChevronDown size={16} aria-hidden className={`transition-transform ${panelOpen ? 'rotate-180' : ''}`} />
-          </button>
         </div>
       </div>
 
