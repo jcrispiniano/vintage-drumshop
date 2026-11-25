@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
 import { toDbRow, writeProductRow } from '@/lib/productRow'
+import { revalidateShop } from '@/lib/revalidateShop'
 
 export async function GET() {
   if (!isSupabaseConfigured()) {
@@ -31,5 +32,6 @@ export async function POST(req: Request) {
   )
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  revalidateShop([data])
   return NextResponse.json(data, { status: 201 })
 }

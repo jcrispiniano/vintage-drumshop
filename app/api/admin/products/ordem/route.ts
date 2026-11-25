@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { revalidatePath } from 'next/cache'
+import { revalidateShop } from '@/lib/revalidateShop'
 import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
 
 /**
@@ -48,8 +48,8 @@ export async function POST(req: Request) {
   const failed = results.find(r => r.error)
   if (failed?.error) return NextResponse.json({ error: failed.error.message }, { status: 500 })
 
-  // A loja renderiza no servidor: atualiza as páginas já para o cliente ver a nova ordem
-  try { revalidatePath('/', 'layout') } catch { /* fora do contexto de renderização */ }
+  // A loja guarda as páginas: refaz só a categoria e a home para o cliente ver a nova ordem
+  revalidateShop([], [category])
 
   return NextResponse.json({ ok: true, pinned: pinned.length })
 }

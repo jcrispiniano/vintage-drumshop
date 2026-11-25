@@ -8,6 +8,7 @@ import PageTransition from '@/components/PageTransition'
 import ProductsInitializer from '@/components/ProductsInitializer'
 import { campaign, isProductionSite, siteUrl } from '@/lib/products'
 import { getAllProducts } from '@/lib/db'
+import { toShopCard } from '@/lib/products'
 import { ProductsProvider } from '@/lib/productsStore'
 import SiteSchema from '@/components/schemas/SiteSchema'
 import { Analytics } from '@vercel/analytics/next'
@@ -58,16 +59,19 @@ export const metadata: Metadata = {
   },
 }
 
-// Produtos buscados no servidor a cada 5 min: as páginas já saem com o catálogo real no HTML
-export const revalidate = 300
+// As páginas saem com o catálogo real no HTML (o Google lê). Cada vez que o Vercel refaz uma página,
+// ele grava o resultado no cache e isso conta na cota do plano; por isso o prazo é longo (7 dias).
+// Quando o admin muda um produto, as páginas afetadas são refeitas na hora (lib/revalidateShop.ts), e o
+// navegador sempre busca a lista atual em /api/products, então o cliente vê preço e estoque em dia.
+export const revalidate = 604800
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  // Descrição curta no catálogo da página (a completa vem na página do produto)
-  const initialProducts = (await getAllProducts()).map(p => ({ ...p, description: p.description.slice(0, 240) }))
+  // Só o essencial de cada produto vai no HTML; descrição e detalhes chegam pela API e pela página do produto
+  const initialProducts = (await getAllProducts()).map(p => toShopCard(p))
 
   return (
     <html lang="pt-BR" className={`${inter.variable} ${oswald.variable}`} suppressHydrationWarning>

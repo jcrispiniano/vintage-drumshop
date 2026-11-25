@@ -1,5 +1,5 @@
 import { absoluteUrl, categories, formatPrice, isPriceOnRequest, pixPrice, productPath, productUrl } from '@/lib/products';
-import { getAllProductRefs, getProductById } from '@/lib/db';
+import { getProductById } from '@/lib/db';
 import { brandLabel, isGenericBrand } from '@/lib/brands';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { Metadata } from 'next';
@@ -11,12 +11,14 @@ import { productAliases } from '@/lib/searchTerms';
 // O parâmetro é "150" ou "150-nome-do-produto": o número identifica o produto
 const productId = (param: string) => parseInt(param, 10);
 
+// Lista vazia: nenhuma página de produto é montada no build; cada uma é gerada na primeira visita e
+// guardada. Montar as ~230 a cada deploy gravava tudo de novo no cache do Vercel, a cada publicação.
 export async function generateStaticParams() {
-  const refs = await getAllProductRefs();
-  return refs.map(p => ({ id: productPath(p).replace('/produto/', '') }));
+  return [];
 }
 
-export const revalidate = 60;
+// Prazo longo (7 dias): o admin refaz a página do produto na hora quando ele é editado (lib/revalidateShop.ts)
+export const revalidate = 604800;
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;

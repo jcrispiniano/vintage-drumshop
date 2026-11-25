@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { products as staticProducts, sortForShop } from '@/lib/products'
+import { products as staticProducts, sortForShop, toShopCard } from '@/lib/products'
 import { isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { normalizeProduct } from '@/lib/productRow'
 
@@ -33,7 +33,11 @@ export async function GET(request: Request) {
     return NextResponse.json(filtered)
   }
 
-  const normalized = (data ?? []).map(normalizeProduct)
+  // Sem abas, galeria e vídeos (só a página do produto usa): a lista fica ~40% menor
+  const normalized = (data ?? []).map(normalizeProduct).map(p => toShopCard(p, null))
 
-  return NextResponse.json(sortForShop(normalized))
+  // O navegador pede esta lista a cada visita: o cache do Vercel evita refazer a consulta ao banco toda vez
+  return NextResponse.json(sortForShop(normalized), {
+    headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=600' },
+  })
 }
