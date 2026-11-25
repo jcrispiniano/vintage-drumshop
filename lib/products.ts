@@ -813,6 +813,30 @@ export function sortForShop<T extends { sortOrder?: number | null; soldOut?: boo
   }));
 }
 
+/**
+ * Versão enxuta do produto para listas: só o que os cartões, a busca e o carrinho usam.
+ * Fica de fora o que só a página do produto precisa (abas, galeria, vídeos). Sem isso, cada
+ * página da loja carregava e gravava no cache ~220 KB de dados de produtos que ninguém via.
+ * `descriptionChars` corta a descrição (0 = sem descrição, ela chega depois pela API).
+ */
+export function toShopCard(p: Product, descriptionChars: number | null = 0): Product {
+  return {
+    id: p.id,
+    name: p.name,
+    category: p.category,
+    brand: p.brand,
+    price: p.price,
+    oldPrice: p.oldPrice,
+    image: p.image,
+    badge: p.badge,
+    featured: p.featured,
+    soldOut: p.soldOut,
+    audio: p.audio,
+    sortOrder: p.sortOrder,
+    description: descriptionChars === null ? p.description : p.description.slice(0, descriptionChars),
+  };
+}
+
 /** Mantém a ordem original, mas manda os produtos esgotados para o final da lista. */
 export function soldOutLast<T extends { soldOut?: boolean }>(list: T[]): T[] {
   return [...list].sort((a, b) => Number(!!a.soldOut) - Number(!!b.soldOut));

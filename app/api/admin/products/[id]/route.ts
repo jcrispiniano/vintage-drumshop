@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin, isSupabaseConfigured } from '@/lib/supabase'
 import { toDbRow, writeProductRow } from '@/lib/productRow'
+import { revalidateShop } from '@/lib/revalidateShop'
 
 type Params = { params: Promise<{ id: string }> }
 
@@ -28,12 +29,16 @@ export async function PUT(req: Request, { params }: Params) {
   const { row, error: validationError } = toDbRow(body, true)
   if (validationError) return NextResponse.json({ error: validationError }, { status: 400 })
 
+  // Nome e categoria de antes: se mudaram, a página antiga também precisa ser refeita
+  const { data: before } = await supabaseAdmin.from('products').select('id, name, category').eq('id', id).single()
+
   const { data, error } = await writeProductRow(
     r => supabaseAdmin.from('products').update(r).eq('id', id).select().single(),
     row
   )
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  revalidateShop([data, ...(before ? [before] : [])])
   return NextResponse.json(data)
 }
 
@@ -42,7 +47,9 @@ export async function DELETE(_req: Request, { params }: Params) {
     return NextResponse.json({ error: 'Supabase não configurado' }, { status: 503 })
   }
   const { id } = await params
+  const { data: before } = await supabaseAdmin.from('products').select('id, name, category').eq('id', id).single()
   const { error } = await supabaseAdmin.from('products').delete().eq('id', id)
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (before) revalidateShop([before])
   return NextResponse.json({ ok: true })
 }
